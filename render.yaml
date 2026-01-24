@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: remodely-ai-site
+    runtime: static
+    buildCommand: echo "Static site ready"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: origin-when-cross-origin
+      - path: /*.html
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /images/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      # Service pages
+      - type: rewrite
+        source: /services/ai-voice-agents
+        destination: /services/ai-voice-agents.html
+      - type: rewrite
+        source: /services/app-development
+        destination: /services/app-development.html
+      - type: rewrite
+        source: /services/automation
+        destination: /services/automation.html
+      - type: rewrite
+        source: /services/migration
+        destination: /services/migration.html
+      - type: rewrite
+        source: /services/cloud-solutions
+        destination: /services/cloud-solutions.html
+      # Solution pages
+      - type: rewrite
+        source: /solutions/contractors
+        destination: /solutions/contractors.html
+      - type: rewrite
+        source: /solutions/suppliers
+        destination: /solutions/suppliers.html
+      - type: rewrite
+        source: /solutions/homeowners
+        destination: /solutions/homeowners.html
+      # Other pages
+      - type: rewrite
+        source: /portfolio
+        destination: /portfolio/index.html
+      - type: rewrite
+        source: /about
+        destination: /about/index.html
+      - type: rewrite
+        source: /contact
+        destination: /contact/index.html
+      - type: rewrite
+        source: /privacy
+        destination: /privacy.html
+      - type: rewrite
+        source: /terms
+        destination: /terms.html
