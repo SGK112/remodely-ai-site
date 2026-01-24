@@ -41,7 +41,7 @@
       <div class="navbar-inner">
         <a href="/" class="logo">
           <div class="logo-icon">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#4285F4"/>
@@ -50,8 +50,8 @@
                   <stop offset="100%" stop-color="#34A853"/>
                 </linearGradient>
               </defs>
-              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
             </svg>
           </div>
           REMODELY<span>.AI</span>
@@ -77,10 +77,40 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-bg">
-      <div class="hero-bg-image"></div>
-      <div class="hero-bg-overlay"></div>
-      <div class="hero-bg-gradient"></div>
+      <div class="hero-bg-pattern"></div>
+      <div class="hero-bg-glow hero-bg-glow-1"></div>
+      <div class="hero-bg-glow hero-bg-glow-2"></div>
+      <div class="hero-bg-glow hero-bg-glow-3"></div>
     </div>
+
+    <!-- Floating Elements -->
+    <div class="hero-floating-elements">
+      <div class="floating-card floating-card-1">
+        <div class="floating-card-icon green">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <span>Lead Captured</span>
+      </div>
+      <div class="floating-card floating-card-2">
+        <div class="floating-card-icon blue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+        </div>
+        <span>AI Answering</span>
+      </div>
+      <div class="floating-card floating-card-3">
+        <div class="floating-card-icon purple">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <span>Booked!</span>
+      </div>
+    </div>
+
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content">
@@ -90,11 +120,11 @@
           </div>
 
           <h1>
-            Transform Your Business with <span class="gradient-text">Intelligent AI</span>
+            Build Smarter with <span class="gradient-text">AI Technology</span>
           </h1>
 
           <p class="hero-subtitle">
-            Purpose-built AI applications, voice agents, and automation solutions designed specifically for small and medium businesses in the remodeling and construction industry.
+            Custom AI voice agents, intelligent CRMs, and automation tools designed to help contractors capture more leads, close more deals, and scale their business.
           </p>
 
           <div class="hero-buttons">
@@ -102,79 +132,121 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
-              Schedule Free Consultation
+              Get Free Consultation
             </a>
             <a href="#portfolio" class="btn btn-outline">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
-              View Our Work
+              See Our Work
             </a>
           </div>
 
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <span class="hero-stat-number" data-target="400">0</span>
-              <span class="hero-stat-label">Projects Delivered</span>
+          <div class="hero-trust">
+            <div class="hero-trust-avatars">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Client">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Client">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face" alt="Client">
+              <span class="hero-trust-more">+47</span>
             </div>
-            <div class="hero-stat">
-              <span class="hero-stat-number" data-target="50">0</span>
-              <span class="hero-stat-label">Active Clients</span>
-            </div>
-            <div class="hero-stat">
-              <span class="hero-stat-number" data-target="40">0</span>
-              <span class="hero-stat-label">Cost Reduction %</span>
-            </div>
-            <div class="hero-stat">
-              <span class="hero-stat-number">24/7</span>
-              <span class="hero-stat-label">AI Availability</span>
+            <div class="hero-trust-text">
+              <span class="hero-trust-rating">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <strong>Trusted by 50+ contractors</strong>
             </div>
           </div>
         </div>
 
         <div class="hero-visual">
-          <div class="hero-mockup">
-            <div class="mockup-window">
-              <div class="mockup-header">
-                <div class="mockup-dots">
+          <div class="hero-dashboard">
+            <div class="dashboard-window">
+              <div class="dashboard-header">
+                <div class="dashboard-dots">
                   <span></span><span></span><span></span>
                 </div>
-                <div class="mockup-title">AI Dashboard</div>
+                <div class="dashboard-title">VoiceNow CRM</div>
+                <div class="dashboard-status">
+                  <span class="status-dot"></span>
+                  Live
+                </div>
               </div>
-              <div class="mockup-content">
-                <div class="mockup-stats-row">
-                  <div class="mockup-stat-card">
-                    <div class="mockup-stat-icon green">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                      </svg>
-                    </div>
-                    <div class="mockup-stat-info">
-                      <span class="mockup-stat-value">1,247</span>
-                      <span class="mockup-stat-label">Calls Handled</span>
-                    </div>
+              <div class="dashboard-content">
+                <div class="dashboard-sidebar">
+                  <div class="sidebar-item active">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                    </svg>
                   </div>
-                  <div class="mockup-stat-card">
-                    <div class="mockup-stat-icon blue">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-                      </svg>
-                    </div>
-                    <div class="mockup-stat-info">
-                      <span class="mockup-stat-value">89%</span>
-                      <span class="mockup-stat-label">Conversion</span>
-                    </div>
+                  <div class="sidebar-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="sidebar-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/>
+                    </svg>
+                  </div>
+                  <div class="sidebar-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
                   </div>
                 </div>
-                <div class="mockup-chart">
-                  <div class="chart-bars">
-                    <div class="chart-bar" style="height: 40%"></div>
-                    <div class="chart-bar" style="height: 65%"></div>
-                    <div class="chart-bar" style="height: 45%"></div>
-                    <div class="chart-bar" style="height: 80%"></div>
-                    <div class="chart-bar" style="height: 55%"></div>
-                    <div class="chart-bar" style="height: 90%"></div>
-                    <div class="chart-bar active" style="height: 75%"></div>
+                <div class="dashboard-main">
+                  <div class="dashboard-stats">
+                    <div class="dash-stat">
+                      <span class="dash-stat-value">1,247</span>
+                      <span class="dash-stat-label">Calls Today</span>
+                      <span class="dash-stat-change positive">+23%</span>
+                    </div>
+                    <div class="dash-stat">
+                      <span class="dash-stat-value">89%</span>
+                      <span class="dash-stat-label">Conversion</span>
+                      <span class="dash-stat-change positive">+12%</span>
+                    </div>
+                    <div class="dash-stat">
+                      <span class="dash-stat-value">$47K</span>
+                      <span class="dash-stat-label">Revenue</span>
+                      <span class="dash-stat-change positive">+31%</span>
+                    </div>
+                  </div>
+                  <div class="dashboard-chart">
+                    <div class="chart-line">
+                      <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                          </linearGradient>
+                        </defs>
+                        <path d="M0 50 Q 25 45, 50 35 T 100 25 T 150 15 T 200 10" fill="none" stroke="#6366f1" stroke-width="2"/>
+                        <path d="M0 50 Q 25 45, 50 35 T 100 25 T 150 15 T 200 10 L 200 60 L 0 60 Z" fill="url(#chartGrad)"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="dashboard-leads">
+                    <div class="lead-item">
+                      <div class="lead-avatar">JD</div>
+                      <div class="lead-info">
+                        <span class="lead-name">John Davis</span>
+                        <span class="lead-time">Kitchen remodel - 2m ago</span>
+                      </div>
+                      <span class="lead-badge hot">Hot</span>
+                    </div>
+                    <div class="lead-item">
+                      <div class="lead-avatar">SM</div>
+                      <div class="lead-info">
+                        <span class="lead-name">Sarah Miller</span>
+                        <span class="lead-time">Countertops - 5m ago</span>
+                      </div>
+                      <span class="lead-badge warm">Warm</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -185,10 +257,156 @@
     </div>
   </section>
 
+  <!-- Problem Statement - Dark -->
+  <section class="section-slide section-dark" id="problem">
+    <div class="container">
+      <div class="slide-content center">
+        <span class="section-tag light">The Problem</span>
+        <h2 class="slide-headline">You're Losing <span class="text-coral">$3,000+</span> Every Month</h2>
+        <p class="slide-subtext">Missed calls. Slow follow-ups. Manual processes. Sound familiar?</p>
+
+        <div class="problem-stats">
+          <div class="problem-stat">
+            <div class="problem-stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </div>
+            <div class="problem-stat-number">62%</div>
+            <div class="problem-stat-text">of contractor calls go unanswered</div>
+          </div>
+          <div class="problem-stat">
+            <div class="problem-stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="problem-stat-number">4.2 hrs</div>
+            <div class="problem-stat-text">average response time to leads</div>
+          </div>
+          <div class="problem-stat">
+            <div class="problem-stat-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+              </svg>
+            </div>
+            <div class="problem-stat-number">$847</div>
+            <div class="problem-stat-text">lost per missed opportunity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Statement - Light -->
+  <section class="section-slide section-light" id="solution">
+    <div class="container">
+      <div class="slide-content center">
+        <span class="section-tag">The Solution</span>
+        <h2 class="slide-headline">AI That Works <span class="text-gradient">24/7</span> So You Don't Have To</h2>
+        <p class="slide-subtext">Our AI voice agents answer every call, qualify every lead, and book appointments while you focus on the job site.</p>
+
+        <div class="solution-comparison">
+          <div class="comparison-card before">
+            <div class="comparison-label">Before Remodely</div>
+            <ul class="comparison-list">
+              <li class="negative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Missed calls during jobs
+              </li>
+              <li class="negative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Manual lead follow-up
+              </li>
+              <li class="negative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Losing jobs to faster competitors
+              </li>
+              <li class="negative">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Working nights on admin
+              </li>
+            </ul>
+          </div>
+          <div class="comparison-arrow">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <div class="comparison-card after">
+            <div class="comparison-label">With Remodely AI</div>
+            <ul class="comparison-list">
+              <li class="positive">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Every call answered instantly
+              </li>
+              <li class="positive">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Leads qualified automatically
+              </li>
+              <li class="positive">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Appointments booked 24/7
+              </li>
+              <li class="positive">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Focus on what you do best
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Section - Dark -->
+  <section class="section-slide section-dark" id="roi">
+    <div class="container">
+      <div class="slide-content center">
+        <span class="section-tag light">Real Results</span>
+        <h2 class="slide-headline">Turn <span class="text-emerald">$297/mo</span> Into <span class="text-emerald">$8,000+</span> Revenue</h2>
+        <p class="slide-subtext">See exactly how our clients are growing their businesses with AI.</p>
+
+        <div class="roi-calculator">
+          <div class="roi-card">
+            <div class="roi-header">Monthly ROI Breakdown</div>
+            <div class="roi-rows">
+              <div class="roi-row">
+                <span class="roi-label">Calls captured (that were missed)</span>
+                <span class="roi-value">+47 calls</span>
+              </div>
+              <div class="roi-row">
+                <span class="roi-label">Leads converted to appointments</span>
+                <span class="roi-value">+23 bookings</span>
+              </div>
+              <div class="roi-row">
+                <span class="roi-label">Average job value</span>
+                <span class="roi-value">$3,200</span>
+              </div>
+              <div class="roi-row">
+                <span class="roi-label">Close rate improvement</span>
+                <span class="roi-value">+18%</span>
+              </div>
+              <div class="roi-row highlight">
+                <span class="roi-label">Additional monthly revenue</span>
+                <span class="roi-value big">$8,400</span>
+              </div>
+            </div>
+            <div class="roi-footer">
+              <span>Your investment: $297/mo</span>
+              <span class="roi-return">ROI: <strong>2,727%</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Trusted By Section -->
   <section class="trusted-section">
     <div class="container">
-      <p class="trusted-label">Trusted by leading contractors and industry partners</p>
+      <p class="trusted-label">Trusted by contractors across Arizona and beyond</p>
       <div class="trusted-logos">
         <div class="trusted-logo">
           <svg viewBox="0 0 120 40" fill="currentColor">
@@ -474,19 +692,51 @@
       <div class="portfolio-grid">
         <div class="portfolio-card featured">
           <div class="portfolio-image">
-            <div class="portfolio-placeholder">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <path d="M3 9h18"/>
-                <path d="M9 21V9"/>
-              </svg>
-              <span>VoiceNow CRM</span>
+            <div class="portfolio-crm-preview">
+              <div class="crm-preview-header">
+                <div class="crm-preview-nav">
+                  <span class="crm-logo">VoiceNow</span>
+                  <div class="crm-nav-items">
+                    <span class="active">Dashboard</span>
+                    <span>Leads</span>
+                    <span>Calls</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crm-preview-content">
+                <div class="crm-stats-row">
+                  <div class="crm-stat-box">
+                    <span class="crm-stat-num">2,847</span>
+                    <span class="crm-stat-txt">Total Leads</span>
+                  </div>
+                  <div class="crm-stat-box green">
+                    <span class="crm-stat-num">89%</span>
+                    <span class="crm-stat-txt">Response Rate</span>
+                  </div>
+                  <div class="crm-stat-box blue">
+                    <span class="crm-stat-num">$127K</span>
+                    <span class="crm-stat-txt">Revenue</span>
+                  </div>
+                </div>
+                <div class="crm-chart-area">
+                  <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="crmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M0 60 Q 50 50, 75 40 T 150 30 T 225 20 T 300 15" fill="none" stroke="#6366f1" stroke-width="2"/>
+                    <path d="M0 60 Q 50 50, 75 40 T 150 30 T 225 20 T 300 15 L 300 80 L 0 80 Z" fill="url(#crmGrad)"/>
+                  </svg>
+                </div>
+              </div>
             </div>
             <div class="portfolio-badge">Featured</div>
           </div>
           <div class="portfolio-content">
             <h4>VoiceNow CRM</h4>
-            <p>AI-powered CRM with voice agents, lead management, and real-time analytics dashboard.</p>
+            <p>AI-powered CRM with voice agents, lead management, and real-time analytics dashboard for contractors.</p>
             <div class="portfolio-tags">
               <span class="portfolio-tag">React</span>
               <span class="portfolio-tag">Node.js</span>
@@ -1041,7 +1291,7 @@
         <div class="footer-brand">
           <a href="/" class="logo">
             <div class="logo-icon">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="remodelyHouseGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#4285F4"/>
@@ -1050,8 +1300,8 @@
                     <stop offset="100%" stop-color="#34A853"/>
                   </linearGradient>
                 </defs>
-                <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGradFooter)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGradFooter)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
               </svg>
             </div>
             REMODELY<span>.AI</span>

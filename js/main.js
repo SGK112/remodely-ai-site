@@ -77,6 +77,19 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(el);
   });
 
+  // Observe slide sections for animation
+  const slideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.section-slide').forEach(el => {
+    slideObserver.observe(el);
+  });
+
   // Counter animation for stats
   function animateCounter(element, target, duration = 2000) {
     let start = 0;
