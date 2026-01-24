@@ -132,10 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
       requiredFields.forEach(field => {
         const input = this.querySelector(`[name="${field}"]`);
         if (!input.value.trim()) {
-          input.style.borderColor = '#e94560';
+          input.style.borderColor = '#f43f5e';
           isValid = false;
         } else {
-          input.style.borderColor = '#dee2e6';
+          input.style.borderColor = '#e4e4e7';
         }
       });
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const emailInput = this.querySelector('[name="email"]');
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (emailInput && !emailRegex.test(emailInput.value)) {
-        emailInput.style.borderColor = '#e94560';
+        emailInput.style.borderColor = '#f43f5e';
         isValid = false;
       }
 
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Simulate form submission (replace with actual API call)
         setTimeout(() => {
           submitBtn.textContent = 'Message Sent!';
-          submitBtn.style.background = '#00d09c';
+          submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
 
           // Reset form
           this.reset();
@@ -217,17 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
       heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
       heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
     }
-  });
-
-  // Service card hover effect
-  document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.style.transform = 'translateY(-8px) scale(1.02)';
-    });
-
-    card.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0) scale(1)';
-    });
   });
 
   console.log('Remodely AI site initialized');
