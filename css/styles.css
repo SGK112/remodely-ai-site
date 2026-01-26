@@ -5681,3 +5681,120 @@ html {
     font-size: 1.5rem;
   }
 }
+
+/* =====================================================
+   CAREERS PAGE
+   ===================================================== */
+.careers-page h2 {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.careers-page h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.career-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-top: 1.5rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.career-card:hover {
+  border-color: #6366f1;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
+}
+
+.career-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.career-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.career-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.career-tag {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #4338ca;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.career-card h4 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.career-card ul {
+  margin-bottom: 0.5rem;
+}
+
+.career-card li {
+  color: #475569;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.career-apply-btn {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.625rem 1.5rem;
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.career-apply-btn:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .career-card {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .career-card-header {
+    flex-direction: column;
+  }
+
+  .career-card-header h3 {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .career-card {
+    padding: 1rem 1.25rem;
+  }
+}

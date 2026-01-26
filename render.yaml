@@ -34,3 +34,6 @@ services:
       - type: rewrite
         source: /terms
         destination: /terms.html
+      - type: rewrite
+        source: /careers
+        destination: /careers.html
