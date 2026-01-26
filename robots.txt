@@ -1,9 +1,9 @@
-# Remodely AI Robots.txt
+# Robots.txt for Remodely AI
+# https://remodely.ai
+
 User-agent: *
 Allow: /
+Disallow: /images/generated/
 
 # Sitemap
 Sitemap: https://remodely.ai/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1

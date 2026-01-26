@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Remodely AI | AI & Cloud Solutions for Remodeling & Construction</title>
-  <meta name="description" content="Transform your remodeling and construction business with AI-powered apps, voice agents, automation, and cloud solutions. Purpose-built for contractors and home service professionals.">
-  <meta name="keywords" content="AI construction, remodeling software, contractor CRM, voice AI, automation, construction technology">
+  <title>Remodely AI | AI Software for Small Business</title>
+  <meta name="description" content="Ready-to-deploy AI software for small businesses. AI receptionist, smart scheduling, instant quotes, client portals, and payment systems. Customized and launched in days.">
+  <meta name="keywords" content="AI receptionist, business automation, AI voice agent, online booking, client portal, payment system, small business AI">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Remodely AI | AI & Cloud Solutions for Remodeling & Construction">
-  <meta property="og:description" content="Transform your business with intelligent automation, voice AI, and custom apps designed for the remodeling industry.">
+  <meta property="og:title" content="Remodely AI | AI Software for Small Business">
+  <meta property="og:description" content="Ready-to-deploy AI software. AI receptionist, smart scheduling, instant quotes, and more. Customized and launched in days.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://remodely.ai">
   <meta property="og:image" content="https://remodely.ai/images/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Remodely AI | AI & Cloud Solutions">
-  <meta name="twitter:description" content="Purpose-built AI solutions for remodeling and construction businesses.">
+  <meta name="twitter:title" content="Remodely AI | AI Software for Small Business">
+  <meta name="twitter:description" content="Ready-to-deploy AI software. Customized for your business, launched in days.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -29,12 +29,76 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css?v=17">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Remodely AI",
+    "legalName": "Remodely AI LLC",
+    "url": "https://remodely.ai",
+    "logo": "https://remodely.ai/images/og-image.png",
+    "description": "AI-powered software for small businesses. AI receptionist, smart scheduling, instant quotes, client portals, and payment systems.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Phoenix",
+      "addressRegion": "AZ",
+      "addressCountry": "US"
+    },
+    "email": "help.remodely@gmail.com",
+    "sameAs": [
+      "https://github.com/SGK112"
+    ],
+    "foundingDate": "2026"
+  }
+  </script>
+
+  <!-- Structured Data: WebSite (enables sitelinks search box) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Remodely AI",
+    "url": "https://remodely.ai"
+  }
+  </script>
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Remodely AI",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI-powered business management software with AI receptionist, smart scheduling, instant quotes, client portals, and automated payments.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Early adopter pricing available"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Remodely AI LLC"
+    }
+  }
+  </script>
 </head>
 <body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress">
+    <div class="scroll-progress-bar"></div>
+  </div>
+
   <!-- Navigation -->
   <nav class="navbar">
     <div class="container">
@@ -60,7 +124,6 @@
         <ul class="nav-links">
           <li><a href="#services">Services</a></li>
           <li><a href="#how-it-works">Process</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact" class="nav-cta">Get Started</a></li>
         </ul>
@@ -76,178 +139,64 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-bg">
-      <div class="hero-bg-pattern"></div>
-      <div class="hero-bg-glow hero-bg-glow-1"></div>
-      <div class="hero-bg-glow hero-bg-glow-2"></div>
-      <div class="hero-bg-glow hero-bg-glow-3"></div>
+    <div class="hero-bg-animation">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
     </div>
-
-    <!-- Floating Elements -->
-    <div class="hero-floating-elements">
-      <div class="floating-card floating-card-1">
-        <div class="floating-card-icon green">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <span>Lead Captured</span>
-      </div>
-      <div class="floating-card floating-card-2">
-        <div class="floating-card-icon blue">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-          </svg>
-        </div>
-        <span>AI Answering</span>
-      </div>
-      <div class="floating-card floating-card-3">
-        <div class="floating-card-icon purple">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-        </div>
-        <span>Booked!</span>
-      </div>
-    </div>
-
+    <div class="hero-noise"></div>
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content">
-          <div class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            AI-Powered Solutions for Construction Pros
+          <div class="hero-proof">
+            <span class="proof-dot"></span>
+            <span>12 businesses automated this month</span>
           </div>
-
-          <h1>
-            Build Smarter with <span class="gradient-text">AI Technology</span>
-          </h1>
-
-          <p class="hero-subtitle">
-            Custom AI voice agents, intelligent CRMs, and automation tools designed to help contractors capture more leads, close more deals, and scale their business.
-          </p>
-
-          <div class="hero-buttons">
-            <a href="#contact" class="btn btn-primary">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-              Get Free Consultation
-            </a>
-            <a href="#portfolio" class="btn btn-outline">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-              See Our Work
-            </a>
-          </div>
-
-          <div class="hero-trust">
-            <div class="hero-trust-avatars">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Client">
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Client">
-              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face" alt="Client">
-              <span class="hero-trust-more">+47</span>
+          <h1>Stop Losing Leads.<br>Start Closing Deals.</h1>
+          <p class="hero-subtitle">Software that runs your business on autopilot. Customized for you, deployed in days.</p>
+          <div class="hero-features">
+            <div class="hero-feature">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>AI Receptionist</span>
             </div>
-            <div class="hero-trust-text">
-              <span class="hero-trust-rating">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </span>
-              <strong>Trusted by 50+ contractors</strong>
+            <div class="hero-feature">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>Booking & Payments</span>
+            </div>
+            <div class="hero-feature">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              <span>Client Portal</span>
             </div>
           </div>
         </div>
 
         <div class="hero-visual">
-          <div class="hero-dashboard">
-            <div class="dashboard-window">
-              <div class="dashboard-header">
-                <div class="dashboard-dots">
-                  <span></span><span></span><span></span>
-                </div>
-                <div class="dashboard-title">VoiceNow CRM</div>
-                <div class="dashboard-status">
-                  <span class="status-dot"></span>
-                  Live
-                </div>
+          <div class="hero-lead-form">
+            <div class="lead-form-card">
+              <div class="lead-form-header">
+                <span class="form-badge">Free</span>
+                <h3>Get Your Custom AI Plan</h3>
+                <p>See exactly how AI can work for your business</p>
               </div>
-              <div class="dashboard-content">
-                <div class="dashboard-sidebar">
-                  <div class="sidebar-item active">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                    </svg>
-                  </div>
-                  <div class="sidebar-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                    </svg>
-                  </div>
-                  <div class="sidebar-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/>
-                    </svg>
-                  </div>
-                  <div class="sidebar-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-                    </svg>
-                  </div>
+              <form id="hero-lead-form" class="lead-form-body">
+                <div class="lead-form-group">
+                  <input type="text" id="hero-name" name="name" placeholder="Your name" required>
                 </div>
-                <div class="dashboard-main">
-                  <div class="dashboard-stats">
-                    <div class="dash-stat">
-                      <span class="dash-stat-value">1,247</span>
-                      <span class="dash-stat-label">Calls Today</span>
-                      <span class="dash-stat-change positive">+23%</span>
-                    </div>
-                    <div class="dash-stat">
-                      <span class="dash-stat-value">89%</span>
-                      <span class="dash-stat-label">Conversion</span>
-                      <span class="dash-stat-change positive">+12%</span>
-                    </div>
-                    <div class="dash-stat">
-                      <span class="dash-stat-value">$47K</span>
-                      <span class="dash-stat-label">Revenue</span>
-                      <span class="dash-stat-change positive">+31%</span>
-                    </div>
-                  </div>
-                  <div class="dashboard-chart">
-                    <div class="chart-line">
-                      <svg viewBox="0 0 200 60" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
-                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
-                          </linearGradient>
-                        </defs>
-                        <path d="M0 50 Q 25 45, 50 35 T 100 25 T 150 15 T 200 10" fill="none" stroke="#6366f1" stroke-width="2"/>
-                        <path d="M0 50 Q 25 45, 50 35 T 100 25 T 150 15 T 200 10 L 200 60 L 0 60 Z" fill="url(#chartGrad)"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="dashboard-leads">
-                    <div class="lead-item">
-                      <div class="lead-avatar">JD</div>
-                      <div class="lead-info">
-                        <span class="lead-name">John Davis</span>
-                        <span class="lead-time">Kitchen remodel - 2m ago</span>
-                      </div>
-                      <span class="lead-badge hot">Hot</span>
-                    </div>
-                    <div class="lead-item">
-                      <div class="lead-avatar">SM</div>
-                      <div class="lead-info">
-                        <span class="lead-name">Sarah Miller</span>
-                        <span class="lead-time">Countertops - 5m ago</span>
-                      </div>
-                      <span class="lead-badge warm">Warm</span>
-                    </div>
-                  </div>
+                <div class="lead-form-group">
+                  <input type="email" id="hero-email" name="email" placeholder="Work email" required>
+                </div>
+                <div class="lead-form-group">
+                  <input type="tel" id="hero-phone" name="phone" placeholder="Phone number" required>
+                </div>
+                <button type="submit" class="lead-form-submit">
+                  Get My Free Plan
+                  <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </form>
+              <div class="lead-form-footer">
+                <div class="lead-form-trust">
+                  <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+                  <span>No spam. Unsubscribe anytime.</span>
                 </div>
               </div>
             </div>
@@ -257,186 +206,56 @@
     </div>
   </section>
 
-  <!-- Problem Statement - Dark -->
-  <section class="section-slide section-dark" id="problem">
+  <!-- Social Proof Bar -->
+  <section class="social-proof-bar">
     <div class="container">
-      <div class="slide-content center">
-        <span class="section-tag light">The Problem</span>
-        <h2 class="slide-headline">You're Losing <span class="text-coral">$3,000+</span> Every Month</h2>
-        <p class="slide-subtext">Missed calls. Slow follow-ups. Manual processes. Sound familiar?</p>
-
-        <div class="problem-stats">
-          <div class="problem-stat">
-            <div class="problem-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            </div>
-            <div class="problem-stat-number">62%</div>
-            <div class="problem-stat-text">of contractor calls go unanswered</div>
-          </div>
-          <div class="problem-stat">
-            <div class="problem-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-              </svg>
-            </div>
-            <div class="problem-stat-number">4.2 hrs</div>
-            <div class="problem-stat-text">average response time to leads</div>
-          </div>
-          <div class="problem-stat">
-            <div class="problem-stat-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-              </svg>
-            </div>
-            <div class="problem-stat-number">$847</div>
-            <div class="problem-stat-text">lost per missed opportunity</div>
-          </div>
+      <div class="proof-bar-inner">
+        <div class="proof-stat">
+          <strong>6</strong> solutions deployed
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat">
+          <strong>24/7</strong> AI uptime
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat">
+          <strong>Days</strong> not months to launch
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Solution Statement - Light -->
-  <section class="section-slide section-light" id="solution">
+  <!-- Why AI Section -->
+  <section class="section section-dark" id="value">
     <div class="container">
-      <div class="slide-content center">
-        <span class="section-tag">The Solution</span>
-        <h2 class="slide-headline">AI That Works <span class="text-gradient">24/7</span> So You Don't Have To</h2>
-        <p class="slide-subtext">Our AI voice agents answer every call, qualify every lead, and book appointments while you focus on the job site.</p>
-
-        <div class="solution-comparison">
-          <div class="comparison-card before">
-            <div class="comparison-label">Before Remodely</div>
-            <ul class="comparison-list">
-              <li class="negative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Missed calls during jobs
-              </li>
-              <li class="negative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Manual lead follow-up
-              </li>
-              <li class="negative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Losing jobs to faster competitors
-              </li>
-              <li class="negative">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Working nights on admin
-              </li>
-            </ul>
-          </div>
-          <div class="comparison-arrow">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </div>
-          <div class="comparison-card after">
-            <div class="comparison-label">With Remodely AI</div>
-            <ul class="comparison-list">
-              <li class="positive">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                Every call answered instantly
-              </li>
-              <li class="positive">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                Leads qualified automatically
-              </li>
-              <li class="positive">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                Appointments booked 24/7
-              </li>
-              <li class="positive">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                Focus on what you do best
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="section-header">
+        <h2>AI Isn't Coming. It's Here.</h2>
+        <p class="section-subtitle">The same tools running Fortune 500 companies, now built for your business.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ROI Section - Dark -->
-  <section class="section-slide section-dark" id="roi">
-    <div class="container">
-      <div class="slide-content center">
-        <span class="section-tag light">Real Results</span>
-        <h2 class="slide-headline">Turn <span class="text-emerald">$297/mo</span> Into <span class="text-emerald">$8,000+</span> Revenue</h2>
-        <p class="slide-subtext">See exactly how our clients are growing their businesses with AI.</p>
-
-        <div class="roi-calculator">
-          <div class="roi-card">
-            <div class="roi-header">Monthly ROI Breakdown</div>
-            <div class="roi-rows">
-              <div class="roi-row">
-                <span class="roi-label">Calls captured (that were missed)</span>
-                <span class="roi-value">+47 calls</span>
-              </div>
-              <div class="roi-row">
-                <span class="roi-label">Leads converted to appointments</span>
-                <span class="roi-value">+23 bookings</span>
-              </div>
-              <div class="roi-row">
-                <span class="roi-label">Average job value</span>
-                <span class="roi-value">$3,200</span>
-              </div>
-              <div class="roi-row">
-                <span class="roi-label">Close rate improvement</span>
-                <span class="roi-value">+18%</span>
-              </div>
-              <div class="roi-row highlight">
-                <span class="roi-label">Additional monthly revenue</span>
-                <span class="roi-value big">$8,400</span>
-              </div>
-            </div>
-            <div class="roi-footer">
-              <span>Your investment: $297/mo</span>
-              <span class="roi-return">ROI: <strong>2,727%</strong></span>
-            </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
           </div>
+          <div class="why-number">40%</div>
+          <h4>Lower Operating Costs</h4>
+          <p>Replace manual tasks with AI that works around the clock for a fraction of the cost.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Trusted By Section -->
-  <section class="trusted-section">
-    <div class="container">
-      <p class="trusted-label">Trusted by contractors across Arizona and beyond</p>
-      <div class="trusted-logos">
-        <div class="trusted-logo">
-          <svg viewBox="0 0 120 40" fill="currentColor">
-            <text x="10" y="28" font-size="14" font-weight="600">Surprise</text>
-            <text x="75" y="28" font-size="14" font-weight="700">Granite</text>
-          </svg>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="why-number">24/7</div>
+          <h4>Never Closes</h4>
+          <p>Your AI answers calls, sends quotes, and follows up while you sleep.</p>
         </div>
-        <div class="trusted-logo">
-          <svg viewBox="0 0 140 40" fill="currentColor">
-            <text x="10" y="28" font-size="14" font-weight="600">Scottsdale</text>
-            <text x="95" y="28" font-size="14" font-weight="700">Handyman</text>
-          </svg>
-        </div>
-        <div class="trusted-logo">
-          <svg viewBox="0 0 100 40" fill="currentColor">
-            <text x="10" y="28" font-size="14" font-weight="600">Boulder</text>
-            <text x="65" y="28" font-size="14" font-weight="700">Stone</text>
-          </svg>
-        </div>
-        <div class="trusted-logo">
-          <svg viewBox="0 0 100 40" fill="currentColor">
-            <text x="10" y="28" font-size="14" font-weight="700">REMODELY</text>
-            <text x="95" y="28" font-size="14" font-weight="400">PRO</text>
-          </svg>
-        </div>
-        <div class="trusted-logo">
-          <svg viewBox="0 0 100 40" fill="currentColor">
-            <text x="10" y="28" font-size="14" font-weight="600">Slab</text>
-            <text x="45" y="28" font-size="14" font-weight="700">Snap</text>
-          </svg>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="why-number">10x</div>
+          <h4>Faster Response</h4>
+          <p>Instant replies to every lead. Speed wins deals in competitive markets.</p>
         </div>
       </div>
     </div>
@@ -446,124 +265,98 @@
   <section id="services" class="section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Our Services</span>
-        <h2>Comprehensive AI Solutions</h2>
-        <p>Everything you need to modernize your construction business and compete with industry giants.</p>
+        <h2>Our Solutions</h2>
+        <p class="section-subtitle">Ready-to-deploy software. Customized for your business.</p>
       </div>
 
-      <div class="services-grid">
-        <!-- AI Voice Agents -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/>
-              <path d="M19 10v2a7 7 0 01-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="22"/>
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
             </svg>
           </div>
-          <h3>AI Voice Agents</h3>
-          <p>24/7 intelligent voice assistants that qualify leads, book appointments, and provide customer support without missing a call.</p>
-          <ul class="service-features">
-            <li>ElevenLabs voice technology</li>
-            <li>Lead qualification & routing</li>
-            <li>Appointment scheduling</li>
-            <li>Twilio phone integration</li>
-            <li>Multi-language support</li>
+          <h3>AI Receptionist</h3>
+          <p>Never miss a call. Our voice AI answers 24/7, books appointments, and qualifies leads in your brand voice.</p>
+          <ul class="solution-features">
+            <li>Custom voice & personality</li>
+            <li>Calendar integration</li>
+            <li>SMS follow-ups</li>
           </ul>
         </div>
 
-        <!-- App Development -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-              <line x1="12" y1="18" x2="12.01" y2="18"/>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
             </svg>
           </div>
-          <h3>Custom App Development</h3>
-          <p>B2B and B2C applications designed for construction workflows, from contractor marketplaces to customer portals.</p>
-          <ul class="service-features">
-            <li>Web & mobile applications</li>
-            <li>Contractor matching platforms</li>
-            <li>Project management tools</li>
-            <li>Customer portals</li>
-            <li>Inventory management</li>
+          <h3>Smart Scheduler</h3>
+          <p>White-label booking system with automated reminders, deposits, and no-show protection built in.</p>
+          <ul class="solution-features">
+            <li>Your branding</li>
+            <li>Deposit collection</li>
+            <li>Auto reminders</li>
           </ul>
         </div>
 
-        <!-- Automation Solutions -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/>
             </svg>
           </div>
-          <h3>Automation Solutions</h3>
-          <p>Streamline your operations with intelligent workflows that connect your tools, automate tasks, and reduce manual work.</p>
-          <ul class="service-features">
-            <li>n8n workflow automation</li>
-            <li>CRM integration</li>
-            <li>Lead routing & follow-up</li>
-            <li>Invoice automation</li>
-            <li>Email & SMS campaigns</li>
+          <h3>Instant Quotes</h3>
+          <p>Customers get instant estimates from your website. AI calculates pricing based on your rates.</p>
+          <ul class="solution-features">
+            <li>Custom pricing logic</li>
+            <li>Photo uploads</li>
+            <li>Lead capture</li>
           </ul>
         </div>
 
-        <!-- Migration Services -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="23 4 23 10 17 10"/>
-              <polyline points="1 20 1 14 7 14"/>
-              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
             </svg>
           </div>
-          <h3>Migration & Scripting</h3>
-          <p>Seamlessly migrate your data, platforms, and systems with zero downtime and complete data integrity.</p>
-          <ul class="service-features">
-            <li>Platform migrations</li>
-            <li>Data transformation</li>
-            <li>API integrations</li>
-            <li>Legacy system updates</li>
-            <li>Custom scripting</li>
+          <h3>Client Portal</h3>
+          <p>Your own branded portal where clients view projects, approve quotes, sign contracts, and pay invoices.</p>
+          <ul class="solution-features">
+            <li>E-signatures</li>
+            <li>Project tracking</li>
+            <li>Document storage</li>
           </ul>
         </div>
 
-        <!-- Cloud Solutions -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><path d="M7 15h4M7 18h2"/>
             </svg>
           </div>
-          <h3>Cloud Infrastructure</h3>
-          <p>Reliable, scalable hosting and cloud architecture that grows with your business.</p>
-          <ul class="service-features">
-            <li>Render & AWS deployment</li>
-            <li>Database management</li>
-            <li>Auto-scaling setup</li>
-            <li>Security hardening</li>
-            <li>24/7 monitoring</li>
+          <h3>Payment System</h3>
+          <p>Accept cards, ACH, and financing. Automated invoicing with payment reminders and late fee handling.</p>
+          <ul class="solution-features">
+            <li>Multiple payment methods</li>
+            <li>Recurring billing</li>
+            <li>QuickBooks sync</li>
           </ul>
         </div>
 
-        <!-- AI Consulting -->
-        <div class="service-card">
-          <div class="service-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
           </div>
-          <h3>AI Strategy & Consulting</h3>
-          <p>Expert guidance on implementing AI in your construction business to maximize ROI and efficiency.</p>
-          <ul class="service-features">
-            <li>AI readiness assessment</li>
-            <li>Technology roadmap</li>
-            <li>Vendor selection</li>
-            <li>Implementation planning</li>
-            <li>Team training</li>
+          <h3>Review Engine</h3>
+          <p>Automated review requests after every job. Monitor Google, Yelp, and Facebook from one dashboard.</p>
+          <ul class="solution-features">
+            <li>Auto review requests</li>
+            <li>Response templates</li>
+            <li>Reputation alerts</li>
           </ul>
         </div>
       </div>
@@ -574,565 +367,116 @@
   <section id="how-it-works" class="section section-gray">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">How It Works</span>
-        <h2>Simple Process, Powerful Results</h2>
-        <p>We've streamlined our approach to get you up and running with AI solutions as quickly as possible.</p>
+        <h2>Up and Running in Days</h2>
       </div>
 
       <div class="process-grid">
         <div class="process-step">
-          <div class="process-number">01</div>
-          <h4>Discovery Call</h4>
-          <p>We learn about your business challenges and goals.</p>
+          <div class="process-number">1</div>
+          <h4>Pick Your Tools</h4>
+          <p>Choose the solutions you need. Mix and match.</p>
         </div>
 
         <div class="process-step">
-          <div class="process-number">02</div>
-          <h4>Custom Strategy</h4>
-          <p>We design a tailored AI solution for your business.</p>
+          <div class="process-number">2</div>
+          <h4>We Customize</h4>
+          <p>Your branding, your voice, your pricing rules.</p>
         </div>
 
         <div class="process-step">
-          <div class="process-number">03</div>
-          <h4>Build & Deploy</h4>
-          <p>We develop and launch with continuous testing.</p>
-        </div>
-
-        <div class="process-step">
-          <div class="process-number">04</div>
-          <h4>Scale & Support</h4>
-          <p>Ongoing optimization as your business grows.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Industries Section -->
-  <section id="solutions" class="section section-dark">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag light">Industries</span>
-        <h2>Built for Your Industry</h2>
-        <p>We understand the unique challenges of remodeling and construction businesses. Our solutions are designed by industry experts.</p>
-      </div>
-
-      <div class="industries-grid">
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <h4>Remodeling Contractors</h4>
-          <p>Kitchen, bath, and whole-home renovation specialists</p>
-        </div>
-
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-            </svg>
-          </div>
-          <h4>Countertop Fabricators</h4>
-          <p>Granite, quartz, and stone fabrication shops</p>
-        </div>
-
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
-            </svg>
-          </div>
-          <h4>General Contractors</h4>
-          <p>Residential and commercial builders</p>
-        </div>
-
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
-            </svg>
-          </div>
-          <h4>Specialty Trades</h4>
-          <p>Plumbing, electrical, HVAC professionals</p>
-        </div>
-
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
-            </svg>
-          </div>
-          <h4>Material Suppliers</h4>
-          <p>Stone yards, lumber suppliers, distributors</p>
-        </div>
-
-        <div class="industry-card">
-          <div class="industry-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
-            </svg>
-          </div>
-          <h4>Design Studios</h4>
-          <p>Interior designers and architects</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Portfolio Section -->
-  <section id="portfolio" class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Portfolio</span>
-        <h2>Our Work</h2>
-        <p>Real solutions we've built for construction and remodeling businesses like yours.</p>
-      </div>
-
-      <div class="portfolio-grid">
-        <div class="portfolio-card featured">
-          <div class="portfolio-image">
-            <div class="portfolio-crm-preview">
-              <div class="crm-preview-header">
-                <div class="crm-preview-nav">
-                  <span class="crm-logo">VoiceNow</span>
-                  <div class="crm-nav-items">
-                    <span class="active">Dashboard</span>
-                    <span>Leads</span>
-                    <span>Calls</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crm-preview-content">
-                <div class="crm-stats-row">
-                  <div class="crm-stat-box">
-                    <span class="crm-stat-num">2,847</span>
-                    <span class="crm-stat-txt">Total Leads</span>
-                  </div>
-                  <div class="crm-stat-box green">
-                    <span class="crm-stat-num">89%</span>
-                    <span class="crm-stat-txt">Response Rate</span>
-                  </div>
-                  <div class="crm-stat-box blue">
-                    <span class="crm-stat-num">$127K</span>
-                    <span class="crm-stat-txt">Revenue</span>
-                  </div>
-                </div>
-                <div class="crm-chart-area">
-                  <svg viewBox="0 0 300 80" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="crmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
-                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
-                      </linearGradient>
-                    </defs>
-                    <path d="M0 60 Q 50 50, 75 40 T 150 30 T 225 20 T 300 15" fill="none" stroke="#6366f1" stroke-width="2"/>
-                    <path d="M0 60 Q 50 50, 75 40 T 150 30 T 225 20 T 300 15 L 300 80 L 0 80 Z" fill="url(#crmGrad)"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="portfolio-badge">Featured</div>
-          </div>
-          <div class="portfolio-content">
-            <h4>VoiceNow CRM</h4>
-            <p>AI-powered CRM with voice agents, lead management, and real-time analytics dashboard for contractors.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">React</span>
-              <span class="portfolio-tag">Node.js</span>
-              <span class="portfolio-tag">ElevenLabs</span>
-              <span class="portfolio-tag">OpenAI</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-image">
-            <div class="portfolio-placeholder purple">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
-              </svg>
-              <span>AI Agents</span>
-            </div>
-          </div>
-          <div class="portfolio-content">
-            <h4>AI Agent Platform</h4>
-            <p>Configure and deploy multiple AI personalities for sales, support, and scheduling.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">AI Agents</span>
-              <span class="portfolio-tag">Voice AI</span>
-              <span class="portfolio-tag">Automation</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-image">
-            <img src="/images/portfolio/surprise-granite.jpg" alt="Surprise Granite Website" loading="lazy">
-          </div>
-          <div class="portfolio-content">
-            <h4>Surprise Granite</h4>
-            <p>Enterprise countertop website with e-commerce and outdoor living showcase.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">Static Site</span>
-              <span class="portfolio-tag">Shopify</span>
-              <span class="portfolio-tag">Supabase</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-image">
-            <div class="portfolio-placeholder blue">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/>
-                <path d="M19 10v2a7 7 0 01-14 0v-2"/>
-                <line x1="12" y1="19" x2="12" y2="22"/>
-              </svg>
-              <span>Voice AI</span>
-            </div>
-          </div>
-          <div class="portfolio-content">
-            <h4>VoiceNow Landing</h4>
-            <p>High-converting landing page with 24/7 AI response messaging.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">Next.js</span>
-              <span class="portfolio-tag">Tailwind</span>
-              <span class="portfolio-tag">Conversion</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-image">
-            <div class="portfolio-placeholder green">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              <span>REMODELY PRO</span>
-            </div>
-          </div>
-          <div class="portfolio-content">
-            <h4>REMODELY PRO</h4>
-            <p>Contractor verification platform connecting homeowners with licensed professionals.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">Next.js</span>
-              <span class="portfolio-tag">Prisma</span>
-              <span class="portfolio-tag">Stripe</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-image">
-            <div class="portfolio-placeholder orange">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <line x1="18" y1="20" x2="18" y2="10"/>
-                <line x1="12" y1="20" x2="12" y2="4"/>
-                <line x1="6" y1="20" x2="6" y2="14"/>
-              </svg>
-              <span>Analytics</span>
-            </div>
-          </div>
-          <div class="portfolio-content">
-            <h4>Digital Marketing Analysis</h4>
-            <p>Comprehensive digital audit and strategy for Boulder Image Stone.</p>
-            <div class="portfolio-tags">
-              <span class="portfolio-tag">Analytics</span>
-              <span class="portfolio-tag">SEO</span>
-              <span class="portfolio-tag">Strategy</span>
-            </div>
-          </div>
+          <div class="process-number">3</div>
+          <h4>Go Live</h4>
+          <p>Launch in days, not months. We handle setup.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Tech Stack Section -->
-  <section class="section section-dark">
+  <section class="section section-dark tech-strip-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag light">Technology</span>
-        <h2>Powered by Industry-Leading Tech</h2>
-        <p>We use the best tools in the industry to build reliable, scalable solutions.</p>
+        <h2>Built With the Best</h2>
+        <p class="section-subtitle">Enterprise-grade tools. Startup speed.</p>
       </div>
-
-      <div class="tech-grid">
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="4"/>
-              <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
-              <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
-              <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/>
-              <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>
-            </svg>
-          </div>
-          <p>React</p>
+      <div class="tech-strip">
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>
+          <span>OpenAI</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <p>Next.js</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>Anthropic</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-            </svg>
-          </div>
-          <p>Node.js</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.878.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.572 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z"/></svg>
+          <span>Next.js</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M14.25 2.26l-.08-.04-.01.02C13.46 2.09 12.74 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-4.75-3.31-8.72-7.75-9.74zM19.41 11h-3.07c-.14-2.42-.81-4.47-1.8-5.89 2.71.94 4.63 3.31 4.87 5.89zM12 4c1.07 0 2.26 2.15 2.48 5h-4.96c.22-2.85 1.41-5 2.48-5zm-2.54.11c-.99 1.42-1.66 3.47-1.8 5.89H4.59c.24-2.58 2.16-4.95 4.87-5.89zM4.59 13h3.07c.14 2.42.81 4.47 1.8 5.89-2.71-.94-4.63-3.31-4.87-5.89zM12 20c-1.07 0-2.26-2.15-2.48-5h4.96c-.22 2.85-1.41 5-2.48 5zm2.54-.11c.99-1.42 1.66-3.47 1.8-5.89h3.07c-.24 2.58-2.16 4.95-4.87 5.89z"/>
-            </svg>
-          </div>
-          <p>Python</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          <span>Node.js</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M3 3h18v18H3V3zm16.525 13.707c-.131-.821-.666-1.511-2.252-2.155-.552-.259-1.165-.438-1.349-.854-.068-.248-.078-.382-.034-.529.113-.484.687-.629 1.137-.495.293.086.567.312.733.639.776-.506.776-.506 1.316-.852-.203-.314-.307-.452-.439-.586-.473-.528-1.103-.798-2.126-.775l-.528.067c-.507.124-.991.395-1.283.754-.855.968-.608 2.655.427 3.354 1.023.765 2.521.933 2.712 1.653.18.878-.652 1.159-1.475 1.058-.607-.136-.945-.439-1.316-1.002l-1.372.788c.157.359.337.517.607.832 1.305 1.316 4.568 1.249 5.153-.754.021-.067.18-.49.103-1.143zm-7.799-5.707h-1.772c0 1.42-.007 2.833-.013 4.255 0 .904.047 1.733-.1 1.988-.239.507-.853.443-1.132.352-.284-.135-.426-.34-.596-.639-.047-.086-.082-.162-.086-.162l-1.372.812c.229.473.563.879.994 1.137.641.383 1.502.507 2.404.305.588-.17 1.095-.519 1.358-1.059.384-.697.302-1.553.299-2.509.013-1.478 0-2.959 0-4.48z"/>
-            </svg>
-          </div>
-          <p>TypeScript</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.31 0-.594.063-.846.194-.521.27-.87.758-1.02 1.397-.289 1.23.12 2.996.986 4.926C4.18 8.694 2.96 9.87 2.542 10.86c-.21.497-.274.946-.182 1.34.15.646.57 1.067 1.14 1.286.41.157.87.208 1.37.208.85 0 1.82-.218 2.83-.558.07.086.14.17.21.253 1.78 2.103 3.86 3.372 5.33 3.372.33 0 .63-.065.897-.2.56-.278.91-.774 1.058-1.418.28-1.218-.14-2.97-1.005-4.87 2.04-.835 3.26-2.005 3.683-2.99.213-.5.28-.95.19-1.35-.15-.65-.57-1.07-1.143-1.29-.41-.16-.87-.21-1.37-.21zm-.293 1.41c.345 0 .625.047.822.13.19.08.293.183.334.353.04.17.01.413-.12.7-.26.61-1.13 1.52-2.8 2.24-.07-.17-.14-.33-.21-.49-.65-1.47-1.37-2.56-1.98-3.12 1.16-.95 2.23-1.46 3.13-1.56.28-.03.55-.05.81-.05l.01-.21zM10.94 4.1c.6.56 1.3 1.64 1.95 3.1.07.16.14.32.2.48-1.67.72-2.52 1.63-2.78 2.24-.14.29-.16.53-.12.7.04.17.14.27.33.35.2.08.48.13.82.13.28 0 .54-.02.81-.06-.61.56-1.25.95-1.82 1.15a4.84 4.84 0 0 1-.7-1.15c-.66-1.47-1.38-2.56-1.98-3.12 1.16-.95 2.22-1.46 3.12-1.56.05-.01.1-.01.16-.01zm-4.36.2c.34 0 .63.05.82.13.19.08.29.18.33.35.04.17.01.41-.12.7-.26.61-1.13 1.52-2.79 2.24-.09-.2-.17-.39-.25-.59C3.91 5.67 3.48 4.56 3.48 3.8c0-.14.02-.27.06-.37.05-.15.14-.23.33-.3.21-.08.49-.13.82-.13z"/></svg>
+          <span>React</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/>
-              <path d="M19 10v2a7 7 0 01-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="22"/>
-            </svg>
-          </div>
-          <p>ElevenLabs</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M1 3v18h22V3H1zm9.3 13.3c0 1.7-1 2.5-2.4 2.5-1.3 0-2-0.7-2.4-1.5l1.3-0.8c0.3 0.5 0.5 0.9 1.1 0.9 0.6 0 0.9-0.2 0.9-1.1V9.4h1.5v6.9zm5.7 2.5c-1.5 0-2.4-0.7-2.9-1.6l1.3-0.7c0.3 0.6 0.8 1 1.6 1 0.7 0 1.1-0.3 1.1-0.8 0-0.6-0.5-0.8-1.3-1.1l-0.4-0.2c-1.3-0.6-2.2-1.2-2.2-2.7 0-1.3 1-2.3 2.6-2.3 1.1 0 1.9 0.4 2.5 1.4l-1.4 0.9c-0.3-0.5-0.6-0.7-1.1-0.7-0.5 0-0.8 0.3-0.8 0.7 0 0.5 0.3 0.7 1 1l0.5 0.2c1.6 0.7 2.4 1.3 2.4 2.8 0 1.6-1.3 2.5-2.9 2.5z"/></svg>
+          <span>TypeScript</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </div>
-          <p>OpenAI</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M17.813 3.838A3.216 3.216 0 0 0 15.36 2.88c-1.56 0-2.4.72-3.36.72s-1.92-.72-3.24-.72a3.36 3.36 0 0 0-2.76 1.32C4.92 5.64 4.2 7.92 5.16 11.28c.48 1.44 1.32 3.36 2.52 4.56.96 1.08 1.92 1.92 3 1.92s1.56-.72 3.12-.72 1.8.72 3 .72 2.04-1.08 2.88-2.04c.48-.6.72-.96 1.08-1.68-2.88-1.08-3.36-5.16-.48-6.72a3.6 3.6 0 0 0-2.52-1.44zM14.64.72A3.6 3.6 0 0 1 13.68 3a3 3 0 0 1-2.16 1.08c-.12 0-.24-.12-.24-.24a3.36 3.36 0 0 1 1.08-2.28A3.84 3.84 0 0 1 14.52.48c.12 0 .12.12.12.24z"/></svg>
+          <span>Swift</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/>
-            </svg>
-          </div>
-          <p>Tailwind</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M13 9h5.5L13 3.5V9M6 2h8l6 6v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4c0-1.11.89-2 2-2m5 18v-1c0-1-2-2-2-2s-2 1-2 2v1h4m3-4.5A1.5 1.5 0 0112.5 14 1.5 1.5 0 0111 15.5 1.5 1.5 0 0112.5 17 1.5 1.5 0 0114 15.5M9 13a2 2 0 00-2 2 2 2 0 002 2 2 2 0 002-2 2 2 0 00-2-2z"/></svg>
+          <span>Python</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </div>
-          <p>n8n</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M21.805 10.077l-2.828-2.828-5.75 5.75-2.828-2.828 5.75-5.75-2.828-2.828-5.75 5.75-2.828-2.828a1 1 0 00-1.414 0l-1.414 1.414a1 1 0 000 1.414l2.828 2.828-1.414 1.414-2.828-2.828a1 1 0 00-1.414 0 1 1 0 000 1.414l2.828 2.828L2.505 13.7a3 3 0 000 4.243l3.536 3.536a3 3 0 004.243 0l11.52-11.52a1 1 0 000-1.415l-.002.002z"/></svg>
+          <span>n8n</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
-          </div>
-          <p>Stripe</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+          <span>Twilio</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-            </svg>
-          </div>
-          <p>Twilio</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg>
+          <span>Stripe</span>
         </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/>
-            </svg>
-          </div>
-          <p>AWS</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M17.788 5.108A9 9 0 1021 12h-8"/>
-            </svg>
-          </div>
-          <p>Vercel</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <ellipse cx="12" cy="5" rx="9" ry="3"/>
-              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-            </svg>
-          </div>
-          <p>Supabase</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M12.001 4.529c-5.53 0-10.001 4.324-10.001 9.66 0 4.326 2.924 7.972 6.904 9.016.504.093.69-.219.69-.485 0-.24-.008-1.037-.013-1.878-2.807.619-3.401-1.18-3.401-1.18-.459-1.185-1.122-1.5-1.122-1.5-.916-.635.07-.622.07-.622 1.013.073 1.546 1.057 1.546 1.057.9 1.567 2.361 1.114 2.935.852.091-.662.352-1.114.641-1.371-2.24-.259-4.596-1.139-4.596-5.068 0-1.119.393-2.034 1.039-2.751-.104-.26-.451-1.302.099-2.715 0 0 .847-.275 2.774 1.051A9.513 9.513 0 0112.001 7.5c.856.004 1.718.117 2.524.344 1.926-1.326 2.771-1.051 2.771-1.051.552 1.413.205 2.455.1 2.715.647.717 1.038 1.632 1.038 2.751 0 3.94-2.359 4.806-4.606 5.059.362.317.684.941.684 1.897 0 1.37-.012 2.476-.012 2.812 0 .269.183.582.694.484C19.078 22.157 22 18.515 22 14.189 22 8.853 17.53 4.529 12.001 4.529z"/>
-            </svg>
-          </div>
-          <p>GitHub</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M19.5 9.5c-.167-2.417-1.583-4.5-4-4.5-.75 0-1.417.167-2 .5-.5-1.167-1.5-2-3-2-2 0-3.5 1.5-3.5 3.5 0 .333.083.583.167.833C4.917 8.417 3 10.583 3 13c0 2.833 2.333 5 5.167 5h10.166C20.917 18 23 15.833 23 13c0-2-1.417-3.583-3.5-3.5z"/>
-            </svg>
-          </div>
-          <p>Render</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M3.89 15.673L6.255 9.44h4.07L8.24 15.673H3.89zm9.573-9.323l-2.366 6.234h-4.07l2.086-6.234h4.35zm6.647 9.323l-2.365-6.233h-4.07l2.086 6.233h4.35zM12 2L3.42 6.213v11.574L12 22l8.58-4.213V6.213L12 2z"/>
-            </svg>
-          </div>
-          <p>Firebase</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <ellipse cx="12" cy="5" rx="9" ry="3"/>
-              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-              <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
-            </svg>
-          </div>
-          <p>PostgreSQL</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-              <path d="M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 003.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z"/>
-            </svg>
-          </div>
-          <p>MongoDB</p>
-        </div>
-        <div class="tech-item">
-          <div class="tech-logo">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M22 12H2"/>
-              <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>
-              <line x1="6" y1="16" x2="6.01" y2="16"/>
-              <line x1="10" y1="16" x2="10.01" y2="16"/>
-            </svg>
-          </div>
-          <p>Docker</p>
+        <div class="tech-strip-item">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M3.89 15.672L6.255.461A.542.542 0 0 1 7.27.288l2.543 4.771zm16.794 3.692l-2.25-13.967a.543.543 0 0 0-.919-.295L3.316 19.365l7.856 4.427a1.621 1.621 0 0 0 1.588 0zM14.3 7.147l-1.82-3.482a.542.542 0 0 0-.96 0L6.53 13.738z"/></svg>
+          <span>Firebase</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Section -->
+  <!-- Early Adopter Section -->
   <section class="section section-gray">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Testimonials</span>
-        <h2>What Our Clients Say</h2>
-        <p>We're proud to partner with construction businesses across the country.</p>
-      </div>
-
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="testimonial-rating">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p class="testimonial-text">"The AI voice agent has completely transformed how we handle leads. We never miss a call now, and the appointment booking runs itself."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Client">
-            </div>
-            <div>
-              <div class="testimonial-name">Michael Torres</div>
-              <div class="testimonial-role">Surprise Granite, Arizona</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-rating">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p class="testimonial-text">"Remodely helped us automate our entire quoting process. What used to take hours now takes minutes, and our customers love the instant responses."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Client">
-            </div>
-            <div>
-              <div class="testimonial-name">David Chen</div>
-              <div class="testimonial-role">Kitchen & Bath Specialist</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-rating">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <p class="testimonial-text">"The contractor verification platform gives our customers confidence they're working with licensed professionals. It's been a game-changer for trust."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">
-              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face" alt="Client">
-            </div>
-            <div>
-              <div class="testimonial-name">Robert Martinez</div>
-              <div class="testimonial-role">General Contractor, Phoenix</div>
-            </div>
-          </div>
-        </div>
+      <div class="early-adopter">
+        <div class="early-adopter-badge">Limited spots</div>
+        <h2>Be one of our first 10 clients.</h2>
+        <p>We're onboarding a small group of businesses to get white-glove setup, priority support, and founding-member pricing. Once we're full, the offer closes.</p>
+        <a href="#contact" class="btn btn-primary">Claim Your Spot</a>
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
   <section class="cta-section">
+    <div class="cta-bg-animation">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+    </div>
     <div class="container">
       <div class="cta-content">
-        <h2>Ready to Transform Your Business?</h2>
-        <p>Schedule a free consultation and discover how AI can help you compete with industry giants while reducing costs.</p>
+        <h2>Your competitors are already using AI.<br>Are you?</h2>
+        <p class="cta-subtitle">Book a free strategy call. We'll show you exactly what to automate first.</p>
         <div class="cta-buttons">
-          <a href="#contact" class="btn btn-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-            Get Free Consultation
-          </a>
-          <a href="tel:+16025551234" class="btn btn-outline-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-            </svg>
-            Call Us Now
-          </a>
+          <a href="#contact" class="btn btn-white">Book a Free Call</a>
+          <a href="#services" class="btn btn-ghost">See Solutions</a>
         </div>
       </div>
     </div>
@@ -1141,99 +485,38 @@
   <!-- Contact Section -->
   <section id="contact" class="section contact-section">
     <div class="container">
-      <div class="contact-grid">
-        <div class="contact-info">
-          <span class="section-tag">Contact</span>
-          <h3>Let's Build Something Great</h3>
-          <p>Whether you need a custom app, voice AI, or complete digital transformation, we're here to help your construction business thrive in the digital age.</p>
-
-          <div class="contact-methods">
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </div>
-              <div class="contact-method-text">
-                <strong>Email Us</strong>
-                <span>help.remodely@gmail.com</span>
-              </div>
-            </div>
-
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div class="contact-method-text">
-                <strong>Location</strong>
-                <span>Phoenix, Arizona</span>
-              </div>
-            </div>
-
-            <div class="contact-method">
-              <div class="contact-method-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              </div>
-              <div class="contact-method-text">
-                <strong>Response Time</strong>
-                <span>Within 24 hours</span>
-              </div>
-            </div>
+      <div class="contact-simple">
+        <div class="contact-left">
+          <h2>Let's talk about your business.</h2>
+          <p>30-minute call. No obligation. We'll map out which tools make sense for you.</p>
+          <div class="contact-details">
+            <a href="mailto:help.remodely@gmail.com" class="contact-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              help.remodely@gmail.com
+            </a>
+            <span class="contact-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Phoenix, Arizona
+            </span>
           </div>
         </div>
-
         <div class="contact-form-card">
-          <h4>Request a Free Consultation</h4>
           <form id="contact-form" action="#" method="POST">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" required placeholder="John Smith">
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" required placeholder="john@company.com">
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="company">Company Name *</label>
-                <input type="text" id="company" name="company" required placeholder="Your Company">
-              </div>
-              <div class="form-group">
-                <label for="service">Service Interested In</label>
-                <select id="service" name="service">
-                  <option value="">Select a service...</option>
-                  <option value="voice-ai">AI Voice Agents</option>
-                  <option value="app-dev">Custom App Development</option>
-                  <option value="automation">Automation Solutions</option>
-                  <option value="migration">Migration & Scripting</option>
-                  <option value="cloud">Cloud Infrastructure</option>
-                  <option value="consulting">AI Consulting</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-            </div>
-
             <div class="form-group">
-              <label for="message">Tell Us About Your Project *</label>
-              <textarea id="message" name="message" required placeholder="Describe your business needs and goals..."></textarea>
+              <input type="text" id="name" name="name" required placeholder="Your name">
             </div>
-
-            <button type="submit" class="btn btn-primary btn-full">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-              Submit Request
+            <div class="form-group">
+              <input type="email" id="email" name="email" required placeholder="Email">
+            </div>
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone" placeholder="Phone">
+            </div>
+            <div class="form-group">
+              <textarea id="message" name="message" rows="3" placeholder="What are you looking to automate?"></textarea>
+            </div>
+            <button type="submit" class="lead-form-submit">
+              Send Message
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
             </button>
           </form>
         </div>
@@ -1244,42 +527,10 @@
   <!-- About Section -->
   <section id="about" class="section section-dark">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag light">About Us</span>
-        <h2>About Remodely AI</h2>
-        <p>We're a team of construction industry experts and software engineers on a mission to democratize AI for small and medium businesses.</p>
-      </div>
-
-      <div class="about-content">
-        <div class="about-text">
-          <p>
-            Founded by professionals who understand the remodeling and construction industry firsthand, Remodely AI builds technology that solves real problems. We've seen how big companies use AI to dominate markets, and we believe small businesses deserve access to the same powerful tools.
-          </p>
-          <p>
-            Our solutions are purpose-built for contractors, fabricators, and home service professionals. From AI voice agents that never miss a call to custom apps that streamline operations, we help you work smarter, not harder.
-          </p>
-          <div class="about-cta">
-            <a href="#contact" class="btn btn-primary">Partner With Us</a>
-          </div>
-        </div>
-        <div class="about-stats">
-          <div class="about-stat">
-            <div class="about-stat-number">5+</div>
-            <div class="about-stat-label">Years Experience</div>
-          </div>
-          <div class="about-stat">
-            <div class="about-stat-number">50+</div>
-            <div class="about-stat-label">Happy Clients</div>
-          </div>
-          <div class="about-stat">
-            <div class="about-stat-number">400+</div>
-            <div class="about-stat-label">Projects Completed</div>
-          </div>
-          <div class="about-stat">
-            <div class="about-stat-number">24/7</div>
-            <div class="about-stat-label">Support Available</div>
-          </div>
-        </div>
+      <div class="about-minimal">
+        <h2>We're builders too.</h2>
+        <p>Started by people from the trades who learned to code. We know the problems because we've lived them. Now we're building the tools we wish we had.</p>
+        <a href="#contact" class="btn btn-primary">Let's Build Together</a>
       </div>
     </div>
   </section>
@@ -1306,54 +557,43 @@
             </div>
             REMODELY<span>.AI</span>
           </a>
-          <p>AI & Cloud Solutions for Remodeling & Construction. Helping small businesses compete with intelligent technology.</p>
+          <p>AI software for small businesses. Built by people from the trades who learned to code.</p>
           <div class="footer-social">
-            <a href="https://twitter.com/RemodelAI" aria-label="Twitter">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+            <a href="https://x.com/RemodelAI" aria-label="X (Twitter)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
             <a href="https://github.com/SGK112" aria-label="GitHub">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
             </a>
             <a href="https://linkedin.com" aria-label="LinkedIn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
             </a>
           </div>
         </div>
 
         <div class="footer-column">
-          <h5>Services</h5>
+          <h5>Solutions</h5>
           <ul class="footer-links">
-            <li><a href="#services">AI Voice Agents</a></li>
-            <li><a href="#services">App Development</a></li>
-            <li><a href="#services">Automation</a></li>
-            <li><a href="#services">Migration</a></li>
-            <li><a href="#services">Cloud Solutions</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h5>Industries</h5>
-          <ul class="footer-links">
-            <li><a href="#solutions">Contractors</a></li>
-            <li><a href="#solutions">Fabricators</a></li>
-            <li><a href="#solutions">Suppliers</a></li>
-            <li><a href="#solutions">Designers</a></li>
+            <li><a href="#services">AI Receptionist</a></li>
+            <li><a href="#services">Smart Scheduler</a></li>
+            <li><a href="#services">Instant Quotes</a></li>
+            <li><a href="#services">Client Portal</a></li>
+            <li><a href="#services">Payment System</a></li>
+            <li><a href="#services">Review Engine</a></li>
           </ul>
         </div>
 
         <div class="footer-column">
           <h5>Company</h5>
           <ul class="footer-links">
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href="https://github.com/SGK112">GitHub</a></li>
           </ul>
@@ -1363,14 +603,20 @@
       <div class="footer-bottom">
         <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
         <div class="footer-legal">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
         </div>
       </div>
     </div>
   </footer>
 
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Cursor Glow (desktop only) -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
   <!-- Scripts -->
-  <script src="/js/main.js"></script>
+  <script src="/js/main.js?v=5"></script>
 </body>
 </html>

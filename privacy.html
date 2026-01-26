@@ -4,39 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy | Remodely AI</title>
-  <meta name="description" content="Remodely AI Privacy Policy - How we collect, use, and protect your information.">
+  <meta name="description" content="Remodely AI Privacy Policy. Learn how we collect, use, and protect your personal information when you use our AI-powered business software.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Privacy Policy | Remodely AI">
+  <meta property="og:description" content="How Remodely AI collects, uses, and protects your personal information.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://remodely.ai/privacy.html">
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=17">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://remodely.ai/privacy.html">
 </head>
 <body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
   <!-- Navigation -->
-  <nav class="navbar scrolled">
+  <nav class="navbar">
     <div class="container">
       <div class="navbar-inner">
         <a href="/" class="logo">
           <div class="logo-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="navGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#4285F4"/>
-                  <stop offset="25%" style="stop-color:#EA4335"/>
-                  <stop offset="50%" style="stop-color:#FBBC05"/>
-                  <stop offset="100%" style="stop-color:#34A853"/>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
                 </linearGradient>
               </defs>
-              <path d="M3 21V10l9-7 9 7v11" stroke="url(#navGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
             </svg>
           </div>
           REMODELY<span>.AI</span>
         </a>
         <ul class="nav-links">
           <li><a href="/#services">Services</a></li>
-          <li><a href="/#solutions">Solutions</a></li>
-          <li><a href="/#portfolio">Portfolio</a></li>
+          <li><a href="/#how-it-works">Process</a></li>
           <li><a href="/#about">About</a></li>
           <li><a href="/#contact" class="nav-cta">Get Started</a></li>
         </ul>
@@ -49,49 +68,201 @@
     </div>
   </nav>
 
-  <!-- Content -->
-  <section class="section" style="padding-top: 140px;">
-    <div class="container" style="max-width: 800px;">
-      <h1>Privacy Policy</h1>
-      <p style="color: var(--text-light); margin-bottom: 2rem;">Last updated: January 2026</p>
+  <!-- Privacy Policy -->
+  <section class="legal-page">
+    <div class="container">
+      <div class="legal-content">
+        <h1>Privacy Policy</h1>
+        <p class="legal-updated">Last updated: January 25, 2026</p>
 
-      <h3>1. Information We Collect</h3>
-      <p>We collect information you provide directly to us, such as when you fill out a contact form, request a consultation, or communicate with us. This may include your name, email address, phone number, company name, and project details.</p>
+        <div class="legal-highlight">
+          <p><strong>Summary:</strong> We collect only what we need to deliver our AI software services. We never sell your data. You can request deletion at any time by emailing <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>.</p>
+        </div>
 
-      <h3>2. How We Use Your Information</h3>
-      <p>We use the information we collect to:</p>
-      <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem; color: var(--text-light);">
-        <li>Respond to your inquiries and provide customer support</li>
-        <li>Send you information about our services</li>
-        <li>Improve our website and services</li>
-        <li>Comply with legal obligations</li>
-      </ul>
+        <nav class="legal-toc">
+          <h3>Contents</h3>
+          <ol>
+            <li><a href="#info-collect">Information We Collect</a></li>
+            <li><a href="#how-use">How We Use Your Information</a></li>
+            <li><a href="#ai-processing">AI Data Processing</a></li>
+            <li><a href="#third-parties">Third-Party Services</a></li>
+            <li><a href="#data-storage">Data Storage &amp; Security</a></li>
+            <li><a href="#cookies">Cookies &amp; Tracking</a></li>
+            <li><a href="#your-rights">Your Rights</a></li>
+            <li><a href="#children">Children's Privacy</a></li>
+            <li><a href="#changes">Changes to This Policy</a></li>
+            <li><a href="#contact-privacy">Contact Us</a></li>
+          </ol>
+        </nav>
 
-      <h3>3. Information Sharing</h3>
-      <p>We do not sell, trade, or rent your personal information to third parties. We may share information with service providers who assist us in operating our website and conducting our business.</p>
+        <h2 id="info-collect">1. Information We Collect</h2>
 
-      <h3>4. Data Security</h3>
-      <p>We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.</p>
+        <h3>Information You Provide</h3>
+        <ul>
+          <li><strong>Account information:</strong> Name, email address, phone number, business name, and business address when you sign up or contact us.</li>
+          <li><strong>Payment information:</strong> Credit card details, billing address, and bank account information processed securely through Stripe. We do not store full payment card numbers on our servers.</li>
+          <li><strong>Business data:</strong> Service pricing, scheduling preferences, client lists, project details, and other business information you enter into our platform.</li>
+          <li><strong>Communications:</strong> Messages you send through our contact forms, emails, or support channels.</li>
+        </ul>
 
-      <h3>5. Contact Us</h3>
-      <p>If you have questions about this Privacy Policy, please contact us at:</p>
-      <p><strong>Email:</strong> help.remodely@gmail.com</p>
+        <h3>Information Collected Automatically</h3>
+        <ul>
+          <li><strong>Usage data:</strong> Pages visited, features used, time spent, and interactions with our software.</li>
+          <li><strong>Device information:</strong> Browser type, operating system, screen resolution, and IP address.</li>
+          <li><strong>Log data:</strong> Server logs including access times, error reports, and referring URLs.</li>
+        </ul>
+
+        <h3>Information From AI Services</h3>
+        <ul>
+          <li><strong>Voice data:</strong> If you use our AI Receptionist, inbound call audio may be processed in real time for transcription and response generation. Call recordings are stored only if you enable that feature.</li>
+          <li><strong>Chat data:</strong> Conversations between your customers and AI-powered chat agents.</li>
+          <li><strong>Generated content:</strong> Quotes, responses, summaries, and other content produced by AI on your behalf.</li>
+        </ul>
+
+        <h2 id="how-use">2. How We Use Your Information</h2>
+        <p>We use your information to:</p>
+        <ul>
+          <li>Provide, maintain, and improve our AI software services.</li>
+          <li>Process transactions and send billing-related communications.</li>
+          <li>Customize your AI tools (voice personality, pricing logic, scheduling rules).</li>
+          <li>Send service updates, security alerts, and support messages.</li>
+          <li>Analyze usage patterns to improve our platform (aggregated, non-personal data).</li>
+          <li>Respond to your inquiries and provide customer support.</li>
+          <li>Comply with legal obligations.</li>
+        </ul>
+        <p>We do <strong>not</strong> sell, rent, or trade your personal information to third parties for marketing purposes.</p>
+
+        <h2 id="ai-processing">3. AI Data Processing</h2>
+        <p>Our platform uses artificial intelligence to power several features. Here is how your data interacts with AI:</p>
+        <ul>
+          <li><strong>AI Receptionist:</strong> Inbound calls are processed using speech-to-text and natural language understanding to respond to callers. Audio is processed in real time and is not retained beyond the call session unless you enable call recording.</li>
+          <li><strong>Instant Quotes:</strong> Customer-submitted project details (dimensions, photos, descriptions) are processed by AI to generate pricing estimates based on your configured rates.</li>
+          <li><strong>Review Engine:</strong> AI analyzes review sentiment and generates response suggestions. We do not post responses without your approval.</li>
+          <li><strong>Smart Scheduler:</strong> AI processes appointment requests and calendar data to optimize booking. No data is shared beyond what is needed for scheduling.</li>
+        </ul>
+
+        <div class="legal-highlight">
+          <p><strong>AI Training:</strong> Your business data and customer interactions are <strong>not</strong> used to train general-purpose AI models. Data sent to third-party AI providers (OpenAI, Anthropic) is processed under their enterprise API agreements which prohibit using API data for model training.</p>
+        </div>
+
+        <h2 id="third-parties">4. Third-Party Services</h2>
+        <p>We use the following third-party services to operate our platform:</p>
+        <ul>
+          <li><strong>Stripe</strong> &mdash; Payment processing. Subject to <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe's Privacy Policy</a>.</li>
+          <li><strong>Twilio</strong> &mdash; Voice calls and SMS. Subject to <a href="https://www.twilio.com/legal/privacy" target="_blank" rel="noopener">Twilio's Privacy Policy</a>.</li>
+          <li><strong>OpenAI / Anthropic</strong> &mdash; AI language processing. Data processed via API with enterprise data protection agreements. Not used for model training.</li>
+          <li><strong>Firebase / Supabase</strong> &mdash; Database and authentication infrastructure.</li>
+          <li><strong>Vercel</strong> &mdash; Website hosting and deployment.</li>
+          <li><strong>Google Analytics</strong> &mdash; Anonymous website usage analytics (if enabled).</li>
+        </ul>
+        <p>Each third-party service has its own privacy policy. We select partners who maintain strong data protection standards.</p>
+
+        <h2 id="data-storage">5. Data Storage &amp; Security</h2>
+        <p>We take reasonable technical and organizational measures to protect your data:</p>
+        <ul>
+          <li>All data is transmitted over HTTPS/TLS encryption.</li>
+          <li>Payment data is handled by PCI-compliant processors (Stripe).</li>
+          <li>Database access is restricted to authorized personnel with role-based controls.</li>
+          <li>We use cloud infrastructure with enterprise-grade security (AWS, Firebase, Vercel).</li>
+          <li>Regular security reviews and dependency updates.</li>
+        </ul>
+        <p><strong>Data retention:</strong> We retain your account data for as long as your account is active. If you cancel your account, we delete your data within 30 days unless required by law to retain it longer. Aggregated, anonymized analytics data may be retained indefinitely.</p>
+
+        <h2 id="cookies">6. Cookies &amp; Tracking</h2>
+        <p>Our website uses minimal cookies:</p>
+        <ul>
+          <li><strong>Essential cookies:</strong> Required for site functionality (session management, security).</li>
+          <li><strong>Analytics cookies:</strong> Anonymous usage data via Google Analytics (if enabled). You can opt out using browser settings or the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.</li>
+        </ul>
+        <p>We do not use advertising cookies or tracking pixels from ad networks.</p>
+
+        <h2 id="your-rights">7. Your Rights</h2>
+        <p>Depending on your location, you may have the following rights:</p>
+        <ul>
+          <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+          <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data.</li>
+          <li><strong>Deletion:</strong> Request deletion of your personal data.</li>
+          <li><strong>Portability:</strong> Request your data in a machine-readable format.</li>
+          <li><strong>Opt-out:</strong> Opt out of non-essential communications at any time.</li>
+        </ul>
+
+        <h3>California Residents (CCPA)</h3>
+        <p>If you are a California resident, you have the right to know what personal information we collect, request deletion, and opt out of any sale of personal information. We do not sell personal information. To exercise your rights, contact us at <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>.</p>
+
+        <p>To exercise any of these rights, email us at <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>. We will respond within 30 days.</p>
+
+        <h2 id="children">8. Children's Privacy</h2>
+        <p>Our services are designed for businesses and are not intended for individuals under 18 years of age. We do not knowingly collect personal information from children. If we learn that we have collected data from a child under 18, we will delete it promptly.</p>
+
+        <h2 id="changes">9. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by posting a notice on our website or sending you an email. Your continued use of our services after changes take effect constitutes acceptance of the updated policy.</p>
+
+        <h2 id="contact-privacy">10. Contact Us</h2>
+        <p>If you have questions about this Privacy Policy or your personal data:</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a></li>
+          <li><strong>Address:</strong> Remodely AI LLC, Phoenix, Arizona</li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="remodelyHouseGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4285F4"/>
+                    <stop offset="33%" stop-color="#EA4335"/>
+                    <stop offset="66%" stop-color="#FBBC05"/>
+                    <stop offset="100%" stop-color="#34A853"/>
+                  </linearGradient>
+                </defs>
+                <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGradFooter)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            REMODELY<span>.AI</span>
+          </a>
+          <p>AI software for small businesses. Built by people from the trades who learned to code.</p>
+        </div>
+        <div class="footer-column">
+          <h5>Solutions</h5>
+          <ul class="footer-links">
+            <li><a href="/#services">AI Receptionist</a></li>
+            <li><a href="/#services">Smart Scheduler</a></li>
+            <li><a href="/#services">Instant Quotes</a></li>
+            <li><a href="/#services">Client Portal</a></li>
+            <li><a href="/#services">Payment System</a></li>
+            <li><a href="/#services">Review Engine</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h5>Company</h5>
+          <ul class="footer-links">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#how-it-works">How It Works</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li><a href="https://github.com/SGK112">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
         <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
         <div class="footer-legal">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="/js/main.js"></script>
+  <!-- Scripts -->
+  <script src="/js/main.js?v=5"></script>
 </body>
 </html>

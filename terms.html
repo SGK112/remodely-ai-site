@@ -4,39 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service | Remodely AI</title>
-  <meta name="description" content="Remodely AI Terms of Service - Terms and conditions for using our services.">
+  <meta name="description" content="Remodely AI Terms of Service. Read the terms and conditions that govern your use of our AI-powered business software platform.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Terms of Service | Remodely AI">
+  <meta property="og:description" content="Terms and conditions for using Remodely AI's software platform.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://remodely.ai/terms.html">
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=17">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://remodely.ai/terms.html">
 </head>
 <body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
   <!-- Navigation -->
-  <nav class="navbar scrolled">
+  <nav class="navbar">
     <div class="container">
       <div class="navbar-inner">
         <a href="/" class="logo">
           <div class="logo-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" width="28" height="28">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="navGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#4285F4"/>
-                  <stop offset="25%" style="stop-color:#EA4335"/>
-                  <stop offset="50%" style="stop-color:#FBBC05"/>
-                  <stop offset="100%" style="stop-color:#34A853"/>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
                 </linearGradient>
               </defs>
-              <path d="M3 21V10l9-7 9 7v11" stroke="url(#navGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
             </svg>
           </div>
           REMODELY<span>.AI</span>
         </a>
         <ul class="nav-links">
           <li><a href="/#services">Services</a></li>
-          <li><a href="/#solutions">Solutions</a></li>
-          <li><a href="/#portfolio">Portfolio</a></li>
+          <li><a href="/#how-it-works">Process</a></li>
           <li><a href="/#about">About</a></li>
           <li><a href="/#contact" class="nav-cta">Get Started</a></li>
         </ul>
@@ -49,59 +68,266 @@
     </div>
   </nav>
 
-  <!-- Content -->
-  <section class="section" style="padding-top: 140px;">
-    <div class="container" style="max-width: 800px;">
-      <h1>Terms of Service</h1>
-      <p style="color: var(--text-light); margin-bottom: 2rem;">Last updated: January 2026</p>
+  <!-- Terms of Service -->
+  <section class="legal-page">
+    <div class="container">
+      <div class="legal-content">
+        <h1>Terms of Service</h1>
+        <p class="legal-updated">Last updated: January 25, 2026</p>
 
-      <h3>1. Acceptance of Terms</h3>
-      <p>By accessing and using Remodely AI's services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+        <div class="legal-highlight">
+          <p><strong>Summary:</strong> These terms govern your use of Remodely AI's software platform. By signing up or using our services, you agree to these terms. You can cancel at any time. Questions? Email <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>.</p>
+        </div>
 
-      <h3>2. Services</h3>
-      <p>Remodely AI provides AI and cloud-based solutions for businesses in the remodeling and construction industry, including but not limited to:</p>
-      <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem; color: var(--text-light);">
-        <li>AI voice agent development and integration</li>
-        <li>Custom application development</li>
-        <li>Workflow automation solutions</li>
-        <li>Data migration and scripting services</li>
-        <li>Cloud infrastructure setup and management</li>
-      </ul>
+        <nav class="legal-toc">
+          <h3>Contents</h3>
+          <ol>
+            <li><a href="#acceptance">Acceptance of Terms</a></li>
+            <li><a href="#services">Description of Services</a></li>
+            <li><a href="#accounts">Account Registration</a></li>
+            <li><a href="#subscriptions">Subscriptions &amp; Billing</a></li>
+            <li><a href="#acceptable-use">Acceptable Use</a></li>
+            <li><a href="#ai-services">AI Services &amp; Disclaimers</a></li>
+            <li><a href="#ip">Intellectual Property</a></li>
+            <li><a href="#data-ownership">Your Data</a></li>
+            <li><a href="#confidentiality">Confidentiality</a></li>
+            <li><a href="#warranties">Warranties &amp; Disclaimers</a></li>
+            <li><a href="#liability">Limitation of Liability</a></li>
+            <li><a href="#indemnification">Indemnification</a></li>
+            <li><a href="#termination">Termination &amp; Cancellation</a></li>
+            <li><a href="#governing-law">Governing Law &amp; Disputes</a></li>
+            <li><a href="#changes-terms">Changes to These Terms</a></li>
+            <li><a href="#contact-terms">Contact Us</a></li>
+          </ol>
+        </nav>
 
-      <h3>3. Client Responsibilities</h3>
-      <p>Clients are responsible for providing accurate information, timely feedback, and necessary access to systems required for project completion.</p>
+        <h2 id="acceptance">1. Acceptance of Terms</h2>
+        <p>By creating an account, accessing, or using any part of Remodely AI's platform ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you are using the Service on behalf of a business, you represent that you have the authority to bind that business to these Terms. If you do not agree, do not use the Service.</p>
+        <p>These Terms apply to all users, including business owners, employees, and any other individuals who access the platform through your account.</p>
 
-      <h3>4. Intellectual Property</h3>
-      <p>Upon full payment, clients receive ownership of custom code and assets created specifically for their project. Remodely AI retains ownership of proprietary frameworks, libraries, and tools used across multiple projects.</p>
+        <h2 id="services">2. Description of Services</h2>
+        <p>Remodely AI provides AI-powered software tools designed for small businesses, including but not limited to:</p>
+        <ul>
+          <li><strong>AI Receptionist:</strong> An AI voice agent that answers inbound calls, captures lead information, and routes calls based on your business rules.</li>
+          <li><strong>Smart Scheduler:</strong> AI-assisted appointment scheduling that integrates with your calendar and sends automated confirmations and reminders.</li>
+          <li><strong>Instant Quotes:</strong> AI-generated pricing estimates based on project details submitted by your customers, using your configured rates and pricing logic.</li>
+          <li><strong>Client Portal:</strong> A branded dashboard where your customers can view project status, approve quotes, upload documents, and communicate with you.</li>
+          <li><strong>Payment System:</strong> Invoicing and payment processing powered by Stripe, including automated billing, deposits, and payment tracking.</li>
+          <li><strong>Review Engine:</strong> AI-powered review monitoring, sentiment analysis, and response drafting across Google, Yelp, and other platforms.</li>
+        </ul>
+        <p>We may add, modify, or discontinue features at any time. We will notify you of material changes that affect your use of the platform.</p>
 
-      <h3>5. Payment Terms</h3>
-      <p>Payment terms are specified in individual project agreements. Standard terms require a deposit before project commencement, with remaining balance due upon completion.</p>
+        <h2 id="accounts">3. Account Registration</h2>
+        <p>To use the Service, you must create an account and provide accurate, complete information. You are responsible for:</p>
+        <ul>
+          <li>Maintaining the security of your account credentials.</li>
+          <li>All activity that occurs under your account.</li>
+          <li>Notifying us immediately at <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a> if you suspect unauthorized access.</li>
+          <li>Keeping your account information up to date.</li>
+        </ul>
+        <p>You must be at least 18 years old to create an account. One person or business may not maintain more than one free or trial account.</p>
 
-      <h3>6. Limitation of Liability</h3>
-      <p>Remodely AI shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services.</p>
+        <h2 id="subscriptions">4. Subscriptions &amp; Billing</h2>
 
-      <h3>7. Termination</h3>
-      <p>Either party may terminate the service agreement with written notice. Termination obligations and refund policies are specified in individual contracts.</p>
+        <h3>Plans &amp; Pricing</h3>
+        <p>The Service is offered on a subscription basis. Current pricing is available on our website or upon request. We reserve the right to change pricing with 30 days' written notice. Price changes do not apply to the current billing cycle.</p>
 
-      <h3>8. Contact</h3>
-      <p>For questions about these terms, contact us at:</p>
-      <p><strong>Email:</strong> help.remodely@gmail.com</p>
+        <h3>Billing</h3>
+        <ul>
+          <li>Subscriptions are billed monthly or annually, depending on the plan you select.</li>
+          <li>Payment is processed through Stripe. By subscribing, you authorize us to charge your payment method on a recurring basis.</li>
+          <li>All fees are quoted in U.S. dollars and are non-refundable except as described below.</li>
+        </ul>
+
+        <h3>Free Trials</h3>
+        <p>If we offer a free trial, you will not be charged during the trial period. At the end of the trial, your subscription will automatically convert to a paid plan unless you cancel before the trial ends.</p>
+
+        <h3>Refunds</h3>
+        <p>If you are unsatisfied with the Service within the first 14 days of your paid subscription, you may request a full refund by emailing <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>. After 14 days, no refunds will be issued for the current billing period, but you may cancel to prevent future charges.</p>
+
+        <h2 id="acceptable-use">5. Acceptable Use</h2>
+        <p>You agree not to use the Service to:</p>
+        <ul>
+          <li>Violate any applicable local, state, national, or international law or regulation.</li>
+          <li>Send spam, unsolicited communications, or bulk messaging through our AI tools.</li>
+          <li>Impersonate another person or entity, or misrepresent your affiliation with any person or entity.</li>
+          <li>Transmit viruses, malware, or other harmful code.</li>
+          <li>Attempt to gain unauthorized access to our systems, other accounts, or data.</li>
+          <li>Use the AI Receptionist or chat tools for deceptive practices (e.g., pretending the AI is a human when directly asked).</li>
+          <li>Reverse engineer, decompile, or attempt to extract the source code of our software.</li>
+          <li>Use the platform to process data in violation of privacy laws (HIPAA, GDPR, CCPA, etc.) without appropriate safeguards.</li>
+          <li>Resell, sublicense, or redistribute the Service without our written consent.</li>
+        </ul>
+        <p>We reserve the right to suspend or terminate accounts that violate these terms.</p>
+
+        <h2 id="ai-services">6. AI Services &amp; Disclaimers</h2>
+        <p>Our platform uses artificial intelligence to power several features. Please be aware of the following:</p>
+        <ul>
+          <li><strong>AI is not perfect.</strong> AI-generated content (quotes, responses, scheduling decisions) may contain errors. You are responsible for reviewing AI outputs before they are sent to your customers or used for business decisions.</li>
+          <li><strong>Voice AI disclosure.</strong> If you use the AI Receptionist, we recommend informing callers that they are speaking with an AI assistant, in compliance with applicable laws.</li>
+          <li><strong>Quote accuracy.</strong> Instant Quotes are estimates generated based on the data you configure and the information customers provide. They are not binding contracts. You are responsible for final pricing.</li>
+          <li><strong>Review responses.</strong> AI-drafted review responses are suggestions. We do not post responses on your behalf without your explicit approval.</li>
+          <li><strong>No professional advice.</strong> AI outputs do not constitute legal, financial, medical, or other professional advice.</li>
+        </ul>
+
+        <div class="legal-highlight">
+          <p><strong>Your responsibility:</strong> You maintain full control and responsibility for how AI tools interact with your customers. We provide the technology; you are responsible for its appropriate use in your business context.</p>
+        </div>
+
+        <h2 id="ip">7. Intellectual Property</h2>
+
+        <h3>Our Property</h3>
+        <p>The Remodely AI platform, including its software, design, features, documentation, and branding, is owned by Remodely AI LLC and protected by intellectual property laws. Your subscription grants you a limited, non-exclusive, non-transferable license to use the Service during your subscription period.</p>
+
+        <h3>Custom Work</h3>
+        <p>If we create custom configurations, integrations, or features specifically for your business under a separate agreement, ownership of that custom work transfers to you upon full payment, unless otherwise specified. We retain the right to use general knowledge, techniques, and non-proprietary components developed during the engagement.</p>
+
+        <h3>Feedback</h3>
+        <p>If you provide feedback, suggestions, or feature requests, you grant us a perpetual, royalty-free license to use that feedback to improve our platform, without any obligation to you.</p>
+
+        <h2 id="data-ownership">8. Your Data</h2>
+        <p>You retain ownership of all data you input into the platform ("Your Data"), including business information, client lists, pricing configurations, and communications.</p>
+        <ul>
+          <li>We will not access Your Data except to provide the Service, troubleshoot issues with your permission, or comply with the law.</li>
+          <li>We will not sell Your Data to third parties.</li>
+          <li>Upon account cancellation, you may request an export of Your Data within 30 days. After 30 days, Your Data will be permanently deleted from our systems.</li>
+          <li>Our use of Your Data is further governed by our <a href="/privacy.html">Privacy Policy</a>.</li>
+        </ul>
+
+        <h2 id="confidentiality">9. Confidentiality</h2>
+        <p>We treat your business data as confidential. We will not disclose your proprietary business information (pricing strategies, client lists, internal processes) to third parties except:</p>
+        <ul>
+          <li>As necessary to provide the Service (e.g., sending data to Stripe for payment processing).</li>
+          <li>With your explicit consent.</li>
+          <li>As required by law, regulation, or legal process.</li>
+        </ul>
+
+        <h2 id="warranties">10. Warranties &amp; Disclaimers</h2>
+        <p>The Service is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+        <p>We do not warrant that:</p>
+        <ul>
+          <li>The Service will be uninterrupted, error-free, or free of harmful components.</li>
+          <li>AI-generated outputs will be accurate, complete, or suitable for your specific needs.</li>
+          <li>The Service will meet all of your business requirements.</li>
+          <li>Any defects will be corrected within a specific timeframe.</li>
+        </ul>
+        <p>We strive for high availability and aim for 99.9% uptime, but we do not guarantee it. Scheduled maintenance windows will be communicated in advance when possible.</p>
+
+        <h2 id="liability">11. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law:</p>
+        <ul>
+          <li>Remodely AI shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, business opportunities, or goodwill.</li>
+          <li>Our total liability for any claims arising from or related to the Service shall not exceed the total amount you paid us in the 12 months preceding the claim.</li>
+          <li>We are not liable for damages arising from your reliance on AI-generated content, including inaccurate quotes, scheduling errors, or inappropriate responses.</li>
+        </ul>
+        <p>Some jurisdictions do not allow the exclusion of certain warranties or limitation of liability, so some of the above may not apply to you.</p>
+
+        <h2 id="indemnification">12. Indemnification</h2>
+        <p>You agree to indemnify and hold harmless Remodely AI LLC, its officers, employees, and agents from any claims, damages, losses, or expenses (including reasonable attorney's fees) arising from:</p>
+        <ul>
+          <li>Your use of the Service.</li>
+          <li>Your violation of these Terms.</li>
+          <li>Your violation of any rights of a third party.</li>
+          <li>Content you input into the platform or actions taken by AI tools configured by you.</li>
+        </ul>
+
+        <h2 id="termination">13. Termination &amp; Cancellation</h2>
+
+        <h3>Cancellation by You</h3>
+        <p>You may cancel your subscription at any time through your account settings or by emailing <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a>. Cancellation takes effect at the end of your current billing period. You will retain access to the Service until then.</p>
+
+        <h3>Termination by Us</h3>
+        <p>We may suspend or terminate your account if:</p>
+        <ul>
+          <li>You violate these Terms or our Acceptable Use policy.</li>
+          <li>Your payment method fails and is not updated within 7 days.</li>
+          <li>We are required to do so by law.</li>
+          <li>We reasonably believe your use poses a security risk to the platform or other users.</li>
+        </ul>
+        <p>We will provide notice before termination when possible and give you the opportunity to export your data.</p>
+
+        <h3>Effect of Termination</h3>
+        <p>Upon termination, your right to use the Service ceases immediately. We will retain your data for 30 days to allow for export requests, after which it will be permanently deleted. Sections of these Terms that by their nature should survive termination (liability, indemnification, intellectual property, governing law) will continue to apply.</p>
+
+        <h2 id="governing-law">14. Governing Law &amp; Disputes</h2>
+        <p>These Terms are governed by the laws of the State of Arizona, United States, without regard to its conflict of law provisions.</p>
+        <p>Any disputes arising from these Terms or the Service shall be resolved as follows:</p>
+        <ol>
+          <li><strong>Informal resolution:</strong> We will first attempt to resolve any dispute informally by contacting each other directly. Most issues can be resolved quickly this way.</li>
+          <li><strong>Mediation:</strong> If informal resolution fails, either party may request mediation through a mutually agreed mediator in Maricopa County, Arizona.</li>
+          <li><strong>Arbitration or litigation:</strong> If mediation fails, disputes shall be resolved through binding arbitration in Maricopa County, Arizona, or in the state or federal courts located in Maricopa County, Arizona, at the claimant's election.</li>
+        </ol>
+        <p>You agree to bring any claim within one year of the event giving rise to the claim, or the claim is permanently waived.</p>
+
+        <h2 id="changes-terms">15. Changes to These Terms</h2>
+        <p>We may update these Terms from time to time. We will notify you of material changes by email or by posting a notice on our website at least 30 days before the changes take effect. Your continued use of the Service after the effective date constitutes acceptance of the updated Terms. If you do not agree to the changes, you may cancel your subscription before the effective date.</p>
+
+        <h2 id="contact-terms">16. Contact Us</h2>
+        <p>If you have questions about these Terms of Service:</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:help.remodely@gmail.com">help.remodely@gmail.com</a></li>
+          <li><strong>Address:</strong> Remodely AI LLC, Phoenix, Arizona</li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="remodelyHouseGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4285F4"/>
+                    <stop offset="33%" stop-color="#EA4335"/>
+                    <stop offset="66%" stop-color="#FBBC05"/>
+                    <stop offset="100%" stop-color="#34A853"/>
+                  </linearGradient>
+                </defs>
+                <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGradFooter)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            REMODELY<span>.AI</span>
+          </a>
+          <p>AI software for small businesses. Built by people from the trades who learned to code.</p>
+        </div>
+        <div class="footer-column">
+          <h5>Solutions</h5>
+          <ul class="footer-links">
+            <li><a href="/#services">AI Receptionist</a></li>
+            <li><a href="/#services">Smart Scheduler</a></li>
+            <li><a href="/#services">Instant Quotes</a></li>
+            <li><a href="/#services">Client Portal</a></li>
+            <li><a href="/#services">Payment System</a></li>
+            <li><a href="/#services">Review Engine</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h5>Company</h5>
+          <ul class="footer-links">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#how-it-works">How It Works</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li><a href="https://github.com/SGK112">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
         <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
         <div class="footer-legal">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="/js/main.js"></script>
+  <!-- Scripts -->
+  <script src="/js/main.js?v=5"></script>
 </body>
 </html>
