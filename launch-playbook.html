@@ -76,7 +76,174 @@
         <div class="playbook-controls">
           <button class="playbook-btn" onclick="expandAll()">Expand All</button>
           <button class="playbook-btn" onclick="collapseAll()">Collapse All</button>
+          <button class="playbook-btn" onclick="toggleGoals()">Goal Tracker</button>
+          <button class="playbook-btn" onclick="toggleSharePanel()">Share / Collaborate</button>
+          <button class="playbook-btn" onclick="toggleCalendar()">Calendar</button>
           <button class="playbook-btn playbook-btn-danger" onclick="resetAll()">Reset Progress</button>
+        </div>
+
+        <!-- GOAL TRACKER PANEL -->
+        <div class="playbook-panel" id="goalPanel" style="display:none;">
+          <h3>Goal Tracker</h3>
+          <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Set your targets and track actuals. Changes save automatically.</p>
+          <div class="goal-grid">
+            <div class="goal-card">
+              <label class="goal-label">Paying Customers</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="customers-target" placeholder="10"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="customers-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="customers"></div></div>
+            </div>
+            <div class="goal-card">
+              <label class="goal-label">MRR ($)</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="mrr-target" placeholder="3000"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="mrr-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="mrr"></div></div>
+            </div>
+            <div class="goal-card">
+              <label class="goal-label">Demos Given</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="demos-target" placeholder="40"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="demos-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="demos"></div></div>
+            </div>
+            <div class="goal-card">
+              <label class="goal-label">Trials Started</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="trials-target" placeholder="20"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="trials-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="trials"></div></div>
+            </div>
+            <div class="goal-card">
+              <label class="goal-label">Contractors Contacted</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="contacts-target" placeholder="100"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="contacts-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="contacts"></div></div>
+            </div>
+            <div class="goal-card">
+              <label class="goal-label">LinkedIn Followers</label>
+              <div class="goal-inputs">
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="linkedin-target" placeholder="500"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="linkedin-actual" placeholder="0"></div>
+              </div>
+              <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="linkedin"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHARE / COLLABORATE PANEL -->
+        <div class="playbook-panel" id="sharePanel" style="display:none;">
+          <h3>Share &amp; Collaborate</h3>
+          <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Share your playbook progress with co-founders, advisors, or team members.</p>
+          <div class="share-actions">
+            <button class="playbook-btn share-btn" onclick="copyShareLink()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              Copy Share Link
+            </button>
+            <button class="playbook-btn share-btn" onclick="exportProgress()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Progress
+            </button>
+            <button class="playbook-btn share-btn" onclick="document.getElementById('importFile').click()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Import Progress
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importProgress(event)">
+            <button class="playbook-btn share-btn" onclick="emailProgress()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Email Summary
+            </button>
+            <button class="playbook-btn share-btn" onclick="nativeShare()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share...
+            </button>
+          </div>
+          <div id="shareMsg" class="share-message" style="display:none;"></div>
+        </div>
+
+        <!-- CALENDAR PANEL -->
+        <div class="playbook-panel" id="calendarPanel" style="display:none;">
+          <h3>Key Milestones Calendar</h3>
+          <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Add launch milestones to your calendar. Click to add to Google Calendar or download .ics file.</p>
+          <div class="calendar-list">
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>Launch Day</strong>
+                <span>Announce on LinkedIn, Instagram, X. Email personal network.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('Launch Day - Remodely AI','Announce on LinkedIn, Instagram, X/Twitter. Email personal network. Post on Reddit.',1)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('Launch Day - Remodely AI','Announce on LinkedIn, Instagram, X/Twitter. Email personal network.',1)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>Outreach Sprint (Days 2-3)</strong>
+                <span>Visit/call 20 contractors in Phoenix metro. Bring business cards and demo.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('Contractor Outreach Sprint','Visit or call 20 contractors in Phoenix metro. Bring business cards and demo.',2)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('Contractor Outreach Sprint','Visit or call 20 contractors in Phoenix metro.',2)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>Follow-Up Day (Day 5)</strong>
+                <span>Text/call all contacts from outreach. Send Loom videos. Post LinkedIn recap.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('Follow-Up Day','Text/call all contacts from outreach sprint. Send personalized Loom videos. Post LinkedIn recap.',5)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('Follow-Up Day','Text/call all contacts from outreach sprint. Send Loom videos.',5)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>First Content Drop (Day 7)</strong>
+                <span>Publish YouTube video #1 and first blog post. Share everywhere.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('First Content Drop','Record and publish YouTube video. Write and publish first blog post. Share across all channels.',7)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('First Content Drop','Publish YouTube video and blog post. Share across channels.',7)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>30-Day Review</strong>
+                <span>Review metrics: customers, MRR, demos, conversion rates. Decide what to double down on.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('30-Day Launch Review','Review all metrics: paying customers, MRR, demos given, conversion rates. Identify top acquisition channel. Plan next 60 days.',30)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('30-Day Launch Review','Review metrics and plan next 60 days.',30)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>60-Day Check-In</strong>
+                <span>Referral program live? Google Ads running? First hire interview?</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('60-Day Check-In','Referral program status. Google Ads performance. Hiring pipeline. Content calendar review.',60)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('60-Day Check-In','Referral program, Google Ads, hiring, content review.',60)">Download .ics</button>
+              </div>
+            </div>
+            <div class="calendar-event">
+              <div class="calendar-event-info">
+                <strong>90-Day Milestone</strong>
+                <span>Hit 25-50 customers? $7.5K+ MRR? Product-market fit assessment.</span>
+              </div>
+              <div class="calendar-event-actions">
+                <button class="playbook-btn" onclick="addToGoogleCal('90-Day Milestone Review','Assess product-market fit. Customer count, MRR, NPS, churn. Plan fundraise or continued bootstrap.',90)">Google Cal</button>
+                <button class="playbook-btn" onclick="downloadICS('90-Day Milestone Review','Product-market fit assessment. Plan next phase.',90)">Download .ics</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- SECTION: Pre-Launch -->
@@ -265,100 +432,299 @@
   <!-- Scripts -->
   <script src="/js/main.js?v=5"></script>
   <script>
-    // Playbook interactive checkboxes — saved to localStorage
     (function() {
-      const STORAGE_KEY = 'remodely_playbook_progress';
+      var TASKS_KEY = 'remodely_playbook_progress';
+      var GOALS_KEY = 'remodely_playbook_goals';
 
-      function loadProgress() {
-        try {
-          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-        } catch (e) {
-          return {};
-        }
-      }
+      // --- Storage helpers ---
+      function load(key) { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch(e) { return {}; } }
+      function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
-      function saveProgress(data) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      }
-
+      // --- Progress bar ---
       function updateProgressBar() {
-        const all = document.querySelectorAll('.playbook-item input[type="checkbox"]');
-        const checked = document.querySelectorAll('.playbook-item input[type="checkbox"]:checked');
-        const total = all.length;
-        const done = checked.length;
-        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-
-        const fill = document.getElementById('progressFill');
-        const text = document.getElementById('progressText');
+        var all = document.querySelectorAll('.playbook-item input[type="checkbox"]');
+        var checked = document.querySelectorAll('.playbook-item input[type="checkbox"]:checked');
+        var total = all.length, done = checked.length;
+        var pct = total > 0 ? Math.round((done / total) * 100) : 0;
+        var fill = document.getElementById('progressFill');
+        var text = document.getElementById('progressText');
         if (fill) fill.style.width = pct + '%';
         if (text) text.textContent = done + ' of ' + total + ' tasks completed (' + pct + '%)';
-
-        // Update section counts
-        document.querySelectorAll('.playbook-section').forEach(function(section) {
-          const sectionName = section.getAttribute('data-section');
-          const sectionAll = section.querySelectorAll('input[type="checkbox"]');
-          const sectionDone = section.querySelectorAll('input[type="checkbox"]:checked');
-          const counter = document.querySelector('[data-section-count="' + sectionName + '"]');
-          if (counter) {
-            counter.textContent = sectionDone.length + '/' + sectionAll.length;
-          }
+        document.querySelectorAll('.playbook-section').forEach(function(s) {
+          var name = s.getAttribute('data-section');
+          var sAll = s.querySelectorAll('input[type="checkbox"]');
+          var sDone = s.querySelectorAll('input[type="checkbox"]:checked');
+          var counter = document.querySelector('[data-section-count="' + name + '"]');
+          if (counter) counter.textContent = sDone.length + '/' + sAll.length;
         });
       }
 
-      // Initialize checkboxes from saved state
-      var progress = loadProgress();
+      // --- Init checkboxes ---
+      var progress = load(TASKS_KEY);
       document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
         var id = cb.getAttribute('data-id');
-        if (progress[id]) {
-          cb.checked = true;
-          cb.closest('.playbook-item').classList.add('completed');
-        }
+        if (progress[id]) { cb.checked = true; cb.closest('.playbook-item').classList.add('completed'); }
         cb.addEventListener('change', function() {
-          var data = loadProgress();
+          var data = load(TASKS_KEY);
           data[this.getAttribute('data-id')] = this.checked;
-          saveProgress(data);
-          if (this.checked) {
-            this.closest('.playbook-item').classList.add('completed');
-          } else {
-            this.closest('.playbook-item').classList.remove('completed');
-          }
+          save(TASKS_KEY, data);
+          this.closest('.playbook-item').classList.toggle('completed', this.checked);
           updateProgressBar();
         });
       });
-
       updateProgressBar();
 
-      // Section toggle
+      // --- Load URL state (shared link) ---
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var shared = params.get('state');
+        if (shared) {
+          var decoded = JSON.parse(atob(shared));
+          if (decoded.tasks) {
+            save(TASKS_KEY, decoded.tasks);
+            document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+              var id = cb.getAttribute('data-id');
+              cb.checked = !!decoded.tasks[id];
+              cb.closest('.playbook-item').classList.toggle('completed', cb.checked);
+            });
+            updateProgressBar();
+          }
+          if (decoded.goals) {
+            save(GOALS_KEY, decoded.goals);
+          }
+          window.history.replaceState({}, '', window.location.pathname);
+          showShareMsg('Progress imported from shared link.');
+        }
+      } catch(e) {}
+
+      // --- Section toggle ---
       window.toggleSection = function(header) {
         var body = header.nextElementSibling;
         var toggle = header.querySelector('.playbook-toggle');
-        if (body.style.display === 'none') {
-          body.style.display = 'block';
-          toggle.textContent = '−';
-        } else {
-          body.style.display = 'none';
-          toggle.textContent = '+';
-        }
+        var hidden = body.style.display === 'none';
+        body.style.display = hidden ? 'block' : 'none';
+        toggle.textContent = hidden ? '\u2212' : '+';
       };
-
       window.expandAll = function() {
         document.querySelectorAll('.playbook-section-body').forEach(function(b) { b.style.display = 'block'; });
-        document.querySelectorAll('.playbook-toggle').forEach(function(t) { t.textContent = '−'; });
+        document.querySelectorAll('.playbook-toggle').forEach(function(t) { t.textContent = '\u2212'; });
       };
-
       window.collapseAll = function() {
         document.querySelectorAll('.playbook-section-body').forEach(function(b) { b.style.display = 'none'; });
         document.querySelectorAll('.playbook-toggle').forEach(function(t) { t.textContent = '+'; });
       };
-
       window.resetAll = function() {
-        if (!confirm('Reset all progress? This cannot be undone.')) return;
-        localStorage.removeItem(STORAGE_KEY);
+        if (!confirm('Reset all task progress and goals? This cannot be undone.')) return;
+        localStorage.removeItem(TASKS_KEY);
+        localStorage.removeItem(GOALS_KEY);
         document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
-          cb.checked = false;
-          cb.closest('.playbook-item').classList.remove('completed');
+          cb.checked = false; cb.closest('.playbook-item').classList.remove('completed');
         });
+        document.querySelectorAll('[data-goal]').forEach(function(inp) { inp.value = ''; });
         updateProgressBar();
+        updateGoalBars();
+      };
+
+      // --- Panel toggles ---
+      function togglePanel(id) {
+        var el = document.getElementById(id);
+        var showing = el.style.display !== 'none';
+        document.querySelectorAll('.playbook-panel').forEach(function(p) { p.style.display = 'none'; });
+        if (!showing) el.style.display = 'block';
+      }
+      window.toggleGoals = function() { togglePanel('goalPanel'); };
+      window.toggleSharePanel = function() { togglePanel('sharePanel'); };
+      window.toggleCalendar = function() { togglePanel('calendarPanel'); };
+
+      // --- GOALS ---
+      function updateGoalBars() {
+        var metrics = ['customers','mrr','demos','trials','contacts','linkedin'];
+        metrics.forEach(function(m) {
+          var tInput = document.querySelector('[data-goal="'+m+'-target"]');
+          var aInput = document.querySelector('[data-goal="'+m+'-actual"]');
+          var bar = document.querySelector('[data-goal-bar="'+m+'"]');
+          if (!tInput || !aInput || !bar) return;
+          var t = parseFloat(tInput.value) || 0;
+          var a = parseFloat(aInput.value) || 0;
+          var pct = t > 0 ? Math.min(100, Math.round((a / t) * 100)) : 0;
+          bar.style.width = pct + '%';
+          bar.setAttribute('title', a + ' / ' + t + ' (' + pct + '%)');
+          bar.style.background = pct >= 100 ? '#34a853' : pct >= 50 ? '#6366f1' : '#f59e0b';
+        });
+      }
+
+      // Load saved goals
+      var savedGoals = load(GOALS_KEY);
+      document.querySelectorAll('[data-goal]').forEach(function(inp) {
+        var key = inp.getAttribute('data-goal');
+        if (savedGoals[key] !== undefined) inp.value = savedGoals[key];
+        inp.addEventListener('input', function() {
+          var g = load(GOALS_KEY);
+          g[this.getAttribute('data-goal')] = this.value;
+          save(GOALS_KEY, g);
+          updateGoalBars();
+        });
+      });
+      updateGoalBars();
+
+      // --- SHARING ---
+      function getProgressSummary() {
+        var all = document.querySelectorAll('.playbook-item input[type="checkbox"]');
+        var checked = document.querySelectorAll('.playbook-item input[type="checkbox"]:checked');
+        var pct = all.length > 0 ? Math.round((checked.length / all.length) * 100) : 0;
+        var goals = load(GOALS_KEY);
+        var lines = ['Remodely AI Launch Playbook Progress', ''];
+        lines.push('Tasks: ' + checked.length + '/' + all.length + ' completed (' + pct + '%)');
+        lines.push('');
+        document.querySelectorAll('.playbook-section').forEach(function(s) {
+          var header = s.querySelector('.playbook-section-header');
+          var sAll = s.querySelectorAll('input[type="checkbox"]');
+          var sDone = s.querySelectorAll('input[type="checkbox"]:checked');
+          var title = header ? header.textContent.replace(/[+\u2212]/g,'').replace(/\d+\/\d+/,'').trim() : '';
+          lines.push('  ' + title + ': ' + sDone.length + '/' + sAll.length);
+        });
+        if (goals['customers-actual'] || goals['mrr-actual']) {
+          lines.push('');
+          lines.push('Goals:');
+          if (goals['customers-target']) lines.push('  Customers: ' + (goals['customers-actual']||0) + '/' + goals['customers-target']);
+          if (goals['mrr-target']) lines.push('  MRR: $' + (goals['mrr-actual']||0) + '/$' + goals['mrr-target']);
+          if (goals['demos-target']) lines.push('  Demos: ' + (goals['demos-actual']||0) + '/' + goals['demos-target']);
+          if (goals['trials-target']) lines.push('  Trials: ' + (goals['trials-actual']||0) + '/' + goals['trials-target']);
+        }
+        return lines.join('\n');
+      }
+
+      function showShareMsg(msg) {
+        var el = document.getElementById('shareMsg');
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(function() { el.style.display = 'none'; }, 3000);
+      }
+
+      window.copyShareLink = function() {
+        var state = { tasks: load(TASKS_KEY), goals: load(GOALS_KEY) };
+        var encoded = btoa(JSON.stringify(state));
+        var url = window.location.origin + window.location.pathname + '?state=' + encoded;
+        navigator.clipboard.writeText(url).then(function() {
+          showShareMsg('Share link copied to clipboard.');
+        }).catch(function() {
+          prompt('Copy this link:', url);
+        });
+      };
+
+      window.exportProgress = function() {
+        var state = { tasks: load(TASKS_KEY), goals: load(GOALS_KEY), exported: new Date().toISOString() };
+        var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'remodely-playbook-progress.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showShareMsg('Progress exported.');
+      };
+
+      window.importProgress = function(event) {
+        var file = event.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            var data = JSON.parse(e.target.result);
+            if (data.tasks) {
+              save(TASKS_KEY, data.tasks);
+              document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+                var id = cb.getAttribute('data-id');
+                cb.checked = !!data.tasks[id];
+                cb.closest('.playbook-item').classList.toggle('completed', cb.checked);
+              });
+              updateProgressBar();
+            }
+            if (data.goals) {
+              save(GOALS_KEY, data.goals);
+              document.querySelectorAll('[data-goal]').forEach(function(inp) {
+                var key = inp.getAttribute('data-goal');
+                if (data.goals[key] !== undefined) inp.value = data.goals[key];
+              });
+              updateGoalBars();
+            }
+            showShareMsg('Progress imported successfully.');
+          } catch(err) {
+            alert('Invalid file format.');
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+      };
+
+      window.emailProgress = function() {
+        var summary = getProgressSummary();
+        var subject = encodeURIComponent('Remodely AI Launch Playbook - Progress Update');
+        var body = encodeURIComponent(summary + '\n\nView playbook: ' + window.location.href);
+        window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+      };
+
+      window.nativeShare = function() {
+        if (navigator.share) {
+          var summary = getProgressSummary();
+          navigator.share({ title: 'Remodely AI Launch Playbook', text: summary, url: window.location.href }).catch(function(){});
+        } else {
+          window.copyShareLink();
+        }
+      };
+
+      // --- CALENDAR ---
+      function futureDate(daysFromNow) {
+        var d = new Date();
+        d.setDate(d.getDate() + daysFromNow);
+        return d;
+      }
+
+      function formatGCalDate(date) {
+        return date.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+      }
+
+      function formatICSDate(date) {
+        return date.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'').replace('Z','') + 'Z';
+      }
+
+      window.addToGoogleCal = function(title, desc, daysFromNow) {
+        var start = futureDate(daysFromNow);
+        var end = new Date(start);
+        end.setHours(end.getHours() + 2);
+        var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text=' + encodeURIComponent(title)
+          + '&dates=' + formatGCalDate(start) + '/' + formatGCalDate(end)
+          + '&details=' + encodeURIComponent(desc)
+          + '&location=' + encodeURIComponent('Phoenix, AZ');
+        window.open(url, '_blank');
+      };
+
+      window.downloadICS = function(title, desc, daysFromNow) {
+        var start = futureDate(daysFromNow);
+        var end = new Date(start);
+        end.setHours(end.getHours() + 2);
+        var uid = 'remodely-' + daysFromNow + '-' + Date.now() + '@remodely.ai';
+        var ics = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//Remodely AI//Launch Playbook//EN',
+          'BEGIN:VEVENT',
+          'UID:' + uid,
+          'DTSTART:' + formatICSDate(start),
+          'DTEND:' + formatICSDate(end),
+          'SUMMARY:' + title,
+          'DESCRIPTION:' + desc.replace(/\n/g,'\\n'),
+          'LOCATION:Phoenix, AZ',
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ].join('\r\n');
+        var blob = new Blob([ics], { type: 'text/calendar' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = title.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase() + '.ics';
+        a.click();
+        URL.revokeObjectURL(a.href);
       };
     })();
   </script>
