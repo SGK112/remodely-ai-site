@@ -37,3 +37,9 @@ services:
       - type: rewrite
         source: /careers
         destination: /careers.html
+      - type: rewrite
+        source: /business-plan
+        destination: /business-plan.html
+      - type: rewrite
+        source: /launch-playbook
+        destination: /launch-playbook.html

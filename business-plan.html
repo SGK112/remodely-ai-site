@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Plan | Remodely AI</title>
+  <meta name="description" content="Remodely AI business plan. Market analysis, financial projections, go-to-market strategy, and roadmap for AI-powered small business software.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=18">
+</head>
+<body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
+                </linearGradient>
+              </defs>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          REMODELY<span>.AI</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#how-it-works">Process</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#contact" class="nav-cta">Get Started</a></li>
+        </ul>
+        <div class="mobile-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Business Plan -->
+  <section class="legal-page">
+    <div class="container">
+      <div class="legal-content bp-page">
+        <h1>Business Plan</h1>
+        <p class="legal-updated">Prepared: January 2026 &mdash; Remodely AI LLC &mdash; Phoenix, Arizona</p>
+
+        <nav class="legal-toc">
+          <h3>Contents</h3>
+          <ol>
+            <li><a href="#exec-summary">Executive Summary</a></li>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#products">Products &amp; Services</a></li>
+            <li><a href="#market">Market Analysis</a></li>
+            <li><a href="#model">Business Model</a></li>
+            <li><a href="#gtm">Go-to-Market Strategy</a></li>
+            <li><a href="#competition">Competitive Landscape</a></li>
+            <li><a href="#operations">Operations Plan</a></li>
+            <li><a href="#team">Team &amp; Hiring Plan</a></li>
+            <li><a href="#financials">Financial Projections</a></li>
+            <li><a href="#roadmap">Milestones &amp; Roadmap</a></li>
+            <li><a href="#risks">Risks &amp; Mitigation</a></li>
+            <li><a href="#funding">Funding &amp; Use of Capital</a></li>
+          </ol>
+        </nav>
+
+        <!-- 1. Executive Summary -->
+        <h2 id="exec-summary">1. Executive Summary</h2>
+        <p>Remodely AI builds ready-to-deploy AI software for small businesses. Our platform bundles six core tools &mdash; AI Receptionist, Smart Scheduler, Instant Quotes, Client Portal, Payment System, and Review Engine &mdash; into a single subscription that replaces fragmented, expensive software stacks.</p>
+        <p>We started in the trades. We know what it's like to miss calls while on a job site, lose leads to slow follow-up, and spend nights doing invoices instead of growing the business. We built the software we wished existed.</p>
+        <div class="legal-highlight">
+          <p><strong>Key Facts</strong></p>
+          <ul>
+            <li>Target market: 33.2 million small businesses in the U.S.</li>
+            <li>Initial vertical: Home services (remodeling, contracting, HVAC, plumbing, electrical, landscaping)</li>
+            <li>Revenue model: Monthly SaaS subscriptions ($149&ndash;$499/month)</li>
+            <li>Technology: OpenAI, Anthropic, Twilio, Stripe, Next.js, Python</li>
+            <li>Stage: Pre-revenue, product built, site live</li>
+            <li>Goal: 100 paying customers in Year 1, $300K ARR</li>
+          </ul>
+        </div>
+
+        <!-- 2. Problem -->
+        <h2 id="problem">2. Problem</h2>
+        <p>Small business owners &mdash; especially in the trades &mdash; face a brutal operational reality:</p>
+        <h3>Missed Revenue</h3>
+        <ul>
+          <li><strong>62% of calls</strong> to small businesses go unanswered (Invoca, 2024)</li>
+          <li><strong>85% of callers</strong> who reach voicemail never call back</li>
+          <li>A single missed call costs a contractor an average of <strong>$1,200&ndash;$3,500</strong> in lost revenue</li>
+        </ul>
+        <h3>Software Overload</h3>
+        <ul>
+          <li>The average small business uses <strong>8&ndash;12 separate tools</strong> for scheduling, invoicing, CRM, reviews, and communication</li>
+          <li>Monthly software costs: <strong>$500&ndash;$1,500+</strong> across fragmented tools</li>
+          <li>Most tools are designed for tech-savvy office workers, not tradespeople in the field</li>
+        </ul>
+        <h3>Time Drain</h3>
+        <ul>
+          <li>Owners spend <strong>15&ndash;20 hours/week</strong> on admin tasks</li>
+          <li>That's time not spent on billable work or growing the business</li>
+        </ul>
+        <h3>Quote Friction</h3>
+        <ul>
+          <li>Manual quoting takes <strong>24&ndash;72 hours</strong> to turn around</li>
+          <li>Customers often go with the first contractor who responds</li>
+          <li>Speed-to-quote is the #1 factor in winning residential jobs</li>
+        </ul>
+
+        <!-- 3. Solution -->
+        <h2 id="solution">3. Solution</h2>
+        <p>Remodely AI replaces the entire small business software stack with one AI-powered platform:</p>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Problem</th><th>Remodely AI Solution</th></tr></thead>
+            <tbody>
+              <tr><td>Missed calls</td><td>AI Receptionist answers 24/7, captures leads, books appointments</td></tr>
+              <tr><td>Slow quotes</td><td>Instant Quotes generates estimates in minutes</td></tr>
+              <tr><td>Scheduling chaos</td><td>Smart Scheduler auto-books based on availability and travel time</td></tr>
+              <tr><td>No client visibility</td><td>Client Portal gives customers real-time project status</td></tr>
+              <tr><td>Payment delays</td><td>Payment System automates invoicing and collection via Stripe</td></tr>
+              <tr><td>Unmanaged reputation</td><td>Review Engine monitors reviews and drafts responses</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>One login. One subscription. Six tools that work together.</strong></p>
+
+        <!-- 4. Products -->
+        <h2 id="products">4. Products &amp; Services</h2>
+        <div class="bp-product">
+          <h3>4.1 AI Receptionist</h3>
+          <p class="bp-product-tag">$49/month add-on or included in Pro+</p>
+          <ul>
+            <li>AI voice agent powered by OpenAI + Twilio</li>
+            <li>Answers inbound calls with natural conversation</li>
+            <li>Captures caller name, project details, and contact info</li>
+            <li>Books appointments directly into the scheduler</li>
+            <li>Transfers urgent calls to the owner's cell</li>
+            <li>Custom voice personality and business rules</li>
+          </ul>
+        </div>
+        <div class="bp-product">
+          <h3>4.2 Smart Scheduler</h3>
+          <p class="bp-product-tag">Included in all plans</p>
+          <ul>
+            <li>AI-optimized appointment booking</li>
+            <li>Calendar sync (Google Calendar, Apple Calendar)</li>
+            <li>Automated confirmation and reminder SMS/email</li>
+            <li>Travel time awareness between jobs</li>
+            <li>Customer self-booking via shareable link</li>
+          </ul>
+        </div>
+        <div class="bp-product">
+          <h3>4.3 Instant Quotes</h3>
+          <p class="bp-product-tag">Included in Pro+</p>
+          <ul>
+            <li>Customer submits project details via web form</li>
+            <li>AI generates estimate based on owner's pricing rules</li>
+            <li>Supports photo uploads for visual assessment</li>
+            <li>PDF quote generation with branding</li>
+            <li>One-click quote approval by customer</li>
+          </ul>
+        </div>
+        <div class="bp-product">
+          <h3>4.4 Client Portal</h3>
+          <p class="bp-product-tag">Included in Pro+</p>
+          <ul>
+            <li>Branded dashboard for each customer</li>
+            <li>Project timeline, document sharing, in-app messaging</li>
+            <li>Quote approval and e-signature</li>
+            <li>Payment history and upcoming invoices</li>
+          </ul>
+        </div>
+        <div class="bp-product">
+          <h3>4.5 Payment System</h3>
+          <p class="bp-product-tag">Included in all plans</p>
+          <ul>
+            <li>Stripe-powered invoicing and payments</li>
+            <li>Automated deposit collection, progress billing</li>
+            <li>Payment reminders and financial dashboard</li>
+            <li>ACH, credit card, and Apple Pay support</li>
+          </ul>
+        </div>
+        <div class="bp-product">
+          <h3>4.6 Review Engine</h3>
+          <p class="bp-product-tag">Included in Pro+</p>
+          <ul>
+            <li>Monitors Google, Yelp, and Facebook reviews</li>
+            <li>AI sentiment analysis and response drafting</li>
+            <li>Automated review request SMS after job completion</li>
+            <li>Never posts without owner approval</li>
+          </ul>
+        </div>
+
+        <!-- 5. Market Analysis -->
+        <h2 id="market">5. Market Analysis</h2>
+        <h3>Market Size</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Total Addressable Market (TAM)</td><td>33.2M small businesses, $110B software market</td></tr>
+              <tr><td>Serviceable Addressable Market (SAM)</td><td>3.7M home services businesses, $26.6B annually</td></tr>
+              <tr><td>Serviceable Obtainable Market (SOM) Yr 3</td><td>2,000 customers, $7.2M ARR</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Target Customer</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Attribute</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>Industry</td><td>Remodeling, HVAC, plumbing, electrical, painting, landscaping, roofing</td></tr>
+              <tr><td>Size</td><td>1&ndash;25 employees</td></tr>
+              <tr><td>Revenue</td><td>$150K&ndash;$5M annually</td></tr>
+              <tr><td>Pain point</td><td>Missing calls, slow quotes, admin overload</td></tr>
+              <tr><td>Decision maker</td><td>Owner-operator or office manager</td></tr>
+              <tr><td>Location</td><td>Phoenix metro initially, expanding to Sun Belt</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Market Trends</h3>
+        <ul>
+          <li><strong>AI adoption accelerating:</strong> 77% of small businesses plan to adopt AI tools by 2027</li>
+          <li><strong>Voice AI normalization:</strong> Consumers increasingly comfortable with AI on phone</li>
+          <li><strong>Vertical SaaS growth:</strong> Industry-specific software outperforms horizontal tools</li>
+          <li><strong>Mobile-first demand:</strong> Tradespeople need tools that work from a truck</li>
+        </ul>
+
+        <!-- 6. Business Model -->
+        <h2 id="model">6. Business Model</h2>
+        <h3>Subscription Tiers</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Starter</strong></td><td>$149/mo</td><td>Smart Scheduler, Payment System, basic dashboard</td></tr>
+              <tr><td><strong>Pro</strong></td><td>$299/mo</td><td>Starter + AI Receptionist, Instant Quotes, Client Portal</td></tr>
+              <tr><td><strong>Business</strong></td><td>$499/mo</td><td>Pro + Review Engine, priority support, custom integrations</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Unit Economics</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+            <tbody>
+              <tr><td>ARPU</td><td>$300/month</td></tr>
+              <tr><td>CAC</td><td>$400</td></tr>
+              <tr><td>LTV</td><td>$10,000</td></tr>
+              <tr><td>LTV:CAC</td><td>25:1</td></tr>
+              <tr><td>Gross margin</td><td>80%</td></tr>
+              <tr><td>Payback period</td><td>1.3 months</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 7. Go-to-Market -->
+        <h2 id="gtm">7. Go-to-Market Strategy</h2>
+        <h3>Phase 1: Founder-Led Sales (Months 1&ndash;6)</h3>
+        <ul>
+          <li>Personally visit 10 contractors/week in Phoenix metro</li>
+          <li>Live demos showing AI Receptionist handling a real call</li>
+          <li>14-day free trial with full Pro features</li>
+          <li>Personally set up every customer's account</li>
+          <li>Goal: 50 paying customers</li>
+        </ul>
+        <h3>Phase 2: Content &amp; Community (Months 3&ndash;9)</h3>
+        <ul>
+          <li>YouTube channel: "From the Trades to Tech"</li>
+          <li>Supplier partnerships (Home Depot Pro, SRS, ABC Supply)</li>
+          <li>Trade shows: IBS, JLC Live, local home shows</li>
+        </ul>
+        <h3>Phase 3: Scalable Acquisition (Months 6&ndash;18)</h3>
+        <ul>
+          <li>Google Ads targeting "contractor software," "AI receptionist"</li>
+          <li>Referral program: $100 credit for referred subscribers</li>
+          <li>Agency partnerships: white-label for marketing agencies</li>
+          <li>Goal: 500 paying customers by Month 18</li>
+        </ul>
+
+        <!-- 8. Competition -->
+        <h2 id="competition">8. Competitive Landscape</h2>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Competitor</th><th>Strength</th><th>Weakness</th><th>Our Edge</th></tr></thead>
+            <tbody>
+              <tr><td>Jobber</td><td>Large user base</td><td>No AI, generic UX</td><td>AI-native, voice agent</td></tr>
+              <tr><td>ServiceTitan</td><td>Enterprise features</td><td>$500+/mo, complex</td><td>Simpler, cheaper</td></tr>
+              <tr><td>Housecall Pro</td><td>Good mobile app</td><td>No voice agent</td><td>AI Receptionist</td></tr>
+              <tr><td>GoHighLevel</td><td>Marketing automation</td><td>Steep learning curve</td><td>Built for trades</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Competitive Moat</h3>
+        <ol>
+          <li><strong>Trade-specific AI</strong> &mdash; Understands remodeling terminology, scoping, pricing</li>
+          <li><strong>All-in-one</strong> &mdash; Competitors solve 1&ndash;2 problems; we solve 6</li>
+          <li><strong>Founder credibility</strong> &mdash; Built by people from the trades</li>
+          <li><strong>Data advantage</strong> &mdash; More customers = better pricing and scheduling AI</li>
+          <li><strong>Speed</strong> &mdash; Customized and launched in days, not weeks</li>
+        </ol>
+
+        <!-- 9. Operations -->
+        <h2 id="operations">9. Operations Plan</h2>
+        <h3>Technology Stack</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Layer</th><th>Tools</th></tr></thead>
+            <tbody>
+              <tr><td>Frontend</td><td>React, Next.js, TypeScript, Tailwind CSS</td></tr>
+              <tr><td>Backend</td><td>Node.js, Python</td></tr>
+              <tr><td>AI/ML</td><td>OpenAI, Anthropic Claude, ElevenLabs</td></tr>
+              <tr><td>Voice/SMS</td><td>Twilio</td></tr>
+              <tr><td>Payments</td><td>Stripe</td></tr>
+              <tr><td>Database</td><td>Supabase (PostgreSQL), Firebase</td></tr>
+              <tr><td>Hosting</td><td>Vercel, Render</td></tr>
+              <tr><td>Automation</td><td>n8n</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Infrastructure Costs (at 100 customers)</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Service</th><th>Monthly Cost</th></tr></thead>
+            <tbody>
+              <tr><td>Twilio (voice + SMS)</td><td>$800</td></tr>
+              <tr><td>OpenAI / Anthropic API</td><td>$600</td></tr>
+              <tr><td>Hosting (Render, Vercel)</td><td>$150</td></tr>
+              <tr><td>Supabase / Firebase</td><td>$100</td></tr>
+              <tr><td>Monitoring &amp; tools</td><td>$100</td></tr>
+              <tr><td><strong>Total COGS</strong></td><td><strong>$1,750</strong></td></tr>
+              <tr><td><strong>Revenue (100 x $300)</strong></td><td><strong>$30,000</strong></td></tr>
+              <tr><td><strong>Gross margin</strong></td><td><strong>94%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 10. Team -->
+        <h2 id="team">10. Team &amp; Hiring Plan</h2>
+        <h3>Phase 1: Months 1&ndash;6</h3>
+        <ul>
+          <li><strong>Full Stack Developer</strong> (contract) &mdash; Ship features faster</li>
+          <li><strong>AI/ML Engineer</strong> (contract) &mdash; Improve voice agent and quote accuracy</li>
+        </ul>
+        <h3>Phase 2: Months 6&ndash;12</h3>
+        <ul>
+          <li><strong>Customer Success Manager</strong> (full-time) &mdash; Onboarding and retention</li>
+          <li><strong>Sales Development Rep</strong> (full-time) &mdash; Outbound pipeline</li>
+          <li><strong>Content Creator</strong> (part-time) &mdash; YouTube, social, blog</li>
+        </ul>
+        <h3>Phase 3: Months 12&ndash;24</h3>
+        <ul>
+          <li><strong>Senior Full Stack Developer</strong> &mdash; Scale platform</li>
+          <li><strong>Sales Account Executive</strong> &mdash; Close larger deals</li>
+          <li><strong>Product Designer</strong> &mdash; UX/UI</li>
+        </ul>
+
+        <!-- 11. Financials -->
+        <h2 id="financials">11. Financial Projections</h2>
+        <h3>Year 1</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Quarter</th><th>Customers</th><th>MRR</th><th>Quarterly Revenue</th></tr></thead>
+            <tbody>
+              <tr><td>Q1</td><td>10</td><td>$3,000</td><td>$9,000</td></tr>
+              <tr><td>Q2</td><td>30</td><td>$9,000</td><td>$27,000</td></tr>
+              <tr><td>Q3</td><td>60</td><td>$18,000</td><td>$54,000</td></tr>
+              <tr><td>Q4</td><td>100</td><td>$30,000</td><td>$90,000</td></tr>
+              <tr><td><strong>Year 1 Total</strong></td><td></td><td></td><td><strong>$180,000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Year 2</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Quarter</th><th>Customers</th><th>MRR</th><th>Quarterly Revenue</th></tr></thead>
+            <tbody>
+              <tr><td>Q1</td><td>150</td><td>$45,000</td><td>$135,000</td></tr>
+              <tr><td>Q2</td><td>250</td><td>$75,000</td><td>$225,000</td></tr>
+              <tr><td>Q3</td><td>375</td><td>$112,500</td><td>$337,500</td></tr>
+              <tr><td>Q4</td><td>500</td><td>$150,000</td><td>$450,000</td></tr>
+              <tr><td><strong>Year 2 Total</strong></td><td></td><td></td><td><strong>$1,147,500</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Year 3</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Quarter</th><th>Customers</th><th>MRR</th><th>Quarterly Revenue</th></tr></thead>
+            <tbody>
+              <tr><td>Q1</td><td>750</td><td>$225,000</td><td>$675,000</td></tr>
+              <tr><td>Q2</td><td>1,100</td><td>$330,000</td><td>$990,000</td></tr>
+              <tr><td>Q3</td><td>1,500</td><td>$450,000</td><td>$1,350,000</td></tr>
+              <tr><td>Q4</td><td>2,000</td><td>$600,000</td><td>$1,800,000</td></tr>
+              <tr><td><strong>Year 3 Total</strong></td><td></td><td></td><td><strong>$4,815,000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Break-Even</h3>
+        <div class="legal-highlight">
+          <ul>
+            <li>Monthly fixed costs: ~$10,000</li>
+            <li>Average revenue per customer: $300/month</li>
+            <li><strong>Break-even: 34 customers (Month 5&ndash;6)</strong></li>
+          </ul>
+        </div>
+
+        <!-- 12. Roadmap -->
+        <h2 id="roadmap">12. Milestones &amp; Roadmap</h2>
+        <h3>Q1 2026 (January&ndash;March)</h3>
+        <ul>
+          <li>Launch beta with 5 pilot customers</li>
+          <li>Iterate on AI Receptionist from real feedback</li>
+          <li>Set up Stripe billing and subscription management</li>
+          <li>Create demo video and sales deck</li>
+          <li>File LLC operating agreement, open business bank account</li>
+          <li>Begin founder-led sales: 10 contractor visits/week</li>
+        </ul>
+        <h3>Q2 2026 (April&ndash;June)</h3>
+        <ul>
+          <li>Reach 30 paying customers</li>
+          <li>Launch YouTube channel</li>
+          <li>Hire first contract developer</li>
+          <li>Attend 2 local home shows</li>
+          <li>Add Google Calendar and QuickBooks integrations</li>
+        </ul>
+        <h3>Q3 2026 (July&ndash;September)</h3>
+        <ul>
+          <li>Reach 60 paying customers</li>
+          <li>Hire Customer Success Manager</li>
+          <li>Launch Google Ads</li>
+          <li>Partner with 2 supplier companies</li>
+          <li>Expand to Tucson, Las Vegas</li>
+        </ul>
+        <h3>Q4 2026 (October&ndash;December)</h3>
+        <ul>
+          <li>Reach 100 customers ($30K MRR)</li>
+          <li>Hire Sales Development Rep</li>
+          <li>Launch iOS app</li>
+          <li>Apply to Y Combinator W2027</li>
+          <li>Hit $300K ARR run rate</li>
+        </ul>
+
+        <!-- 13. Risks -->
+        <h2 id="risks">13. Risks &amp; Mitigation</h2>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td>Slow acquisition</td><td>Medium</td><td>High</td><td>Founder-led sales, iterate on messaging</td></tr>
+              <tr><td>AI reliability</td><td>Medium</td><td>High</td><td>Human-in-the-loop, extensive testing</td></tr>
+              <tr><td>Churn</td><td>Medium</td><td>High</td><td>Founder onboards first 100 customers</td></tr>
+              <tr><td>Competitor copies</td><td>Medium</td><td>Medium</td><td>Speed + vertical expertise + relationships</td></tr>
+              <tr><td>API cost increases</td><td>Low</td><td>Medium</td><td>Multi-provider strategy, optimize prompts</td></tr>
+              <tr><td>Single founder risk</td><td>High</td><td>High</td><td>Document everything, hire early</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 14. Funding -->
+        <h2 id="funding">14. Funding &amp; Use of Capital</h2>
+        <h3>Current: Bootstrapped</h3>
+        <ul>
+          <li>Self-funded development</li>
+          <li>Revenue funds operations from Month 1</li>
+          <li>Lean expenses, remote-first</li>
+        </ul>
+        <h3>Future: Seed Round (Late 2026 / 2027)</h3>
+        <div class="bp-table-wrap">
+          <table>
+            <thead><tr><th>Category</th><th>Allocation</th></tr></thead>
+            <tbody>
+              <tr><td>Engineering team (3 hires)</td><td>40%</td></tr>
+              <tr><td>Sales &amp; marketing</td><td>30%</td></tr>
+              <tr><td>Customer success</td><td>15%</td></tr>
+              <tr><td>Operations &amp; legal</td><td>10%</td></tr>
+              <tr><td>Reserve</td><td>5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Target: $1&ndash;2M from vertical SaaS funds, construction-tech investors, or angel investors from the trades.</p>
+
+        <div class="legal-highlight" style="margin-top: 2.5rem;">
+          <p><strong>Next step:</strong> Get 5 pilot customers this month and prove the product works in the real world.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js?v=5"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Launch Playbook | Remodely AI</title>
+  <meta name="description" content="Remodely AI 90-day launch playbook. Track progress from site-live to first paying customers.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=18">
+</head>
+<body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
+                </linearGradient>
+              </defs>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          REMODELY<span>.AI</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#how-it-works">Process</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#contact" class="nav-cta">Get Started</a></li>
+        </ul>
+        <div class="mobile-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Launch Playbook -->
+  <section class="legal-page">
+    <div class="container">
+      <div class="legal-content playbook-page">
+
+        <!-- Header + Progress -->
+        <h1>Launch Playbook</h1>
+        <p class="legal-updated">Goal: Site-live to 10 paying customers in 30 days</p>
+
+        <div class="playbook-progress-bar">
+          <div class="playbook-progress-fill" id="progressFill"></div>
+        </div>
+        <p class="playbook-progress-text" id="progressText">0 of 0 tasks completed (0%)</p>
+
+        <div class="playbook-controls">
+          <button class="playbook-btn" onclick="expandAll()">Expand All</button>
+          <button class="playbook-btn" onclick="collapseAll()">Collapse All</button>
+          <button class="playbook-btn playbook-btn-danger" onclick="resetAll()">Reset Progress</button>
+        </div>
+
+        <!-- SECTION: Pre-Launch -->
+        <div class="playbook-section" data-section="prelaunch">
+          <h2 class="playbook-section-header" onclick="toggleSection(this)">
+            <span class="playbook-toggle">+</span>
+            Pre-Launch Checklist
+            <span class="playbook-section-count" data-section-count="prelaunch"></span>
+          </h2>
+          <div class="playbook-section-body">
+
+            <h3>Business Foundation</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-1"> Open business checking account (Chase, Mercury, or Relay) under Remodely AI LLC</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-2"> Confirm IRS EIN is active and linked to bank account</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-3"> File LLC operating agreement (single-member or multi-member)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-4"> Get business insurance &mdash; general liability + E&amp;O (Hiscox or Next Insurance)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-5"> Set up QuickBooks Self-Employed or Wave for income/expenses</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-6"> Set up help@remodely.ai (Google Workspace) &mdash; professional email</label>
+
+            <h3>Product Readiness</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-7"> Create Stripe account, verify business, set up subscription products ($149, $299, $499)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-8"> Test full flow: sign up &rarr; configure AI &rarr; book appointment &rarr; generate quote &rarr; invoice &rarr; payment</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-9"> Set up "Demo Contractor" account with sample data for live demos</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-10"> Write step-by-step onboarding guide (target: 15 minutes per customer)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-11"> Set up support email auto-responder confirming receipt</label>
+
+            <h3>Marketing Assets</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-12"> Create 10-slide sales deck (Google Slides): Problem &rarr; Solution &rarr; Screenshots &rarr; Pricing &rarr; CTA</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-13"> Design print-ready one-pager (PDF) for handing out at job sites</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-14"> Record 2-minute demo video: AI Receptionist answering a call + booking appointment</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-15"> Order 500 business cards with QR code to website</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-16"> Create branded email signature</label>
+
+            <h3>Online Presence</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-17"> Create Google My Business listing: "Remodely AI" in Phoenix, AZ</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-18"> Create LinkedIn company page with logo, description, website</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-19"> Update personal LinkedIn: "Founder, Remodely AI"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-20"> Create @remodelyai on Instagram, post 3 initial pieces</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-21"> Create @remodelyai on X/Twitter</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pre-22"> Clean up GitHub profile, pin remodely-ai-site repo</label>
+          </div>
+        </div>
+
+        <!-- SECTION: Launch Week -->
+        <div class="playbook-section" data-section="launch">
+          <h2 class="playbook-section-header" onclick="toggleSection(this)">
+            <span class="playbook-toggle">+</span>
+            Launch Week (Days 1&ndash;7)
+            <span class="playbook-section-count" data-section-count="launch"></span>
+          </h2>
+          <div class="playbook-section-body">
+
+            <h3>Day 1: Announce</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-1"> Post on LinkedIn: founder story launch announcement</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-2"> Post on Instagram: product screenshot + "We're live"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-3"> Post on X/Twitter: short announcement with link</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-4"> Email personal network: "I built something &mdash; would love your feedback"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-5"> Post in Reddit communities (r/smallbusiness, r/contractors, r/entrepreneur)</label>
+
+            <h3>Days 2&ndash;3: Direct Outreach</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-6"> Build list of 50 contractors in Phoenix metro (Google Maps, Yelp, Nextdoor)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-7"> Visit or call 10 contractors (Day 2)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-8"> Visit or call 10 contractors (Day 3)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-9"> Offer: free 14-day trial + free setup</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-10"> Collect business cards / phone numbers for follow-up</label>
+
+            <h3>Days 4&ndash;5: Follow Up</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-11"> Text/call everyone you met with trial link</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-12"> Send personalized Loom video to each prospect</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-13"> Post LinkedIn recap: "I visited 20 contractors. Here's what I learned..."</label>
+
+            <h3>Days 6&ndash;7: Content</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-14"> Record YouTube video #1: "I Built an AI Receptionist for Contractors"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-15"> Write first blog post: "Why 62% of Contractor Calls Go Unanswered"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="launch-16"> Share video/blog across all social channels</label>
+          </div>
+        </div>
+
+        <!-- SECTION: Weeks 2-4 -->
+        <div class="playbook-section" data-section="pipeline">
+          <h2 class="playbook-section-header" onclick="toggleSection(this)">
+            <span class="playbook-toggle">+</span>
+            Weeks 2&ndash;4: Build Pipeline
+            <span class="playbook-section-count" data-section-count="pipeline"></span>
+          </h2>
+          <div class="playbook-section-body">
+
+            <h3>Weekly Outreach (Repeat Each Week)</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-1"> Week 2: Visit/call 10 new contractors</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-2"> Week 2: Follow up with all previous contacts</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-3"> Week 2: Post 2 LinkedIn updates</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-4"> Week 3: Visit/call 10 new contractors</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-5"> Week 3: Follow up with all previous contacts</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-6"> Week 3: Post 2 LinkedIn updates</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-7"> Week 4: Visit/call 10 new contractors</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-8"> Week 4: Follow up with all previous contacts</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-9"> Week 4: Post 2 LinkedIn updates</label>
+
+            <h3>Content (Weeks 2&ndash;4)</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-10"> Record YouTube video #2</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-11"> Write blog post #2</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-12"> Create 3 Instagram posts/reels</label>
+
+            <h3>Partnerships</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-13"> Visit Home Depot Pro desk &mdash; introduce yourself</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-14"> Visit a supplier yard (SRS, ABC Supply, Ferguson)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-15"> Attend 1 BNI or Chamber of Commerce event</label>
+            <label class="playbook-item"><input type="checkbox" data-id="pipe-16"> Contact 1 local trade school about a guest talk</label>
+          </div>
+        </div>
+
+        <!-- SECTION: Month 2-3 -->
+        <div class="playbook-section" data-section="scale">
+          <h2 class="playbook-section-header" onclick="toggleSection(this)">
+            <span class="playbook-toggle">+</span>
+            Months 2&ndash;3: Scale What Works
+            <span class="playbook-section-count" data-section-count="scale"></span>
+          </h2>
+          <div class="playbook-section-body">
+
+            <h3>Analyze &amp; Double Down</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-1"> Identify top acquisition channel from first 10 customers</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-2"> Double investment in top channel (more visits, more content, or more ads)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-3"> Survey first 10 customers: NPS score, feature requests, testimonials</label>
+
+            <h3>Referral Program</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-4"> Build referral system: $100 credit for referrer + $100 credit for new customer</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-5"> Give every existing customer their referral link</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-6"> Track referral conversions</label>
+
+            <h3>Google Ads</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-7"> Set up Google Ads account</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-8"> Create campaigns: "AI receptionist for contractors," "contractor scheduling software"</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-9"> Budget: $500/month, track cost per lead and cost per conversion</label>
+
+            <h3>Content Calendar</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-10"> Publish 4 YouTube videos (1/week)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-11"> Publish 4 blog posts (1/week)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-12"> Post 12 LinkedIn updates (3/week)</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-13"> Post 8 Instagram posts/reels (2/week)</label>
+
+            <h3>Hiring</h3>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-14"> Post job listings on LinkedIn, Indeed, and Careers page</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-15"> Interview candidates for first contract developer or sales rep</label>
+            <label class="playbook-item"><input type="checkbox" data-id="scale-16"> Make first hire</label>
+          </div>
+        </div>
+
+        <!-- SECTION: 90-Day Goals -->
+        <div class="playbook-section" data-section="goals">
+          <h2 class="playbook-section-header" onclick="toggleSection(this)">
+            <span class="playbook-toggle">+</span>
+            90-Day Success Criteria
+            <span class="playbook-section-count" data-section-count="goals"></span>
+          </h2>
+          <div class="playbook-section-body">
+            <label class="playbook-item"><input type="checkbox" data-id="goal-1"> 25&ndash;50 paying customers</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-2"> $7,500&ndash;$15,000 monthly recurring revenue</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-3"> NPS score &gt; 50</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-4"> Churn rate &lt; 5%/month</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-5"> Demo-to-trial conversion &gt; 40%</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-6"> Trial-to-paid conversion &gt; 30%</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-7"> First hire made</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-8"> 100+ YouTube subscribers</label>
+            <label class="playbook-item"><input type="checkbox" data-id="goal-9"> 500+ LinkedIn followers</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js?v=5"></script>
+  <script>
+    // Playbook interactive checkboxes — saved to localStorage
+    (function() {
+      const STORAGE_KEY = 'remodely_playbook_progress';
+
+      function loadProgress() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function saveProgress(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+
+      function updateProgressBar() {
+        const all = document.querySelectorAll('.playbook-item input[type="checkbox"]');
+        const checked = document.querySelectorAll('.playbook-item input[type="checkbox"]:checked');
+        const total = all.length;
+        const done = checked.length;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        const fill = document.getElementById('progressFill');
+        const text = document.getElementById('progressText');
+        if (fill) fill.style.width = pct + '%';
+        if (text) text.textContent = done + ' of ' + total + ' tasks completed (' + pct + '%)';
+
+        // Update section counts
+        document.querySelectorAll('.playbook-section').forEach(function(section) {
+          const sectionName = section.getAttribute('data-section');
+          const sectionAll = section.querySelectorAll('input[type="checkbox"]');
+          const sectionDone = section.querySelectorAll('input[type="checkbox"]:checked');
+          const counter = document.querySelector('[data-section-count="' + sectionName + '"]');
+          if (counter) {
+            counter.textContent = sectionDone.length + '/' + sectionAll.length;
+          }
+        });
+      }
+
+      // Initialize checkboxes from saved state
+      var progress = loadProgress();
+      document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+        var id = cb.getAttribute('data-id');
+        if (progress[id]) {
+          cb.checked = true;
+          cb.closest('.playbook-item').classList.add('completed');
+        }
+        cb.addEventListener('change', function() {
+          var data = loadProgress();
+          data[this.getAttribute('data-id')] = this.checked;
+          saveProgress(data);
+          if (this.checked) {
+            this.closest('.playbook-item').classList.add('completed');
+          } else {
+            this.closest('.playbook-item').classList.remove('completed');
+          }
+          updateProgressBar();
+        });
+      });
+
+      updateProgressBar();
+
+      // Section toggle
+      window.toggleSection = function(header) {
+        var body = header.nextElementSibling;
+        var toggle = header.querySelector('.playbook-toggle');
+        if (body.style.display === 'none') {
+          body.style.display = 'block';
+          toggle.textContent = '−';
+        } else {
+          body.style.display = 'none';
+          toggle.textContent = '+';
+        }
+      };
+
+      window.expandAll = function() {
+        document.querySelectorAll('.playbook-section-body').forEach(function(b) { b.style.display = 'block'; });
+        document.querySelectorAll('.playbook-toggle').forEach(function(t) { t.textContent = '−'; });
+      };
+
+      window.collapseAll = function() {
+        document.querySelectorAll('.playbook-section-body').forEach(function(b) { b.style.display = 'none'; });
+        document.querySelectorAll('.playbook-toggle').forEach(function(t) { t.textContent = '+'; });
+      };
+
+      window.resetAll = function() {
+        if (!confirm('Reset all progress? This cannot be undone.')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+          cb.checked = false;
+          cb.closest('.playbook-item').classList.remove('completed');
+        });
+        updateProgressBar();
+      };
+    })();
+  </script>
+</body>
+</html>
