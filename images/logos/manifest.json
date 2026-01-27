@@ -1,0 +1,200 @@
+{
+  "OpenAI": {
+    "name": "OpenAI",
+    "slug": "openai",
+    "file": "images/logos/openai.svg",
+    "status": "downloaded"
+  },
+  "ElevenLabs": {
+    "name": "ElevenLabs",
+    "slug": "elevenlabs",
+    "file": "images/logos/elevenlabs.svg",
+    "status": "downloaded"
+  },
+  "Anthropic": {
+    "name": "Anthropic",
+    "slug": "anthropic",
+    "file": "images/logos/anthropic.svg",
+    "status": "downloaded"
+  },
+  "Google Gemini": {
+    "name": "Google Gemini",
+    "slug": "googlegemini",
+    "file": "images/logos/googlegemini.svg",
+    "status": "downloaded"
+  },
+  "Vertex AI": {
+    "name": "Vertex AI",
+    "slug": "googlecloud",
+    "file": "images/logos/googlecloud.svg",
+    "status": "downloaded"
+  },
+  "React": {
+    "name": "React",
+    "slug": "react",
+    "file": "images/logos/react.svg",
+    "status": "downloaded"
+  },
+  "Next.js": {
+    "name": "Next.js",
+    "slug": "nextdotjs",
+    "file": "images/logos/nextdotjs.svg",
+    "status": "downloaded"
+  },
+  "Node.js": {
+    "name": "Node.js",
+    "slug": "nodedotjs",
+    "file": "images/logos/nodedotjs.svg",
+    "status": "downloaded"
+  },
+  "Python": {
+    "name": "Python",
+    "slug": "python",
+    "file": "images/logos/python.svg",
+    "status": "downloaded"
+  },
+  "TypeScript": {
+    "name": "TypeScript",
+    "slug": "typescript",
+    "file": "images/logos/typescript.svg",
+    "status": "downloaded"
+  },
+  "Tailwind": {
+    "name": "Tailwind",
+    "slug": "tailwindcss",
+    "file": "images/logos/tailwindcss.svg",
+    "status": "downloaded"
+  },
+  "Cursor": {
+    "name": "Cursor",
+    "slug": "cursor",
+    "file": "images/logos/cursor.svg",
+    "status": "downloaded"
+  },
+  "Claude Code": {
+    "name": "Claude Code",
+    "slug": "anthropic",
+    "file": "images/logos/anthropic.svg",
+    "status": "reused"
+  },
+  "Puppeteer": {
+    "name": "Puppeteer",
+    "slug": "puppeteer",
+    "file": "images/logos/puppeteer.svg",
+    "status": "downloaded"
+  },
+  "AWS": {
+    "name": "AWS",
+    "slug": "amazonaws",
+    "file": "images/logos/amazonaws.svg",
+    "status": "downloaded"
+  },
+  "Vercel": {
+    "name": "Vercel",
+    "slug": "vercel",
+    "file": "images/logos/vercel.svg",
+    "status": "downloaded"
+  },
+  "Render": {
+    "name": "Render",
+    "slug": "render",
+    "file": "images/logos/render.svg",
+    "status": "downloaded"
+  },
+  "Docker": {
+    "name": "Docker",
+    "slug": "docker",
+    "file": "images/logos/docker.svg",
+    "status": "downloaded"
+  },
+  "Firebase": {
+    "name": "Firebase",
+    "slug": "firebase",
+    "file": "images/logos/firebase.svg",
+    "status": "downloaded"
+  },
+  "GitHub": {
+    "name": "GitHub",
+    "slug": "github",
+    "file": "images/logos/github.svg",
+    "status": "downloaded"
+  },
+  "Supabase": {
+    "name": "Supabase",
+    "slug": "supabase",
+    "file": "images/logos/supabase.svg",
+    "status": "downloaded"
+  },
+  "PostgreSQL": {
+    "name": "PostgreSQL",
+    "slug": "postgresql",
+    "file": "images/logos/postgresql.svg",
+    "status": "downloaded"
+  },
+  "MongoDB": {
+    "name": "MongoDB",
+    "slug": "mongodb",
+    "file": "images/logos/mongodb.svg",
+    "status": "downloaded"
+  },
+  "Google Maps": {
+    "name": "Google Maps",
+    "slug": "googlemaps",
+    "file": "images/logos/googlemaps.svg",
+    "status": "downloaded"
+  },
+  "Google My Business": {
+    "name": "Google My Business",
+    "slug": "google",
+    "file": "images/logos/google.svg",
+    "status": "downloaded"
+  },
+  "Meta": {
+    "name": "Meta",
+    "slug": "meta",
+    "file": "images/logos/meta.svg",
+    "status": "downloaded"
+  },
+  "Instagram": {
+    "name": "Instagram",
+    "slug": "instagram",
+    "file": "images/logos/instagram.svg",
+    "status": "downloaded"
+  },
+  "LinkedIn": {
+    "name": "LinkedIn",
+    "slug": "linkedin",
+    "file": "images/logos/linkedin.svg",
+    "status": "downloaded"
+  },
+  "X/Twitter": {
+    "name": "X/Twitter",
+    "slug": "x",
+    "file": "images/logos/x.svg",
+    "status": "downloaded"
+  },
+  "n8n": {
+    "name": "n8n",
+    "slug": "n8n",
+    "file": "images/logos/n8n.svg",
+    "status": "downloaded"
+  },
+  "Stripe": {
+    "name": "Stripe",
+    "slug": "stripe",
+    "file": "images/logos/stripe.svg",
+    "status": "downloaded"
+  },
+  "Twilio": {
+    "name": "Twilio",
+    "slug": "twilio",
+    "file": "images/logos/twilio.svg",
+    "status": "downloaded"
+  },
+  "QuickBooks": {
+    "name": "QuickBooks",
+    "slug": "quickbooks",
+    "file": "images/logos/quickbooks.svg",
+    "status": "downloaded"
+  }
+}
