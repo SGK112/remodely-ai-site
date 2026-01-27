@@ -67,6 +67,15 @@
   --radius-xl: 24px;
   --radius-2xl: 32px;
   --radius-full: 9999px;
+
+  /* Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(129, 140, 248, 0.3);
+  --glass-blur: blur(16px);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* Reset & Base */
@@ -1438,27 +1447,101 @@ p {
 }
 
 /* =====================================================
-   TECH STRIP
+   TECH STACK - TABBED INTERFACE
    ===================================================== */
 .tech-strip-section {
   padding: 5rem 0;
 }
 
-.tech-strip {
+/* Tab Navigation */
+.tech-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.tech-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.tech-tab:hover {
+  background: var(--glass-bg-strong);
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(129, 140, 248, 0.2);
+}
+
+.tech-tab.active {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #a5b4fc;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.15);
+}
+
+.tech-tab svg {
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+.tech-tab.active svg,
+.tech-tab:hover svg {
+  opacity: 1;
+}
+
+/* Tab Panels */
+.tech-panels {
+  position: relative;
+}
+
+.tech-panel {
+  display: none;
+  animation: techPanelIn 0.35s ease;
+}
+
+.tech-panel.active {
+  display: block;
+}
+
+@keyframes techPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tech-panel-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2.5rem;
 }
 
+/* Tech Items (shared between strip and tabs) */
 .tech-strip-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.625rem;
   padding: 0.75rem 1.25rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.875rem;
@@ -1477,6 +1560,7 @@ p {
 .tech-strip-item svg {
   opacity: 0.6;
   transition: opacity 0.25s ease;
+  flex-shrink: 0;
 }
 
 .tech-strip-item:hover svg {
@@ -1484,17 +1568,13 @@ p {
 }
 
 /* Tech Tooltip Cards */
-.tech-strip-item {
-  position: relative;
-}
-
 .tech-tooltip {
   position: absolute;
   bottom: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%) translateY(8px) scale(0.96);
-  width: 270px;
-  padding: 1.125rem 1.25rem;
+  width: 260px;
+  padding: 1rem 1.125rem;
   background: linear-gradient(145deg, #1e2247, #171b3a);
   border: 1px solid rgba(129, 140, 248, 0.4);
   border-radius: 14px;
@@ -1540,22 +1620,36 @@ p {
 
 .tech-tooltip strong {
   display: block;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.375rem;
   color: #a5b4fc;
   letter-spacing: 0.01em;
 }
 
 .tech-tooltip p {
   font-size: 0.8125rem;
-  line-height: 1.55;
+  line-height: 1.5;
   color: #c7d0e2;
   margin: 0;
 }
 
+@media (max-width: 768px) {
+  .tech-tabs {
+    gap: 0.375rem;
+  }
+
+  .tech-tab span {
+    display: none;
+  }
+
+  .tech-tab {
+    padding: 0.625rem 0.875rem;
+  }
+}
+
 @media (max-width: 640px) {
-  .tech-strip {
+  .tech-panel-grid {
     gap: 0.75rem;
   }
 
@@ -6334,4 +6428,334 @@ html {
   .playbook-panel {
     padding: 1rem 1.25rem;
   }
+}
+
+/* =====================================================
+   GLASS MORPHISM EFFECTS
+   ===================================================== */
+@supports (backdrop-filter: blur(16px)) {
+  .why-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+  }
+
+  .why-card:hover {
+    background: var(--glass-bg-strong);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow), var(--glass-inset), 0 0 24px rgba(99, 102, 241, 0.15);
+  }
+
+  .tech-strip-item {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* =====================================================
+   ANIMATED HERO GRADIENT
+   ===================================================== */
+.hero-bg-animation::before {
+  animation: heroGradientShift 15s ease infinite;
+}
+
+@keyframes heroGradientShift {
+  0%, 100% {
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(99, 102, 241, 0.12) 60deg,
+      transparent 120deg,
+      rgba(139, 92, 246, 0.08) 180deg,
+      transparent 240deg,
+      rgba(59, 130, 246, 0.1) 300deg,
+      transparent 360deg
+    );
+  }
+  33% {
+    background: conic-gradient(
+      from 120deg at 40% 60%,
+      transparent 0deg,
+      rgba(139, 92, 246, 0.12) 60deg,
+      transparent 120deg,
+      rgba(59, 130, 246, 0.1) 180deg,
+      transparent 240deg,
+      rgba(99, 102, 241, 0.08) 300deg,
+      transparent 360deg
+    );
+  }
+  66% {
+    background: conic-gradient(
+      from 240deg at 60% 40%,
+      transparent 0deg,
+      rgba(59, 130, 246, 0.1) 60deg,
+      transparent 120deg,
+      rgba(99, 102, 241, 0.12) 180deg,
+      transparent 240deg,
+      rgba(139, 92, 246, 0.08) 300deg,
+      transparent 360deg
+    );
+  }
+}
+
+/* =====================================================
+   ANIMATED CTA GRADIENT
+   ===================================================== */
+.cta-section {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.85), rgba(99, 102, 241, 0.85), rgba(139, 92, 246, 0.8));
+  background-size: 200% 200%;
+  animation: ctaGradientShift 12s ease infinite;
+}
+
+@keyframes ctaGradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* =====================================================
+   BUTTON SHINE EFFECT
+   ===================================================== */
+.btn-primary,
+.lead-form-submit {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after,
+.lead-form-submit::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+}
+
+.btn-primary:hover::after,
+.lead-form-submit:hover::after {
+  left: 125%;
+}
+
+/* =====================================================
+   ENHANCED CARD HOVER EFFECTS
+   ===================================================== */
+.solution-card {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.solution-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 48px -12px rgba(99, 102, 241, 0.18),
+    0 0 0 1px rgba(99, 102, 241, 0.08);
+}
+
+.solution-card:hover .solution-icon {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.solution-icon {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Why Card number glow on hover */
+.why-card:hover .why-number {
+  text-shadow: 0 0 30px rgba(129, 140, 248, 0.4);
+}
+
+.why-card:hover .why-icon {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.why-icon {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-number {
+  transition: text-shadow 0.3s ease;
+}
+
+/* Process step hover glow */
+.process-step:hover .process-number {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), 0 0 40px rgba(99, 102, 241, 0.15);
+  transform: scale(1.05);
+}
+
+.process-number {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* =====================================================
+   SCROLL-DRIVEN ANIMATIONS
+   ===================================================== */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.card-scale-in {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #818cf8, #a78bfa);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* =====================================================
+   ANIMATED GRADIENT TEXT
+   ===================================================== */
+.section-dark .section-header h2 {
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientTextShift 6s ease infinite;
+}
+
+@keyframes gradientTextShift {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+}
+
+/* =====================================================
+   FORM INPUT FOCUS EFFECTS
+   ===================================================== */
+.form-group input:focus,
+.form-group textarea:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+.form-group input,
+.form-group textarea {
+  transition: all 0.25s ease;
+}
+
+/* =====================================================
+   RIPPLE ANIMATION
+   ===================================================== */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out;
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* =====================================================
+   CARD SPOTLIGHT GRADIENT
+   ===================================================== */
+.card-spotlight {
+  position: relative;
+}
+
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(99, 102, 241, 0.06),
+    transparent 40%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* =====================================================
+   PERFORMANCE: WILL-CHANGE HINTS
+   ===================================================== */
+.hero-orb {
+  will-change: transform;
+}
+
+.is-scrolling .hero-orb,
+.is-scrolling .particle-container {
+  animation-play-state: paused;
+}
+
+/* Contain layout for cards */
+.solution-card,
+.why-card,
+.process-step {
+  contain: layout style;
 }
