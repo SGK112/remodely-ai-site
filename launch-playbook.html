@@ -17,7 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/styles.css?v=18">
+  <link rel="stylesheet" href="/css/styles.css?v=19">
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <!-- Starfield Background -->
@@ -79,7 +82,17 @@
           <button class="playbook-btn" onclick="toggleGoals()">Goal Tracker</button>
           <button class="playbook-btn" onclick="toggleSharePanel()">Share / Collaborate</button>
           <button class="playbook-btn" onclick="toggleCalendar()">Calendar</button>
+          <button class="playbook-btn" onclick="toggleNotifications()">Notifications</button>
+          <button class="playbook-btn playbook-btn-primary" onclick="toggleAuthPanel()">
+            <span id="authBtnText">Sign In</span>
+          </button>
           <button class="playbook-btn playbook-btn-danger" onclick="resetAll()">Reset Progress</button>
+        </div>
+
+        <!-- Sync Status Indicator -->
+        <div class="sync-status" id="syncStatus" style="display:none;">
+          <span class="sync-icon" id="syncIcon"></span>
+          <span class="sync-text" id="syncText">Synced</span>
         </div>
 
         <!-- GOAL TRACKER PANEL -->
@@ -242,6 +255,150 @@
                 <button class="playbook-btn" onclick="addToGoogleCal('90-Day Milestone Review','Assess product-market fit. Customer count, MRR, NPS, churn. Plan fundraise or continued bootstrap.',90)">Google Cal</button>
                 <button class="playbook-btn" onclick="downloadICS('90-Day Milestone Review','Product-market fit assessment. Plan next phase.',90)">Download .ics</button>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUTH PANEL -->
+        <div class="playbook-panel" id="authPanel" style="display:none;">
+          <h3>Cloud Sync</h3>
+          <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Sign in to sync your progress across devices. Your data is saved locally and synced to the cloud when signed in.</p>
+
+          <div id="authSignedOut">
+            <div class="auth-methods">
+              <div class="auth-method">
+                <label class="auth-label">Email (Magic Link)</label>
+                <div class="auth-input-group">
+                  <input type="email" id="authEmail" placeholder="you@example.com" class="auth-input">
+                  <button class="playbook-btn playbook-btn-primary" onclick="sendMagicLink()">Send Link</button>
+                </div>
+                <p class="auth-hint">We'll send you a sign-in link. No password needed.</p>
+              </div>
+              <div class="auth-divider"><span>or</span></div>
+              <div class="auth-method">
+                <button class="playbook-btn auth-google-btn" onclick="signInWithGoogle()">
+                  <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                  Continue with Google
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="authSignedIn" style="display:none;">
+            <div class="auth-user-info">
+              <div class="auth-avatar" id="authAvatar"></div>
+              <div class="auth-user-details">
+                <strong id="authUserName">User</strong>
+                <span id="authUserEmail">user@example.com</span>
+              </div>
+            </div>
+            <div class="auth-actions">
+              <button class="playbook-btn" onclick="forceSyncNow()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                Sync Now
+              </button>
+              <button class="playbook-btn playbook-btn-danger" onclick="signOut()">Sign Out</button>
+            </div>
+            <div class="auth-sync-info">
+              <p>Last synced: <span id="lastSyncTime">Never</span></p>
+            </div>
+          </div>
+
+          <div id="authMessage" class="auth-message" style="display:none;"></div>
+        </div>
+
+        <!-- NOTIFICATIONS PANEL -->
+        <div class="playbook-panel" id="notificationsPanel" style="display:none;">
+          <h3>Notifications &amp; Reminders</h3>
+          <p style="color:#64748b;font-size:0.875rem;margin-bottom:1rem;">Get reminded about upcoming due dates via browser notifications and daily email digests.</p>
+
+          <div class="notification-section">
+            <h4>Browser Notifications</h4>
+            <div class="notification-permission" id="notificationPermission">
+              <span id="notificationStatus">Checking permission...</span>
+              <button class="playbook-btn playbook-btn-primary" id="enableNotificationsBtn" onclick="requestNotificationPermission()" style="display:none;">Enable Notifications</button>
+            </div>
+            <div class="notification-setting">
+              <label class="notification-label">
+                <input type="checkbox" id="notifyDueSoon" checked>
+                Notify when tasks are due soon
+              </label>
+            </div>
+            <div class="notification-setting">
+              <label class="notification-label">Remind me before due date:</label>
+              <select id="reminderTime" class="notification-select">
+                <option value="3600000">1 hour before</option>
+                <option value="86400000" selected>1 day before</option>
+                <option value="172800000">2 days before</option>
+                <option value="604800000">1 week before</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="notification-section">
+            <h4>Daily Email Digest</h4>
+            <p class="auth-hint" id="emailDigestAuthHint">Sign in to enable email digests.</p>
+            <div id="emailDigestSettings" style="display:none;">
+              <div class="notification-setting">
+                <label class="notification-label">
+                  <input type="checkbox" id="enableEmailDigest">
+                  Send daily email digest
+                </label>
+              </div>
+              <div class="notification-setting">
+                <label class="notification-label">Send at:</label>
+                <select id="digestTime" class="notification-select">
+                  <option value="6">6:00 AM</option>
+                  <option value="7">7:00 AM</option>
+                  <option value="8">8:00 AM</option>
+                  <option value="9" selected>9:00 AM</option>
+                  <option value="10">10:00 AM</option>
+                  <option value="12">12:00 PM</option>
+                </select>
+              </div>
+              <div class="notification-setting">
+                <label class="notification-label">Timezone:</label>
+                <select id="digestTimezone" class="notification-select">
+                  <option value="America/Phoenix" selected>Phoenix (MST)</option>
+                  <option value="America/Los_Angeles">Pacific (PST/PDT)</option>
+                  <option value="America/Denver">Mountain (MST/MDT)</option>
+                  <option value="America/Chicago">Central (CST/CDT)</option>
+                  <option value="America/New_York">Eastern (EST/EDT)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DUE DATE MODAL -->
+        <div class="modal-overlay" id="dueDateModal" style="display:none;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Set Due Date</h3>
+              <button class="modal-close" onclick="closeDueDateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p class="modal-task-title" id="modalTaskTitle">Task name here</p>
+              <div class="due-date-inputs">
+                <div class="due-date-field">
+                  <label>Date</label>
+                  <input type="date" id="dueDateInput" class="due-date-input">
+                </div>
+                <div class="due-date-field">
+                  <label>Time (optional)</label>
+                  <input type="time" id="dueTimeInput" class="due-date-input">
+                </div>
+              </div>
+              <div class="due-date-quick">
+                <span>Quick set:</span>
+                <button class="playbook-btn" onclick="setQuickDate(0)">Today</button>
+                <button class="playbook-btn" onclick="setQuickDate(1)">Tomorrow</button>
+                <button class="playbook-btn" onclick="setQuickDate(7)">Next Week</button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="playbook-btn" onclick="clearDueDate()">Clear Date</button>
+              <button class="playbook-btn playbook-btn-primary" onclick="saveDueDate()">Save</button>
             </div>
           </div>
         </div>
@@ -435,10 +592,27 @@
     (function() {
       var TASKS_KEY = 'remodely_playbook_progress';
       var GOALS_KEY = 'remodely_playbook_goals';
+      var DUE_DATES_KEY = 'remodely_playbook_due_dates';
+      var PREFS_KEY = 'remodely_playbook_prefs';
+
+      // --- Supabase Configuration ---
+      // Replace these with your actual Supabase project credentials
+      var SUPABASE_URL = 'YOUR_SUPABASE_URL';
+      var SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+      var supabase = null;
+      var currentUser = null;
+      var syncInProgress = false;
+      var lastSyncTime = null;
+
+      // Initialize Supabase if credentials are set
+      if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && typeof window.supabase !== 'undefined') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        initSupabaseAuth();
+      }
 
       // --- Storage helpers ---
       function load(key) { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch(e) { return {}; } }
-      function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+      function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); triggerCloudSync(); }
 
       // --- Progress bar ---
       function updateProgressBar() {
@@ -726,6 +900,584 @@
         a.click();
         URL.revokeObjectURL(a.href);
       };
+
+      // =====================================================
+      // SUPABASE AUTHENTICATION
+      // =====================================================
+      function initSupabaseAuth() {
+        if (!supabase) return;
+
+        // Check for existing session
+        supabase.auth.getSession().then(function(result) {
+          if (result.data.session) {
+            handleAuthStateChange('SIGNED_IN', result.data.session);
+          }
+        });
+
+        // Listen for auth changes
+        supabase.auth.onAuthStateChange(function(event, session) {
+          handleAuthStateChange(event, session);
+        });
+      }
+
+      function handleAuthStateChange(event, session) {
+        if (event === 'SIGNED_IN' && session) {
+          currentUser = session.user;
+          updateAuthUI(true);
+          syncFromCloud();
+          subscribeToRealtime();
+        } else if (event === 'SIGNED_OUT') {
+          currentUser = null;
+          updateAuthUI(false);
+        }
+      }
+
+      function updateAuthUI(signedIn) {
+        var authBtnText = document.getElementById('authBtnText');
+        var signedOutDiv = document.getElementById('authSignedOut');
+        var signedInDiv = document.getElementById('authSignedIn');
+        var syncStatus = document.getElementById('syncStatus');
+        var emailDigestHint = document.getElementById('emailDigestAuthHint');
+        var emailDigestSettings = document.getElementById('emailDigestSettings');
+
+        if (signedIn && currentUser) {
+          authBtnText.textContent = 'Account';
+          signedOutDiv.style.display = 'none';
+          signedInDiv.style.display = 'block';
+          syncStatus.style.display = 'flex';
+          emailDigestHint.style.display = 'none';
+          emailDigestSettings.style.display = 'block';
+
+          // Update user info
+          document.getElementById('authUserEmail').textContent = currentUser.email;
+          document.getElementById('authUserName').textContent = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+          var avatar = document.getElementById('authAvatar');
+          avatar.textContent = (currentUser.email[0] || 'U').toUpperCase();
+        } else {
+          authBtnText.textContent = 'Sign In';
+          signedOutDiv.style.display = 'block';
+          signedInDiv.style.display = 'none';
+          syncStatus.style.display = 'none';
+          emailDigestHint.style.display = 'block';
+          emailDigestSettings.style.display = 'none';
+        }
+      }
+
+      window.toggleAuthPanel = function() { togglePanel('authPanel'); };
+      window.toggleNotifications = function() {
+        togglePanel('notificationsPanel');
+        checkNotificationPermission();
+      };
+
+      window.sendMagicLink = function() {
+        if (!supabase) {
+          showAuthMessage('Cloud sync not configured. Contact support.', 'error');
+          return;
+        }
+        var email = document.getElementById('authEmail').value.trim();
+        if (!email) {
+          showAuthMessage('Please enter your email address.', 'error');
+          return;
+        }
+        supabase.auth.signInWithOtp({
+          email: email,
+          options: { emailRedirectTo: window.location.origin + window.location.pathname }
+        }).then(function(result) {
+          if (result.error) {
+            showAuthMessage(result.error.message, 'error');
+          } else {
+            showAuthMessage('Check your email for the sign-in link!', 'success');
+          }
+        });
+      };
+
+      window.signInWithGoogle = function() {
+        if (!supabase) {
+          showAuthMessage('Cloud sync not configured. Contact support.', 'error');
+          return;
+        }
+        supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin + window.location.pathname }
+        });
+      };
+
+      window.signOut = function() {
+        if (!supabase) return;
+        supabase.auth.signOut().then(function() {
+          showAuthMessage('Signed out successfully.', 'success');
+        });
+      };
+
+      function showAuthMessage(msg, type) {
+        var el = document.getElementById('authMessage');
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'auth-message auth-message-' + type;
+        el.style.display = 'block';
+        setTimeout(function() { el.style.display = 'none'; }, 4000);
+      }
+
+      // =====================================================
+      // CLOUD SYNC
+      // =====================================================
+      function updateSyncStatus(status, text) {
+        var icon = document.getElementById('syncIcon');
+        var textEl = document.getElementById('syncText');
+        if (!icon || !textEl) return;
+
+        icon.className = 'sync-icon sync-' + status;
+        textEl.textContent = text;
+      }
+
+      function triggerCloudSync() {
+        if (!supabase || !currentUser || syncInProgress) return;
+
+        // Debounce syncs
+        clearTimeout(window.syncDebounce);
+        window.syncDebounce = setTimeout(syncToCloud, 1000);
+      }
+
+      function syncToCloud() {
+        if (!supabase || !currentUser || syncInProgress) return;
+        syncInProgress = true;
+        updateSyncStatus('syncing', 'Syncing...');
+
+        var tasks = load(TASKS_KEY);
+        var goals = load(GOALS_KEY);
+        var dueDates = load(DUE_DATES_KEY);
+        var prefs = load(PREFS_KEY);
+
+        // Upsert tasks
+        var taskPromises = Object.keys(tasks).map(function(taskId) {
+          return supabase.from('tasks').upsert({
+            user_id: currentUser.id,
+            task_id: taskId,
+            completed: tasks[taskId],
+            due_date: dueDates[taskId]?.date || null,
+            due_time: dueDates[taskId]?.time || null,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id,task_id' });
+        });
+
+        // Upsert goals
+        var goalPromises = Object.keys(goals).map(function(goalKey) {
+          return supabase.from('goals').upsert({
+            user_id: currentUser.id,
+            goal_key: goalKey,
+            value: goals[goalKey],
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id,goal_key' });
+        });
+
+        // Upsert preferences
+        var prefPromise = supabase.from('profiles').upsert({
+          id: currentUser.id,
+          email: currentUser.email,
+          notification_preferences: prefs,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+
+        Promise.all([...taskPromises, ...goalPromises, prefPromise])
+          .then(function() {
+            lastSyncTime = new Date();
+            updateSyncStatus('synced', 'Synced');
+            document.getElementById('lastSyncTime').textContent = lastSyncTime.toLocaleTimeString();
+            syncInProgress = false;
+          })
+          .catch(function(err) {
+            console.error('Sync error:', err);
+            updateSyncStatus('error', 'Sync failed');
+            syncInProgress = false;
+          });
+      }
+
+      function syncFromCloud() {
+        if (!supabase || !currentUser) return;
+        updateSyncStatus('syncing', 'Loading...');
+
+        Promise.all([
+          supabase.from('tasks').select('*').eq('user_id', currentUser.id),
+          supabase.from('goals').select('*').eq('user_id', currentUser.id),
+          supabase.from('profiles').select('*').eq('id', currentUser.id).single()
+        ]).then(function(results) {
+          var tasksResult = results[0];
+          var goalsResult = results[1];
+          var profileResult = results[2];
+
+          // Merge cloud tasks with local (cloud wins if newer)
+          if (tasksResult.data && tasksResult.data.length > 0) {
+            var cloudTasks = {};
+            var cloudDueDates = {};
+            tasksResult.data.forEach(function(t) {
+              cloudTasks[t.task_id] = t.completed;
+              if (t.due_date) {
+                cloudDueDates[t.task_id] = { date: t.due_date, time: t.due_time };
+              }
+            });
+            save(TASKS_KEY, cloudTasks);
+            save(DUE_DATES_KEY, cloudDueDates);
+
+            // Update UI
+            document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+              var id = cb.getAttribute('data-id');
+              cb.checked = !!cloudTasks[id];
+              cb.closest('.playbook-item').classList.toggle('completed', cb.checked);
+            });
+            updateProgressBar();
+            updateDueDateIndicators();
+          }
+
+          // Merge goals
+          if (goalsResult.data && goalsResult.data.length > 0) {
+            var cloudGoals = {};
+            goalsResult.data.forEach(function(g) {
+              cloudGoals[g.goal_key] = g.value;
+            });
+            save(GOALS_KEY, cloudGoals);
+            document.querySelectorAll('[data-goal]').forEach(function(inp) {
+              var key = inp.getAttribute('data-goal');
+              if (cloudGoals[key] !== undefined) inp.value = cloudGoals[key];
+            });
+            updateGoalBars();
+          }
+
+          // Load preferences
+          if (profileResult.data?.notification_preferences) {
+            save(PREFS_KEY, profileResult.data.notification_preferences);
+            loadNotificationPreferences();
+          }
+
+          lastSyncTime = new Date();
+          updateSyncStatus('synced', 'Synced');
+          document.getElementById('lastSyncTime').textContent = lastSyncTime.toLocaleTimeString();
+        }).catch(function(err) {
+          console.error('Load error:', err);
+          updateSyncStatus('error', 'Load failed');
+        });
+      }
+
+      window.forceSyncNow = function() {
+        syncToCloud();
+      };
+
+      function subscribeToRealtime() {
+        if (!supabase || !currentUser) return;
+
+        supabase.channel('playbook-sync')
+          .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'tasks',
+            filter: 'user_id=eq.' + currentUser.id
+          }, function(payload) {
+            // Another device made a change
+            if (payload.new) {
+              var tasks = load(TASKS_KEY);
+              tasks[payload.new.task_id] = payload.new.completed;
+              localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+
+              var cb = document.querySelector('[data-id="' + payload.new.task_id + '"]');
+              if (cb) {
+                cb.checked = payload.new.completed;
+                cb.closest('.playbook-item').classList.toggle('completed', payload.new.completed);
+              }
+              updateProgressBar();
+            }
+          })
+          .subscribe();
+      }
+
+      // =====================================================
+      // DUE DATES
+      // =====================================================
+      var currentDueDateTask = null;
+
+      function addDueDateButtons() {
+        document.querySelectorAll('.playbook-item').forEach(function(item) {
+          if (item.querySelector('.due-date-btn')) return; // Already has button
+
+          var btn = document.createElement('button');
+          btn.className = 'due-date-btn';
+          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+          btn.onclick = function(e) {
+            e.stopPropagation();
+            var taskId = item.querySelector('input[type="checkbox"]').getAttribute('data-id');
+            openDueDateModal(taskId, item.textContent.trim());
+          };
+          item.appendChild(btn);
+
+          // Add due date indicator span
+          var indicator = document.createElement('span');
+          indicator.className = 'due-date-indicator';
+          indicator.setAttribute('data-due-indicator', item.querySelector('input').getAttribute('data-id'));
+          item.appendChild(indicator);
+        });
+      }
+
+      function openDueDateModal(taskId, taskTitle) {
+        currentDueDateTask = taskId;
+        document.getElementById('modalTaskTitle').textContent = taskTitle.replace(/[\n\r]+/g, ' ').substring(0, 100);
+
+        var dueDates = load(DUE_DATES_KEY);
+        var existing = dueDates[taskId];
+        if (existing) {
+          document.getElementById('dueDateInput').value = existing.date || '';
+          document.getElementById('dueTimeInput').value = existing.time || '';
+        } else {
+          document.getElementById('dueDateInput').value = '';
+          document.getElementById('dueTimeInput').value = '';
+        }
+
+        document.getElementById('dueDateModal').style.display = 'flex';
+      }
+
+      window.closeDueDateModal = function() {
+        document.getElementById('dueDateModal').style.display = 'none';
+        currentDueDateTask = null;
+      };
+
+      window.setQuickDate = function(daysFromNow) {
+        var date = new Date();
+        date.setDate(date.getDate() + daysFromNow);
+        document.getElementById('dueDateInput').value = date.toISOString().split('T')[0];
+      };
+
+      window.saveDueDate = function() {
+        if (!currentDueDateTask) return;
+
+        var date = document.getElementById('dueDateInput').value;
+        var time = document.getElementById('dueTimeInput').value;
+
+        var dueDates = load(DUE_DATES_KEY);
+        if (date) {
+          dueDates[currentDueDateTask] = { date: date, time: time || null };
+        } else {
+          delete dueDates[currentDueDateTask];
+        }
+        save(DUE_DATES_KEY, dueDates);
+
+        updateDueDateIndicators();
+        scheduleNotificationsForDueDates();
+        closeDueDateModal();
+      };
+
+      window.clearDueDate = function() {
+        if (!currentDueDateTask) return;
+
+        var dueDates = load(DUE_DATES_KEY);
+        delete dueDates[currentDueDateTask];
+        save(DUE_DATES_KEY, dueDates);
+
+        updateDueDateIndicators();
+        closeDueDateModal();
+      };
+
+      function updateDueDateIndicators() {
+        var dueDates = load(DUE_DATES_KEY);
+        var now = new Date();
+        var tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        document.querySelectorAll('[data-due-indicator]').forEach(function(indicator) {
+          var taskId = indicator.getAttribute('data-due-indicator');
+          var dueData = dueDates[taskId];
+
+          if (!dueData || !dueData.date) {
+            indicator.textContent = '';
+            indicator.className = 'due-date-indicator';
+            return;
+          }
+
+          var dueDate = new Date(dueData.date + (dueData.time ? 'T' + dueData.time : 'T23:59:59'));
+          var item = indicator.closest('.playbook-item');
+          var isCompleted = item.classList.contains('completed');
+
+          if (isCompleted) {
+            indicator.textContent = formatDueDate(dueData.date);
+            indicator.className = 'due-date-indicator due-completed';
+          } else if (dueDate < now) {
+            indicator.textContent = 'Overdue: ' + formatDueDate(dueData.date);
+            indicator.className = 'due-date-indicator due-overdue';
+          } else if (dueDate < tomorrow) {
+            indicator.textContent = 'Due today';
+            indicator.className = 'due-date-indicator due-soon';
+          } else if (dueDate < new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000)) {
+            indicator.textContent = 'Due: ' + formatDueDate(dueData.date);
+            indicator.className = 'due-date-indicator due-soon';
+          } else {
+            indicator.textContent = 'Due: ' + formatDueDate(dueData.date);
+            indicator.className = 'due-date-indicator';
+          }
+        });
+      }
+
+      function formatDueDate(dateStr) {
+        var date = new Date(dateStr + 'T12:00:00');
+        var options = { month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      }
+
+      // Close modal on escape or outside click
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDueDateModal();
+      });
+      document.getElementById('dueDateModal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeDueDateModal();
+      });
+
+      // =====================================================
+      // BROWSER NOTIFICATIONS
+      // =====================================================
+      function checkNotificationPermission() {
+        var statusEl = document.getElementById('notificationStatus');
+        var enableBtn = document.getElementById('enableNotificationsBtn');
+
+        if (!('Notification' in window)) {
+          statusEl.textContent = 'Notifications not supported in this browser.';
+          enableBtn.style.display = 'none';
+          return;
+        }
+
+        if (Notification.permission === 'granted') {
+          statusEl.textContent = 'Notifications are enabled.';
+          statusEl.className = 'notification-enabled';
+          enableBtn.style.display = 'none';
+        } else if (Notification.permission === 'denied') {
+          statusEl.textContent = 'Notifications are blocked. Enable in browser settings.';
+          statusEl.className = 'notification-denied';
+          enableBtn.style.display = 'none';
+        } else {
+          statusEl.textContent = 'Notifications are not enabled.';
+          enableBtn.style.display = 'inline-block';
+        }
+      }
+
+      window.requestNotificationPermission = function() {
+        Notification.requestPermission().then(function(permission) {
+          checkNotificationPermission();
+          if (permission === 'granted') {
+            registerServiceWorker();
+            scheduleNotificationsForDueDates();
+          }
+        });
+      };
+
+      function registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw-notifications.js')
+            .then(function(registration) {
+              console.log('Service Worker registered:', registration);
+            })
+            .catch(function(err) {
+              console.error('Service Worker registration failed:', err);
+            });
+        }
+      }
+
+      function scheduleNotificationsForDueDates() {
+        if (Notification.permission !== 'granted') return;
+
+        var dueDates = load(DUE_DATES_KEY);
+        var tasks = load(TASKS_KEY);
+        var prefs = load(PREFS_KEY);
+        var reminderMs = parseInt(prefs.reminderTime || '86400000'); // Default 1 day
+
+        Object.keys(dueDates).forEach(function(taskId) {
+          if (tasks[taskId]) return; // Task already completed
+
+          var dueData = dueDates[taskId];
+          if (!dueData.date) return;
+
+          var dueDate = new Date(dueData.date + (dueData.time ? 'T' + dueData.time : 'T09:00:00'));
+          var notifyAt = new Date(dueDate.getTime() - reminderMs);
+          var now = new Date();
+
+          if (notifyAt > now) {
+            var delay = notifyAt.getTime() - now.getTime();
+            setTimeout(function() {
+              showNotification(taskId, dueData.date);
+            }, delay);
+          }
+        });
+      }
+
+      function showNotification(taskId, dueDate) {
+        var tasks = load(TASKS_KEY);
+        if (tasks[taskId]) return; // Already completed
+
+        var item = document.querySelector('[data-id="' + taskId + '"]');
+        var taskText = item ? item.closest('.playbook-item').textContent.trim().substring(0, 60) : 'Task';
+
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: 'SHOW_NOTIFICATION',
+            title: 'Task Due Soon',
+            body: taskText,
+            tag: 'task-' + taskId
+          });
+        } else {
+          new Notification('Task Due Soon', {
+            body: taskText,
+            icon: '/images/favicon.png',
+            tag: 'task-' + taskId
+          });
+        }
+      }
+
+      // =====================================================
+      // NOTIFICATION PREFERENCES
+      // =====================================================
+      function loadNotificationPreferences() {
+        var prefs = load(PREFS_KEY);
+
+        var notifyDueSoon = document.getElementById('notifyDueSoon');
+        var reminderTime = document.getElementById('reminderTime');
+        var enableEmailDigest = document.getElementById('enableEmailDigest');
+        var digestTime = document.getElementById('digestTime');
+        var digestTimezone = document.getElementById('digestTimezone');
+
+        if (notifyDueSoon) notifyDueSoon.checked = prefs.notifyDueSoon !== false;
+        if (reminderTime) reminderTime.value = prefs.reminderTime || '86400000';
+        if (enableEmailDigest) enableEmailDigest.checked = prefs.enableEmailDigest || false;
+        if (digestTime) digestTime.value = prefs.digestTime || '9';
+        if (digestTimezone) digestTimezone.value = prefs.digestTimezone || 'America/Phoenix';
+      }
+
+      function saveNotificationPreferences() {
+        var prefs = {
+          notifyDueSoon: document.getElementById('notifyDueSoon')?.checked,
+          reminderTime: document.getElementById('reminderTime')?.value,
+          enableEmailDigest: document.getElementById('enableEmailDigest')?.checked,
+          digestTime: document.getElementById('digestTime')?.value,
+          digestTimezone: document.getElementById('digestTimezone')?.value
+        };
+        save(PREFS_KEY, prefs);
+      }
+
+      // Attach change listeners to preference inputs
+      ['notifyDueSoon', 'reminderTime', 'enableEmailDigest', 'digestTime', 'digestTimezone'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('change', saveNotificationPreferences);
+        }
+      });
+
+      // =====================================================
+      // INITIALIZATION
+      // =====================================================
+      // Add due date buttons after DOM is ready
+      addDueDateButtons();
+      updateDueDateIndicators();
+      loadNotificationPreferences();
+      checkNotificationPermission();
+
+      // Register service worker if notifications are enabled
+      if (Notification.permission === 'granted') {
+        registerServiceWorker();
+        scheduleNotificationsForDueDates();
+      }
+
     })();
   </script>
 </body>

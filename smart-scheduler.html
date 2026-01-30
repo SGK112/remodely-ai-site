@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler Demo | Remodely AI</title>
+  <meta name="description" content="AI-powered scheduling system with voice assistant, automated reminders, and lead capture for contractors.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=20">
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Starfield Background -->
+  <canvas id="starfield" class="starfield-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
+                </linearGradient>
+              </defs>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          REMODELY<span>.AI</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#how-it-works">Process</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#contact" class="nav-cta">Get Started</a></li>
+        </ul>
+        <div class="mobile-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="scheduler-hero">
+    <div class="container">
+      <div class="scheduler-hero-content">
+        <span class="badge">Live Demo</span>
+        <h1>Smart Scheduler</h1>
+        <p>AI-powered booking with voice assistant, automated reminders, and real-time availability. Try it live below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Scheduler Demo -->
+  <section class="scheduler-demo-section">
+    <div class="container">
+      <div class="scheduler-grid">
+
+        <!-- Left: Calendar & Availability -->
+        <div class="scheduler-calendar-panel">
+          <div class="scheduler-panel-header">
+            <h2>Select a Date</h2>
+            <div class="calendar-nav">
+              <button class="cal-nav-btn" onclick="prevMonth()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span id="calendarMonth">January 2026</span>
+              <button class="cal-nav-btn" onclick="nextMonth()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="calendar-grid" id="calendarGrid">
+            <!-- Calendar days rendered by JS -->
+          </div>
+
+          <div class="time-slots-section">
+            <h3>Available Times</h3>
+            <p class="time-slots-hint">Select a date to see available times</p>
+            <div class="time-slots-grid" id="timeSlotsGrid">
+              <!-- Time slots rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Lead Capture & Booking Form -->
+        <div class="scheduler-form-panel">
+          <div class="scheduler-panel-header">
+            <h2>Book Your Appointment</h2>
+          </div>
+
+          <!-- Voice Assistant Button -->
+          <div class="voice-assistant-banner" id="voiceAssistant">
+            <div class="voice-assistant-info">
+              <div class="voice-pulse"></div>
+              <div>
+                <strong>Talk to Aria</strong>
+                <span>Our AI assistant can help you book</span>
+              </div>
+            </div>
+            <button class="voice-assistant-btn" onclick="startVoiceAssistant()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+              Start Call
+            </button>
+          </div>
+
+          <!-- Voice Chat Widget (Hidden initially) -->
+          <div class="voice-chat-widget" id="voiceChatWidget" style="display:none;">
+            <div class="voice-chat-header">
+              <div class="voice-chat-status">
+                <div class="voice-status-dot" id="voiceStatusDot"></div>
+                <span id="voiceStatusText">Connecting...</span>
+              </div>
+              <button class="voice-close-btn" onclick="endVoiceCall()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="voice-chat-body">
+              <div class="voice-avatar">
+                <div class="voice-avatar-ring" id="voiceAvatarRing"></div>
+                <div class="voice-avatar-inner">A</div>
+              </div>
+              <div class="voice-transcript" id="voiceTranscript">
+                <p class="transcript-line aria">Hi! I'm Aria. How can I help you schedule?</p>
+              </div>
+            </div>
+            <div class="voice-chat-footer">
+              <button class="voice-mute-btn" id="voiceMuteBtn" onclick="toggleMute()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                </svg>
+              </button>
+              <button class="voice-end-btn" onclick="endVoiceCall()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+                End Call
+              </button>
+            </div>
+          </div>
+
+          <!-- Booking Form -->
+          <form class="scheduler-form" id="bookingForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customerName">Full Name *</label>
+                <input type="text" id="customerName" name="customerName" required placeholder="John Smith">
+              </div>
+            </div>
+
+            <div class="form-row form-row-2col">
+              <div class="form-group">
+                <label for="customerEmail">Email *</label>
+                <input type="email" id="customerEmail" name="customerEmail" required placeholder="john@example.com">
+              </div>
+              <div class="form-group">
+                <label for="customerPhone">Phone *</label>
+                <input type="tel" id="customerPhone" name="customerPhone" required placeholder="(555) 123-4567">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="serviceType">Service Type *</label>
+              <select id="serviceType" name="serviceType" required>
+                <option value="">Select a service...</option>
+                <option value="ai-receptionist">AI Receptionist Setup</option>
+                <option value="smart-scheduling">Smart Scheduling</option>
+                <option value="quote-automation">Quote Automation</option>
+                <option value="full-platform">Full Platform Demo</option>
+                <option value="custom">Custom Solution</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="projectNotes">Project Details (Optional)</label>
+              <textarea id="projectNotes" name="projectNotes" rows="3" placeholder="Tell us about your business and what you're looking for..."></textarea>
+            </div>
+
+            <div class="selected-slot-display" id="selectedSlotDisplay" style="display:none;">
+              <div class="selected-slot-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <div class="selected-slot-info">
+                <strong id="selectedDate">Friday, January 31</strong>
+                <span id="selectedTime">10:00 AM - 10:30 AM</span>
+              </div>
+              <button type="button" class="change-slot-btn" onclick="clearSelection()">Change</button>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="scheduler-submit-btn" id="submitBtn" disabled>
+                <span class="btn-text">Select a time to continue</span>
+                <span class="btn-loading" style="display:none;">
+                  <span class="spinner"></span>
+                  Booking...
+                </span>
+              </button>
+            </div>
+
+            <p class="form-disclaimer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Your information is secure and will never be shared.
+            </p>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Features Grid -->
+      <div class="scheduler-features">
+        <h2>Built-in Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <h3>Voice AI Booking</h3>
+            <p>Customers can book via phone call with our AI receptionist Aria.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <h3>Smart Reminders</h3>
+            <p>Automated SMS and email reminders reduce no-shows by 60%.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+            </div>
+            <h3>Deposit Collection</h3>
+            <p>Collect deposits at booking to secure appointments and reduce cancellations.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3>Team Calendars</h3>
+            <p>Manage multiple team members with individual availability and skills.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <h3>Buffer Times</h3>
+            <p>Automatic travel time between appointments based on location.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <h3>Analytics</h3>
+            <p>Track booking rates, popular times, and conversion metrics.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal" style="display:none;">
+    <div class="modal-content success-modal">
+      <div class="success-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h2>Appointment Booked!</h2>
+      <p>You're all set. We've sent a confirmation to your email.</p>
+      <div class="success-details" id="successDetails">
+        <div class="success-detail-row">
+          <span>Date:</span>
+          <strong id="confirmDate">Friday, January 31, 2026</strong>
+        </div>
+        <div class="success-detail-row">
+          <span>Time:</span>
+          <strong id="confirmTime">10:00 AM</strong>
+        </div>
+        <div class="success-detail-row">
+          <span>Service:</span>
+          <strong id="confirmService">Full Platform Demo</strong>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="playbook-btn" onclick="addToCalendar()">Add to Calendar</button>
+        <button class="playbook-btn playbook-btn-primary" onclick="closeSuccessModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/main.js?v=5"></script>
+  <script>
+    (function() {
+      // =====================================================
+      // CALENDAR STATE
+      // =====================================================
+      const today = new Date();
+      let currentMonth = today.getMonth();
+      let currentYear = today.getFullYear();
+      let selectedDate = null;
+      let selectedTime = null;
+
+      // Simulated availability data
+      const availability = {
+        // Format: 'YYYY-MM-DD': ['9:00 AM', '10:00 AM', ...]
+      };
+
+      // Generate random availability for next 60 days
+      for (let i = 1; i <= 60; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() + i);
+        if (d.getDay() !== 0) { // Not Sunday
+          const dateStr = d.toISOString().split('T')[0];
+          const slots = [];
+          const possibleSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'];
+          possibleSlots.forEach(slot => {
+            if (Math.random() > 0.3) slots.push(slot);
+          });
+          if (slots.length > 0) availability[dateStr] = slots;
+        }
+      }
+
+      // =====================================================
+      // CALENDAR RENDERING
+      // =====================================================
+      function renderCalendar() {
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
+        document.getElementById('calendarMonth').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = '';
+
+        // Day headers
+        ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+          grid.innerHTML += `<div class="cal-header">${day}</div>`;
+        });
+
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Empty cells
+        for (let i = 0; i < firstDay; i++) {
+          grid.innerHTML += '<div class="cal-day empty"></div>';
+        }
+
+        // Day cells
+        for (let day = 1; day <= daysInMonth; day++) {
+          const date = new Date(currentYear, currentMonth, day);
+          const dateStr = date.toISOString().split('T')[0];
+          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          const hasSlots = availability[dateStr] && availability[dateStr].length > 0;
+          const isSelected = selectedDate === dateStr;
+          const isToday = date.toDateString() === today.toDateString();
+
+          let classes = 'cal-day';
+          if (isPast) classes += ' past';
+          if (!hasSlots && !isPast) classes += ' unavailable';
+          if (hasSlots) classes += ' available';
+          if (isSelected) classes += ' selected';
+          if (isToday) classes += ' today';
+
+          grid.innerHTML += `<div class="${classes}" data-date="${dateStr}" onclick="selectDate('${dateStr}')">${day}</div>`;
+        }
+      }
+
+      window.prevMonth = function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        renderCalendar();
+      };
+
+      window.nextMonth = function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar();
+      };
+
+      window.selectDate = function(dateStr) {
+        if (!availability[dateStr]) return;
+
+        selectedDate = dateStr;
+        selectedTime = null;
+        renderCalendar();
+        renderTimeSlots(dateStr);
+        updateSubmitButton();
+      };
+
+      // =====================================================
+      // TIME SLOTS
+      // =====================================================
+      function renderTimeSlots(dateStr) {
+        const grid = document.getElementById('timeSlotsGrid');
+        const hint = document.querySelector('.time-slots-hint');
+        const slots = availability[dateStr] || [];
+
+        if (slots.length === 0) {
+          grid.innerHTML = '';
+          hint.style.display = 'block';
+          hint.textContent = 'No available times for this date';
+          return;
+        }
+
+        hint.style.display = 'none';
+        grid.innerHTML = slots.map(slot => `
+          <button type="button" class="time-slot ${selectedTime === slot ? 'selected' : ''}"
+                  onclick="selectTime('${slot}')">
+            ${slot}
+          </button>
+        `).join('');
+      }
+
+      window.selectTime = function(time) {
+        selectedTime = time;
+        document.querySelectorAll('.time-slot').forEach(btn => {
+          btn.classList.toggle('selected', btn.textContent.trim() === time);
+        });
+        updateSelectedDisplay();
+        updateSubmitButton();
+      };
+
+      function updateSelectedDisplay() {
+        const display = document.getElementById('selectedSlotDisplay');
+        if (selectedDate && selectedTime) {
+          const date = new Date(selectedDate + 'T12:00:00');
+          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          document.getElementById('selectedDate').textContent = date.toLocaleDateString('en-US', options);
+          document.getElementById('selectedTime').textContent = selectedTime;
+          display.style.display = 'flex';
+        } else {
+          display.style.display = 'none';
+        }
+      }
+
+      window.clearSelection = function() {
+        selectedDate = null;
+        selectedTime = null;
+        renderCalendar();
+        document.getElementById('timeSlotsGrid').innerHTML = '';
+        document.querySelector('.time-slots-hint').style.display = 'block';
+        document.querySelector('.time-slots-hint').textContent = 'Select a date to see available times';
+        updateSelectedDisplay();
+        updateSubmitButton();
+      };
+
+      function updateSubmitButton() {
+        const btn = document.getElementById('submitBtn');
+        const text = btn.querySelector('.btn-text');
+        if (selectedDate && selectedTime) {
+          btn.disabled = false;
+          text.textContent = 'Confirm Booking';
+        } else {
+          btn.disabled = true;
+          text.textContent = 'Select a time to continue';
+        }
+      }
+
+      // =====================================================
+      // FORM SUBMISSION
+      // =====================================================
+      document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!selectedDate || !selectedTime) {
+          alert('Please select a date and time');
+          return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        const btnText = btn.querySelector('.btn-text');
+        const btnLoading = btn.querySelector('.btn-loading');
+
+        btn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'flex';
+
+        const formData = {
+          name: document.getElementById('customerName').value,
+          email: document.getElementById('customerEmail').value,
+          phone: document.getElementById('customerPhone').value,
+          service: document.getElementById('serviceType').value,
+          notes: document.getElementById('projectNotes').value,
+          date: selectedDate,
+          time: selectedTime,
+          source: 'smart-scheduler-demo'
+        };
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Show success
+        const date = new Date(selectedDate + 'T12:00:00');
+        document.getElementById('confirmDate').textContent = date.toLocaleDateString('en-US', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('confirmTime').textContent = selectedTime;
+        document.getElementById('confirmService').textContent = document.getElementById('serviceType').options[
+          document.getElementById('serviceType').selectedIndex
+        ].text;
+
+        document.getElementById('successModal').style.display = 'flex';
+
+        // Reset form
+        btn.disabled = false;
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+
+        // Store lead data for later
+        window.lastBooking = formData;
+
+        console.log('Booking submitted:', formData);
+      });
+
+      window.closeSuccessModal = function() {
+        document.getElementById('successModal').style.display = 'none';
+        document.getElementById('bookingForm').reset();
+        clearSelection();
+      };
+
+      window.addToCalendar = function() {
+        if (!window.lastBooking) return;
+
+        const { date, time, service } = window.lastBooking;
+        const startDate = new Date(date + 'T' + convertTo24Hour(time));
+        const endDate = new Date(startDate.getTime() + 30 * 60000);
+
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+          `&text=${encodeURIComponent('Remodely AI Demo: ' + service)}` +
+          `&dates=${formatGCal(startDate)}/${formatGCal(endDate)}` +
+          `&details=${encodeURIComponent('Your demo appointment with Remodely AI')}`;
+
+        window.open(url, '_blank');
+      };
+
+      function convertTo24Hour(time12) {
+        const [time, modifier] = time12.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (modifier === 'PM' && hours !== '12') hours = parseInt(hours) + 12;
+        if (modifier === 'AM' && hours === '12') hours = '00';
+        return `${hours.toString().padStart(2, '0')}:${minutes}:00`;
+      }
+
+      function formatGCal(date) {
+        return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      }
+
+      // =====================================================
+      // VOICE ASSISTANT (Aria)
+      // =====================================================
+      let voiceWs = null;
+      let audioContext = null;
+      let mediaStream = null;
+      let audioWorklet = null;
+      let isMuted = false;
+
+      const ARIA_BRIDGE_URL = 'wss://voicenow-aria-bridge.onrender.com/web-chat';
+
+      window.startVoiceAssistant = async function() {
+        try {
+          // Request microphone permission
+          mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+          // Show voice widget
+          document.getElementById('voiceAssistant').style.display = 'none';
+          document.getElementById('voiceChatWidget').style.display = 'block';
+          updateVoiceStatus('connecting', 'Connecting...');
+
+          // Connect to Aria bridge
+          voiceWs = new WebSocket(ARIA_BRIDGE_URL);
+
+          voiceWs.onopen = function() {
+            updateVoiceStatus('connected', 'Connected');
+
+            // Send configuration
+            voiceWs.send(JSON.stringify({
+              type: 'config',
+              businessName: 'Remodely AI',
+              businessContext: {
+                services: ['AI Receptionist', 'Smart Scheduling', 'Quote Automation', 'Lead Management'],
+                serviceArea: 'Nationwide (USA)',
+                businessHours: 'Monday-Friday 9am-6pm'
+              },
+              voice: 'coral',
+              systemInstructions: `You are Aria, the friendly AI assistant for Remodely AI - a platform that helps contractors run their business.
+
+PERSONALITY:
+- Warm, helpful, professional but conversational
+- Keep responses SHORT - 1-2 sentences max
+- Sound like a real person, not a robot
+
+YOUR JOB:
+- Help visitors book a demo of the Remodely AI platform
+- Answer questions about our services: AI Receptionist, Smart Scheduling, Quote Automation
+- Capture lead information: name, phone, email, what they're interested in
+
+When they want to book, collect:
+1. Their name
+2. Phone number
+3. Email
+4. What service they're interested in
+5. Preferred time for a demo
+
+Be enthusiastic about how Remodely AI helps contractors save time and never miss a lead!`
+            }));
+
+            // Start audio capture
+            startAudioCapture();
+
+            // Trigger greeting
+            setTimeout(() => {
+              if (voiceWs?.readyState === WebSocket.OPEN) {
+                voiceWs.send(JSON.stringify({
+                  type: 'trigger_greeting',
+                  greeting: "Hey! I'm Aria. I can help you schedule a demo or answer questions about Remodely AI. What would you like to know?"
+                }));
+              }
+            }, 500);
+          };
+
+          voiceWs.onmessage = function(event) {
+            const msg = JSON.parse(event.data);
+            handleVoiceMessage(msg);
+          };
+
+          voiceWs.onerror = function(error) {
+            console.error('Voice WebSocket error:', error);
+            updateVoiceStatus('error', 'Connection error');
+          };
+
+          voiceWs.onclose = function() {
+            updateVoiceStatus('disconnected', 'Disconnected');
+            stopAudioCapture();
+          };
+
+        } catch (error) {
+          console.error('Failed to start voice assistant:', error);
+          alert('Could not access microphone. Please allow microphone access and try again.');
+          endVoiceCall();
+        }
+      };
+
+      function handleVoiceMessage(msg) {
+        switch (msg.type) {
+          case 'connected':
+            updateVoiceStatus('listening', 'Listening...');
+            break;
+
+          case 'speaking_start':
+            updateVoiceStatus('speaking', 'Aria is speaking...');
+            document.getElementById('voiceAvatarRing').classList.add('speaking');
+            break;
+
+          case 'speaking_end':
+            updateVoiceStatus('listening', 'Listening...');
+            document.getElementById('voiceAvatarRing').classList.remove('speaking');
+            break;
+
+          case 'audio':
+            playAudioChunk(msg.audio);
+            break;
+
+          case 'transcript':
+            addTranscriptLine('user', msg.text);
+            break;
+
+          case 'response_text':
+            addTranscriptLine('aria', msg.text);
+            break;
+
+          case 'error':
+            console.error('Voice error:', msg.message);
+            updateVoiceStatus('error', 'Error: ' + msg.message);
+            break;
+        }
+      }
+
+      function updateVoiceStatus(status, text) {
+        const dot = document.getElementById('voiceStatusDot');
+        const textEl = document.getElementById('voiceStatusText');
+        dot.className = 'voice-status-dot ' + status;
+        textEl.textContent = text;
+      }
+
+      function addTranscriptLine(speaker, text) {
+        const transcript = document.getElementById('voiceTranscript');
+        const line = document.createElement('p');
+        line.className = 'transcript-line ' + speaker;
+        line.textContent = text;
+        transcript.appendChild(line);
+        transcript.scrollTop = transcript.scrollHeight;
+      }
+
+      async function startAudioCapture() {
+        try {
+          audioContext = new AudioContext({ sampleRate: 16000 });
+          const source = audioContext.createMediaStreamSource(mediaStream);
+
+          // Use ScriptProcessor for now (AudioWorklet requires more setup)
+          const processor = audioContext.createScriptProcessor(4096, 1, 1);
+          processor.onaudioprocess = function(e) {
+            if (isMuted || voiceWs?.readyState !== WebSocket.OPEN) return;
+
+            const inputData = e.inputBuffer.getChannelData(0);
+            const pcm16 = new Int16Array(inputData.length);
+            for (let i = 0; i < inputData.length; i++) {
+              pcm16[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
+            }
+
+            const base64 = btoa(String.fromCharCode(...new Uint8Array(pcm16.buffer)));
+            voiceWs.send(JSON.stringify({ type: 'audio', audio: base64 }));
+          };
+
+          source.connect(processor);
+          processor.connect(audioContext.destination);
+          audioWorklet = processor;
+
+        } catch (error) {
+          console.error('Audio capture error:', error);
+        }
+      }
+
+      function stopAudioCapture() {
+        if (audioWorklet) {
+          audioWorklet.disconnect();
+          audioWorklet = null;
+        }
+        if (audioContext) {
+          audioContext.close();
+          audioContext = null;
+        }
+        if (mediaStream) {
+          mediaStream.getTracks().forEach(track => track.stop());
+          mediaStream = null;
+        }
+      }
+
+      async function playAudioChunk(base64Audio) {
+        try {
+          if (!audioContext) {
+            audioContext = new AudioContext({ sampleRate: 24000 });
+          }
+
+          const binaryString = atob(base64Audio);
+          const bytes = new Uint8Array(binaryString.length);
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+
+          const pcm16 = new Int16Array(bytes.buffer);
+          const float32 = new Float32Array(pcm16.length);
+          for (let i = 0; i < pcm16.length; i++) {
+            float32[i] = pcm16[i] / 32768;
+          }
+
+          const audioBuffer = audioContext.createBuffer(1, float32.length, 24000);
+          audioBuffer.getChannelData(0).set(float32);
+
+          const source = audioContext.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(audioContext.destination);
+          source.start();
+
+        } catch (error) {
+          console.error('Audio playback error:', error);
+        }
+      }
+
+      window.toggleMute = function() {
+        isMuted = !isMuted;
+        const btn = document.getElementById('voiceMuteBtn');
+        btn.classList.toggle('muted', isMuted);
+        if (isMuted) {
+          updateVoiceStatus('muted', 'Muted');
+        } else {
+          updateVoiceStatus('listening', 'Listening...');
+        }
+      };
+
+      window.endVoiceCall = function() {
+        if (voiceWs) {
+          voiceWs.close();
+          voiceWs = null;
+        }
+        stopAudioCapture();
+
+        document.getElementById('voiceChatWidget').style.display = 'none';
+        document.getElementById('voiceAssistant').style.display = 'flex';
+        document.getElementById('voiceTranscript').innerHTML = '<p class="transcript-line aria">Hi! I\'m Aria. How can I help you schedule?</p>';
+      };
+
+      // =====================================================
+      // INITIALIZATION
+      // =====================================================
+      renderCalendar();
+
+    })();
+  </script>
+</body>
+</html>
