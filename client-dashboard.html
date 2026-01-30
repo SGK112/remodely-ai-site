@@ -221,6 +221,30 @@
       background: rgba(255, 255, 255, 0.15);
     }
 
+    .admin-link {
+      display: none;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(239, 68, 68, 0.2) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 6px;
+      color: #ef4444;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .admin-link:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(239, 68, 68, 0.5);
+    }
+
+    .admin-link.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     /* Dashboard Grid */
     .dashboard-grid {
       display: grid;
@@ -513,6 +537,12 @@
         <h1>Welcome back</h1>
         <div class="user-info">
           <span class="user-email" id="user-email"></span>
+          <a href="/admin.html" class="admin-link" id="admin-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            Admin
+          </a>
           <button class="sign-out-btn" id="sign-out-btn">Sign Out</button>
         </div>
       </div>
@@ -648,6 +678,21 @@
     const googleSignInBtn = document.getElementById('google-sign-in');
     const signOutBtn = document.getElementById('sign-out-btn');
     const userEmailDisplay = document.getElementById('user-email');
+    const adminLink = document.getElementById('admin-link');
+
+    // Check if user is admin
+    async function checkAdminStatus(email) {
+      try {
+        const settingsDoc = await db.collection('settings').doc('admins').get();
+        if (settingsDoc.exists) {
+          const adminEmails = settingsDoc.data().emails || [];
+          return adminEmails.includes(email.toLowerCase());
+        }
+      } catch (error) {
+        console.log('Admin check:', error.message);
+      }
+      return false;
+    }
 
     // Show message
     function showMessage(message, type) {
@@ -661,6 +706,14 @@
         authGate.style.display = 'none';
         dashboardContent.classList.add('active');
         userEmailDisplay.textContent = user.email;
+
+        // Check if admin and show link
+        const isAdmin = await checkAdminStatus(user.email);
+        if (isAdmin) {
+          adminLink.classList.add('visible');
+        } else {
+          adminLink.classList.remove('visible');
+        }
 
         // Load user data
         await loadUserDashboard(user);
