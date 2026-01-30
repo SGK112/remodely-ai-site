@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard | Remodely AI</title>
+  <meta name="description" content="Access your projects, analytics, and deliverables in your Remodely AI client dashboard.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css?v=22">
+
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard-body {
+      background: #050510;
+      min-height: 100vh;
+    }
+
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 100px 2rem 2rem;
+    }
+
+    /* Auth Gate */
+    .auth-gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 3rem;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .auth-card h1 {
+      color: #fff;
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-card p {
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 2rem;
+    }
+
+    .auth-form-group {
+      margin-bottom: 1rem;
+    }
+
+    .auth-form-group input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .auth-form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .auth-form-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      background: rgba(79, 70, 229, 0.1);
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    }
+
+    .auth-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.875rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: #fff;
+      border: none;
+      border-radius: 8px;
+      color: #333;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .google-btn:hover {
+      background: #f5f5f5;
+      transform: translateY(-2px);
+    }
+
+    .google-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .auth-message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .auth-message.success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+    }
+
+    .auth-message.error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+    }
+
+    /* Dashboard Content */
+    .dashboard-content {
+      display: none;
+    }
+
+    .dashboard-content.active {
+      display: block;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dashboard-header h1 {
+      color: #fff;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-email {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+    }
+
+    .sign-out-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sign-out-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+      border-color: rgba(79, 70, 229, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .card-header h3 {
+      color: #fff;
+      font-size: 1.125rem;
+      margin: 0;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #818cf8;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.875rem;
+    }
+
+    .stat-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .stat-change.positive {
+      color: #10b981;
+    }
+
+    .stat-change.negative {
+      color: #ef4444;
+    }
+
+    /* Projects Section */
+    .projects-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      color: #fff;
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .project-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .project-info h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin: 0 0 0.25rem;
+    }
+
+    .project-info p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .project-status {
+      padding: 0.375rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .project-status.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .project-status.pending {
+      background: rgba(251, 191, 36, 0.15);
+      color: #fbbf24;
+    }
+
+    .project-status.completed {
+      background: rgba(79, 70, 229, 0.15);
+      color: #818cf8;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      color: rgba(255, 255, 255, 0.2);
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.875rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-action-btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .quick-action-btn:hover {
+      background: rgba(79, 70, 229, 0.1);
+      border-color: rgba(79, 70, 229, 0.3);
+    }
+
+    .quick-action-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #818cf8;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 80px 1rem 1rem;
+      }
+
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+      }
+
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="remodelyHouseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4285F4"/>
+                  <stop offset="33%" stop-color="#EA4335"/>
+                  <stop offset="66%" stop-color="#FBBC05"/>
+                  <stop offset="100%" stop-color="#34A853"/>
+                </linearGradient>
+              </defs>
+              <path d="M3 21V10l9-7 9 7v11" stroke="url(#remodelyHouseGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          REMODELY<span>.AI</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <!-- Auth Gate (shown when not logged in) -->
+    <div class="auth-gate" id="auth-gate">
+      <div class="auth-card">
+        <h1>Client Dashboard</h1>
+        <p>Sign in to access your projects and analytics</p>
+
+        <div id="auth-message"></div>
+
+        <form id="email-auth-form">
+          <div class="auth-form-group">
+            <input type="email" id="auth-email" placeholder="Enter your email" required>
+          </div>
+          <button type="submit" class="auth-btn" id="email-submit-btn">
+            Send Sign-In Link
+          </button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <button class="google-btn" id="google-sign-in">
+          <svg viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <p style="margin-top: 1.5rem; font-size: 0.8125rem; color: rgba(255,255,255,0.4);">
+          Not a client yet? <a href="/#contact" style="color: #818cf8;">Get started</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Dashboard Content (shown when logged in) -->
+    <div class="dashboard-content" id="dashboard-content">
+      <div class="dashboard-header">
+        <h1>Welcome back</h1>
+        <div class="user-info">
+          <span class="user-email" id="user-email"></span>
+          <button class="sign-out-btn" id="sign-out-btn">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3>Active Projects</h3>
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value" id="active-projects">0</div>
+          <div class="stat-label">Projects in progress</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3>Website Traffic</h3>
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 20V10M12 20V4M6 20v-6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value" id="website-traffic">--</div>
+          <div class="stat-label">Monthly visitors</div>
+          <div class="stat-change positive" id="traffic-change">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 15l-6-6-6 6"/>
+            </svg>
+            <span>Data syncs after project setup</span>
+          </div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3>Search Rankings</h3>
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value" id="search-rankings">--</div>
+          <div class="stat-label">Keywords ranking</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3>Leads Generated</h3>
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value" id="leads-generated">--</div>
+          <div class="stat-label">This month</div>
+        </div>
+      </div>
+
+      <!-- Projects Section -->
+      <div class="projects-section">
+        <h2 class="section-title">Your Projects</h2>
+        <div id="projects-list">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+            </svg>
+            <h3>No active projects yet</h3>
+            <p>Once you start a project with us, it will appear here with real-time status updates.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="quick-actions">
+        <button class="quick-action-btn" onclick="window.location.href='mailto:help.remodely@gmail.com?subject=Support Request'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/>
+          </svg>
+          Contact Support
+        </button>
+        <button class="quick-action-btn" onclick="window.location.href='/#services'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+          </svg>
+          View Services
+        </button>
+        <button class="quick-action-btn" onclick="window.location.href='tel:+1234567890'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          Schedule a Call
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Firebase Configuration
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDJJMyA-sRoh1IYTDf84nmzt48L5RxhJec",
+      authDomain: "remodelyai-app.firebaseapp.com",
+      projectId: "remodelyai-app",
+      storageBucket: "remodelyai-app.firebasestorage.app",
+      messagingSenderId: "254256003480",
+      appId: "1:254256003480:web:0b5f62324a7fb09a7b13ed"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(FIREBASE_CONFIG);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // DOM Elements
+    const authGate = document.getElementById('auth-gate');
+    const dashboardContent = document.getElementById('dashboard-content');
+    const authMessage = document.getElementById('auth-message');
+    const emailForm = document.getElementById('email-auth-form');
+    const emailInput = document.getElementById('auth-email');
+    const emailSubmitBtn = document.getElementById('email-submit-btn');
+    const googleSignInBtn = document.getElementById('google-sign-in');
+    const signOutBtn = document.getElementById('sign-out-btn');
+    const userEmailDisplay = document.getElementById('user-email');
+
+    // Show message
+    function showMessage(message, type) {
+      authMessage.innerHTML = `<div class="auth-message ${type}">${message}</div>`;
+    }
+
+    // Auth state observer
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // User is signed in
+        authGate.style.display = 'none';
+        dashboardContent.classList.add('active');
+        userEmailDisplay.textContent = user.email;
+
+        // Load user data
+        await loadUserDashboard(user);
+      } else {
+        // User is signed out
+        authGate.style.display = 'flex';
+        dashboardContent.classList.remove('active');
+
+        // Check for email link sign-in
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+          let email = window.localStorage.getItem('emailForSignIn');
+          if (!email) {
+            email = window.prompt('Please provide your email for confirmation');
+          }
+          if (email) {
+            try {
+              await auth.signInWithEmailLink(email, window.location.href);
+              window.localStorage.removeItem('emailForSignIn');
+              window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (error) {
+              showMessage('Error signing in: ' + error.message, 'error');
+            }
+          }
+        }
+      }
+    });
+
+    // Email sign-in
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value;
+
+      emailSubmitBtn.disabled = true;
+      emailSubmitBtn.textContent = 'Sending...';
+
+      const actionCodeSettings = {
+        url: window.location.href,
+        handleCodeInApp: true
+      };
+
+      try {
+        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+        window.localStorage.setItem('emailForSignIn', email);
+        showMessage('Check your email for a sign-in link!', 'success');
+        emailInput.value = '';
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      } finally {
+        emailSubmitBtn.disabled = false;
+        emailSubmitBtn.textContent = 'Send Sign-In Link';
+      }
+    });
+
+    // Google sign-in
+    googleSignInBtn.addEventListener('click', async () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    // Sign out
+    signOutBtn.addEventListener('click', async () => {
+      try {
+        await auth.signOut();
+      } catch (error) {
+        console.error('Sign out error:', error);
+      }
+    });
+
+    // Load user dashboard data
+    async function loadUserDashboard(user) {
+      try {
+        // Try to get user's client data
+        const clientDoc = await db.collection('clients').doc(user.uid).get();
+
+        if (clientDoc.exists) {
+          const data = clientDoc.data();
+
+          // Update stats
+          if (data.activeProjects !== undefined) {
+            document.getElementById('active-projects').textContent = data.activeProjects;
+          }
+          if (data.websiteTraffic !== undefined) {
+            document.getElementById('website-traffic').textContent = formatNumber(data.websiteTraffic);
+          }
+          if (data.searchRankings !== undefined) {
+            document.getElementById('search-rankings').textContent = data.searchRankings;
+          }
+          if (data.leadsGenerated !== undefined) {
+            document.getElementById('leads-generated').textContent = data.leadsGenerated;
+          }
+
+          // Load projects
+          if (data.projects && data.projects.length > 0) {
+            renderProjects(data.projects);
+          }
+        } else {
+          // Create initial client document
+          await db.collection('clients').doc(user.uid).set({
+            email: user.email,
+            name: user.displayName || '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            activeProjects: 0,
+            projects: []
+          });
+        }
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+      }
+    }
+
+    // Render projects
+    function renderProjects(projects) {
+      const projectsList = document.getElementById('projects-list');
+
+      if (projects.length === 0) {
+        return; // Keep empty state
+      }
+
+      projectsList.innerHTML = projects.map(project => `
+        <div class="project-item">
+          <div class="project-info">
+            <h4>${project.name}</h4>
+            <p>${project.description || 'No description'}</p>
+          </div>
+          <span class="project-status ${project.status}">${project.status}</span>
+        </div>
+      `).join('');
+    }
+
+    // Format numbers
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+  </script>
+</body>
+</html>

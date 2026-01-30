@@ -38,6 +38,11 @@ service cloud.firestore {
     match /playbook_users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
+
+    // Clients can read/write their own client dashboard data
+    match /clients/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
   }
 }
 ```
