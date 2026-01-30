@@ -34,14 +34,30 @@ Go to **Firestore Database > Rules** and replace with:
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/settings/admins) &&
+        request.auth.token.email in get(/databases/$(database)/documents/settings/admins).data.emails;
+    }
+
     // Users can only read/write their own playbook data
     match /playbook_users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Clients can read/write their own client dashboard data
+    // Clients can read/write their own data, admins can read all
     match /clients/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow write: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Admin settings - admins can read/write, authenticated users can read
+    match /settings/admins {
+      allow read: if request.auth != null;
+      allow write: if isAdmin() ||
+        (request.auth != null && request.auth.token.email == 'help.remodely@gmail.com');
     }
   }
 }
