@@ -17,10 +17,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/styles.css?v=19">
+  <link rel="stylesheet" href="/css/styles.css?v=20">
 
-  <!-- Supabase SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <!-- Starfield Background -->
@@ -595,19 +597,28 @@
       var DUE_DATES_KEY = 'remodely_playbook_due_dates';
       var PREFS_KEY = 'remodely_playbook_prefs';
 
-      // --- Supabase Configuration ---
-      // Replace these with your actual Supabase project credentials
-      var SUPABASE_URL = 'YOUR_SUPABASE_URL';
-      var SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-      var supabase = null;
+      // --- Firebase Configuration ---
+      var FIREBASE_CONFIG = {
+        apiKey: "AIzaSyDYOURKEYHERE",
+        authDomain: "remodely-playbook.firebaseapp.com",
+        projectId: "remodely-playbook",
+        storageBucket: "remodely-playbook.appspot.com",
+        messagingSenderId: "254256003480",
+        appId: "YOUR_APP_ID"
+      };
+      var db = null;
+      var auth = null;
       var currentUser = null;
       var syncInProgress = false;
       var lastSyncTime = null;
+      var unsubscribeSync = null;
 
-      // Initialize Supabase if credentials are set
-      if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && typeof window.supabase !== 'undefined') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        initSupabaseAuth();
+      // Initialize Firebase if configured
+      if (typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey !== "AIzaSyDYOURKEYHERE") {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        initFirebaseAuth();
       }
 
       // --- Storage helpers ---
@@ -904,32 +915,25 @@
       // =====================================================
       // SUPABASE AUTHENTICATION
       // =====================================================
-      function initSupabaseAuth() {
-        if (!supabase) return;
+      function initFirebaseAuth() {
+        if (!auth) return;
 
-        // Check for existing session
-        supabase.auth.getSession().then(function(result) {
-          if (result.data.session) {
-            handleAuthStateChange('SIGNED_IN', result.data.session);
+        // Listen for auth state changes
+        auth.onAuthStateChanged(function(user) {
+          if (user) {
+            currentUser = user;
+            updateAuthUI(true);
+            syncFromCloud();
+            subscribeToRealtime();
+          } else {
+            currentUser = null;
+            updateAuthUI(false);
+            if (unsubscribeSync) {
+              unsubscribeSync();
+              unsubscribeSync = null;
+            }
           }
         });
-
-        // Listen for auth changes
-        supabase.auth.onAuthStateChange(function(event, session) {
-          handleAuthStateChange(event, session);
-        });
-      }
-
-      function handleAuthStateChange(event, session) {
-        if (event === 'SIGNED_IN' && session) {
-          currentUser = session.user;
-          updateAuthUI(true);
-          syncFromCloud();
-          subscribeToRealtime();
-        } else if (event === 'SIGNED_OUT') {
-          currentUser = null;
-          updateAuthUI(false);
-        }
       }
 
       function updateAuthUI(signedIn) {
@@ -950,7 +954,7 @@
 
           // Update user info
           document.getElementById('authUserEmail').textContent = currentUser.email;
-          document.getElementById('authUserName').textContent = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+          document.getElementById('authUserName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
           var avatar = document.getElementById('authAvatar');
           avatar.textContent = (currentUser.email[0] || 'U').toUpperCase();
         } else {
@@ -970,7 +974,7 @@
       };
 
       window.sendMagicLink = function() {
-        if (!supabase) {
+        if (!auth) {
           showAuthMessage('Cloud sync not configured. Contact support.', 'error');
           return;
         }
@@ -979,32 +983,50 @@
           showAuthMessage('Please enter your email address.', 'error');
           return;
         }
-        supabase.auth.signInWithOtp({
-          email: email,
-          options: { emailRedirectTo: window.location.origin + window.location.pathname }
-        }).then(function(result) {
-          if (result.error) {
-            showAuthMessage(result.error.message, 'error');
-          } else {
+        var actionCodeSettings = {
+          url: window.location.origin + window.location.pathname,
+          handleCodeInApp: true
+        };
+        auth.sendSignInLinkToEmail(email, actionCodeSettings)
+          .then(function() {
+            window.localStorage.setItem('emailForSignIn', email);
             showAuthMessage('Check your email for the sign-in link!', 'success');
-          }
-        });
+          })
+          .catch(function(error) {
+            showAuthMessage(error.message, 'error');
+          });
       };
 
+      // Check if returning from email link
+      if (auth && auth.isSignInWithEmailLink(window.location.href)) {
+        var email = window.localStorage.getItem('emailForSignIn');
+        if (email) {
+          auth.signInWithEmailLink(email, window.location.href)
+            .then(function() {
+              window.localStorage.removeItem('emailForSignIn');
+              window.history.replaceState({}, '', window.location.pathname);
+            })
+            .catch(function(error) {
+              console.error('Email link sign-in error:', error);
+            });
+        }
+      }
+
       window.signInWithGoogle = function() {
-        if (!supabase) {
+        if (!auth) {
           showAuthMessage('Cloud sync not configured. Contact support.', 'error');
           return;
         }
-        supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: { redirectTo: window.location.origin + window.location.pathname }
-        });
+        var provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+          .catch(function(error) {
+            showAuthMessage(error.message, 'error');
+          });
       };
 
       window.signOut = function() {
-        if (!supabase) return;
-        supabase.auth.signOut().then(function() {
+        if (!auth) return;
+        auth.signOut().then(function() {
           showAuthMessage('Signed out successfully.', 'success');
         });
       };
@@ -1039,7 +1061,7 @@
       }
 
       function syncToCloud() {
-        if (!supabase || !currentUser || syncInProgress) return;
+        if (!db || !currentUser || syncInProgress) return;
         syncInProgress = true;
         updateSyncStatus('syncing', 'Syncing...');
 
@@ -1048,37 +1070,17 @@
         var dueDates = load(DUE_DATES_KEY);
         var prefs = load(PREFS_KEY);
 
-        // Upsert tasks
-        var taskPromises = Object.keys(tasks).map(function(taskId) {
-          return supabase.from('tasks').upsert({
-            user_id: currentUser.id,
-            task_id: taskId,
-            completed: tasks[taskId],
-            due_date: dueDates[taskId]?.date || null,
-            due_time: dueDates[taskId]?.time || null,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'user_id,task_id' });
-        });
+        var userDoc = db.collection('playbook_users').doc(currentUser.uid);
 
-        // Upsert goals
-        var goalPromises = Object.keys(goals).map(function(goalKey) {
-          return supabase.from('goals').upsert({
-            user_id: currentUser.id,
-            goal_key: goalKey,
-            value: goals[goalKey],
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'user_id,goal_key' });
-        });
-
-        // Upsert preferences
-        var prefPromise = supabase.from('profiles').upsert({
-          id: currentUser.id,
+        // Save all data in one document for simplicity
+        userDoc.set({
           email: currentUser.email,
-          notification_preferences: prefs,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'id' });
-
-        Promise.all([...taskPromises, ...goalPromises, prefPromise])
+          tasks: tasks,
+          goals: goals,
+          dueDates: dueDates,
+          preferences: prefs,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true })
           .then(function() {
             lastSyncTime = new Date();
             updateSyncStatus('synced', 'Synced');
@@ -1093,59 +1095,47 @@
       }
 
       function syncFromCloud() {
-        if (!supabase || !currentUser) return;
+        if (!db || !currentUser) return;
         updateSyncStatus('syncing', 'Loading...');
 
-        Promise.all([
-          supabase.from('tasks').select('*').eq('user_id', currentUser.id),
-          supabase.from('goals').select('*').eq('user_id', currentUser.id),
-          supabase.from('profiles').select('*').eq('id', currentUser.id).single()
-        ]).then(function(results) {
-          var tasksResult = results[0];
-          var goalsResult = results[1];
-          var profileResult = results[2];
+        var userDoc = db.collection('playbook_users').doc(currentUser.uid);
 
-          // Merge cloud tasks with local (cloud wins if newer)
-          if (tasksResult.data && tasksResult.data.length > 0) {
-            var cloudTasks = {};
-            var cloudDueDates = {};
-            tasksResult.data.forEach(function(t) {
-              cloudTasks[t.task_id] = t.completed;
-              if (t.due_date) {
-                cloudDueDates[t.task_id] = { date: t.due_date, time: t.due_time };
-              }
-            });
-            save(TASKS_KEY, cloudTasks);
-            save(DUE_DATES_KEY, cloudDueDates);
+        userDoc.get().then(function(doc) {
+          if (doc.exists) {
+            var data = doc.data();
 
-            // Update UI
-            document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
-              var id = cb.getAttribute('data-id');
-              cb.checked = !!cloudTasks[id];
-              cb.closest('.playbook-item').classList.toggle('completed', cb.checked);
-            });
-            updateProgressBar();
-            updateDueDateIndicators();
-          }
+            // Load tasks
+            if (data.tasks) {
+              localStorage.setItem(TASKS_KEY, JSON.stringify(data.tasks));
+              document.querySelectorAll('.playbook-item input[type="checkbox"]').forEach(function(cb) {
+                var id = cb.getAttribute('data-id');
+                cb.checked = !!data.tasks[id];
+                cb.closest('.playbook-item').classList.toggle('completed', cb.checked);
+              });
+              updateProgressBar();
+            }
 
-          // Merge goals
-          if (goalsResult.data && goalsResult.data.length > 0) {
-            var cloudGoals = {};
-            goalsResult.data.forEach(function(g) {
-              cloudGoals[g.goal_key] = g.value;
-            });
-            save(GOALS_KEY, cloudGoals);
-            document.querySelectorAll('[data-goal]').forEach(function(inp) {
-              var key = inp.getAttribute('data-goal');
-              if (cloudGoals[key] !== undefined) inp.value = cloudGoals[key];
-            });
-            updateGoalBars();
-          }
+            // Load due dates
+            if (data.dueDates) {
+              localStorage.setItem(DUE_DATES_KEY, JSON.stringify(data.dueDates));
+              updateDueDateIndicators();
+            }
 
-          // Load preferences
-          if (profileResult.data?.notification_preferences) {
-            save(PREFS_KEY, profileResult.data.notification_preferences);
-            loadNotificationPreferences();
+            // Load goals
+            if (data.goals) {
+              localStorage.setItem(GOALS_KEY, JSON.stringify(data.goals));
+              document.querySelectorAll('[data-goal]').forEach(function(inp) {
+                var key = inp.getAttribute('data-goal');
+                if (data.goals[key] !== undefined) inp.value = data.goals[key];
+              });
+              updateGoalBars();
+            }
+
+            // Load preferences
+            if (data.preferences) {
+              localStorage.setItem(PREFS_KEY, JSON.stringify(data.preferences));
+              loadNotificationPreferences();
+            }
           }
 
           lastSyncTime = new Date();
@@ -1162,30 +1152,44 @@
       };
 
       function subscribeToRealtime() {
-        if (!supabase || !currentUser) return;
+        if (!db || !currentUser) return;
 
-        supabase.channel('playbook-sync')
-          .on('postgres_changes', {
-            event: '*',
-            schema: 'public',
-            table: 'tasks',
-            filter: 'user_id=eq.' + currentUser.id
-          }, function(payload) {
-            // Another device made a change
-            if (payload.new) {
-              var tasks = load(TASKS_KEY);
-              tasks[payload.new.task_id] = payload.new.completed;
-              localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+        // Unsubscribe from previous listener if exists
+        if (unsubscribeSync) {
+          unsubscribeSync();
+        }
 
-              var cb = document.querySelector('[data-id="' + payload.new.task_id + '"]');
-              if (cb) {
-                cb.checked = payload.new.completed;
-                cb.closest('.playbook-item').classList.toggle('completed', payload.new.completed);
+        var userDoc = db.collection('playbook_users').doc(currentUser.uid);
+
+        unsubscribeSync = userDoc.onSnapshot(function(doc) {
+          if (doc.exists && !syncInProgress) {
+            var data = doc.data();
+
+            // Update tasks from another device
+            if (data.tasks) {
+              var currentTasks = load(TASKS_KEY);
+              var changed = false;
+
+              Object.keys(data.tasks).forEach(function(taskId) {
+                if (currentTasks[taskId] !== data.tasks[taskId]) {
+                  changed = true;
+                  var cb = document.querySelector('[data-id="' + taskId + '"]');
+                  if (cb) {
+                    cb.checked = data.tasks[taskId];
+                    cb.closest('.playbook-item').classList.toggle('completed', data.tasks[taskId]);
+                  }
+                }
+              });
+
+              if (changed) {
+                localStorage.setItem(TASKS_KEY, JSON.stringify(data.tasks));
+                updateProgressBar();
               }
-              updateProgressBar();
             }
-          })
-          .subscribe();
+          }
+        }, function(error) {
+          console.error('Real-time sync error:', error);
+        });
       }
 
       // =====================================================
