@@ -59,6 +59,13 @@ service cloud.firestore {
       allow write: if isAdmin() ||
         (request.auth != null && request.auth.token.email == 'help.remodely@gmail.com');
     }
+
+    // Leads - anyone can create, only admins can read
+    match /leads/{leadId} {
+      allow create: if true;  // Allow unauthenticated form submissions
+      allow read: if request.auth != null && isAdmin();
+      allow update, delete: if request.auth != null && isAdmin();
+    }
   }
 }
 ```

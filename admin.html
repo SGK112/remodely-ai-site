@@ -601,6 +601,17 @@
         </form>
       </div>
 
+      <!-- Leads Section -->
+      <div class="clients-section" style="margin-bottom: 2rem;">
+        <div class="settings-header">
+          <h3>Incoming Leads</h3>
+          <span id="leads-count" style="color: rgba(255,255,255,0.5); font-size: 0.875rem;"></span>
+        </div>
+        <div id="leads-list">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+
       <!-- Clients Section -->
       <div class="clients-section">
         <div class="settings-header">
@@ -693,6 +704,7 @@
 
           // Load admin data
           await loadAdminList();
+          await loadLeads();
           await loadClients();
         } else {
           // Show access denied
@@ -809,6 +821,66 @@
         console.error('Error removing admin:', error);
         alert('Error removing admin: ' + error.message);
       }
+    }
+
+    // Load all leads
+    const leadsList = document.getElementById('leads-list');
+    const leadsCount = document.getElementById('leads-count');
+
+    async function loadLeads() {
+      try {
+        const leadsSnapshot = await db.collection('leads')
+          .orderBy('createdAt', 'desc')
+          .limit(50)
+          .get();
+
+        if (leadsSnapshot.empty) {
+          leadsList.innerHTML = '<div class="no-clients">No leads yet. Leads will appear here when visitors submit forms.</div>';
+          leadsCount.textContent = '0 leads';
+          return;
+        }
+
+        const leads = [];
+        leadsSnapshot.forEach(doc => {
+          leads.push({ id: doc.id, ...doc.data() });
+        });
+
+        leadsCount.textContent = `${leads.length} leads`;
+        renderLeads(leads);
+      } catch (error) {
+        console.error('Error loading leads:', error);
+        leadsList.innerHTML = '<div class="no-clients">Error loading leads. Make sure Firestore rules are updated.</div>';
+      }
+    }
+
+    // Render leads table
+    function renderLeads(leads) {
+      leadsList.innerHTML = `
+        <table class="clients-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Source</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${leads.map(lead => `
+              <tr>
+                <td>${lead.name || '-'}</td>
+                <td><a href="mailto:${lead.email}" style="color: #818cf8;">${lead.email || '-'}</a></td>
+                <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color: #818cf8;">${lead.phone}</a>` : '-'}</td>
+                <td>${lead.formType || lead.source || '-'}</td>
+                <td>${lead.createdAt ? formatDate(lead.createdAt.toDate()) : '-'}</td>
+                <td><span class="client-status ${lead.status === 'new' ? 'active' : 'pending'}">${lead.status || 'new'}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
     }
 
     // Load all clients

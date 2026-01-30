@@ -653,31 +653,54 @@ document.addEventListener('DOMContentLoaded', function() {
         Sending...
       `;
 
-      // Simulate form submission
-      setTimeout(() => {
-        submitBtn.classList.add('btn-success');
-        submitBtn.innerHTML = `
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          Message Sent!
-        `;
+      // Get form data
+      const formData = new FormData(this);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        company: formData.get('company'),
+        message: formData.get('message'),
+        formType: 'contact'
+      };
 
-        showToast('Thank you! We\'ll be in touch soon.', 'success');
+      const form = this;
 
-        // Reset form
-        this.reset();
-        this.querySelectorAll('input, textarea').forEach(el => {
-          el.classList.remove('valid', 'invalid');
+      // Submit to Firebase
+      if (typeof window.captureLeadToFirebase === 'function') {
+        window.captureLeadToFirebase(data).then(success => {
+          if (success) {
+            submitBtn.classList.add('btn-success');
+            submitBtn.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Message Sent!
+            `;
+            showToast('Thank you! We\'ll be in touch soon.', 'success');
+            form.reset();
+            form.querySelectorAll('input, textarea').forEach(el => {
+              el.classList.remove('valid', 'invalid');
+            });
+          } else {
+            submitBtn.innerHTML = 'Error - Try Again';
+            showToast('Error sending message. Please try again.', 'error');
+          }
+
+          // Reset button after delay
+          setTimeout(() => {
+            submitBtn.classList.remove('btn-success');
+            submitBtn.innerHTML = originalContent;
+            submitBtn.disabled = false;
+          }, 3000);
         });
-
-        // Reset button after delay
+      } else {
+        // Fallback
         setTimeout(() => {
-          submitBtn.classList.remove('btn-success');
           submitBtn.innerHTML = originalContent;
           submitBtn.disabled = false;
-        }, 3000);
-      }, 1500);
+          showToast('Error submitting form. Please try again.', 'error');
+        }, 1000);
+      }
     });
   }
 
@@ -1787,35 +1810,51 @@ if (heroLeadForm) {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      business: formData.get('business')
+      business: formData.get('business'),
+      formType: 'hero-lead'
     };
 
-    // Simulate submission (replace with actual endpoint)
-    setTimeout(() => {
-      // Show success
-      submitBtn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        <span>Request Sent!</span>
-      `;
-      submitBtn.style.background = '#059669';
+    const form = this;
 
-      // Reset form
-      this.reset();
+    // Submit to Firebase
+    if (typeof window.captureLeadToFirebase === 'function') {
+      window.captureLeadToFirebase(data).then(success => {
+        if (success) {
+          // Show success
+          submitBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Request Sent!</span>
+          `;
+          submitBtn.style.background = '#059669';
+          form.reset();
 
-      // Scroll to success message or show toast
-      if (typeof showToast === 'function') {
-        showToast('Thanks! We\'ll be in touch within 24 hours.', 'success');
-      }
+          if (typeof showToast === 'function') {
+            showToast('Thanks! We\'ll be in touch within 24 hours.', 'success');
+          }
+        } else {
+          submitBtn.innerHTML = '<span>Error - Try Again</span>';
+          submitBtn.style.background = '#dc2626';
+        }
 
-      // Reset button after delay
+        // Reset button after delay
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+        }, 3000);
+      });
+    } else {
+      // Fallback if Firebase not loaded
       setTimeout(() => {
         submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
         submitBtn.disabled = false;
-      }, 3000);
-    }, 1500);
+        if (typeof showToast === 'function') {
+          showToast('Error submitting form. Please try again.', 'error');
+        }
+      }, 1000);
+    }
   });
 
   // Add input validation styling
