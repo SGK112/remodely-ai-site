@@ -2131,9 +2131,9 @@ console.log('Remodely AI - Full site loaded with enhanced interactivity');
     setPresentationMode(true);
   }
 
-  // Force video to play on mobile
+  // Force video to play on all screens
   const heroVideo = document.getElementById('heroVideo');
-  if (heroVideo && isMobile()) {
+  if (heroVideo) {
     // Ensure video is muted (required for autoplay)
     heroVideo.muted = true;
     heroVideo.playsInline = true;
