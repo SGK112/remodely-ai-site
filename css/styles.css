@@ -8163,62 +8163,11 @@ html {
   background: #0f172a;
 }
 
-/* Mobile-only: Lock viewport, single-screen experience */
+/* Mobile styles - Normal scrolling enabled */
 @media (max-width: 768px) {
-  /* Presentation Mode: Lock viewport - NO SCROLL */
-  html.mobile-presentation,
-  html.mobile-presentation body {
-    overflow: hidden !important;
-    height: 100vh;
-    height: 100dvh;
-    position: fixed;
-    width: 100%;
-    touch-action: none;
-  }
-
-  /* Hero fills the entire screen */
-  .mobile-presentation .hero {
-    min-height: 100vh;
-    min-height: 100dvh;
-    height: 100vh;
-    height: 100dvh;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow: hidden;
-  }
-
-  /* Hide non-essential elements in presentation mode */
-  .mobile-presentation .navbar,
-  .mobile-presentation .social-proof-bar,
-  .mobile-presentation .hero-bg-animation,
-  .mobile-presentation .hero-noise,
-  .mobile-presentation .section,
-  .mobile-presentation footer,
-  .mobile-presentation .hero-grid,
-  .mobile-presentation .scroll-progress {
-    display: none !important;
-  }
-
-  /* Create new mobile-first hero layout */
-  .mobile-presentation .hero > .container {
-    display: none;
-  }
-
-  /* Mobile Hero Content - Visible in presentation mode */
+  /* Mobile Hero Content */
   .mobile-hero-content {
     display: none;
-  }
-
-  .mobile-presentation .mobile-hero-content {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    height: 100dvh;
-    padding: 0;
-    position: relative;
-    z-index: 10;
   }
 
   /* Top Bar - Logo + Contact */
