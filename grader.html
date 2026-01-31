@@ -1645,20 +1645,20 @@
       </div>
 
       <!-- CTA (shows after unlock) -->
-      <!-- CTA (shows after unlock) -->
       <div class="cta-section" id="ctaSection" style="display: none;">
         <div class="cta-section__spots">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-          Only <strong>3 spots left</strong> this week
+          <strong>Aria is ready</strong> to discuss your results
         </div>
-        <h3>Want Us To Fix This For You?</h3>
-        <p>We'll reach out within 24 hours to schedule your free strategy call and create a custom action plan.</p>
-        <a href="/#contact" class="cta-btn">
+        <h3>Want to Discuss Your Results?</h3>
+        <p>Have our AI assistant Aria call you right now to walk through your report and answer questions.</p>
+        <button type="button" class="cta-btn" id="callMeBtn" onclick="triggerAriaCall()">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
           </svg>
-          Contact Us
-        </a>
+          Have Aria Call Me Now
+        </button>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--gray-500);">Or <a href="/#contact" style="color: var(--accent-light);">schedule for later</a></p>
       </div>
 
       <!-- Success Message (shows after form submit) -->
@@ -1685,6 +1685,64 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // Aria Call API
+    const ARIA_CALL_API = 'https://remodely-backend.onrender.com/api/aria-realtime/trigger-call';
+
+    // Trigger Aria to call the user
+    async function triggerAriaCall() {
+      const lead = window.collectedLead || {};
+      const btn = document.getElementById('callMeBtn');
+
+      if (!lead.phone) {
+        alert('Please complete the form above with your phone number first.');
+        return;
+      }
+
+      // Update button state
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Calling you now...</span>';
+      }
+
+      try {
+        const response = await fetch(ARIA_CALL_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contactName: lead.name || 'there',
+            contactPhone: lead.phone.startsWith('+') ? lead.phone : '+1' + lead.phone.replace(/\D/g, ''),
+            contactEmail: lead.email,
+            businessName: urlInput?.value || 'your website',
+            graderResults: {
+              domain: urlInput?.value || '',
+              overall: analysisData?.scores?.overall || 0,
+              overall_grade: analysisData?.scores?.overall_grade || 'N/A',
+              ai_visibility: analysisData?.scores?.ai_visibility || 0,
+              issues: window.gatedData?.issues || []
+            },
+            source: 'grader_cta'
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          if (btn) {
+            btn.innerHTML = '<span style="color: #22c55e;">✓ Call initiated! Answer your phone.</span>';
+          }
+        } else {
+          throw new Error(data.error || 'Call failed');
+        }
+      } catch (error) {
+        console.error('Aria call error:', error);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Try Again';
+        }
+        alert('Unable to initiate call. Please try again or schedule for later.');
+      }
+    }
 
     // Lead capture function
     window.captureLeadToFirebase = async function(leadData) {
@@ -2189,6 +2247,24 @@
             }).catch(err => console.log('Firebase error:', err));
           }
         }
+
+        // Store collected info for CTA
+        window.collectedLead = { name, phone, email: currentEmail, preferredTime };
+
+        // Re-send email with phone so it includes "Call Me Now" button
+        fetch(EMAIL_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: currentEmail,
+            name: name,
+            url: urlInput.value,
+            phone: phone,
+            preferredTime: preferredTime,
+            scores: analysisData?.scores || {}
+          })
+        }).then(() => console.log('Updated email sent with call link'))
+          .catch(e => console.log('Email update failed:', e.message));
 
         // ALWAYS show success (don't wait for Firebase)
         unlockContent();
