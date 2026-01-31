@@ -2131,44 +2131,6 @@ console.log('Remodely AI - Full site loaded with enhanced interactivity');
     setPresentationMode(true);
   }
 
-  // Force video to play on all screens
-  const heroVideo = document.getElementById('heroVideo');
-  if (heroVideo) {
-    // Ensure video is muted (required for autoplay)
-    heroVideo.muted = true;
-    heroVideo.playsInline = true;
-
-    // Try to play immediately
-    const playVideo = function() {
-      heroVideo.play().catch(function(e) {
-        console.log('Video autoplay blocked, waiting for interaction');
-      });
-    };
-
-    // Play on load
-    playVideo();
-
-    // Also try on any user interaction
-    document.addEventListener('touchstart', function() {
-      playVideo();
-    }, { once: true, passive: true });
-
-    document.addEventListener('click', function() {
-      playVideo();
-    }, { once: true });
-
-    // Ensure video loops properly
-    heroVideo.addEventListener('ended', function() {
-      heroVideo.currentTime = 0;
-      heroVideo.play();
-    });
-
-    // Keep trying if video stalls
-    heroVideo.addEventListener('stalled', function() {
-      setTimeout(playVideo, 100);
-    });
-  }
-
   // Handle resize
   let resizeTimer;
   window.addEventListener('resize', function() {
