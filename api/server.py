@@ -50,6 +50,19 @@ def health():
     return jsonify({'status': 'ok', 'service': 'remodely-grader'})
 
 
+@app.route('/api/debug-smtp', methods=['GET'])
+def debug_smtp():
+    """Debug SMTP configuration"""
+    return jsonify({
+        'smtp_host': SMTP_HOST,
+        'smtp_port': SMTP_PORT,
+        'smtp_user': SMTP_USER,
+        'smtp_pass_set': bool(SMTP_PASS),
+        'smtp_pass_length': len(SMTP_PASS) if SMTP_PASS else 0,
+        'from_email': FROM_EMAIL
+    })
+
+
 @app.route('/api/send-report', methods=['POST', 'OPTIONS'])
 def send_report():
     """Send grader report via email"""
