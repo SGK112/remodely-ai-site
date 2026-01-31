@@ -7,24 +7,15 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from grader import grade_website
 import os
-import socket
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
-# SMTP Configuration from environment (matches Render env vars)
-SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
-SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
-SMTP_USER = os.environ.get('SMTP_USER', 'help.remodely@gmail.com')
-# Strip spaces from app password (users often copy with spaces between groups)
-SMTP_PASS = os.environ.get('SMTP_PASSWORD', '').replace(' ', '')
-FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', 'help.remodely@gmail.com')
+# Email Configuration - using Resend HTTP API (works on all cloud platforms)
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+FROM_EMAIL = os.environ.get('FROM_EMAIL', 'reports@remodely.ai')
 
-# Store original getaddrinfo for IPv4 forcing
-_orig_getaddrinfo = socket.getaddrinfo
 
 @app.route('/api/grade', methods=['POST', 'OPTIONS'])
 def grade():
@@ -55,24 +46,20 @@ def health():
     return jsonify({'status': 'ok', 'service': 'remodely-grader'})
 
 
-@app.route('/api/debug-smtp', methods=['GET'])
-def debug_smtp():
-    """Debug SMTP configuration"""
+@app.route('/api/debug-email', methods=['GET'])
+def debug_email():
+    """Debug email configuration"""
     return jsonify({
-        'smtp_host': SMTP_HOST,
-        'smtp_port': SMTP_PORT,
-        'smtp_user': SMTP_USER,
-        'smtp_pass_set': bool(SMTP_PASS),
-        'smtp_pass_length': len(SMTP_PASS) if SMTP_PASS else 0,
-        'smtp_pass_clean': len(SMTP_PASS) == 16,  # Gmail app passwords are 16 chars
+        'resend_api_key_set': bool(RESEND_API_KEY),
+        'resend_api_key_length': len(RESEND_API_KEY) if RESEND_API_KEY else 0,
         'from_email': FROM_EMAIL,
-        'ipv4_forced': True
+        'method': 'Resend HTTP API'
     })
 
 
 @app.route('/api/send-report', methods=['POST', 'OPTIONS'])
 def send_report():
-    """Send grader report via email"""
+    """Send grader report via email using Resend API"""
     if request.method == 'OPTIONS':
         return '', 204
 
@@ -88,7 +75,6 @@ def send_report():
     name = data['name']
     url = data['url']
     scores = data['scores']
-    phone = data.get('phone', '')
 
     # Build email content
     overall_score = scores.get('overall', 0)
@@ -218,72 +204,43 @@ Remodely AI
 https://remodely.ai
     """
 
-    try:
-        # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f'Your AI Visibility Report - Score: {overall_score}/100'
-        msg['From'] = f'Remodely AI <{FROM_EMAIL}>'
-        msg['To'] = email
+    # Send via Resend HTTP API
+    if RESEND_API_KEY:
+        try:
+            response = requests.post(
+                'https://api.resend.com/emails',
+                headers={
+                    'Authorization': f'Bearer {RESEND_API_KEY}',
+                    'Content-Type': 'application/json'
+                },
+                json={
+                    'from': f'Remodely AI <{FROM_EMAIL}>',
+                    'to': [email],
+                    'subject': f'Your AI Visibility Report - Score: {overall_score}/100',
+                    'html': html_content,
+                    'text': text_content
+                },
+                timeout=10
+            )
 
-        # Attach both versions
-        msg.attach(MIMEText(text_content, 'plain'))
-        msg.attach(MIMEText(html_content, 'html'))
-
-        # Send email
-        if SMTP_USER and SMTP_PASS:
-            try:
-                import ssl
-
-                # Force IPv4 to avoid "Network is unreachable" on some cloud platforms
-                def ipv4_only_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
-                    return _orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
-
-                # Temporarily override socket.getaddrinfo to force IPv4
-                socket.getaddrinfo = ipv4_only_getaddrinfo
-                server = None
-                try:
-                    # Try SMTP_SSL on port 465 first (more reliable on cloud)
-                    context = ssl.create_default_context()
-                    try:
-                        print("Trying SMTP_SSL on port 465...")
-                        server = smtplib.SMTP_SSL(SMTP_HOST, 465, timeout=20, context=context)
-                        server.login(SMTP_USER, SMTP_PASS)
-                        server.send_message(msg)
-                        server.quit()
-                        print("Email sent via SMTP_SSL port 465")
-                    except Exception as ssl_err:
-                        print(f"SMTP_SSL failed: {ssl_err}, trying STARTTLS on 587...")
-                        # Fallback to STARTTLS on port 587
-                        server = smtplib.SMTP(SMTP_HOST, 587, timeout=20)
-                        server.ehlo()
-                        server.starttls(context=context)
-                        server.ehlo()
-                        server.login(SMTP_USER, SMTP_PASS)
-                        server.send_message(msg)
-                        server.quit()
-                        print("Email sent via STARTTLS port 587")
-                finally:
-                    # Restore original getaddrinfo
-                    socket.getaddrinfo = _orig_getaddrinfo
-
+            if response.status_code == 200:
+                print(f"Email sent successfully to {email}")
                 return jsonify({'success': True, 'message': 'Report sent successfully'})
-            except smtplib.SMTPAuthenticationError as auth_err:
-                print(f"SMTP Auth Error: {str(auth_err)}")
-                return jsonify({'success': False, 'error': 'Email authentication failed'}), 500
-            except smtplib.SMTPException as smtp_err:
-                print(f"SMTP Error: {str(smtp_err)}")
-                return jsonify({'success': False, 'error': f'Email error: {str(smtp_err)}'}), 500
-            except Exception as send_err:
-                print(f"Send Error: {str(send_err)}")
-                return jsonify({'success': False, 'error': f'Failed to send: {str(send_err)}'}), 500
-        else:
-            # No SMTP configured - log but don't fail
-            print(f"SMTP not configured. SMTP_USER={SMTP_USER}, SMTP_PASS={'set' if SMTP_PASS else 'empty'}")
-            return jsonify({'success': True, 'message': 'Report logged (SMTP not configured)'})
+            else:
+                error_msg = response.json().get('message', 'Unknown error')
+                print(f"Resend API error: {response.status_code} - {error_msg}")
+                return jsonify({'success': False, 'error': f'Email error: {error_msg}'}), 500
 
-    except Exception as e:
-        print(f"Email error: {str(e)}")
-        return jsonify({'success': False, 'error': str(e)}), 500
+        except requests.exceptions.Timeout:
+            print("Resend API timeout")
+            return jsonify({'success': False, 'error': 'Email service timeout'}), 500
+        except Exception as e:
+            print(f"Email error: {str(e)}")
+            return jsonify({'success': False, 'error': str(e)}), 500
+    else:
+        # No API key configured
+        print("Resend API key not configured")
+        return jsonify({'success': True, 'message': 'Report logged (email not configured)'})
 
 
 @app.route('/', methods=['GET'])
@@ -291,11 +248,12 @@ def index():
     """Root endpoint"""
     return jsonify({
         'service': 'Remodely AI Website Grader',
-        'version': '1.3',
+        'version': '2.0',
         'endpoints': {
             '/api/grade': 'POST - Grade a website (body: {"url": "https://example.com"})',
             '/api/send-report': 'POST - Send report via email (body: {"email", "name", "url", "scores"})',
-            '/api/health': 'GET - Health check'
+            '/api/health': 'GET - Health check',
+            '/api/debug-email': 'GET - Debug email configuration'
         }
     })
 
