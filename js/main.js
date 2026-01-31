@@ -2243,3 +2243,43 @@ console.log('Remodely AI - Full site loaded with enhanced interactivity');
   }, { passive: false });
 
 })();
+
+// =====================================================
+// GRADER FORM HANDLING - Redirect to grader.html
+// =====================================================
+(function() {
+  // Helper to normalize URL
+  function normalizeUrl(url) {
+    url = url.trim();
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+    return url;
+  }
+
+  // Desktop hero grader form
+  const heroGraderForm = document.getElementById('hero-grader-form');
+  if (heroGraderForm) {
+    heroGraderForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const urlInput = document.getElementById('hero-url');
+      if (urlInput && urlInput.value) {
+        const url = normalizeUrl(urlInput.value);
+        window.location.href = '/grader.html?url=' + encodeURIComponent(url);
+      }
+    });
+  }
+
+  // Mobile grader form
+  const mobileGraderForm = document.getElementById('mobileGraderForm');
+  if (mobileGraderForm) {
+    mobileGraderForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const urlInput = document.getElementById('mobile-url');
+      if (urlInput && urlInput.value) {
+        const url = normalizeUrl(urlInput.value);
+        window.location.href = '/grader.html?url=' + encodeURIComponent(url);
+      }
+    });
+  }
+})();

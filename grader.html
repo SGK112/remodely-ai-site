@@ -6,6 +6,9 @@
   <title>Free Website & AI Visibility Grader | Remodely AI</title>
   <meta name="description" content="Get a free analysis of your website's SEO, performance, and AI visibility. See how findable you are by ChatGPT, Grok, and AI search.">
 
+  <!-- Favicon (prevent 404) -->
+  <link rel="icon" href="data:,">
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,18 +16,30 @@
 
   <style>
     :root {
-      --primary: #0f172a;
-      --accent: #6366f1;
-      --accent-light: #818cf8;
-      --green: #10b981;
-      --yellow: #f59e0b;
+      --primary: #0a0f1a;
+      --primary-light: #131c2e;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --accent-glow: rgba(59, 130, 246, 0.5);
+      --green: #22c55e;
+      --green-light: #4ade80;
+      --yellow: #eab308;
+      --yellow-light: #facc15;
       --red: #ef4444;
-      --gray-50: #f8fafc;
-      --gray-100: #f1f5f9;
-      --gray-200: #e2e8f0;
-      --gray-400: #94a3b8;
-      --gray-600: #475569;
-      --gray-800: #1e293b;
+      --red-light: #f87171;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+
+      /* Premium Glass - Enhanced */
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-bg-strong: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-hover: rgba(255, 255, 255, 0.15);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --glass-blur: blur(20px);
+      --card-glow: 0 0 60px rgba(59, 130, 246, 0.1);
     }
 
     * {
@@ -39,12 +54,31 @@
       color: #fff;
       min-height: 100vh;
       line-height: 1.6;
+      position: relative;
+    }
+
+    /* Clean gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0f1a 0%, #111827 50%, #0a0f1a 100%);
+      z-index: -1;
     }
 
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 40px 20px;
+      position: relative;
+      z-index: 1;
     }
 
     /* Header */
@@ -57,6 +91,11 @@
       font-size: 1.25rem;
       font-weight: 800;
       margin-bottom: 24px;
+    }
+
+    .logo a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .logo span {
@@ -77,13 +116,88 @@
       margin: 0 auto;
     }
 
-    /* Form */
+    /* Social Proof */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      font-size: 0.875rem;
+      color: var(--gray-400);
+    }
+
+    .social-proof__dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .social-proof__count {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* FOMO Banner */
+    .fomo-banner {
+      display: none;
+      background: rgba(239, 68, 68, 0.08);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 14px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .fomo-banner.active {
+      display: block;
+    }
+
+    .fomo-banner__text {
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--gray-300);
+    }
+
+    .fomo-banner__timer {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+      color: var(--red-light);
+    }
+
+    /* Form - Premium Glass Card */
     .grader-form {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       padding: 32px;
       margin-bottom: 32px;
+      box-shadow: var(--glass-shadow), var(--card-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .grader-form::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     }
 
     .input-group {
@@ -95,24 +209,25 @@
       flex: 1;
       padding: 16px 20px;
       font-size: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--glass-border);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.3);
       color: #fff;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s ease;
     }
 
     .input-group input:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
     }
 
     .input-group input::placeholder {
-      color: var(--gray-400);
+      color: var(--gray-500);
     }
 
     .input-group button {
-      padding: 16px 32px;
+      padding: 16px 28px;
       font-size: 16px;
       font-weight: 600;
       background: var(--accent);
@@ -120,7 +235,7 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
+      transition: all 0.2s ease;
       white-space: nowrap;
     }
 
@@ -149,13 +264,14 @@
     }
 
     .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid rgba(255, 255, 255, 0.1);
+      width: 56px;
+      height: 56px;
+      border: 3px solid rgba(99, 102, 241, 0.15);
       border-top-color: var(--accent);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
     }
 
     @keyframes spin {
@@ -163,7 +279,70 @@
     }
 
     .loading p {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+    }
+
+    .loading-steps {
+      margin-top: 32px;
+      text-align: left;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+
+    .loading-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
       color: var(--gray-400);
+      opacity: 0.4;
+      transition: all 0.4s ease;
+      font-size: 0.9375rem;
+    }
+
+    .loading-step.active {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .loading-step.done {
+      opacity: 1;
+      color: var(--green);
+    }
+
+    .loading-step__icon {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      transition: all 0.3s ease;
+    }
+
+    .loading-step.done .loading-step__icon {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--green);
+    }
+
+    .loading-step.active .loading-step__icon {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
     }
 
     /* Results */
@@ -179,76 +358,246 @@
     .score-cards {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
+      gap: 14px;
+      margin-bottom: 28px;
     }
 
     .score-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 24px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px;
       text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    }
+
+    .score-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     }
 
     .score-card.main {
       grid-column: span 2;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
-      border-color: rgba(99, 102, 241, 0.3);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%);
+      border-color: rgba(59, 130, 246, 0.2);
+      box-shadow: var(--glass-shadow), 0 0 60px rgba(59, 130, 246, 0.1);
+    }
+
+    .score-card.main::before {
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    }
+
+    .score-card.main.score-bad {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.02) 100%);
+      border-color: rgba(239, 68, 68, 0.2);
+      box-shadow: var(--glass-shadow), 0 0 60px rgba(239, 68, 68, 0.1);
+    }
+
+    .score-card.main.score-bad::before {
+      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3), transparent);
+    }
+
+    /* Animated Score */
+    .score-card__score {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    .score-card.main .score-card__score {
+      font-size: 4.5rem;
     }
 
     .score-card__label {
-      font-size: 0.875rem;
-      color: var(--gray-400);
-      margin-bottom: 8px;
+      font-size: 0.6875rem;
+      color: var(--gray-500);
+      margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
+      font-weight: 500;
     }
 
     .score-card__score {
       font-size: 3rem;
-      font-weight: 800;
+      font-weight: 700;
       line-height: 1;
+      color: #fff;
     }
 
     .score-card__grade {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 8px;
-      font-size: 0.875rem;
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 0.75rem;
       font-weight: 600;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
-    .grade-a { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .grade-b { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
-    .grade-c { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-    .grade-d { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
-    .grade-f { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .grade-a { background: rgba(34, 197, 94, 0.15); color: var(--green-light); }
+    .grade-b { background: rgba(34, 197, 94, 0.1); color: var(--green); }
+    .grade-c { background: rgba(234, 179, 8, 0.15); color: var(--yellow-light); }
+    .grade-d { background: rgba(234, 179, 8, 0.1); color: var(--yellow); }
+    .grade-f { background: rgba(239, 68, 68, 0.15); color: var(--red-light); }
 
-    /* Score Bars */
-    .score-section {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
+    /* Urgent Warning for Low Scores */
+    .urgent-warning {
+      display: none;
+      background: rgba(239, 68, 68, 0.06);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      border-radius: 14px;
       padding: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .urgent-warning.active {
+      display: block;
+    }
+
+    .urgent-warning h3 {
+      color: #f87171;
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .urgent-warning p {
+      color: var(--gray-400);
+      font-size: 0.9375rem;
+    }
+
+    /* Quick Wins Section */
+    .quick-wins {
+      background: rgba(34, 197, 94, 0.04);
+      border: 1px solid rgba(34, 197, 94, 0.12);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .quick-wins h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-light);
+    }
+
+    .quick-wins__list {
+      list-style: none;
+    }
+
+    .quick-wins__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .quick-wins__item:last-child {
+      border-bottom: none;
+    }
+
+    .quick-wins__icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(34, 197, 94, 0.12);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .quick-wins__content strong {
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .quick-wins__content span {
+      font-size: 0.8125rem;
+      color: var(--gray-400);
+    }
+
+    .quick-wins__time {
+      font-size: 0.6875rem;
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--green);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-left: auto;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Score Bars - Premium Cards */
+    .score-section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .score-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    }
+
+    .score-section:hover {
+      border-color: var(--glass-border-hover);
     }
 
     .score-section h3 {
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 600;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 10px;
+      color: #fff;
     }
 
     .score-row {
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: 14px;
+      margin-bottom: 14px;
     }
 
     .score-row:last-child {
@@ -256,35 +605,468 @@
     }
 
     .score-row__label {
-      width: 140px;
-      font-size: 0.875rem;
+      width: 130px;
+      font-size: 0.8125rem;
       color: var(--gray-400);
     }
 
     .score-row__bar {
       flex: 1;
       height: 8px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 4px;
       overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .score-row__fill {
       height: 100%;
       border-radius: 4px;
-      transition: width 0.5s ease;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .score-row__fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
     }
 
     .score-row__value {
       width: 40px;
       text-align: right;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.875rem;
+      color: #fff;
     }
 
-    .fill-green { background: var(--green); }
-    .fill-yellow { background: var(--yellow); }
-    .fill-red { background: var(--red); }
+    .fill-green {
+      background: linear-gradient(90deg, var(--green) 0%, var(--green-light) 100%);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+    }
+    .fill-yellow {
+      background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow-light) 100%);
+      box-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+    }
+    .fill-red {
+      background: linear-gradient(90deg, var(--red) 0%, var(--red-light) 100%);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Gated Content */
+    .gated-section {
+      position: relative;
+    }
+
+    .gated-section.locked::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 15, 26, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 14px;
+      z-index: 1;
+    }
+
+    .gated-section.locked::after {
+      content: 'Enter email to unlock';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-400);
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border);
+      padding: 10px 20px;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    /* Email Gate - Premium Card */
+    .email-gate {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 24px;
+      padding: 36px;
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .email-gate::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+    }
+
+    .email-gate::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .email-gate h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .email-gate > p {
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      font-size: 0.9375rem;
+      position: relative;
+    }
+
+    .email-gate__benefits {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .email-gate__benefit {
+      font-size: 0.8125rem;
+      color: var(--gray-300);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .email-gate__benefit::before {
+      content: '✓';
+      color: var(--green);
+      font-size: 0.75rem;
+    }
+
+    .email-gate__form {
+      display: flex;
+      gap: 10px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .email-gate__form input {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 15px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      outline: none;
+    }
+
+    .email-gate__form input::placeholder {
+      color: var(--gray-500);
+    }
+
+    .email-gate__form input:focus {
+      border-color: var(--accent);
+    }
+
+    .email-gate__form button {
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .email-gate__form button:hover {
+      background: var(--accent-light);
+    }
+
+    .email-gate__timer {
+      margin-top: 16px;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .email-gate__timer strong {
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Lead Form */
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .lead-form__row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .lead-form__row input,
+    .lead-form > input {
+      flex: 1;
+      padding: 16px 20px;
+      font-size: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .lead-form__row input:focus,
+    .lead-form > input:focus {
+      border-color: var(--accent);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .lead-form__row input::placeholder,
+    .lead-form > input::placeholder {
+      color: var(--gray-500);
+    }
+
+    .lead-form button {
+      padding: 16px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lead-form button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .lead-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .lead-form button:active {
+      transform: translateY(0);
+    }
+
+    .lead-form button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .lead-form__trust {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--gray-500);
+    }
+
+    /* Step Progress */
+    .step-progress {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      font-size: 0.875rem;
+      color: var(--green-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-check {
+      width: 20px;
+      height: 20px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .skip-btn {
+      background: none;
+      border: none;
+      color: var(--gray-500);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      margin-top: 12px;
+      padding: 8px;
+      transition: color 0.2s;
+    }
+
+    .skip-btn:hover {
+      color: var(--gray-400);
+    }
+
+    /* Lead Steps */
+    .lead-step {
+      position: relative;
+    }
+
+    .lead-step h3 {
+      position: relative;
+    }
+
+    .lead-step p {
+      position: relative;
+    }
+
+    /* Progress Dots */
+    .form-progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .form-progress__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .form-progress__dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .form-progress__dot.done {
+      background: var(--green);
+    }
+
+    /* Success Message - Premium */
+    .success-message {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.03) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-message::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.4), transparent);
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #fff;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4);
+      animation: scaleIn 0.5s ease 0.2s both;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .success-message h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .success-message p {
+      color: var(--gray-400);
+      font-size: 0.9375rem;
+    }
+
+    @media (max-width: 600px) {
+      .lead-form__row {
+        flex-direction: column;
+      }
+
+      .lead-form__trust {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
 
     /* Lists */
     .issues-list, .recs-list {
@@ -349,39 +1131,238 @@
       font-weight: 600;
     }
 
-    /* CTA */
+    /* CTA - Premium */
     .cta-section {
-      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-      border-radius: 20px;
-      padding: 32px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 24px;
+      padding: 40px;
       text-align: center;
-      margin-top: 32px;
+      margin-top: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(239, 68, 68, 0.1);
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.4), transparent);
     }
 
     .cta-section h3 {
       font-size: 1.5rem;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .cta-section p {
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      font-size: 0.9375rem;
+    }
+
+    .cta-section__spots {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.15);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      font-weight: 600;
       margin-bottom: 20px;
+      color: var(--red-light);
+      animation: pulse 2s ease-in-out infinite;
     }
 
     .cta-btn {
-      display: inline-block;
-      padding: 14px 32px;
-      background: #fff;
-      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px 40px;
+      background: linear-gradient(135deg, var(--red) 0%, #dc2626 100%);
+      color: #fff;
       font-weight: 600;
-      border-radius: 12px;
+      font-size: 1.0625rem;
+      border-radius: 10px;
       text-decoration: none;
-      transition: transform 0.2s;
+      cursor: pointer;
+      border: none;
+      border-radius: 14px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+      pointer-events: none;
     }
 
     .cta-btn:hover {
-      transform: scale(1.02);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+    }
+
+    .cta-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .cta-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Lead Popup */
+    .lead-popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lead-popup-overlay.active {
+      display: flex;
+    }
+
+    .lead-popup {
+      background: var(--primary-light);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 36px;
+      max-width: 420px;
+      width: 100%;
+      position: relative;
+      animation: popupSlide 0.3s ease;
+    }
+
+    @keyframes popupSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .lead-popup__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--gray-400);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .lead-popup__close:hover {
+      background: var(--glass-border);
+      color: #fff;
+    }
+
+    .lead-popup h3 {
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      padding-right: 40px;
+    }
+
+    .lead-popup > p {
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      font-size: 0.9375rem;
+    }
+
+    .lead-popup__form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .lead-popup__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .lead-popup__field label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--gray-300);
+    }
+
+    .lead-popup__field input {
+      padding: 14px 16px;
+      font-size: 15px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .lead-popup__field input:focus {
+      border-color: var(--accent);
+    }
+
+    .lead-popup__field input::placeholder {
+      color: var(--gray-500);
+    }
+
+    .lead-popup__submit {
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+
+    .lead-popup__submit:hover {
+      background: var(--accent-light);
+    }
+
+    .lead-popup__trust {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: var(--gray-500);
     }
 
     /* Responsive */
@@ -392,6 +1373,15 @@
 
       .input-group {
         flex-direction: column;
+      }
+
+      .email-gate__form {
+        flex-direction: column;
+      }
+
+      .email-gate__benefits {
+        flex-direction: column;
+        gap: 8px;
       }
 
       .score-cards {
@@ -410,6 +1400,15 @@
         width: 100px;
         font-size: 0.75rem;
       }
+
+      .quick-wins__item {
+        flex-wrap: wrap;
+      }
+
+      .quick-wins__time {
+        margin-left: 36px;
+        margin-top: 8px;
+      }
     }
   </style>
 </head>
@@ -417,10 +1416,20 @@
   <div class="container">
     <!-- Header -->
     <header class="header">
-      <div class="logo">REMODELY<span>.AI</span></div>
+      <div class="logo"><a href="/">REMODELY<span>.AI</span></a></div>
       <h1>Website & AI Visibility Grader</h1>
       <p>See how your website performs for SEO and how findable you are by AI assistants like ChatGPT and Grok.</p>
+      <div class="social-proof">
+        <span class="social-proof__dot"></span>
+        <span><span class="social-proof__count" id="analysisCount">1,247</span> sites analyzed this month</span>
+      </div>
     </header>
+
+    <!-- FOMO Banner -->
+    <div class="fomo-banner" id="fomoBanner">
+      <div class="fomo-banner__text">Free detailed report expires in</div>
+      <div class="fomo-banner__timer" id="fomoTimer">14:59</div>
+    </div>
 
     <!-- Form -->
     <div class="grader-form">
@@ -441,13 +1450,31 @@
     <div class="loading" id="loading">
       <div class="spinner"></div>
       <p>Analyzing your website...</p>
+      <div class="loading-steps">
+        <div class="loading-step" id="step1">
+          <span class="loading-step__icon">1</span>
+          <span>Checking SEO & meta tags...</span>
+        </div>
+        <div class="loading-step" id="step2">
+          <span class="loading-step__icon">2</span>
+          <span>Analyzing AI visibility...</span>
+        </div>
+        <div class="loading-step" id="step3">
+          <span class="loading-step__icon">3</span>
+          <span>Testing page speed...</span>
+        </div>
+        <div class="loading-step" id="step4">
+          <span class="loading-step__icon">4</span>
+          <span>Generating recommendations...</span>
+        </div>
+      </div>
     </div>
 
     <!-- Results -->
     <div class="results" id="results">
       <!-- Score Cards -->
       <div class="score-cards">
-        <div class="score-card main">
+        <div class="score-card main" id="mainScoreCard">
           <div class="score-card__label">Overall Score</div>
           <div class="score-card__score" id="overallScore">--</div>
           <div class="score-card__grade" id="overallGrade">--</div>
@@ -464,9 +1491,23 @@
         </div>
       </div>
 
+      <!-- Urgent Warning for Low Scores -->
+      <div class="urgent-warning" id="urgentWarning">
+        <h3>Your Business Is Invisible to AI</h3>
+        <p>With a score this low, AI assistants like ChatGPT and Grok won't recommend your business. You're losing customers every day.</p>
+      </div>
+
+      <!-- Quick Wins -->
+      <div class="quick-wins" id="quickWins">
+        <h3>Quick Wins - Fix These Now</h3>
+        <ul class="quick-wins__list" id="quickWinsList">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
       <!-- SEO Scores -->
       <div class="score-section">
-        <h3>📊 SEO & Content</h3>
+        <h3>SEO & Content</h3>
         <div class="score-row">
           <span class="score-row__label">Meta Tags</span>
           <div class="score-row__bar"><div class="score-row__fill" id="metaBar"></div></div>
@@ -491,7 +1532,7 @@
 
       <!-- Technical Scores -->
       <div class="score-section">
-        <h3>⚙️ Technical</h3>
+        <h3>Technical</h3>
         <div class="score-row">
           <span class="score-row__label">HTTPS Security</span>
           <div class="score-row__bar"><div class="score-row__fill" id="httpsBar"></div></div>
@@ -514,24 +1555,69 @@
         </div>
       </div>
 
-      <!-- Presence Scores -->
-      <div class="score-section">
-        <h3>🌐 Online Presence</h3>
-        <div class="score-row">
-          <span class="score-row__label">Social Media</span>
-          <div class="score-row__bar"><div class="score-row__fill" id="socialBar"></div></div>
-          <span class="score-row__value" id="socialScore">--</span>
+      <!-- 2-Step Lead Form -->
+      <div class="email-gate" id="emailGate">
+        <!-- Progress Indicator -->
+        <div class="form-progress">
+          <div class="form-progress__dot active" id="progressDot1"></div>
+          <div class="form-progress__dot" id="progressDot2"></div>
         </div>
-        <div class="score-row">
-          <span class="score-row__label">Contact Info</span>
-          <div class="score-row__bar"><div class="score-row__fill" id="contactBar"></div></div>
-          <span class="score-row__value" id="contactScore">--</span>
+
+        <!-- Step 1: Email Only -->
+        <div class="lead-step" id="leadStep1">
+          <h3>Get Your Full Report</h3>
+          <p>Enter your email to unlock detailed recommendations and fixes.</p>
+          <form class="lead-form" id="emailForm">
+            <input type="email" id="leadEmail" placeholder="Enter your email" required style="width: 100%; margin-bottom: 12px;">
+            <button type="submit" id="emailSubmitBtn">
+              <span class="btn-text">Send My Report</span>
+              <span class="btn-loading" style="display: none;">Sending...</span>
+            </button>
+          </form>
+          <div class="lead-form__trust">
+            <span>No spam</span>
+            <span>Instant delivery</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Name & Phone -->
+        <div class="lead-step" id="leadStep2" style="display: none;">
+          <div class="step-progress">
+            <span class="step-check">✓</span> Report sent! One more step...
+          </div>
+          <h3>Want a Free Strategy Call?</h3>
+          <p>Tell us a bit more and we'll show you exactly how to fix your score.</p>
+          <form class="lead-form" id="detailsForm">
+            <input type="text" id="leadName" placeholder="Your name" required style="width: 100%; margin-bottom: 12px;">
+            <input type="tel" id="leadPhone" placeholder="Phone number" required style="width: 100%; margin-bottom: 12px;">
+            <button type="submit" id="detailsSubmitBtn">
+              <span class="btn-text">Get My Free Strategy Call</span>
+              <span class="btn-loading" style="display: none;">Saving...</span>
+            </button>
+          </form>
+          <button class="skip-btn" id="skipBtn">Skip for now</button>
+        </div>
+
+        <div class="email-gate__timer">
+          Free report expires in <strong id="gateTimer">14:59</strong>
         </div>
       </div>
 
-      <!-- Details -->
-      <div class="score-section">
-        <h3>📋 Details</h3>
+      <!-- Gated: Issues (unlocked after email) -->
+      <div class="score-section gated-section locked" id="issuesSection">
+        <h3>Issues Found</h3>
+        <ul class="issues-list" id="issuesList"></ul>
+      </div>
+
+      <!-- Gated: Recommendations (unlocked after email) -->
+      <div class="score-section gated-section locked" id="recsSection">
+        <h3>Recommendations</h3>
+        <ul class="recs-list" id="recsList"></ul>
+      </div>
+
+      <!-- Details (unlocked after email) -->
+      <div class="score-section gated-section locked" id="detailsSection">
+        <h3>Details</h3>
         <div class="details-grid">
           <div class="detail-item">
             <div class="detail-item__label">Load Time</div>
@@ -552,26 +1638,72 @@
         </div>
       </div>
 
-      <!-- Issues -->
-      <div class="score-section" id="issuesSection">
-        <h3>⚠️ Issues Found</h3>
-        <ul class="issues-list" id="issuesList"></ul>
+      <!-- CTA (shows after unlock) -->
+      <!-- CTA (shows after unlock) -->
+      <div class="cta-section" id="ctaSection" style="display: none;">
+        <div class="cta-section__spots">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          Only <strong>3 spots left</strong> this week
+        </div>
+        <h3>Want Us To Fix This For You?</h3>
+        <p>Book a free 15-minute strategy call. We'll create a custom action plan to boost your AI visibility.</p>
+        <a href="https://calendly.com/remodely/consultation" target="_blank" class="cta-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Book Free Strategy Call
+        </a>
       </div>
 
-      <!-- Recommendations -->
-      <div class="score-section" id="recsSection">
-        <h3>💡 Recommendations</h3>
-        <ul class="recs-list" id="recsList"></ul>
-      </div>
-
-      <!-- CTA -->
-      <div class="cta-section">
-        <h3>Want to Improve Your Score?</h3>
-        <p>Get a free consultation and see how we can automate your business and boost your AI visibility.</p>
-        <a href="/#contact" class="cta-btn">Get Free Consultation</a>
+      <!-- Success Message (shows after form submit) -->
+      <div class="success-message" id="successMessage" style="display: none;">
+        <div class="success-icon">✓</div>
+        <h3>Report Sent!</h3>
+        <p>Check your inbox for your complete AI Visibility Report.</p>
       </div>
     </div>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDJJMyA-sRoh1IYTDf84nmzt48L5RxhJec",
+      authDomain: "remodelyai-app.firebaseapp.com",
+      projectId: "remodelyai-app",
+      storageBucket: "remodelyai-app.firebasestorage.app",
+      messagingSenderId: "254256003480",
+      appId: "1:254256003480:web:0b5f62324a7fb09a7b13ed"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Lead capture function
+    window.captureLeadToFirebase = async function(leadData) {
+      console.log('Attempting to capture lead:', leadData);
+      try {
+        const docRef = await db.collection('leads').add({
+          ...leadData,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          source: 'grader'
+        });
+        console.log('Lead captured successfully! Doc ID:', docRef.id);
+        return true;
+      } catch (error) {
+        console.error('Error capturing lead:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        // If Firebase fails, the lead data is still in the console
+        alert('Note: Lead was captured locally but may not have saved to database. Please check Firebase rules.');
+        return false;
+      }
+    };
+  </script>
 
   <script>
     const form = document.getElementById('graderForm');
@@ -580,8 +1712,39 @@
     const loading = document.getElementById('loading');
     const results = document.getElementById('results');
 
-    // API endpoint - update this when you deploy the API
+    // API endpoint
     const API_URL = 'https://remodely-grader.onrender.com/api/grade';
+
+    // Timer state
+    let timerSeconds = 15 * 60; // 15 minutes
+    let timerInterval = null;
+    let analysisData = null; // Store for email unlock
+
+    // Start countdown timer
+    function startTimer() {
+      document.getElementById('fomoBanner').classList.add('active');
+
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerSeconds = 0;
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+      const fomoTimer = document.getElementById('fomoTimer');
+      const gateTimer = document.getElementById('gateTimer');
+
+      if (fomoTimer) fomoTimer.textContent = timeStr;
+      if (gateTimer) gateTimer.textContent = timeStr;
+    }
 
     function getGradeClass(grade) {
       const g = grade.toLowerCase();
@@ -615,52 +1778,215 @@
       scoreEl.textContent = score;
     }
 
+    // Generate quick wins based on scores
+    function generateQuickWins(data) {
+      const quickWins = [];
+      const scores = data.scores;
+
+      if (scores.seo.meta_tags < 80) {
+        quickWins.push({
+          title: 'Add a meta description',
+          desc: 'Tell search engines and AI what your page is about',
+          time: '2 min'
+        });
+      }
+
+      if (scores.seo.structured_data < 50) {
+        quickWins.push({
+          title: 'Add LocalBusiness schema',
+          desc: 'Help AI assistants understand your business info',
+          time: '5 min'
+        });
+      }
+
+      if (scores.presence.social < 70) {
+        quickWins.push({
+          title: 'Add social media links',
+          desc: 'Connect your website to your social profiles',
+          time: '3 min'
+        });
+      }
+
+      if (scores.presence.contact < 80) {
+        quickWins.push({
+          title: 'Make contact info visible',
+          desc: 'Add phone, email, and address in the footer',
+          time: '5 min'
+        });
+      }
+
+      if (scores.technical.images < 70) {
+        quickWins.push({
+          title: 'Add alt text to images',
+          desc: 'Describe your images for better SEO',
+          time: '10 min'
+        });
+      }
+
+      // Always show at least 3
+      if (quickWins.length < 3) {
+        quickWins.push({
+          title: 'Create an FAQ section',
+          desc: 'Answer common questions to boost AI visibility',
+          time: '15 min'
+        });
+      }
+
+      return quickWins.slice(0, 4);
+    }
+
     function displayResults(data) {
+      analysisData = data; // Store for later
       const scores = data.scores;
       const details = data.details;
 
-      // Main scores
-      document.getElementById('overallScore').textContent = scores.overall;
-      const overallGrade = document.getElementById('overallGrade');
-      overallGrade.textContent = 'Grade: ' + scores.overall_grade;
-      overallGrade.className = 'score-card__grade ' + getGradeClass(scores.overall_grade);
+      // Animate score count-up
+      animateScore('overallScore', scores.overall);
+      animateScore('aiScore', scores.ai_visibility);
 
-      document.getElementById('aiScore').textContent = scores.ai_visibility;
-      const aiGrade = document.getElementById('aiGrade');
-      aiGrade.textContent = 'Grade: ' + scores.ai_visibility_grade;
-      aiGrade.className = 'score-card__grade ' + getGradeClass(scores.ai_visibility_grade);
-
-      // Calculate average SEO score
       const seoAvg = Math.round((scores.seo.meta_tags + scores.seo.headings + scores.seo.structured_data) / 3);
-      document.getElementById('seoScore').textContent = seoAvg;
-      const seoGrade = document.getElementById('seoGrade');
-      seoGrade.textContent = 'Grade: ' + getGrade(seoAvg);
-      seoGrade.className = 'score-card__grade ' + getGradeClass(getGrade(seoAvg));
+      animateScore('seoScore', seoAvg);
 
-      // SEO bars
+      // Grades
+      setTimeout(() => {
+        const overallGrade = document.getElementById('overallGrade');
+        overallGrade.textContent = 'Grade: ' + scores.overall_grade;
+        overallGrade.className = 'score-card__grade ' + getGradeClass(scores.overall_grade);
+
+        const aiGrade = document.getElementById('aiGrade');
+        aiGrade.textContent = 'Grade: ' + scores.ai_visibility_grade;
+        aiGrade.className = 'score-card__grade ' + getGradeClass(scores.ai_visibility_grade);
+
+        const seoGrade = document.getElementById('seoGrade');
+        seoGrade.textContent = 'Grade: ' + getGrade(seoAvg);
+        seoGrade.className = 'score-card__grade ' + getGradeClass(getGrade(seoAvg));
+      }, 1000);
+
+      // Show urgent warning for low scores
+      if (scores.overall < 70) {
+        document.getElementById('mainScoreCard').classList.add('score-bad');
+        document.getElementById('urgentWarning').classList.add('active');
+      }
+
+      // Quick Wins
+      const quickWins = generateQuickWins(data);
+      const quickWinsList = document.getElementById('quickWinsList');
+      quickWinsList.innerHTML = '';
+      quickWins.forEach(win => {
+        const li = document.createElement('li');
+        li.className = 'quick-wins__item';
+        li.innerHTML = `
+          <span class="quick-wins__icon">+</span>
+          <div class="quick-wins__content">
+            <strong>${win.title}</strong>
+            <span>${win.desc}</span>
+          </div>
+          <span class="quick-wins__time">${win.time}</span>
+        `;
+        quickWinsList.appendChild(li);
+      });
+
+      // Score bars
       updateScoreBar('metaBar', 'metaScore', scores.seo.meta_tags);
       updateScoreBar('headingsBar', 'headingsScore', scores.seo.headings);
       updateScoreBar('schemaBar', 'schemaScore', scores.seo.structured_data);
       updateScoreBar('contentBar', 'contentScore', scores.presence.content);
 
-      // Technical bars
       updateScoreBar('httpsBar', 'httpsScore', scores.technical.https);
       updateScoreBar('mobileBar', 'mobileScore', scores.technical.mobile);
       updateScoreBar('speedBar', 'speedScore', scores.technical.speed);
       updateScoreBar('imagesBar', 'imagesScore', scores.technical.images);
 
-      // Presence bars
-      updateScoreBar('socialBar', 'socialScore', scores.presence.social);
-      updateScoreBar('contactBar', 'contactScore', scores.presence.contact);
+      // Store gated content for unlock
+      window.gatedData = {
+        details: details,
+        issues: data.issues,
+        recommendations: data.recommendations
+      };
 
-      // Details
-      document.getElementById('loadTime').textContent = details.load_time ? details.load_time + 's' : 'N/A';
-      document.getElementById('wordCount').textContent = details.word_count || '0';
-      document.getElementById('socialPlatforms').textContent = details.social_platforms.length > 0
-        ? details.social_platforms.join(', ')
+      // Show results
+      loading.classList.remove('active');
+      results.classList.add('active');
+
+      // Start the FOMO timer
+      startTimer();
+    }
+
+    // Animated score reveal with easing
+    function animateScore(elementId, targetScore) {
+      const el = document.getElementById(elementId);
+      const duration = 1500;
+      const startTime = performance.now();
+
+      // Add glow effect during animation
+      el.style.textShadow = '0 0 40px rgba(255, 255, 255, 0.3)';
+
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out cubic for smooth deceleration
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * targetScore);
+
+        el.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          el.textContent = targetScore;
+          // Pulse effect on completion
+          el.style.transform = 'scale(1.05)';
+          setTimeout(() => {
+            el.style.transform = 'scale(1)';
+            el.style.textShadow = '0 0 40px rgba(255, 255, 255, 0.1)';
+          }, 200);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+
+    // Social proof counter - random increment
+    function initSocialProof() {
+      const counter = document.getElementById('analysisCount');
+      if (!counter) return;
+
+      // Start with a base number + some randomness
+      let baseCount = 1200 + Math.floor(Math.random() * 100);
+      counter.textContent = baseCount.toLocaleString();
+
+      // Occasionally increment to show "live" activity
+      setInterval(() => {
+        if (Math.random() > 0.7) {
+          baseCount += Math.floor(Math.random() * 3) + 1;
+          counter.textContent = baseCount.toLocaleString();
+        }
+      }, 5000);
+    }
+
+    // Initialize social proof on load
+    initSocialProof();
+
+    // Unlock gated content
+    function unlockContent() {
+      const data = window.gatedData;
+
+      // Remove locks
+      document.querySelectorAll('.gated-section').forEach(el => {
+        el.classList.remove('locked');
+      });
+
+      // Hide email gate
+      document.getElementById('emailGate').style.display = 'none';
+
+      // Populate details
+      document.getElementById('loadTime').textContent = data.details.load_time ? data.details.load_time + 's' : 'N/A';
+      document.getElementById('wordCount').textContent = data.details.word_count || '0';
+      document.getElementById('socialPlatforms').textContent = data.details.social_platforms.length > 0
+        ? data.details.social_platforms.join(', ')
         : 'None found';
-      document.getElementById('schemaTypes').textContent = details.schema_types.length > 0
-        ? details.schema_types.join(', ')
+      document.getElementById('schemaTypes').textContent = data.details.schema_types.length > 0
+        ? data.details.schema_types.join(', ')
         : 'None found';
 
       // Issues
@@ -683,23 +2009,234 @@
       if (data.recommendations && data.recommendations.length > 0) {
         data.recommendations.forEach(rec => {
           const li = document.createElement('li');
-          li.innerHTML = '<span class="list-icon icon-rec">✓</span><span>' + rec + '</span>';
+          li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
           recsList.appendChild(li);
         });
         document.getElementById('recsSection').style.display = 'block';
       } else {
         document.getElementById('recsSection').style.display = 'none';
       }
-
-      // Show results
-      loading.classList.remove('active');
-      results.classList.add('active');
     }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    // 2-Step Lead Form
+    const emailForm = document.getElementById('emailForm');
+    const detailsForm = document.getElementById('detailsForm');
+    const skipBtn = document.getElementById('skipBtn');
+    const EMAIL_API = 'https://remodely-grader.onrender.com/api/send-report';
+    let currentLeadId = null;
+    let currentEmail = null;
 
-      const url = urlInput.value.trim();
+    console.log('Form setup - emailForm found:', !!emailForm);
+
+    // Step 1: Email only - low friction
+    if (emailForm) {
+      emailForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('Email form submitted');
+
+        const email = document.getElementById('leadEmail').value.trim();
+        const btn = document.getElementById('emailSubmitBtn');
+        currentEmail = email;
+
+        // Disable button and show loading
+        if (btn) {
+          btn.disabled = true;
+          const btnText = btn.querySelector('.btn-text');
+          const btnLoading = btn.querySelector('.btn-loading');
+          if (btnText) btnText.style.display = 'none';
+          if (btnLoading) btnLoading.style.display = 'inline';
+        }
+
+        // 1. Try to capture lead to Firebase (non-blocking)
+        if (typeof db !== 'undefined') {
+          db.collection('leads').add({
+            email: email,
+            website: urlInput.value,
+            url: urlInput.value,
+            score: analysisData?.scores?.overall || 0,
+            aiScore: analysisData?.scores?.ai_visibility || 0,
+            formType: 'grader-report',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            source: 'grader'
+          }).then(doc => {
+            currentLeadId = doc.id;
+            console.log('Lead captured:', doc.id);
+          }).catch(err => console.log('Firebase error:', err));
+        }
+
+        // 2. Send email report (fire and forget)
+        fetch(EMAIL_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            name: 'there',
+            url: urlInput.value,
+            scores: analysisData?.scores || {}
+          })
+        }).then(() => console.log('Email sent'))
+          .catch(e => console.log('Email API not ready yet:', e.message));
+
+        // 3. UNLOCK the gated sections (but don't hide the email gate)
+        document.querySelectorAll('.gated-section').forEach(el => {
+          el.classList.remove('locked');
+        });
+
+        // Populate the gated content
+        const data = window.gatedData;
+        if (data) {
+          document.getElementById('loadTime').textContent = data.details?.load_time ? data.details.load_time + 's' : 'N/A';
+          document.getElementById('wordCount').textContent = data.details?.word_count || '0';
+          document.getElementById('socialPlatforms').textContent = data.details?.social_platforms?.length > 0
+            ? data.details.social_platforms.join(', ') : 'None found';
+          document.getElementById('schemaTypes').textContent = data.details?.schema_types?.length > 0
+            ? data.details.schema_types.join(', ') : 'None found';
+
+          // Issues
+          const issuesList = document.getElementById('issuesList');
+          if (issuesList && data.issues?.length > 0) {
+            issuesList.innerHTML = '';
+            data.issues.forEach(issue => {
+              const li = document.createElement('li');
+              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+              issuesList.appendChild(li);
+            });
+          }
+
+          // Recommendations
+          const recsList = document.getElementById('recsList');
+          if (recsList && data.recommendations?.length > 0) {
+            recsList.innerHTML = '';
+            data.recommendations.forEach(rec => {
+              const li = document.createElement('li');
+              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
+              recsList.appendChild(li);
+            });
+          }
+        }
+
+        // 4. Update progress dots
+        const dot1 = document.getElementById('progressDot1');
+        const dot2 = document.getElementById('progressDot2');
+        if (dot1) { dot1.classList.remove('active'); dot1.classList.add('done'); }
+        if (dot2) { dot2.classList.add('active'); }
+
+        // 5. Show Step 2
+        const step1 = document.getElementById('leadStep1');
+        const step2 = document.getElementById('leadStep2');
+        if (step1) step1.style.display = 'none';
+        if (step2) step2.style.display = 'block';
+
+        console.log('Content unlocked, Step 2 visible');
+
+        // Re-enable button
+        if (btn) {
+          btn.disabled = false;
+          const btnText = btn.querySelector('.btn-text');
+          const btnLoading = btn.querySelector('.btn-loading');
+          if (btnText) btnText.style.display = 'inline';
+          if (btnLoading) btnLoading.style.display = 'none';
+        }
+
+        console.log('Step 2 should now be visible');
+      });
+    }
+
+    // Step 2: Name & Phone - upgrade the lead
+    if (detailsForm) {
+      detailsForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('Step 2 form submitted');
+
+        const name = document.getElementById('leadName').value.trim();
+        const phone = document.getElementById('leadPhone').value.trim();
+        const btn = document.getElementById('detailsSubmitBtn');
+
+        if (btn) {
+          btn.disabled = true;
+          const btnText = btn.querySelector('.btn-text');
+          const btnLoading = btn.querySelector('.btn-loading');
+          if (btnText) btnText.style.display = 'none';
+          if (btnLoading) btnLoading.style.display = 'inline';
+        }
+
+        // Try to update Firebase (non-blocking)
+        if (currentLeadId && typeof db !== 'undefined') {
+          db.collection('leads').doc(currentLeadId).update({
+            name: name,
+            phone: phone,
+            formType: 'grader-consultation',
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => console.log('Lead upgraded'))
+            .catch(err => console.log('Firebase update error:', err));
+        } else {
+          // No existing lead, create new one
+          if (typeof db !== 'undefined') {
+            db.collection('leads').add({
+              name: name,
+              email: currentEmail,
+              phone: phone,
+              website: urlInput.value,
+              formType: 'grader-consultation',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              source: 'grader'
+            }).catch(err => console.log('Firebase error:', err));
+          }
+        }
+
+        // ALWAYS show success (don't wait for Firebase)
+        unlockContent();
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('ctaSection').style.display = 'block';
+        const fomo = document.getElementById('fomoBanner');
+        if (fomo) fomo.classList.remove('active');
+
+        // Re-enable button
+        if (btn) {
+          btn.disabled = false;
+          const btnText = btn.querySelector('.btn-text');
+          const btnLoading = btn.querySelector('.btn-loading');
+          if (btnText) btnText.style.display = 'inline';
+          if (btnLoading) btnLoading.style.display = 'none';
+        }
+
+        console.log('Success message should be visible');
+      });
+    }
+
+    // Skip button - unlock content and close the form
+    if (skipBtn) {
+      skipBtn.addEventListener('click', function() {
+        unlockContent();
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('ctaSection').style.display = 'block';
+        document.getElementById('fomoBanner').classList.remove('active');
+      });
+    }
+
+    // Loading step animation
+    function animateLoadingSteps() {
+      const steps = ['step1', 'step2', 'step3', 'step4'];
+      let i = 0;
+
+      const interval = setInterval(() => {
+        if (i > 0) {
+          document.getElementById(steps[i - 1]).classList.remove('active');
+          document.getElementById(steps[i - 1]).classList.add('done');
+          document.getElementById(steps[i - 1]).querySelector('.loading-step__icon').textContent = '✓';
+        }
+
+        if (i < steps.length) {
+          document.getElementById(steps[i]).classList.add('active');
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 800);
+    }
+
+    // Analyze function
+    async function analyzeUrl(url) {
       if (!url) return;
 
       // Show loading
@@ -707,6 +2244,9 @@
       loading.classList.add('active');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Analyzing...';
+
+      // Animate loading steps
+      animateLoadingSteps();
 
       try {
         const response = await fetch(API_URL, {
@@ -733,7 +2273,22 @@
         submitBtn.disabled = false;
         submitBtn.textContent = 'Analyze';
       }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = urlInput.value.trim();
+      analyzeUrl(url);
     });
+
+    // Check for URL in query string and auto-analyze
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlFromQuery = urlParams.get('url');
+    if (urlFromQuery) {
+      urlInput.value = urlFromQuery;
+      setTimeout(() => analyzeUrl(urlFromQuery), 100);
+    }
+
   </script>
 </body>
 </html>

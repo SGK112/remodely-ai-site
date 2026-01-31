@@ -6,8 +6,8 @@
   <title>Admin Dashboard | Remodely AI</title>
   <meta name="robots" content="noindex, nofollow">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <!-- Favicon (prevent 404) -->
+  <link rel="icon" href="data:,">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -863,9 +863,10 @@
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Website</th>
+              <th>Score</th>
               <th>Source</th>
               <th>Date</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -874,9 +875,10 @@
                 <td>${lead.name || '-'}</td>
                 <td><a href="mailto:${lead.email}" style="color: #818cf8;">${lead.email || '-'}</a></td>
                 <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color: #818cf8;">${lead.phone}</a>` : '-'}</td>
-                <td>${lead.formType || lead.source || '-'}</td>
+                <td>${lead.website || lead.url ? `<a href="${lead.website || lead.url}" target="_blank" style="color: #818cf8;">${(lead.website || lead.url).replace('https://', '').replace('http://', '').substring(0, 25)}</a>` : '-'}</td>
+                <td>${lead.score ? `<span style="color: ${lead.score >= 70 ? '#10b981' : lead.score >= 50 ? '#f59e0b' : '#ef4444'}; font-weight: 600;">${lead.score}</span>` : '-'}</td>
+                <td><span class="client-status ${lead.formType?.includes('grader') ? 'active' : 'pending'}">${lead.formType || lead.source || '-'}</span></td>
                 <td>${lead.createdAt ? formatDate(lead.createdAt.toDate()) : '-'}</td>
-                <td><span class="client-status ${lead.status === 'new' ? 'active' : 'pending'}">${lead.status || 'new'}</span></td>
               </tr>
             `).join('')}
           </tbody>

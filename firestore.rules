@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Leads collection - allow anyone to create (for grader/contact forms)
+    // Only authenticated admins can read/update/delete
+    match /leads/{leadId} {
+      allow create: if true;  // Allow unauthenticated users to submit leads
+      allow read, update, delete: if request.auth != null &&
+        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+    }
+
+    // Clients collection - only authenticated admins
+    match /clients/{clientId} {
+      allow read, write: if request.auth != null &&
+        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+    }
+
+    // Admin list - only authenticated admins
+    match /admins/{adminId} {
+      allow read, write: if request.auth != null &&
+        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+    }
+
+    // Grader results - allow anyone to read/write their own reports
+    match /graderReports/{reportId} {
+      allow create: if true;
+      allow read: if true;
+    }
+  }
+}
