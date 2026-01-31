@@ -20,7 +20,7 @@ FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', SMTP_USER)
 
 
 def send_email(to_email, subject, html_content, text_content):
-    """Send email via Gmail SMTP"""
+    """Send email via Gmail SMTP SSL"""
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
     msg['From'] = f'Remodely AI <{FROM_EMAIL}>'
@@ -29,8 +29,7 @@ def send_email(to_email, subject, html_content, text_content):
     msg.attach(MIMEText(text_content, 'plain'))
     msg.attach(MIMEText(html_content, 'html'))
 
-    server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)
-    server.starttls()
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10)
     server.login(SMTP_USER, SMTP_PASS)
     server.sendmail(FROM_EMAIL, to_email, msg.as_string())
     server.quit()
