@@ -29,7 +29,7 @@ def send_email(to_email, subject, html_content, text_content):
     msg.attach(MIMEText(text_content, 'plain'))
     msg.attach(MIMEText(html_content, 'html'))
 
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)
     server.starttls()
     server.login(SMTP_USER, SMTP_PASS)
     server.sendmail(FROM_EMAIL, to_email, msg.as_string())
