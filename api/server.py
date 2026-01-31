@@ -58,7 +58,12 @@ def grade():
 
 @app.route('/api/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'ok'})
+    return jsonify({
+        'status': 'ok',
+        'smtp_user': SMTP_USER,
+        'smtp_pass_set': bool(SMTP_PASS),
+        'smtp_pass_len': len(SMTP_PASS) if SMTP_PASS else 0
+    })
 
 
 @app.route('/api/send-report', methods=['POST', 'OPTIONS'])
