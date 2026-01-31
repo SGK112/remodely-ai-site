@@ -1586,12 +1586,18 @@
             <span class="step-check">✓</span> Report sent! One more step...
           </div>
           <h3>Want a Free Strategy Call?</h3>
-          <p>Tell us a bit more and we'll show you exactly how to fix your score.</p>
+          <p>Tell us a bit more and we'll reach out to schedule your call.</p>
           <form class="lead-form" id="detailsForm">
             <input type="text" id="leadName" placeholder="Your name" required style="width: 100%; margin-bottom: 12px;">
             <input type="tel" id="leadPhone" placeholder="Phone number" required style="width: 100%; margin-bottom: 12px;">
+            <select id="leadTime" style="width: 100%; margin-bottom: 12px; padding: 16px 20px; font-size: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.4); color: #fff; cursor: pointer;">
+              <option value="">When works best for you?</option>
+              <option value="morning">Morning (9am - 12pm)</option>
+              <option value="afternoon">Afternoon (12pm - 5pm)</option>
+              <option value="evening">Evening (5pm - 8pm)</option>
+            </select>
             <button type="submit" id="detailsSubmitBtn">
-              <span class="btn-text">Get My Free Strategy Call</span>
+              <span class="btn-text">Request My Strategy Call</span>
               <span class="btn-loading" style="display: none;">Saving...</span>
             </button>
           </form>
@@ -1646,15 +1652,12 @@
           Only <strong>3 spots left</strong> this week
         </div>
         <h3>Want Us To Fix This For You?</h3>
-        <p>Book a free 15-minute strategy call. We'll create a custom action plan to boost your AI visibility.</p>
-        <a href="https://calendly.com/remodely/consultation" target="_blank" class="cta-btn">
+        <p>We'll reach out within 24 hours to schedule your free strategy call and create a custom action plan.</p>
+        <a href="/#contact" class="cta-btn">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
           </svg>
-          Book Free Strategy Call
+          Contact Us
         </a>
       </div>
 
@@ -2150,6 +2153,7 @@
 
         const name = document.getElementById('leadName').value.trim();
         const phone = document.getElementById('leadPhone').value.trim();
+        const preferredTime = document.getElementById('leadTime').value;
         const btn = document.getElementById('detailsSubmitBtn');
 
         if (btn) {
@@ -2165,6 +2169,7 @@
           db.collection('leads').doc(currentLeadId).update({
             name: name,
             phone: phone,
+            preferredTime: preferredTime,
             formType: 'grader-consultation',
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           }).then(() => console.log('Lead upgraded'))
@@ -2176,6 +2181,7 @@
               name: name,
               email: currentEmail,
               phone: phone,
+              preferredTime: preferredTime,
               website: urlInput.value,
               formType: 'grader-consultation',
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),

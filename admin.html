@@ -863,6 +863,7 @@
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Preferred Time</th>
               <th>Website</th>
               <th>Score</th>
               <th>Source</th>
@@ -875,6 +876,7 @@
                 <td>${lead.name || '-'}</td>
                 <td><a href="mailto:${lead.email}" style="color: #818cf8;">${lead.email || '-'}</a></td>
                 <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color: #818cf8;">${lead.phone}</a>` : '-'}</td>
+                <td>${lead.preferredTime ? `<span style="color: #10b981; text-transform: capitalize;">${lead.preferredTime}</span>` : '-'}</td>
                 <td>${lead.website || lead.url ? `<a href="${lead.website || lead.url}" target="_blank" style="color: #818cf8;">${(lead.website || lead.url).replace('https://', '').replace('http://', '').substring(0, 25)}</a>` : '-'}</td>
                 <td>${lead.score ? `<span style="color: ${lead.score >= 70 ? '#10b981' : lead.score >= 50 ? '#f59e0b' : '#ef4444'}; font-weight: 600;">${lead.score}</span>` : '-'}</td>
                 <td><span class="client-status ${lead.formType?.includes('grader') ? 'active' : 'pending'}">${lead.formType || lead.source || '-'}</span></td>
