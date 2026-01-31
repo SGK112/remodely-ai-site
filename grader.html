@@ -1409,6 +1409,104 @@
         margin-left: 36px;
         margin-top: 8px;
       }
+
+      /* Grader form fullscreen expansion on mobile */
+      .grader-form {
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .grader-form.expanded {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        border-radius: 0;
+        margin: 0;
+        padding: 60px 24px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--primary);
+        overflow-y: auto;
+        cursor: default;
+      }
+
+      .grader-form.expanded::before {
+        display: none;
+      }
+
+      .grader-form__close {
+        display: none;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 10;
+      }
+
+      .grader-form__close:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .grader-form.expanded .grader-form__close {
+        display: flex;
+      }
+
+      .grader-form__header {
+        display: none;
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .grader-form.expanded .grader-form__header {
+        display: block;
+      }
+
+      .grader-form__header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #fff;
+      }
+
+      .grader-form__header p {
+        font-size: 0.9375rem;
+        color: var(--gray-400);
+      }
+
+      .grader-form.expanded .input-group {
+        gap: 16px;
+      }
+
+      .grader-form.expanded .input-group input {
+        padding: 20px 24px;
+        font-size: 18px;
+        border-radius: 14px;
+      }
+
+      .grader-form.expanded .input-group button {
+        padding: 20px 28px;
+        font-size: 18px;
+        border-radius: 14px;
+      }
+
+      /* Overlay backdrop */
+      body.form-expanded {
+        overflow: hidden;
+      }
     }
   </style>
 </head>
@@ -1432,7 +1530,12 @@
     </div>
 
     <!-- Form -->
-    <div class="grader-form">
+    <div class="grader-form" id="graderFormCard">
+      <button type="button" class="grader-form__close" id="formCloseBtn" aria-label="Close">&times;</button>
+      <div class="grader-form__header">
+        <h2>Analyze Your Website</h2>
+        <p>Enter your URL to get your AI visibility score</p>
+      </div>
       <form id="graderForm">
         <div class="input-group">
           <input
@@ -2370,6 +2473,72 @@
       urlInput.value = urlFromQuery;
       setTimeout(() => analyzeUrl(urlFromQuery), 100);
     }
+
+    // Mobile fullscreen form expansion
+    (function() {
+      const formCard = document.getElementById('graderFormCard');
+      const closeBtn = document.getElementById('formCloseBtn');
+      const urlInputEl = document.getElementById('urlInput');
+
+      if (!formCard || !closeBtn || !urlInputEl) return;
+
+      function isMobile() {
+        return window.matchMedia('(max-width: 600px)').matches;
+      }
+
+      function expandForm() {
+        if (!isMobile()) return;
+        formCard.classList.add('expanded');
+        document.body.classList.add('form-expanded');
+        // Focus input after animation
+        setTimeout(() => urlInputEl.focus(), 300);
+      }
+
+      function collapseForm() {
+        formCard.classList.remove('expanded');
+        document.body.classList.remove('form-expanded');
+        urlInputEl.blur();
+      }
+
+      // Expand when clicking on the card (but not when already expanded)
+      formCard.addEventListener('click', function(e) {
+        if (!formCard.classList.contains('expanded') && isMobile()) {
+          // Don't expand if clicking button or input (they handle their own behavior)
+          if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+            expandForm();
+          }
+        }
+      });
+
+      // Expand when input is focused on mobile
+      urlInputEl.addEventListener('focus', function() {
+        if (isMobile() && !formCard.classList.contains('expanded')) {
+          expandForm();
+        }
+      });
+
+      // Close button
+      closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        collapseForm();
+      });
+
+      // Collapse after successful submit (the analyze function will show results)
+      const originalAnalyzeUrl = window.analyzeUrl || analyzeUrl;
+      window.analyzeUrl = async function(url) {
+        if (formCard.classList.contains('expanded')) {
+          collapseForm();
+        }
+        return originalAnalyzeUrl(url);
+      };
+
+      // Close on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && formCard.classList.contains('expanded')) {
+          collapseForm();
+        }
+      });
+    })();
 
   </script>
 </body>
