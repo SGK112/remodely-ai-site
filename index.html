@@ -102,81 +102,66 @@
     <div class="animated-bg__orb animated-bg__orb--1"></div>
     <div class="animated-bg__orb animated-bg__orb--2"></div>
     <div class="animated-bg__orb animated-bg__orb--3"></div>
-    <div class="animated-bg__grid"></div>
   </div>
 
   <div class="mobile-hero-content" itemscope itemtype="https://schema.org/Service">
     <!-- Top Bar -->
     <div class="mobile-hero-top">
       <div class="mobile-hero-logo">
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="mobileLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#4285F4"/>
-              <stop offset="33%" stop-color="#EA4335"/>
-              <stop offset="66%" stop-color="#FBBC05"/>
-              <stop offset="100%" stop-color="#34A853"/>
-            </linearGradient>
-          </defs>
-          <path d="M3 21V10l9-7 9 7v11" stroke="url(#mobileLogoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
-        </svg>
+        <span class="mobile-hero-logo-text">REMODELY<span>.AI</span></span>
       </div>
       <a href="tel:+14803139663" class="mobile-hero-contact" aria-label="Call us now">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
-        <span>Call Now</span>
       </a>
     </div>
 
-    <!-- Middle Content - Full service messaging -->
+    <!-- Middle Content - Dashboard Preview Style -->
     <div class="mobile-hero-middle">
-      <!-- Badge -->
-      <div class="mobile-hero-badge">
-        <span class="mobile-hero-badge-dot"></span>
-        <span>Built for contractors. Live in 48 hours.</span>
-      </div>
-
-      <!-- Main Headline -->
+      <!-- Main Headline - Big and Bold -->
       <h1 class="mobile-hero-headline" itemprop="name">
-        Run Your Business<br>On Autopilot
+        Your Business.<br><span class="gradient-text-animated">Automated.</span>
       </h1>
 
-      <!-- Subheadline -->
-      <p class="mobile-hero-sub" itemprop="description">
-        AI software that handles calls, scheduling, quotes, payments, and client communication — so you can focus on the work.
-      </p>
-
-      <!-- Feature Pills -->
-      <div class="mobile-hero-features">
-        <div class="mobile-hero-feature">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          <span>Smart Scheduling</span>
+      <!-- Mini Dashboard Preview -->
+      <div class="mobile-dashboard-preview">
+        <div class="dash-card dash-card--leads">
+          <div class="dash-card__icon">📥</div>
+          <div class="dash-card__content">
+            <span class="dash-card__number">12</span>
+            <span class="dash-card__label">New Leads Today</span>
+          </div>
         </div>
-        <div class="mobile-hero-feature">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          <span>Instant Quotes</span>
+        <div class="dash-card dash-card--booked">
+          <div class="dash-card__icon">📅</div>
+          <div class="dash-card__content">
+            <span class="dash-card__number">8</span>
+            <span class="dash-card__label">Jobs Booked</span>
+          </div>
         </div>
-        <div class="mobile-hero-feature">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          <span>Easy Payments</span>
-        </div>
-        <div class="mobile-hero-feature">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          <span>Client Portal</span>
+        <div class="dash-card dash-card--revenue">
+          <div class="dash-card__icon">💰</div>
+          <div class="dash-card__content">
+            <span class="dash-card__number">$24K</span>
+            <span class="dash-card__label">This Week</span>
+          </div>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="mobile-hero-stats">
-        <div class="mobile-hero-stat">
-          <span class="mobile-hero-stat-number">15+</span>
-          <span class="mobile-hero-stat-label">Hours saved weekly</span>
+      <!-- Value Props -->
+      <div class="mobile-hero-props">
+        <div class="mobile-hero-prop">
+          <span class="prop-icon">⚡</span>
+          <span class="prop-text">AI handles calls & booking</span>
         </div>
-        <div class="mobile-hero-stat">
-          <span class="mobile-hero-stat-number">24/7</span>
-          <span class="mobile-hero-stat-label">Always working for you</span>
+        <div class="mobile-hero-prop">
+          <span class="prop-icon">📝</span>
+          <span class="prop-text">Instant quotes to clients</span>
+        </div>
+        <div class="mobile-hero-prop">
+          <span class="prop-icon">💳</span>
+          <span class="prop-text">Get paid faster</span>
         </div>
       </div>
     </div>

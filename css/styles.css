@@ -8413,14 +8413,128 @@ html {
     font-weight: 500;
   }
 
-  .mobile-hero-headline {
-    font-size: 2.5rem;
+  /* Logo Text */
+  .mobile-hero-logo-text {
+    font-size: 1.25rem;
     font-weight: 800;
     color: #fff;
-    line-height: 1.05;
-    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .mobile-hero-logo-text span {
+    color: #818cf8;
+  }
+
+  .mobile-hero-headline {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.0;
+    margin: 0 0 28px 0;
     text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
+  }
+
+  /* Animated Gradient Text */
+  .gradient-text-animated {
+    background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6, #818cf8);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientFlow 4s ease infinite;
+  }
+
+  @keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Dashboard Preview Cards */
+  .mobile-dashboard-preview {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    padding: 0 10px;
+  }
+
+  .dash-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: cardFloat 3s ease-in-out infinite;
+  }
+
+  .dash-card--leads { animation-delay: 0s; }
+  .dash-card--booked { animation-delay: 0.2s; }
+  .dash-card--revenue { animation-delay: 0.4s; }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .dash-card__icon {
+    font-size: 1.5rem;
+  }
+
+  .dash-card__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .dash-card__number {
+    font-size: 1.375rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .dash-card__label {
+    font-size: 0.625rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  /* Value Props */
+  .mobile-hero-props {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .mobile-hero-prop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+  }
+
+  .prop-icon {
+    font-size: 1.25rem;
+  }
+
+  .prop-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9375rem;
+    font-weight: 500;
   }
 
   .mobile-hero-sub {
