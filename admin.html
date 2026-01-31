@@ -736,9 +736,10 @@
       await auth.signOut();
     });
 
-    // Sign out
+    // Sign out - redirect to client dashboard
     signOutBtn.addEventListener('click', async () => {
       await auth.signOut();
+      window.location.href = '/client-dashboard.html';
     });
 
     // Load admin list
