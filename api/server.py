@@ -212,8 +212,10 @@ https://remodely.ai
         # Send email
         if SMTP_USER and SMTP_PASS:
             try:
-                server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10)
-                server.starttls()
+                # Use SSL on port 465 (more reliable from cloud servers)
+                import ssl
+                context = ssl.create_default_context()
+                server = smtplib.SMTP_SSL(SMTP_HOST, 465, timeout=10, context=context)
                 server.login(SMTP_USER, SMTP_PASS)
                 server.send_message(msg)
                 server.quit()
