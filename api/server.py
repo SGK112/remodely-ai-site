@@ -232,21 +232,36 @@ https://remodely.ai
         # Send email
         if SMTP_USER and SMTP_PASS:
             try:
+                import ssl
+
                 # Force IPv4 to avoid "Network is unreachable" on some cloud platforms
                 def ipv4_only_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
                     return _orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
 
                 # Temporarily override socket.getaddrinfo to force IPv4
                 socket.getaddrinfo = ipv4_only_getaddrinfo
+                server = None
                 try:
-                    # Use TLS on port 587
-                    server = smtplib.SMTP(SMTP_HOST, 587, timeout=30)
-                    server.ehlo()
-                    server.starttls()
-                    server.ehlo()
-                    server.login(SMTP_USER, SMTP_PASS)
-                    server.send_message(msg)
-                    server.quit()
+                    # Try SMTP_SSL on port 465 first (more reliable on cloud)
+                    context = ssl.create_default_context()
+                    try:
+                        print("Trying SMTP_SSL on port 465...")
+                        server = smtplib.SMTP_SSL(SMTP_HOST, 465, timeout=20, context=context)
+                        server.login(SMTP_USER, SMTP_PASS)
+                        server.send_message(msg)
+                        server.quit()
+                        print("Email sent via SMTP_SSL port 465")
+                    except Exception as ssl_err:
+                        print(f"SMTP_SSL failed: {ssl_err}, trying STARTTLS on 587...")
+                        # Fallback to STARTTLS on port 587
+                        server = smtplib.SMTP(SMTP_HOST, 587, timeout=20)
+                        server.ehlo()
+                        server.starttls(context=context)
+                        server.ehlo()
+                        server.login(SMTP_USER, SMTP_PASS)
+                        server.send_message(msg)
+                        server.quit()
+                        print("Email sent via STARTTLS port 587")
                 finally:
                     # Restore original getaddrinfo
                     socket.getaddrinfo = _orig_getaddrinfo
@@ -276,7 +291,7 @@ def index():
     """Root endpoint"""
     return jsonify({
         'service': 'Remodely AI Website Grader',
-        'version': '1.2',
+        'version': '1.3',
         'endpoints': {
             '/api/grade': 'POST - Grade a website (body: {"url": "https://example.com"})',
             '/api/send-report': 'POST - Send report via email (body: {"email", "name", "url", "scores"})',
