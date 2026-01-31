@@ -5413,8 +5413,78 @@ html {
   /* Lead form adjustments */
   .lead-form-card {
     max-width: 100%;
+    transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    position: relative;
   }
 
+  /* Lead form close button - hidden by default */
+  .lead-form-close {
+    display: none;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--gray-600);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s;
+  }
+
+  .lead-form-close:hover {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  /* Fullscreen expanded state */
+  .lead-form-card.expanded {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    padding: 80px 24px 40px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lead-form-card.expanded .lead-form-close {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+  }
+
+  .lead-form-card.expanded .lead-form-header h3 {
+    font-size: 1.75rem;
+  }
+
+  .lead-form-card.expanded .lead-form-body input {
+    padding: 18px 20px;
+    font-size: 18px;
+  }
+
+  .lead-form-card.expanded .lead-form-submit {
+    padding: 18px 24px;
+    font-size: 18px;
+  }
+
+  body.grader-expanded {
+    overflow: hidden !important;
+  }
 
   /* About section */
   .about-content {

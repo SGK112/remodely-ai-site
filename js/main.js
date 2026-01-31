@@ -653,10 +653,68 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // =====================================================
+  // HERO GRADER CARD - MOBILE FULLSCREEN EXPANSION
+  // =====================================================
+  const heroGraderCard = document.getElementById('heroGraderCard');
+  const heroGraderClose = document.getElementById('heroGraderClose');
+
+  if (heroGraderCard) {
+    const isMobileDevice = () => window.innerWidth <= 768;
+
+    function expandHeroGrader() {
+      if (!isMobileDevice()) return;
+      heroGraderCard.classList.add('expanded');
+      document.body.classList.add('grader-expanded');
+      // Focus the URL input
+      setTimeout(() => {
+        const urlInput = document.getElementById('hero-url');
+        if (urlInput) urlInput.focus();
+      }, 300);
+    }
+
+    function collapseHeroGrader() {
+      heroGraderCard.classList.remove('expanded');
+      document.body.classList.remove('grader-expanded');
+    }
+
+    // Expand when clicking on the card (but not on form elements when already expanded)
+    heroGraderCard.addEventListener('click', (e) => {
+      if (!heroGraderCard.classList.contains('expanded') && isMobileDevice()) {
+        // Don't expand if clicking on close button
+        if (e.target.closest('.lead-form-close')) return;
+        expandHeroGrader();
+      }
+    });
+
+    // Close button
+    if (heroGraderClose) {
+      heroGraderClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        collapseHeroGrader();
+      });
+    }
+
+    // Expand when input is focused on mobile
+    const heroUrlInput = document.getElementById('hero-url');
+    if (heroUrlInput) {
+      heroUrlInput.addEventListener('focus', () => {
+        if (isMobileDevice() && !heroGraderCard.classList.contains('expanded')) {
+          expandHeroGrader();
+        }
+      });
+    }
+  }
+
+  // =====================================================
   // KEYBOARD ACCESSIBILITY
   // =====================================================
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      // Close hero grader card if expanded
+      if (heroGraderCard && heroGraderCard.classList.contains('expanded')) {
+        heroGraderCard.classList.remove('expanded');
+        document.body.classList.remove('grader-expanded');
+      }
       // Close mobile form if expanded
       if (mobileFormCard && mobileFormCard.classList.contains('expanded')) {
         mobileFormCard.classList.remove('expanded');
