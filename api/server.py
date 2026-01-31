@@ -7,6 +7,7 @@ from flask_cors import CORS
 from grader import grade_website
 import os
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -15,12 +16,12 @@ CORS(app)
 
 # Email config
 SMTP_USER = os.environ.get('SMTP_USER', '')
-SMTP_PASS = os.environ.get('SMTP_PASSWORD', '').replace(' ', '')  # Strip spaces from app password
+SMTP_PASS = os.environ.get('SMTP_PASSWORD', '').replace(' ', '')
 FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', SMTP_USER)
 
 
 def send_email(to_email, subject, html_content, text_content):
-    """Send email via Gmail SMTP SSL"""
+    """Send email via Gmail SMTP"""
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
     msg['From'] = f'Remodely AI <{FROM_EMAIL}>'
@@ -29,10 +30,14 @@ def send_email(to_email, subject, html_content, text_content):
     msg.attach(MIMEText(text_content, 'plain'))
     msg.attach(MIMEText(html_content, 'html'))
 
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10)
-    server.login(SMTP_USER, SMTP_PASS)
-    server.sendmail(FROM_EMAIL, to_email, msg.as_string())
-    server.quit()
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP('smtp.gmail.com', 587, timeout=30) as server:
+        server.ehlo()
+        server.starttls(context=context)
+        server.ehlo()
+        server.login(SMTP_USER, SMTP_PASS)
+        server.sendmail(FROM_EMAIL, to_email, msg.as_string())
 
 
 @app.route('/api/grade', methods=['POST', 'OPTIONS'])
@@ -63,6 +68,42 @@ def health():
         'smtp_pass_set': bool(SMTP_PASS),
         'smtp_pass_len': len(SMTP_PASS) if SMTP_PASS else 0
     })
+
+
+@app.route('/api/test-smtp', methods=['GET'])
+def test_smtp():
+    """Test SMTP connectivity"""
+    import socket
+    results = {}
+
+    # Test DNS
+    try:
+        ip = socket.gethostbyname('smtp.gmail.com')
+        results['dns'] = f'OK - {ip}'
+    except Exception as e:
+        results['dns'] = f'FAIL - {e}'
+
+    # Test socket connection
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(10)
+        sock.connect(('smtp.gmail.com', 587))
+        sock.close()
+        results['socket_587'] = 'OK'
+    except Exception as e:
+        results['socket_587'] = f'FAIL - {e}'
+
+    # Test socket 465
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(10)
+        sock.connect(('smtp.gmail.com', 465))
+        sock.close()
+        results['socket_465'] = 'OK'
+    except Exception as e:
+        results['socket_465'] = f'FAIL - {e}'
+
+    return jsonify(results)
 
 
 @app.route('/api/send-report', methods=['POST', 'OPTIONS'])
@@ -98,8 +139,7 @@ def send_report():
 
     greeting = f"Hi {name}," if name and name.lower() not in ['there', 'user', ''] else "Here's your report!"
 
-    html_content = f"""
-<!DOCTYPE html>
+    html_content = f"""<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:#0a0f1a;">
@@ -133,8 +173,7 @@ def send_report():
     </div>
   </div>
 </body>
-</html>
-"""
+</html>"""
 
     text_content = f"""{greeting}
 
@@ -149,8 +188,7 @@ Book a free consultation: https://remodely.ai/#contact
 
 --
 Remodely AI
-https://remodely.ai
-"""
+https://remodely.ai"""
 
     if not SMTP_USER or not SMTP_PASS:
         return jsonify({'success': False, 'error': 'Email not configured'}), 500
@@ -165,10 +203,7 @@ https://remodely.ai
 
 @app.route('/', methods=['GET'])
 def index():
-    return jsonify({
-        'service': 'Remodely AI Website Grader',
-        'version': '2.1'
-    })
+    return jsonify({'service': 'Remodely AI Website Grader', 'version': '2.2'})
 
 
 if __name__ == '__main__':

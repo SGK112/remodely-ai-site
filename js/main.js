@@ -616,10 +616,52 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // =====================================================
+  // MOBILE FORM CARD EXPANSION
+  // =====================================================
+  const mobileFormCard = document.getElementById('mobileFormCard');
+  const expandFormBtn = document.getElementById('expandFormBtn');
+  const closeFormBtn = document.getElementById('closeFormBtn');
+
+  if (mobileFormCard && expandFormBtn && closeFormBtn) {
+    function expandMobileForm() {
+      mobileFormCard.classList.add('expanded');
+      document.body.style.overflow = 'hidden';
+      // Focus the URL input after animation
+      setTimeout(() => {
+        const urlInput = document.getElementById('mobile-url');
+        if (urlInput) urlInput.focus();
+      }, 300);
+    }
+
+    function collapseMobileForm() {
+      mobileFormCard.classList.remove('expanded');
+      document.body.style.overflow = '';
+    }
+
+    expandFormBtn.addEventListener('click', expandMobileForm);
+    closeFormBtn.addEventListener('click', collapseMobileForm);
+
+    // Also expand when tapping anywhere on the preview
+    const preview = mobileFormCard.querySelector('.mobile-form-preview');
+    if (preview) {
+      preview.addEventListener('click', (e) => {
+        if (!mobileFormCard.classList.contains('expanded')) {
+          expandMobileForm();
+        }
+      });
+    }
+  }
+
+  // =====================================================
   // KEYBOARD ACCESSIBILITY
   // =====================================================
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      // Close mobile form if expanded
+      if (mobileFormCard && mobileFormCard.classList.contains('expanded')) {
+        mobileFormCard.classList.remove('expanded');
+        document.body.style.overflow = '';
+      }
       // Close mobile menu
       if (navLinks && navLinks.classList.contains('active')) {
         navLinks.classList.remove('active');
