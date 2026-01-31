@@ -211,15 +211,25 @@ https://remodely.ai
 
         # Send email
         if SMTP_USER and SMTP_PASS:
-            with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            try:
+                server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10)
                 server.starttls()
                 server.login(SMTP_USER, SMTP_PASS)
                 server.send_message(msg)
-
-            return jsonify({'success': True, 'message': 'Report sent successfully'})
+                server.quit()
+                return jsonify({'success': True, 'message': 'Report sent successfully'})
+            except smtplib.SMTPAuthenticationError as auth_err:
+                print(f"SMTP Auth Error: {str(auth_err)}")
+                return jsonify({'success': False, 'error': 'Email authentication failed'}), 500
+            except smtplib.SMTPException as smtp_err:
+                print(f"SMTP Error: {str(smtp_err)}")
+                return jsonify({'success': False, 'error': f'Email error: {str(smtp_err)}'}), 500
+            except Exception as send_err:
+                print(f"Send Error: {str(send_err)}")
+                return jsonify({'success': False, 'error': f'Failed to send: {str(send_err)}'}), 500
         else:
             # No SMTP configured - log but don't fail
-            print(f"SMTP not configured. Would send report to {email}")
+            print(f"SMTP not configured. SMTP_USER={SMTP_USER}, SMTP_PASS={'set' if SMTP_PASS else 'empty'}")
             return jsonify({'success': True, 'message': 'Report logged (SMTP not configured)'})
 
     except Exception as e:
