@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Website & AI Visibility Grader | Remodely AI</title>
+  <meta name="description" content="Get a free analysis of your website's SEO, performance, and AI visibility. See how findable you are by ChatGPT, Grok, and AI search.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--primary);
+      color: #fff;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+
+    .logo span {
+      color: var(--accent-light);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      color: var(--gray-400);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Form */
+    .grader-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 16px 20px;
+      font-size: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+    }
+
+    .input-group input::placeholder {
+      color: var(--gray-400);
+    }
+
+    .input-group button {
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .input-group button:hover {
+      background: var(--accent-light);
+    }
+
+    .input-group button:active {
+      transform: scale(0.98);
+    }
+
+    .input-group button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Loading */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading p {
+      color: var(--gray-400);
+    }
+
+    /* Results */
+    .results {
+      display: none;
+    }
+
+    .results.active {
+      display: block;
+    }
+
+    /* Score Cards */
+    .score-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .score-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .score-card.main {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .score-card__label {
+      font-size: 0.875rem;
+      color: var(--gray-400);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card__score {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-card__grade {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .grade-a { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .grade-b { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .grade-c { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .grade-d { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+    .grade-f { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+    /* Score Bars */
+    .score-section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .score-section h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .score-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .score-row__label {
+      width: 140px;
+      font-size: 0.875rem;
+      color: var(--gray-400);
+    }
+
+    .score-row__bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .score-row__fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .score-row__value {
+      width: 40px;
+      text-align: right;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .fill-green { background: var(--green); }
+    .fill-yellow { background: var(--yellow); }
+    .fill-red { background: var(--red); }
+
+    /* Lists */
+    .issues-list, .recs-list {
+      list-style: none;
+    }
+
+    .issues-list li, .recs-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .issues-list li:last-child, .recs-list li:last-child {
+      border-bottom: none;
+    }
+
+    .list-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .icon-issue {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .icon-rec {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    /* Details */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .detail-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .detail-item__label {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .detail-item__value {
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .cta-section h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .cta-section p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 20px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #fff;
+      color: var(--primary);
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.02);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .input-group {
+        flex-direction: column;
+      }
+
+      .score-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .score-card.main {
+        grid-column: span 1;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-row__label {
+        width: 100px;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">REMODELY<span>.AI</span></div>
+      <h1>Website & AI Visibility Grader</h1>
+      <p>See how your website performs for SEO and how findable you are by AI assistants like ChatGPT and Grok.</p>
+    </header>
+
+    <!-- Form -->
+    <div class="grader-form">
+      <form id="graderForm">
+        <div class="input-group">
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="Enter your website URL (e.g., example.com)"
+            required
+          >
+          <button type="submit" id="submitBtn">Analyze</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analyzing your website...</p>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="results">
+      <!-- Score Cards -->
+      <div class="score-cards">
+        <div class="score-card main">
+          <div class="score-card__label">Overall Score</div>
+          <div class="score-card__score" id="overallScore">--</div>
+          <div class="score-card__grade" id="overallGrade">--</div>
+        </div>
+        <div class="score-card">
+          <div class="score-card__label">AI Visibility</div>
+          <div class="score-card__score" id="aiScore">--</div>
+          <div class="score-card__grade" id="aiGrade">--</div>
+        </div>
+        <div class="score-card">
+          <div class="score-card__label">SEO Score</div>
+          <div class="score-card__score" id="seoScore">--</div>
+          <div class="score-card__grade" id="seoGrade">--</div>
+        </div>
+      </div>
+
+      <!-- SEO Scores -->
+      <div class="score-section">
+        <h3>📊 SEO & Content</h3>
+        <div class="score-row">
+          <span class="score-row__label">Meta Tags</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="metaBar"></div></div>
+          <span class="score-row__value" id="metaScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Headings</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="headingsBar"></div></div>
+          <span class="score-row__value" id="headingsScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Structured Data</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="schemaBar"></div></div>
+          <span class="score-row__value" id="schemaScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Content Quality</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="contentBar"></div></div>
+          <span class="score-row__value" id="contentScore">--</span>
+        </div>
+      </div>
+
+      <!-- Technical Scores -->
+      <div class="score-section">
+        <h3>⚙️ Technical</h3>
+        <div class="score-row">
+          <span class="score-row__label">HTTPS Security</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="httpsBar"></div></div>
+          <span class="score-row__value" id="httpsScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Mobile Friendly</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="mobileBar"></div></div>
+          <span class="score-row__value" id="mobileScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Page Speed</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="speedBar"></div></div>
+          <span class="score-row__value" id="speedScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Image Optimization</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="imagesBar"></div></div>
+          <span class="score-row__value" id="imagesScore">--</span>
+        </div>
+      </div>
+
+      <!-- Presence Scores -->
+      <div class="score-section">
+        <h3>🌐 Online Presence</h3>
+        <div class="score-row">
+          <span class="score-row__label">Social Media</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="socialBar"></div></div>
+          <span class="score-row__value" id="socialScore">--</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Contact Info</span>
+          <div class="score-row__bar"><div class="score-row__fill" id="contactBar"></div></div>
+          <span class="score-row__value" id="contactScore">--</span>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="score-section">
+        <h3>📋 Details</h3>
+        <div class="details-grid">
+          <div class="detail-item">
+            <div class="detail-item__label">Load Time</div>
+            <div class="detail-item__value" id="loadTime">--</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-item__label">Word Count</div>
+            <div class="detail-item__value" id="wordCount">--</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-item__label">Social Platforms</div>
+            <div class="detail-item__value" id="socialPlatforms">--</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-item__label">Schema Types</div>
+            <div class="detail-item__value" id="schemaTypes">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issues -->
+      <div class="score-section" id="issuesSection">
+        <h3>⚠️ Issues Found</h3>
+        <ul class="issues-list" id="issuesList"></ul>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="score-section" id="recsSection">
+        <h3>💡 Recommendations</h3>
+        <ul class="recs-list" id="recsList"></ul>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-section">
+        <h3>Want to Improve Your Score?</h3>
+        <p>Get a free consultation and see how we can automate your business and boost your AI visibility.</p>
+        <a href="/#contact" class="cta-btn">Get Free Consultation</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('graderForm');
+    const urlInput = document.getElementById('urlInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+
+    // API endpoint - update this when you deploy the API
+    const API_URL = 'https://remodely-grader.onrender.com/api/grade';
+
+    function getGradeClass(grade) {
+      const g = grade.toLowerCase();
+      if (g === 'a') return 'grade-a';
+      if (g === 'b') return 'grade-b';
+      if (g === 'c') return 'grade-c';
+      if (g === 'd') return 'grade-d';
+      return 'grade-f';
+    }
+
+    function getFillClass(score) {
+      if (score >= 70) return 'fill-green';
+      if (score >= 40) return 'fill-yellow';
+      return 'fill-red';
+    }
+
+    function getGrade(score) {
+      if (score >= 90) return 'A';
+      if (score >= 80) return 'B';
+      if (score >= 70) return 'C';
+      if (score >= 60) return 'D';
+      return 'F';
+    }
+
+    function updateScoreBar(barId, scoreId, score) {
+      const bar = document.getElementById(barId);
+      const scoreEl = document.getElementById(scoreId);
+
+      bar.style.width = score + '%';
+      bar.className = 'score-row__fill ' + getFillClass(score);
+      scoreEl.textContent = score;
+    }
+
+    function displayResults(data) {
+      const scores = data.scores;
+      const details = data.details;
+
+      // Main scores
+      document.getElementById('overallScore').textContent = scores.overall;
+      const overallGrade = document.getElementById('overallGrade');
+      overallGrade.textContent = 'Grade: ' + scores.overall_grade;
+      overallGrade.className = 'score-card__grade ' + getGradeClass(scores.overall_grade);
+
+      document.getElementById('aiScore').textContent = scores.ai_visibility;
+      const aiGrade = document.getElementById('aiGrade');
+      aiGrade.textContent = 'Grade: ' + scores.ai_visibility_grade;
+      aiGrade.className = 'score-card__grade ' + getGradeClass(scores.ai_visibility_grade);
+
+      // Calculate average SEO score
+      const seoAvg = Math.round((scores.seo.meta_tags + scores.seo.headings + scores.seo.structured_data) / 3);
+      document.getElementById('seoScore').textContent = seoAvg;
+      const seoGrade = document.getElementById('seoGrade');
+      seoGrade.textContent = 'Grade: ' + getGrade(seoAvg);
+      seoGrade.className = 'score-card__grade ' + getGradeClass(getGrade(seoAvg));
+
+      // SEO bars
+      updateScoreBar('metaBar', 'metaScore', scores.seo.meta_tags);
+      updateScoreBar('headingsBar', 'headingsScore', scores.seo.headings);
+      updateScoreBar('schemaBar', 'schemaScore', scores.seo.structured_data);
+      updateScoreBar('contentBar', 'contentScore', scores.presence.content);
+
+      // Technical bars
+      updateScoreBar('httpsBar', 'httpsScore', scores.technical.https);
+      updateScoreBar('mobileBar', 'mobileScore', scores.technical.mobile);
+      updateScoreBar('speedBar', 'speedScore', scores.technical.speed);
+      updateScoreBar('imagesBar', 'imagesScore', scores.technical.images);
+
+      // Presence bars
+      updateScoreBar('socialBar', 'socialScore', scores.presence.social);
+      updateScoreBar('contactBar', 'contactScore', scores.presence.contact);
+
+      // Details
+      document.getElementById('loadTime').textContent = details.load_time ? details.load_time + 's' : 'N/A';
+      document.getElementById('wordCount').textContent = details.word_count || '0';
+      document.getElementById('socialPlatforms').textContent = details.social_platforms.length > 0
+        ? details.social_platforms.join(', ')
+        : 'None found';
+      document.getElementById('schemaTypes').textContent = details.schema_types.length > 0
+        ? details.schema_types.join(', ')
+        : 'None found';
+
+      // Issues
+      const issuesList = document.getElementById('issuesList');
+      issuesList.innerHTML = '';
+      if (data.issues && data.issues.length > 0) {
+        data.issues.forEach(issue => {
+          const li = document.createElement('li');
+          li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+          issuesList.appendChild(li);
+        });
+        document.getElementById('issuesSection').style.display = 'block';
+      } else {
+        document.getElementById('issuesSection').style.display = 'none';
+      }
+
+      // Recommendations
+      const recsList = document.getElementById('recsList');
+      recsList.innerHTML = '';
+      if (data.recommendations && data.recommendations.length > 0) {
+        data.recommendations.forEach(rec => {
+          const li = document.createElement('li');
+          li.innerHTML = '<span class="list-icon icon-rec">✓</span><span>' + rec + '</span>';
+          recsList.appendChild(li);
+        });
+        document.getElementById('recsSection').style.display = 'block';
+      } else {
+        document.getElementById('recsSection').style.display = 'none';
+      }
+
+      // Show results
+      loading.classList.remove('active');
+      results.classList.add('active');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      // Show loading
+      results.classList.remove('active');
+      loading.classList.add('active');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Analyzing...';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url: url })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          displayResults(data);
+        } else {
+          alert('Error: ' + (data.error || 'Could not analyze website'));
+          loading.classList.remove('active');
+        }
+      } catch (error) {
+        alert('Error connecting to grader service. Please try again.');
+        loading.classList.remove('active');
+        console.error(error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Analyze';
+      }
+    });
+  </script>
+</body>
+</html>
