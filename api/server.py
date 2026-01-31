@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from grader import grade_website
 import os
+import socket
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -18,8 +19,12 @@ CORS(app)  # Allow cross-origin requests
 SMTP_HOST = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
 SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
 SMTP_USER = os.environ.get('SMTP_USER', 'help.remodely@gmail.com')
-SMTP_PASS = os.environ.get('SMTP_PASSWORD', '')  # Note: SMTP_PASSWORD not SMTP_PASS
+# Strip spaces from app password (users often copy with spaces between groups)
+SMTP_PASS = os.environ.get('SMTP_PASSWORD', '').replace(' ', '')
 FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', 'help.remodely@gmail.com')
+
+# Store original getaddrinfo for IPv4 forcing
+_orig_getaddrinfo = socket.getaddrinfo
 
 @app.route('/api/grade', methods=['POST', 'OPTIONS'])
 def grade():
@@ -59,7 +64,9 @@ def debug_smtp():
         'smtp_user': SMTP_USER,
         'smtp_pass_set': bool(SMTP_PASS),
         'smtp_pass_length': len(SMTP_PASS) if SMTP_PASS else 0,
-        'from_email': FROM_EMAIL
+        'smtp_pass_clean': len(SMTP_PASS) == 16,  # Gmail app passwords are 16 chars
+        'from_email': FROM_EMAIL,
+        'ipv4_forced': True
     })
 
 
@@ -225,14 +232,25 @@ https://remodely.ai
         # Send email
         if SMTP_USER and SMTP_PASS:
             try:
-                # Use TLS on port 587
-                server = smtplib.SMTP(SMTP_HOST, 587, timeout=15)
-                server.ehlo()
-                server.starttls()
-                server.ehlo()
-                server.login(SMTP_USER, SMTP_PASS)
-                server.send_message(msg)
-                server.quit()
+                # Force IPv4 to avoid "Network is unreachable" on some cloud platforms
+                def ipv4_only_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+                    return _orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+
+                # Temporarily override socket.getaddrinfo to force IPv4
+                socket.getaddrinfo = ipv4_only_getaddrinfo
+                try:
+                    # Use TLS on port 587
+                    server = smtplib.SMTP(SMTP_HOST, 587, timeout=30)
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login(SMTP_USER, SMTP_PASS)
+                    server.send_message(msg)
+                    server.quit()
+                finally:
+                    # Restore original getaddrinfo
+                    socket.getaddrinfo = _orig_getaddrinfo
+
                 return jsonify({'success': True, 'message': 'Report sent successfully'})
             except smtplib.SMTPAuthenticationError as auth_err:
                 print(f"SMTP Auth Error: {str(auth_err)}")
@@ -258,7 +276,7 @@ def index():
     """Root endpoint"""
     return jsonify({
         'service': 'Remodely AI Website Grader',
-        'version': '1.1',
+        'version': '1.2',
         'endpoints': {
             '/api/grade': 'POST - Grade a website (body: {"url": "https://example.com"})',
             '/api/send-report': 'POST - Send report via email (body: {"email", "name", "url", "scores"})',
