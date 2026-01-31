@@ -15,7 +15,7 @@ CORS(app)
 
 # Email config
 SMTP_USER = os.environ.get('SMTP_USER', '')
-SMTP_PASS = os.environ.get('SMTP_PASSWORD', '')
+SMTP_PASS = os.environ.get('SMTP_PASSWORD', '').replace(' ', '')  # Strip spaces from app password
 FROM_EMAIL = os.environ.get('SMTP_FROM_EMAIL', SMTP_USER)
 
 
