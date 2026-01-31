@@ -93,6 +93,174 @@
 <body>
   <!-- Clean B2B Background - No starfield -->
 
+  <!-- ===== MOBILE PRESENTATION MODE ===== -->
+  <!-- High-converting mobile experience for contractors & home service businesses -->
+  <div class="mobile-hero-content" itemscope itemtype="https://schema.org/Service">
+    <!-- Top Bar -->
+    <div class="mobile-hero-top">
+      <div class="mobile-hero-logo">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="mobileLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4285F4"/>
+              <stop offset="33%" stop-color="#EA4335"/>
+              <stop offset="66%" stop-color="#FBBC05"/>
+              <stop offset="100%" stop-color="#34A853"/>
+            </linearGradient>
+          </defs>
+          <path d="M3 21V10l9-7 9 7v11" stroke="url(#mobileLogoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <a href="tel:+14803139663" class="mobile-hero-contact" aria-label="Call us now">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Call Now</span>
+      </a>
+    </div>
+
+    <!-- Middle Content - Hard-hitting contractor messaging -->
+    <div class="mobile-hero-middle">
+      <!-- Urgency Badge -->
+      <div class="mobile-hero-badge">
+        <span class="mobile-hero-badge-dot"></span>
+        <span>62% of contractor calls go unanswered</span>
+      </div>
+
+      <!-- Main Headline - Pain point focused -->
+      <h1 class="mobile-hero-headline" itemprop="name">
+        Every Missed Call<br>Is Money Lost
+      </h1>
+
+      <!-- Sub - Contractor specific solution -->
+      <p class="mobile-hero-sub" itemprop="description">
+        Your AI answers calls, books jobs, and sends quotes while you're on the job site. Live in 48 hours.
+      </p>
+
+      <!-- Social Proof Stats - Contractor focused -->
+      <div class="mobile-hero-stats">
+        <div class="mobile-hero-stat">
+          <span class="mobile-hero-stat-number">$3,500</span>
+          <span class="mobile-hero-stat-label">Avg lost per missed call</span>
+        </div>
+        <div class="mobile-hero-stat">
+          <span class="mobile-hero-stat-number">24/7</span>
+          <span class="mobile-hero-stat-label">Never miss another lead</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Form Card - Contractor Focused -->
+  <div class="mobile-form-card" id="mobileFormCard">
+    <!-- Mini Preview State - Strong CTA -->
+    <div class="mobile-form-preview">
+      <div class="mobile-form-preview-header">
+        <div class="mobile-form-preview-text">
+          <h4>Stop Losing Jobs</h4>
+          <p>See what you're missing in 2 minutes</p>
+        </div>
+        <span class="mobile-form-preview-badge">
+          Free Demo
+        </span>
+      </div>
+      <button class="mobile-form-cta" id="expandFormBtn" aria-label="Get your free AI demo">
+        Show Me How It Works
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      </button>
+    </div>
+
+    <!-- Full Form State - Contractor Specific -->
+    <div class="mobile-form-full">
+      <div class="mobile-form-header">
+        <button class="mobile-form-close" id="closeFormBtn" aria-label="Close form">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <h2 class="mobile-form-title">Get Your Free Demo</h2>
+        <div style="width: 44px;"></div>
+      </div>
+
+      <form class="mobile-form-body" id="mobileLeadForm">
+        <div class="mobile-form-field">
+          <label for="mobile-name">Your Name</label>
+          <input type="text" id="mobile-name" name="name" placeholder="Mike Johnson" required autocomplete="name">
+        </div>
+
+        <div class="mobile-form-field">
+          <label for="mobile-phone">Best Number to Reach You</label>
+          <input type="tel" id="mobile-phone" name="phone" placeholder="(480) 555-0123" required autocomplete="tel">
+        </div>
+
+        <div class="mobile-form-field">
+          <label for="mobile-email">Email (for your demo link)</label>
+          <input type="email" id="mobile-email" name="email" placeholder="mike@yourcompany.com" required autocomplete="email">
+        </div>
+
+        <div class="mobile-form-field">
+          <label>What type of work do you do?</label>
+          <div class="mobile-service-options">
+            <div class="mobile-service-option" data-value="remodeling">
+              <div class="mobile-service-option-icon">🏠</div>
+              <div class="mobile-service-option-label">Remodeling</div>
+            </div>
+            <div class="mobile-service-option" data-value="hvac">
+              <div class="mobile-service-option-icon">❄️</div>
+              <div class="mobile-service-option-label">HVAC</div>
+            </div>
+            <div class="mobile-service-option" data-value="plumbing">
+              <div class="mobile-service-option-icon">🔧</div>
+              <div class="mobile-service-option-label">Plumbing</div>
+            </div>
+            <div class="mobile-service-option" data-value="electrical">
+              <div class="mobile-service-option-icon">⚡</div>
+              <div class="mobile-service-option-label">Electrical</div>
+            </div>
+            <div class="mobile-service-option" data-value="roofing">
+              <div class="mobile-service-option-icon">🏗️</div>
+              <div class="mobile-service-option-label">Roofing</div>
+            </div>
+            <div class="mobile-service-option" data-value="other">
+              <div class="mobile-service-option-icon">🛠️</div>
+              <div class="mobile-service-option-label">Other Trade</div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="mobile-form-submit">
+          Get My Free Demo
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+
+        <div class="mobile-form-trust">
+          <div class="mobile-form-trust-item">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span>No credit card</span>
+          </div>
+          <div class="mobile-form-trust-item">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span>2-min setup</span>
+          </div>
+          <div class="mobile-form-trust-item">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span>Cancel anytime</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Success State - Next steps focused -->
+    <div class="mobile-form-success">
+      <div class="mobile-form-success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3>You're In!</h3>
+      <p>Check your phone - we're sending your personalized demo link now.</p>
+      <button class="mobile-form-success-btn" id="successCloseBtn">Done</button>
+    </div>
+  </div>
+  <!-- ===== END MOBILE PRESENTATION MODE ===== -->
+
   <!-- Scroll Progress Bar -->
   <div class="scroll-progress">
     <div class="scroll-progress-bar"></div>

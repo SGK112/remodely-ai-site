@@ -2102,3 +2102,144 @@ console.log('Remodely AI - Full site loaded with enhanced interactivity');
     }
   });
 })();
+
+/* =====================================================
+   MOBILE PRESENTATION MODE
+   No-scroll, high-converting experience for contractors
+   ===================================================== */
+(function() {
+  'use strict';
+
+  // Only activate on mobile
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  // Enable/disable presentation mode
+  function setPresentationMode(enabled) {
+    if (enabled) {
+      document.documentElement.classList.add('mobile-presentation');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.classList.remove('mobile-presentation');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Initialize on load
+  if (isMobile()) {
+    setPresentationMode(true);
+  }
+
+  // Handle resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      setPresentationMode(isMobile());
+    }, 250);
+  }, { passive: true });
+
+  // Form card elements
+  const formCard = document.getElementById('mobileFormCard');
+  const expandBtn = document.getElementById('expandFormBtn');
+  const closeBtn = document.getElementById('closeFormBtn');
+  const successBtn = document.getElementById('successCloseBtn');
+  const mobileForm = document.getElementById('mobileLeadForm');
+  const serviceOptions = document.querySelectorAll('.mobile-service-option');
+
+  if (!formCard) return;
+
+  // Expand form card
+  if (expandBtn) {
+    expandBtn.addEventListener('click', function() {
+      formCard.classList.add('expanded');
+      // Focus first input after animation
+      setTimeout(function() {
+        const firstInput = formCard.querySelector('input');
+        if (firstInput) firstInput.focus();
+      }, 400);
+    });
+  }
+
+  // Close form card
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      formCard.classList.remove('expanded');
+    });
+  }
+
+  // Success close button
+  if (successBtn) {
+    successBtn.addEventListener('click', function() {
+      formCard.classList.remove('expanded', 'success');
+      // Reset form
+      if (mobileForm) mobileForm.reset();
+      serviceOptions.forEach(function(opt) {
+        opt.classList.remove('selected');
+      });
+    });
+  }
+
+  // Service option selection
+  serviceOptions.forEach(function(option) {
+    option.addEventListener('click', function() {
+      // Allow multiple selections or single - using single for now
+      serviceOptions.forEach(function(opt) {
+        opt.classList.remove('selected');
+      });
+      this.classList.add('selected');
+    });
+  });
+
+  // Form submission
+  if (mobileForm) {
+    mobileForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(mobileForm);
+      const selectedService = document.querySelector('.mobile-service-option.selected');
+
+      // Get form values
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        service: selectedService ? selectedService.dataset.value : 'not-selected',
+        source: 'mobile-presentation',
+        timestamp: new Date().toISOString()
+      };
+
+      // Try to submit to Firebase if available
+      if (typeof firebase !== 'undefined' && firebase.firestore) {
+        firebase.firestore().collection('leads').add(data)
+          .then(function() {
+            formCard.classList.add('success');
+          })
+          .catch(function(error) {
+            console.error('Error submitting lead:', error);
+            // Still show success to user
+            formCard.classList.add('success');
+          });
+      } else {
+        // No Firebase, just show success
+        formCard.classList.add('success');
+      }
+    });
+  }
+
+  // Handle back gesture / escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && formCard.classList.contains('expanded')) {
+      formCard.classList.remove('expanded', 'success');
+    }
+  });
+
+  // Prevent background scroll when form is expanded
+  formCard.addEventListener('touchmove', function(e) {
+    if (formCard.classList.contains('expanded')) {
+      e.stopPropagation();
+    }
+  }, { passive: false });
+
+})();
