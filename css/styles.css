@@ -8149,8 +8149,56 @@ html {
    MOBILE PRESENTATION MODE - No Scroll, High-Converting
    ===================================================== */
 
+/* Video Background - Hidden on desktop */
+.mobile-hero-video-wrap {
+  display: none;
+}
+
 /* Mobile-only: Lock viewport, single-screen experience */
 @media (max-width: 768px) {
+
+  /* Video Background - Full screen behind content */
+  .mobile-hero-video-wrap {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .mobile-hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+  }
+
+  /* Dark overlay for text readability */
+  .mobile-hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.7) 0%,
+      rgba(15, 23, 42, 0.5) 40%,
+      rgba(15, 23, 42, 0.6) 70%,
+      rgba(15, 23, 42, 0.85) 100%
+    );
+    z-index: 1;
+  }
+
+  .mobile-presentation .mobile-hero-video-wrap {
+    display: block;
+  }
   /* Presentation Mode: Lock viewport - NO SCROLL */
   html.mobile-presentation,
   html.mobile-presentation body {
