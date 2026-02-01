@@ -14862,23 +14862,120 @@ section {
 
 /* Mobile specific fixes */
 @media (max-width: 768px) {
+  /* Hide desktop navbar on mobile */
+  .navbar {
+    display: none !important;
+  }
+
+  /* Hide desktop hero section on mobile */
   .hero {
-    padding: 80px 0 40px !important;
+    display: none !important;
   }
 
   .section {
     padding: 3rem 0 !important;
   }
 
-  /* Hide desktop hero, show mobile */
+  /* Hide desktop hero elements */
   .hero-grid,
   .hero-content,
   .hero-visual {
     display: none !important;
   }
 
+  /* Show mobile hero content */
   .mobile-hero-content {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #0f172a !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    padding: 40px 20px 140px !important;
+    justify-content: center !important;
+  }
+
+  /* Mobile headline styling */
+  .mobile-hero-headline {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mobile-hero-headline .text-orange {
+    color: #f97316 !important;
+  }
+
+  /* Score preview card */
+  .mobile-score-preview {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    border-radius: 16px !important;
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mobile-score-circle {
+    width: 56px !important;
+    height: 56px !important;
+    background: #0f172a !important;
+    border: 3px solid #f97316 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mobile-score-number {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #f97316 !important;
+  }
+
+  .mobile-score-label {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
     display: block !important;
+  }
+
+  .mobile-score-desc {
+    font-size: 0.875rem !important;
+    color: #94a3b8 !important;
+    display: block !important;
+  }
+
+  /* Value props */
+  .mobile-hero-props {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .mobile-hero-prop {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    background: rgba(249, 115, 22, 0.1) !important;
+    border: 1px solid rgba(249, 115, 22, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 0.875rem 1rem !important;
+  }
+
+  .mobile-hero-prop .prop-icon {
+    font-size: 1.25rem !important;
+  }
+
+  .mobile-hero-prop .prop-text {
+    color: #ffffff !important;
+    font-size: 0.9375rem !important;
+    font-weight: 500 !important;
   }
 
   /* Ensure mobile sections show correctly */
@@ -14886,6 +14983,16 @@ section {
   .testimonials-section,
   .final-cta-section {
     display: block !important;
+  }
+
+  /* Mobile form card at bottom */
+  .mobile-form-card {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
   }
 }
 
