@@ -13694,11 +13694,13 @@ a:focus-visible, button:focus-visible {
   .early-adopter h2 {
     font-size: 1.125rem !important;
     margin-bottom: 0.5rem;
+    color: #ffffff !important;
   }
 
   .early-adopter p {
     font-size: 0.8125rem !important;
     margin-bottom: 1rem;
+    color: #cbd5e1 !important;
   }
 
   /* Compact contact */
@@ -16007,8 +16009,8 @@ section {
 }
 
 .early-adopter {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
+  background: #0f172a !important;
+  border: 2px solid #f97316 !important;
   border-radius: 24px !important;
   padding: 3rem !important;
 }
@@ -16022,7 +16024,7 @@ section {
 }
 
 .early-adopter p {
-  color: #cbd5e1 !important;
+  color: #ffffff !important;
   font-size: 1.0625rem !important;
   line-height: 1.7 !important;
 }
@@ -16068,3 +16070,16 @@ section {
     gap: 1rem !important;
   }
 }
+
+/* FORCE EARLY ADOPTER WHITE TEXT */
+.early-adopter h2,
+.section-gray .early-adopter h2,
+section.section-gray .early-adopter h2 {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+.early-adopter p,
+.section-gray .early-adopter p {
+  color: #cbd5e1 !important;
+}
+
