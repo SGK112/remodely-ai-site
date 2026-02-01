@@ -1571,33 +1571,6 @@
         display: none;
       }
 
-      .grader-form__close {
-        display: none;
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 10px;
-        color: #fff;
-        font-size: 24px;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        z-index: 10;
-      }
-
-      .grader-form__close:hover {
-        background: rgba(255, 255, 255, 0.15);
-      }
-
-      .grader-form.expanded .grader-form__close {
-        display: flex;
-      }
-
       .grader-form__header {
         display: none;
         text-align: center;
@@ -1664,7 +1637,6 @@
 
     <!-- Form -->
     <div class="grader-form" id="graderFormCard">
-      <button type="button" class="grader-form__close" id="formCloseBtn" aria-label="Close">&times;</button>
       <div class="grader-form__header">
         <h2>Analyze Your Website</h2>
         <p>Enter your URL to get your AI visibility score</p>
@@ -2702,10 +2674,9 @@
     // Mobile fullscreen form expansion
     (function() {
       const formCard = document.getElementById('graderFormCard');
-      const closeBtn = document.getElementById('formCloseBtn');
       const urlInputEl = document.getElementById('urlInput');
 
-      if (!formCard || !closeBtn || !urlInputEl) return;
+      if (!formCard || !urlInputEl) return;
 
       function isMobile() {
         return window.matchMedia('(max-width: 600px)').matches;
@@ -2715,7 +2686,6 @@
         if (!isMobile()) return;
         formCard.classList.add('expanded');
         document.body.classList.add('form-expanded');
-        // Focus input after animation
         setTimeout(() => urlInputEl.focus(), 300);
       }
 
@@ -2725,30 +2695,20 @@
         urlInputEl.blur();
       }
 
-      // Expand when clicking on the card (but not when already expanded)
       formCard.addEventListener('click', function(e) {
         if (!formCard.classList.contains('expanded') && isMobile()) {
-          // Don't expand if clicking button or input (they handle their own behavior)
           if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
             expandForm();
           }
         }
       });
 
-      // Expand when input is focused on mobile
       urlInputEl.addEventListener('focus', function() {
         if (isMobile() && !formCard.classList.contains('expanded')) {
           expandForm();
         }
       });
 
-      // Close button
-      closeBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        collapseForm();
-      });
-
-      // Collapse after successful submit (the analyze function will show results)
       const originalAnalyzeUrl = window.analyzeUrl || analyzeUrl;
       window.analyzeUrl = async function(url) {
         if (formCard.classList.contains('expanded')) {
@@ -2757,7 +2717,6 @@
         return originalAnalyzeUrl(url);
       };
 
-      // Close on escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && formCard.classList.contains('expanded')) {
           collapseForm();
