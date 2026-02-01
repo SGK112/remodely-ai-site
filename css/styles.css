@@ -14890,10 +14890,36 @@ section {
     background: #0f172a !important;
     min-height: 100vh !important;
     min-height: 100dvh !important;
-    padding: 60px 24px 160px !important;
-    padding-top: calc(60px + env(safe-area-inset-top)) !important;
+    padding: 24px 24px 160px !important;
+    padding-top: calc(24px + env(safe-area-inset-top)) !important;
     justify-content: flex-start !important;
     align-items: center !important;
+  }
+
+  /* Mobile logo at top */
+  .mobile-hero-top {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 40px !important;
+  }
+
+  .mobile-hero-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-decoration: none !important;
+  }
+
+  .mobile-hero-logo-text {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .mobile-hero-logo-text span {
+    color: #f97316 !important;
   }
 
   /* Mobile middle section */
