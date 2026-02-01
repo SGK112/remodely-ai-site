@@ -14455,7 +14455,7 @@ textarea:focus {
 .footer {
   background: #0f172a !important;
   color: rgba(255, 255, 255, 0.7) !important;
-  padding-bottom: 100px !important; /* Space for mobile form card */
+  padding: 3rem 0 2rem !important;
 }
 
 .footer::before {
@@ -15123,6 +15123,7 @@ section {
 /* Final CTA section */
 .final-cta-section {
   background: #0f172a !important;
+  padding: 3rem 1rem !important;
 }
 
 .final-cta-section h2 {
@@ -15131,6 +15132,18 @@ section {
 
 .final-cta-section p {
   color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Remove dead space between aria and final-cta sections */
+.aria-section.section,
+.final-cta-section.section {
+  padding: 2.5rem 1rem !important;
+  margin: 0 !important;
+}
+
+.aria-section + .final-cta-section {
+  margin-top: 0 !important;
+  padding-top: 2rem !important;
 }
 
 /* ===========================================
@@ -15227,7 +15240,7 @@ section {
 
   /* Footer needs extra padding */
   .footer {
-    padding-bottom: 200px !important;
+    padding: 2rem 1rem !important;
   }
 
   /* ==========================================
@@ -15621,13 +15634,13 @@ section {
 /* Mobile footer */
 @media (max-width: 768px) {
   .footer {
-    padding: 2rem 1rem calc(2rem + 180px) !important;
+    padding: 2rem 1rem !important;
   }
 
   .footer-grid {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .footer-column {
@@ -15637,15 +15650,6 @@ section {
 
   .footer-column:last-child {
     border-bottom: none;
-  }
-
-  .footer-links {
-    display: none;
-  }
-
-  .footer-column.expanded .footer-links {
-    display: block;
-    animation: expandIn 0.3s ease;
   }
 
   .footer-bottom {
@@ -15758,22 +15762,36 @@ section {
 }
 
 .service-card-featured {
-  grid-column: span 1;
-  grid-row: span 2;
+  grid-column: 1 / -1;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   border: 2px solid #f97316;
-  padding: 2.5rem;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .service-card-featured h3 {
   color: #ffffff;
   font-size: 1.75rem;
+  margin-top: 1rem;
 }
 
 .service-card-featured .service-desc {
-  color: #94a3b8;
+  color: #ffffff !important;
   font-size: 1.0625rem;
   line-height: 1.7;
+  max-width: 600px;
+}
+
+.service-card-featured .service-stats {
+  width: 100%;
+  max-width: 500px;
+}
+
+.service-card-featured .service-cta {
+  max-width: 320px;
 }
 
 .service-badge {
@@ -15978,5 +15996,75 @@ section {
 
   .service-stat .stat-value {
     font-size: 1.25rem;
+  }
+}
+
+/* ===========================================
+   EARLY ADOPTER TEXT CONTRAST FIX
+   =========================================== */
+.section-gray {
+  background: #f8fafc !important;
+}
+
+.early-adopter {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 24px !important;
+  padding: 3rem !important;
+}
+
+.early-adopter h2 {
+  color: #0f172a !important;
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 1rem !important;
+}
+
+.early-adopter p {
+  color: #475569 !important;
+  font-size: 1.0625rem !important;
+  line-height: 1.7 !important;
+}
+
+.early-adopter-badge {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border: none !important;
+}
+
+/* ===========================================
+   TECH STACK ALIGNMENT FIX
+   =========================================== */
+.tech-strip-section .container {
+  text-align: center;
+}
+
+.tech-tabs {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  margin: 0 auto 2.5rem !important;
+  max-width: 900px !important;
+}
+
+.tech-panel-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+}
+
+/* Desktop alignment */
+@media (min-width: 1024px) {
+  .tech-tabs {
+    gap: 0.75rem !important;
+  }
+
+  .tech-panel-grid {
+    gap: 1rem !important;
   }
 }
