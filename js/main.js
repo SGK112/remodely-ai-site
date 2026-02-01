@@ -886,6 +886,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = `tel:${ARIA_PHONE}`;
   }
 
+  // Expose callAria globally for onclick handlers
+  window.callAria = callAria;
+
   // Aria FAB button
   const ariaFab = document.getElementById('ariaFab');
   if (ariaFab) {
