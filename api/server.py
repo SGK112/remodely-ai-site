@@ -19,33 +19,42 @@ CORS(app)
 
 # Database config - check if DATABASE_URL is set
 database_url = os.environ.get('DATABASE_URL')
-DB_ENABLED = database_url is not None
+DB_ENABLED = False
+db = None
+AriaCompany = None
+AriaLead = None
 
-if DB_ENABLED:
-    from models import db, AriaCompany, AriaLead
+if database_url:
+    try:
+        from models import db as _db, AriaCompany as _AriaCompany, AriaLead as _AriaLead
+        db = _db
+        AriaCompany = _AriaCompany
+        AriaLead = _AriaLead
 
-    # Fix for Render PostgreSQL URL format
-    if database_url.startswith('postgres://'):
-        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+        # Fix for Render PostgreSQL URL format
+        if database_url.startswith('postgres://'):
+            database_url = database_url.replace('postgres://', 'postgresql://', 1)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        'pool_recycle': 300,
-        'pool_pre_ping': True
-    }
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+            'pool_recycle': 300,
+            'pool_pre_ping': True
+        }
 
-    # Initialize database
-    db.init_app(app)
+        # Initialize database
+        db.init_app(app)
 
-    # Create tables on startup
-    with app.app_context():
-        try:
+        # Create tables on startup
+        with app.app_context():
             db.create_all()
             print("Database tables created successfully")
-        except Exception as e:
-            print(f"Database initialization error: {e}")
-            DB_ENABLED = False
+            DB_ENABLED = True
+    except Exception as e:
+        print(f"Database initialization error: {e}")
+        import traceback
+        traceback.print_exc()
+        DB_ENABLED = False
 else:
     print("DATABASE_URL not set - Aria multi-tenant features disabled")
 
