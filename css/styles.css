@@ -2172,14 +2172,14 @@ a.contact-link:hover {
 
 .early-adopter h2 {
   font-size: 2rem;
-  color: #0f172a;
+  color: #ffffff;
   margin-bottom: 1rem;
   line-height: 1.3;
 }
 
 .early-adopter p {
   font-size: 1.0625rem;
-  color: #64748b;
+  color: #cbd5e1;
   line-height: 1.7;
   margin-bottom: 2rem;
 }
@@ -16014,7 +16014,7 @@ section {
 }
 
 .early-adopter h2 {
-  color: #0f172a !important;
+  color: #ffffff !important;
   font-size: 2.25rem !important;
   font-weight: 800 !important;
   line-height: 1.2 !important;
@@ -16022,7 +16022,7 @@ section {
 }
 
 .early-adopter p {
-  color: #475569 !important;
+  color: #cbd5e1 !important;
   font-size: 1.0625rem !important;
   line-height: 1.7 !important;
 }
