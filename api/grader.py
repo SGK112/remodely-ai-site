@@ -363,11 +363,12 @@ class WebsiteGrader:
         """Check content quality indicators"""
         score = 0
 
-        # Get text content
-        for tag in self.soup(['script', 'style', 'nav', 'footer', 'header']):
+        # Get text content (make a copy to preserve original soup)
+        soup_copy = BeautifulSoup(self.html, 'html.parser')
+        for tag in soup_copy(['script', 'style', 'nav', 'footer', 'header']):
             tag.decompose()
 
-        text = self.soup.get_text(separator=' ', strip=True)
+        text = soup_copy.get_text(separator=' ', strip=True)
         word_count = len(text.split())
 
         # Word count scoring
@@ -402,6 +403,92 @@ class WebsiteGrader:
         self.scores['word_count'] = word_count
         return self.scores['content']
 
+    def check_business_essentials(self):
+        """Check for essential business elements important for home services/contractors"""
+        score = 0
+        business_factors = []
+        text = self.soup.get_text(separator=' ', strip=True).lower()
+
+        # 1. Service area mentions - critical for local businesses
+        service_area_patterns = ['serving', 'service area', 'we serve', 'locations',
+                                 'phoenix', 'scottsdale', 'mesa', 'tempe', 'chandler',
+                                 'gilbert', 'glendale', 'peoria', 'tucson', 'arizona',
+                                 'az', 'valley', 'metro', 'surrounding areas']
+        has_service_area = any(pattern in text for pattern in service_area_patterns)
+        if has_service_area:
+            score += 15
+            business_factors.append("Service area defined")
+        else:
+            self.issues.append("No service area mentioned - customers don't know if you serve them")
+            self.recommendations.append("Add service area - list cities/regions you serve")
+
+        # 2. Trust signals - licenses, insurance, certifications
+        trust_signals = ['licensed', 'insured', 'bonded', 'certified', 'roc#', 'roc #',
+                        'license #', 'license:', 'bbb', 'better business', 'accredited',
+                        'warranty', 'guarantee', 'satisfaction', 'background check']
+        found_trust = [s for s in trust_signals if s in text]
+        if len(found_trust) >= 3:
+            score += 20
+            business_factors.append("Strong trust signals")
+        elif len(found_trust) >= 1:
+            score += 10
+            business_factors.append("Some trust signals")
+        else:
+            self.issues.append("No trust signals (license, insurance, BBB)")
+            self.recommendations.append("Display license number and insurance info prominently")
+
+        # 3. Call-to-action presence
+        cta_patterns = ['free quote', 'free estimate', 'get a quote', 'call now', 'call today',
+                       'schedule', 'book', 'contact us', 'request', 'get started']
+        found_ctas = [c for c in cta_patterns if c in text]
+        if len(found_ctas) >= 2:
+            score += 15
+            business_factors.append("Clear calls-to-action")
+        elif len(found_ctas) >= 1:
+            score += 8
+        else:
+            self.issues.append("No clear call-to-action for leads")
+            self.recommendations.append("Add 'Get a Free Quote' buttons throughout the page")
+
+        # 4. Portfolio/project gallery indicators
+        portfolio_indicators = ['portfolio', 'gallery', 'our work', 'projects', 'before and after',
+                               'recent work', 'completed', 'showcase']
+        has_portfolio = any(p in text for p in portfolio_indicators)
+        if has_portfolio:
+            score += 15
+            business_factors.append("Portfolio/gallery present")
+        else:
+            self.recommendations.append("Add project gallery - visuals build trust for contractors")
+
+        # 5. Reviews/testimonials
+        review_indicators = ['review', 'testimonial', 'customer said', 'clients say',
+                            'what our', 'rated', 'stars', '5 star', 'five star']
+        has_reviews = any(r in text for r in review_indicators)
+        if has_reviews:
+            score += 15
+            business_factors.append("Reviews/testimonials shown")
+        else:
+            self.recommendations.append("Add customer testimonials - builds trust and AI visibility")
+
+        # 6. Specific services listed
+        service_types = ['remodel', 'renovation', 'kitchen', 'bathroom', 'flooring',
+                        'painting', 'plumbing', 'hvac', 'electrical', 'roofing',
+                        'landscaping', 'deck', 'patio', 'addition', 'repair',
+                        'installation', 'maintenance', 'construction']
+        found_services = [s for s in service_types if s in text]
+        if len(found_services) >= 4:
+            score += 20
+            business_factors.append(f"Services clearly listed ({len(found_services)}+ types)")
+        elif len(found_services) >= 2:
+            score += 10
+        else:
+            self.issues.append("Services not clearly defined")
+            self.recommendations.append("List all your services with detailed descriptions")
+
+        self.scores['business_essentials'] = min(score, 100)
+        self.scores['business_factors'] = business_factors
+        return score
+
     def check_ai_visibility(self):
         """
         AI Visibility Score - How likely AI assistants will find and cite this business
@@ -412,43 +499,56 @@ class WebsiteGrader:
 
         # Structured data is HUGE for AI
         if self.scores.get('structured_data', 0) >= 75:
-            ai_score += 25
+            ai_score += 20
             ai_factors.append("Strong structured data")
         elif self.scores.get('structured_data', 0) >= 50:
-            ai_score += 15
+            ai_score += 12
 
         # FAQ content gets cited by AI
         if 'FAQPage' in self.scores.get('schema_types', []):
-            ai_score += 15
+            ai_score += 12
             ai_factors.append("FAQ schema present")
 
         # Social presence = more training data
         social_count = len(self.scores.get('social_platforms', []))
         if social_count >= 4:
-            ai_score += 20
+            ai_score += 15
             ai_factors.append("Strong social presence")
         elif social_count >= 2:
-            ai_score += 10
+            ai_score += 8
 
         # YouTube specifically
         if 'YouTube' in self.scores.get('social_platforms', []):
-            ai_score += 10
+            ai_score += 8
             ai_factors.append("YouTube presence")
 
         # Contact info = legitimate business
         if self.scores.get('contact', 0) >= 80:
-            ai_score += 15
+            ai_score += 10
             ai_factors.append("Complete contact info")
         elif self.scores.get('contact', 0) >= 50:
-            ai_score += 8
+            ai_score += 5
 
         # Content quality
         if self.scores.get('word_count', 0) >= 500:
-            ai_score += 10
+            ai_score += 8
 
         # HTTPS
         if self.scores.get('https', 0) == 100:
             ai_score += 5
+
+        # Business essentials - critical for local service businesses
+        business_score = self.scores.get('business_essentials', 0)
+        if business_score >= 70:
+            ai_score += 15
+            ai_factors.append("Strong business presence")
+        elif business_score >= 40:
+            ai_score += 8
+
+        # Reviews/testimonials boost AI visibility
+        if 'Reviews/testimonials shown' in self.scores.get('business_factors', []):
+            ai_score += 7
+            ai_factors.append("Customer reviews visible")
 
         self.scores['ai_visibility'] = min(ai_score, 100)
         self.scores['ai_factors'] = ai_factors
@@ -461,15 +561,16 @@ class WebsiteGrader:
     def calculate_overall_score(self):
         """Calculate weighted overall score"""
         weights = {
-            'ai_visibility': 0.25,  # Most important for the future
-            'structured_data': 0.15,
-            'meta_tags': 0.12,
-            'mobile': 0.10,
-            'speed': 0.08,
-            'headings': 0.08,
-            'content': 0.08,
-            'social': 0.06,
-            'contact': 0.04,
+            'ai_visibility': 0.22,  # Most important for the future
+            'business_essentials': 0.15,  # Critical for home services
+            'structured_data': 0.12,
+            'meta_tags': 0.10,
+            'mobile': 0.08,
+            'speed': 0.07,
+            'headings': 0.06,
+            'content': 0.06,
+            'social': 0.05,
+            'contact': 0.05,
             'https': 0.02,
             'images': 0.02
         }
@@ -516,6 +617,7 @@ class WebsiteGrader:
         self.check_social_presence()
         self.check_contact_info()
         self.check_content_quality()
+        self.check_business_essentials()  # Home services specific checks
         self.check_ai_visibility()
         self.calculate_overall_score()
 
@@ -528,6 +630,7 @@ class WebsiteGrader:
                 'overall_grade': self.get_grade(self.scores.get('overall', 0)),
                 'ai_visibility': self.scores.get('ai_visibility', 0),
                 'ai_visibility_grade': self.get_grade(self.scores.get('ai_visibility', 0)),
+                'business_essentials': self.scores.get('business_essentials', 0),
                 'seo': {
                     'meta_tags': self.scores.get('meta_tags', 0),
                     'headings': self.scores.get('headings', 0),
@@ -551,6 +654,7 @@ class WebsiteGrader:
                 'social_platforms': self.scores.get('social_platforms', []),
                 'schema_types': self.scores.get('schema_types', []),
                 'ai_factors': self.scores.get('ai_factors', []),
+                'business_factors': self.scores.get('business_factors', []),
             },
             'issues': self.issues[:10],  # Top 10 issues
             'recommendations': self.recommendations[:8],  # Top 8 recommendations

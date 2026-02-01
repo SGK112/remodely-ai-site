@@ -855,16 +855,38 @@ document.addEventListener('DOMContentLoaded', function() {
     userPhone: null
   };
 
-  // Aria phone number - SET YOUR OWN NUMBER HERE
-  const ARIA_PHONE = null; // Replace with your Aria phone number
+  // Aria phone number - UPDATE THIS WITH YOUR ARIA NUMBER
+  const ARIA_PHONE = null; // Set your Aria phone number here, e.g., '+18005551234'
+
+  // Aria scheduling link (alternative to phone)
+  const ARIA_SCHEDULE_URL = 'https://calendly.com/remodely-ai/aria-call'; // Update with your scheduling link
 
   // Function to call Aria with context
   function callAria() {
-    if (!ARIA_PHONE) {
-      alert('Aria phone number not configured. Contact help.remodely@gmail.com to set up.');
-      return;
+    // Build report context to pass to Aria
+    const context = {
+      website: window.ariaContext?.websiteUrl || 'Not provided',
+      score: window.ariaContext?.score || 'Not graded',
+      timestamp: new Date().toISOString()
+    };
+
+    // Store context for Aria to retrieve
+    localStorage.setItem('ariaCallContext', JSON.stringify(context));
+
+    if (ARIA_PHONE) {
+      // Direct phone call
+      window.location.href = `tel:${ARIA_PHONE}`;
+    } else if (ARIA_SCHEDULE_URL) {
+      // Open scheduling link with context in URL params
+      const url = new URL(ARIA_SCHEDULE_URL);
+      if (context.website !== 'Not provided') {
+        url.searchParams.set('website', context.website);
+        url.searchParams.set('score', context.score);
+      }
+      window.open(url.toString(), '_blank');
+    } else {
+      alert('Aria is being set up. Email help.remodely@gmail.com to schedule a call.');
     }
-    window.location.href = `tel:${ARIA_PHONE}`;
   }
 
   // Aria FAB button

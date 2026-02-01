@@ -16,16 +16,16 @@
 
   <style>
     :root {
-      --primary: #0a0f1a;
-      --primary-light: #131c2e;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-      --accent-glow: rgba(59, 130, 246, 0.5);
-      --green: #22c55e;
-      --green-light: #4ade80;
-      --yellow: #eab308;
-      --yellow-light: #facc15;
-      --red: #ef4444;
+      --primary: #0f172a;
+      --primary-light: #1e293b;
+      --accent: #f97316;
+      --accent-light: #7dd3fc;
+      --accent-glow: rgba(249, 115, 22, 0.5);
+      --green: #7dd3fc;
+      --green-light: #bae6fd;
+      --yellow: #f59e0b;
+      --yellow-light: #fbbf24;
+      --red: #f97316;
       --red-light: #f87171;
       --gray-300: #d1d5db;
       --gray-400: #9ca3af;
@@ -35,11 +35,11 @@
       /* Premium Glass - Enhanced */
       --glass-bg: rgba(255, 255, 255, 0.03);
       --glass-bg-strong: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-border-hover: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(249, 115, 22, 0.15);
+      --glass-border-hover: rgba(249, 115, 22, 0.25);
       --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       --glass-blur: blur(20px);
-      --card-glow: 0 0 60px rgba(59, 130, 246, 0.1);
+      --card-glow: 0 0 60px rgba(249, 115, 22, 0.1);
     }
 
     * {
@@ -66,10 +66,10 @@
       right: 0;
       bottom: 0;
       background:
-        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 80% 60% at 80% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
-        linear-gradient(180deg, #0a0f1a 0%, #111827 50%, #0a0f1a 100%);
+        radial-gradient(ellipse 100% 80% at 50% -20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 50%, rgba(249, 115, 22, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(249, 115, 22, 0.04) 0%, transparent 50%),
+        linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
       z-index: -1;
     }
 
@@ -266,12 +266,12 @@
     .spinner {
       width: 56px;
       height: 56px;
-      border: 3px solid rgba(99, 102, 241, 0.15);
+      border: 3px solid rgba(249, 115, 22, 0.15);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 24px;
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+      box-shadow: 0 0 30px rgba(249, 115, 22, 0.2);
     }
 
     @keyframes spin {
@@ -324,8 +324,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.25);
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid rgba(249, 115, 22, 0.25);
       border-radius: 8px;
       font-size: 0.75rem;
       font-weight: 700;
@@ -340,9 +340,9 @@
     }
 
     .loading-step.active .loading-step__icon {
-      background: rgba(99, 102, 241, 0.25);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+      background: rgba(249, 115, 22, 0.25);
+      border-color: rgba(249, 115, 22, 0.4);
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
     }
 
     /* Results */
@@ -691,7 +691,7 @@
 
     /* Email Gate - Premium Card */
     .email-gate {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid rgba(59, 130, 246, 0.2);
@@ -863,7 +863,7 @@
       padding: 16px 28px;
       font-size: 16px;
       font-weight: 600;
-      background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+      background: linear-gradient(135deg, var(--accent) 0%, #ea580c 100%);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -1057,6 +1057,11 @@
       font-size: 0.9375rem;
     }
 
+    /* Aria CTA - hidden on desktop */
+    .aria-mobile-cta {
+      display: none;
+    }
+
     @media (max-width: 600px) {
       .lead-form__row {
         flex-direction: column;
@@ -1186,7 +1191,7 @@
       justify-content: center;
       gap: 10px;
       padding: 18px 40px;
-      background: linear-gradient(135deg, var(--red) 0%, #dc2626 100%);
+      background: linear-gradient(135deg, var(--red) 0%, #ea580c 100%);
       color: #fff;
       font-weight: 600;
       font-size: 1.0625rem;
@@ -1410,6 +1415,134 @@
         margin-top: 8px;
       }
 
+      /* Mobile Results - Clean card style */
+      .container {
+        padding: 20px 16px;
+      }
+
+      .header {
+        margin-bottom: 24px;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+      }
+
+      .header p {
+        font-size: 0.9375rem;
+        display: none;
+      }
+
+      .social-proof {
+        display: none;
+      }
+
+      /* Score cards - cleaner mobile */
+      .score-cards {
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .score-card {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+
+      .score-card.main {
+        padding: 28px 20px;
+      }
+
+      .score-card__score {
+        font-size: 2.5rem;
+      }
+
+      .score-card.main .score-card__score {
+        font-size: 4rem;
+      }
+
+      /* Score sections - tighter */
+      .score-section {
+        padding: 20px 16px;
+        margin-bottom: 16px;
+        border-radius: 16px;
+      }
+
+      .score-section h3 {
+        font-size: 1rem;
+        margin-bottom: 16px;
+      }
+
+      .score-row {
+        padding: 10px 0;
+      }
+
+      /* Hide non-essential on mobile */
+      .urgent-warning,
+      .quick-wins,
+      .details-grid {
+        display: none;
+      }
+
+      /* Email gate - cleaner */
+      .email-gate {
+        padding: 24px 20px;
+        border-radius: 20px;
+        margin-top: 20px;
+      }
+
+      .email-gate h3 {
+        font-size: 1.25rem;
+      }
+
+      /* Aria CTA for mobile */
+      .aria-mobile-cta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 16px;
+        margin: 16px 0;
+        background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+        border: none;
+        border-radius: 16px;
+        color: #fff;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+      }
+
+      .aria-mobile-cta__icon {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .aria-mobile-cta__icon svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .aria-mobile-cta__text {
+        flex: 1;
+      }
+
+      .aria-mobile-cta__text strong {
+        display: block;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .aria-mobile-cta__text small {
+        font-size: 0.8125rem;
+        opacity: 0.85;
+      }
+
       /* Grader form fullscreen expansion on mobile */
       .grader-form {
         cursor: pointer;
@@ -1594,6 +1727,22 @@
         </div>
       </div>
 
+      <!-- Aria CTA - Mobile -->
+      <button class="aria-mobile-cta" id="ariaMobileCta" onclick="alert('Aria phone number not configured yet. Contact help.remodely@gmail.com')">
+        <span class="aria-mobile-cta__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </span>
+        <span class="aria-mobile-cta__text">
+          <strong>Get Your Free Action Plan</strong>
+          <small>2-min call - Aria will explain what to fix</small>
+        </span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+      </button>
+
       <!-- Urgent Warning for Low Scores -->
       <div class="urgent-warning" id="urgentWarning">
         <h3>Your Business Is Invisible to AI</h3>
@@ -1686,25 +1835,26 @@
         <!-- Step 2: Name & Phone -->
         <div class="lead-step" id="leadStep2" style="display: none;">
           <div class="step-progress">
-            <span class="step-check">✓</span> Report sent! One more step...
+            <span class="step-check">✓</span> Report sent!
           </div>
-          <h3>Want a Free Strategy Call?</h3>
-          <p>Tell us a bit more and we'll reach out to schedule your call.</p>
+          <h3>Get Your Personalized Action Plan</h3>
+          <p>Aria will call you to walk through exactly what to fix and how. 2-minute call, no sales pitch.</p>
           <form class="lead-form" id="detailsForm">
             <input type="text" id="leadName" placeholder="Your name" required style="width: 100%; margin-bottom: 12px;">
             <input type="tel" id="leadPhone" placeholder="Phone number" required style="width: 100%; margin-bottom: 12px;">
             <select id="leadTime" style="width: 100%; margin-bottom: 12px; padding: 16px 20px; font-size: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.4); color: #fff; cursor: pointer;">
-              <option value="">When works best for you?</option>
+              <option value="">When should Aria call?</option>
+              <option value="now">Call me now</option>
               <option value="morning">Morning (9am - 12pm)</option>
               <option value="afternoon">Afternoon (12pm - 5pm)</option>
               <option value="evening">Evening (5pm - 8pm)</option>
             </select>
             <button type="submit" id="detailsSubmitBtn">
-              <span class="btn-text">Request My Strategy Call</span>
+              <span class="btn-text">Schedule Aria to Call Me</span>
               <span class="btn-loading" style="display: none;">Saving...</span>
             </button>
           </form>
-          <button class="skip-btn" id="skipBtn">Skip for now</button>
+          <button class="skip-btn" id="skipBtn">I'll fix it myself</button>
         </div>
 
         <div class="email-gate__timer">
@@ -1751,17 +1901,17 @@
       <div class="cta-section" id="ctaSection" style="display: none;">
         <div class="cta-section__spots">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-          <strong>Aria is ready</strong> to discuss your results
+          <strong>Aria is online</strong> and ready to help
         </div>
-        <h3>Want to Discuss Your Results?</h3>
-        <p>Have our AI assistant Aria call you right now to walk through your report and answer questions.</p>
+        <h3>Get Your Free Action Plan</h3>
+        <p>Aria will call you right now to explain exactly what to fix and in what order. 2 minutes, no sales pitch.</p>
         <button type="button" class="cta-btn" id="callMeBtn" onclick="triggerAriaCall()">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
           </svg>
           Have Aria Call Me Now
         </button>
-        <p style="margin-top: 12px; font-size: 13px; color: var(--gray-500);">Or <a href="/#contact" style="color: var(--accent-light);">schedule for later</a></p>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--gray-500);">Free • No obligations • Real AI, real answers</p>
       </div>
 
       <!-- Success Message (shows after form submit) -->
@@ -1878,6 +2028,26 @@
 
     // API endpoint
     const API_URL = 'https://remodely-backend.onrender.com/api/grader';
+
+    // Check if user already submitted lead from mobile flow
+    let isPreUnlocked = false;
+    const storedContext = sessionStorage.getItem('ariaContext');
+    if (storedContext) {
+      try {
+        const ariaContext = JSON.parse(storedContext);
+        if (ariaContext.email) {
+          isPreUnlocked = true;
+          window.collectedLead = {
+            name: ariaContext.name || '',
+            email: ariaContext.email || '',
+            phone: ariaContext.phone || ''
+          };
+          console.log('User pre-unlocked from mobile flow:', ariaContext.email);
+        }
+      } catch (e) {
+        console.log('Could not parse ariaContext');
+      }
+    }
 
     // Timer state
     let timerSeconds = 15 * 60; // 15 minutes
@@ -2072,7 +2242,62 @@
       loading.classList.remove('active');
       results.classList.add('active');
 
-      // Start the FOMO timer
+      // Check if user is pre-unlocked from mobile flow
+      if (isPreUnlocked) {
+        console.log('Auto-unlocking content for pre-unlocked user');
+        // Hide email gate completely
+        const emailGate = document.getElementById('emailGate');
+        if (emailGate) emailGate.style.display = 'none';
+
+        // Hide FOMO banner for pre-unlocked users
+        const fomoBanner = document.getElementById('fomoBanner');
+        if (fomoBanner) fomoBanner.style.display = 'none';
+
+        // Unlock all gated sections
+        document.querySelectorAll('.gated-section').forEach(el => {
+          el.classList.remove('locked');
+        });
+
+        // Show the CTA section
+        const ctaSection = document.getElementById('ctaSection');
+        if (ctaSection) ctaSection.style.display = 'block';
+
+        // Populate the gated content
+        if (window.gatedData) {
+          const gd = window.gatedData;
+          document.getElementById('loadTime').textContent = gd.details?.load_time ? gd.details.load_time + 's' : 'N/A';
+          document.getElementById('wordCount').textContent = gd.details?.word_count || '0';
+          document.getElementById('socialPlatforms').textContent = gd.details?.social_platforms?.length > 0
+            ? gd.details.social_platforms.join(', ') : 'None found';
+          document.getElementById('schemaTypes').textContent = gd.details?.schema_types?.length > 0
+            ? gd.details.schema_types.join(', ') : 'None found';
+
+          // Issues
+          const issuesList = document.getElementById('issuesList');
+          if (issuesList && gd.issues?.length > 0) {
+            issuesList.innerHTML = '';
+            gd.issues.forEach(issue => {
+              const li = document.createElement('li');
+              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+              issuesList.appendChild(li);
+            });
+          }
+
+          // Recommendations
+          const recsList = document.getElementById('recsList');
+          if (recsList && gd.recommendations?.length > 0) {
+            recsList.innerHTML = '';
+            gd.recommendations.forEach(rec => {
+              const li = document.createElement('li');
+              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
+              recsList.appendChild(li);
+            });
+          }
+        }
+        return; // Skip the timer for pre-unlocked users
+      }
+
+      // Start the FOMO timer (only for non-pre-unlocked users)
       startTimer();
     }
 
