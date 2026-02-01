@@ -16272,6 +16272,249 @@ section.section-gray .early-adopter h2 {
   }
 }
 
+/* ===========================================
+   ARIA HERO CARD - NEVER MISS A LEAD
+   =========================================== */
+.aria-hero-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 2px solid #f97316;
+  border-radius: 24px;
+  padding: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.aria-hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316, #fb923c, #f97316);
+}
+
+.aria-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.aria-hero-badge {
+  display: inline-block;
+  background: #f97316;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.aria-hero-card h2 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.aria-hero-card p {
+  color: #cbd5e1;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.aria-hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.aria-hero-stat {
+  text-align: center;
+}
+
+.aria-hero-stat .stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f97316;
+}
+
+.aria-hero-stat .stat-text {
+  display: block;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aria-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f97316;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
+}
+
+.aria-hero-btn:hover {
+  background: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(249, 115, 22, 0.5);
+}
+
+.aria-hero-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.aria-hero-note {
+  color: #64748b !important;
+  font-size: 0.875rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Solutions Header */
+.solutions-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.solutions-header h3 {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.solutions-header p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* Solutions Gallery */
+.solutions-gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
+.solution-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.solution-card:hover {
+  border-color: #f97316;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.solution-icon {
+  width: 56px;
+  height: 56px;
+  background: #f97316;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.solution-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+}
+
+.solution-card h4 {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.solution-card p {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive Solutions Gallery */
+@media (max-width: 1200px) {
+  .solutions-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .aria-hero-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .aria-hero-card h2 {
+    font-size: 1.75rem;
+  }
+
+  .aria-hero-card p {
+    font-size: 1rem;
+  }
+
+  .aria-hero-stats {
+    gap: 1rem;
+  }
+
+  .aria-hero-stat .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .solutions-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .solution-card {
+    padding: 1.25rem;
+  }
+
+  .solution-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .solution-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .solutions-gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* Large screens - even more space */
 @media (min-width: 1440px) {
   .hero {
@@ -16282,24 +16525,12 @@ section.section-gray .early-adopter h2 {
     font-size: 4.5rem !important;
   }
 
-  .services-grid .service-card {
-    flex: 0 0 400px !important;
-    min-width: 400px !important;
+  .aria-hero-card {
+    padding: 4rem;
   }
 
-  .services-grid .service-card-featured {
-    flex: 0 0 600px !important;
-    min-width: 600px !important;
-  }
-
-  .why-grid .why-card {
-    flex: 0 0 360px !important;
-    min-width: 360px !important;
-  }
-
-  .process-grid .process-step {
-    flex: 0 0 320px !important;
-    min-width: 320px !important;
+  .aria-hero-card h2 {
+    font-size: 3rem;
   }
 }
 
