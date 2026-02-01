@@ -16229,6 +16229,49 @@ section.section-gray .early-adopter h2 {
   }
 }
 
+/* Tech CTA - Centered layout */
+@media (min-width: 1024px) {
+  .tech-cta {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 3rem !important;
+  }
+
+  .tech-cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tech-cta-badge {
+    margin-bottom: 1.25rem;
+  }
+
+  .tech-cta-title {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .tech-cta-subtitle {
+    max-width: 600px;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .tech-cta-trust {
+    justify-content: center !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .tech-cta-action {
+    margin-top: 0;
+  }
+
+  .tech-cta-btn {
+    padding: 1rem 2.5rem !important;
+    font-size: 1.125rem !important;
+  }
+}
+
 /* Large screens - even more space */
 @media (min-width: 1440px) {
   .hero {
