@@ -16315,16 +16315,16 @@ section.section-gray .early-adopter h2 {
 }
 
 .aria-hero-card h2 {
-  color: #ffffff;
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
+  color: #ffffff !important;
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 1rem !important;
 }
 
 .aria-hero-card p {
-  color: #cbd5e1;
-  font-size: 1.125rem;
-  line-height: 1.7;
+  color: #ffffff !important;
+  font-size: 1.125rem !important;
+  line-height: 1.7 !important;
   max-width: 600px;
   margin: 0 auto 2rem;
 }
@@ -16343,15 +16343,15 @@ section.section-gray .early-adopter h2 {
 
 .aria-hero-stat .stat-number {
   display: block;
-  font-size: 2rem;
-  font-weight: 800;
-  color: #f97316;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: #f97316 !important;
 }
 
 .aria-hero-stat .stat-text {
   display: block;
-  font-size: 0.875rem;
-  color: #94a3b8;
+  font-size: 0.875rem !important;
+  color: #ffffff !important;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -16384,7 +16384,7 @@ section.section-gray .early-adopter h2 {
 }
 
 .aria-hero-note {
-  color: #64748b !important;
+  color: #94a3b8 !important;
   font-size: 0.875rem !important;
   margin-top: 1rem !important;
   margin-bottom: 0 !important;
