@@ -20,6 +20,7 @@ CORS(app)
 # Database config - check if DATABASE_URL is set
 database_url = os.environ.get('DATABASE_URL')
 DB_ENABLED = False
+DB_ERROR = None
 db = None
 AriaCompany = None
 AriaLead = None
@@ -51,6 +52,7 @@ if database_url:
             print("Database tables created successfully")
             DB_ENABLED = True
     except Exception as e:
+        DB_ERROR = str(e)
         print(f"Database initialization error: {e}")
         import traceback
         traceback.print_exc()
@@ -120,7 +122,8 @@ def health():
         'smtp_pass_len': len(SMTP_PASS) if SMTP_PASS else 0,
         'database_enabled': DB_ENABLED,
         'database_url_set': bool(db_url),
-        'database_host': db_url_masked
+        'database_host': db_url_masked,
+        'database_error': DB_ERROR
     })
 
 
