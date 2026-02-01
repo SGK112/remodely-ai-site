@@ -110,12 +110,17 @@ def grade():
 
 @app.route('/api/health', methods=['GET'])
 def health():
+    db_url = os.environ.get('DATABASE_URL', '')
+    # Mask password in URL for display
+    db_url_masked = db_url.split('@')[1] if '@' in db_url else 'not set'
     return jsonify({
         'status': 'ok',
         'smtp_user': SMTP_USER,
         'smtp_pass_set': bool(SMTP_PASS),
         'smtp_pass_len': len(SMTP_PASS) if SMTP_PASS else 0,
-        'database': 'connected'
+        'database_enabled': DB_ENABLED,
+        'database_url_set': bool(db_url),
+        'database_host': db_url_masked
     })
 
 
