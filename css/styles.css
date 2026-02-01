@@ -15232,4 +15232,161 @@ section {
   .footer {
     padding-bottom: 200px !important;
   }
+
+  /* ==========================================
+     FIX ARIA + TESTIMONIALS GAPS
+     ========================================== */
+
+  /* ARIA section - compact, dark, no gaps */
+  .aria-section {
+    background: #0f172a !important;
+    padding: 2.5rem 1rem !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  .aria-section * {
+    min-height: auto !important;
+  }
+
+  .aria-intro {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 1rem !important;
+  }
+
+  .aria-avatar {
+    margin-bottom: 1rem !important;
+  }
+
+  .aria-section h2 {
+    margin: 0 0 0.5rem 0 !important;
+  }
+
+  .aria-tagline {
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .aria-desc {
+    margin: 0 0 1.5rem 0 !important;
+  }
+
+  .aria-stats {
+    margin: 0 0 1.5rem 0 !important;
+    padding: 1rem !important;
+  }
+
+  .aria-proof {
+    margin: 0 0 1.5rem 0 !important;
+  }
+
+  .aria-cta {
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .aria-note {
+    margin: 0 !important;
+  }
+
+  /* Testimonials section - compact, proper colors */
+  .testimonials-section {
+    background: #f8fafc !important;
+    padding: 2.5rem 1rem !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  .testimonials-section h2 {
+    margin: 0 0 1.5rem 0 !important;
+    padding: 0 !important;
+  }
+
+  .testimonials-scroll {
+    margin: 0 !important;
+    padding: 0.5rem 0 !important;
+  }
+
+  .testimonial-card {
+    min-width: 280px !important;
+    padding: 1.25rem !important;
+  }
+
+  /* Final CTA section - compact */
+  .final-cta-section {
+    background: #0f172a !important;
+    padding: 2.5rem 1rem !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  .final-cta {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .final-cta h2 {
+    margin: 0 0 1rem 0 !important;
+  }
+
+  .final-cta p {
+    margin: 0 0 1.5rem 0 !important;
+  }
+
+  .final-cta-btn {
+    margin: 0 0 0.75rem 0 !important;
+  }
+
+  .final-cta-note {
+    margin: 0 !important;
+  }
+
+  /* Remove ALL excessive spacing */
+  .section,
+  section {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .container {
+    padding: 0 1rem !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* ===========================================
+   GLOBAL OVERRIDES - ALL SCREENS
+   =========================================== */
+
+/* Force remove all gradients from sections */
+.aria-section,
+.aria-section::before,
+.aria-section::after {
+  background: #0f172a !important;
+  background-image: none !important;
+}
+
+.testimonials-section,
+.testimonials-section::before,
+.testimonials-section::after {
+  background: #f8fafc !important;
+  background-image: none !important;
+}
+
+.final-cta-section,
+.final-cta-section::before,
+.final-cta-section::after {
+  background: #0f172a !important;
+  background-image: none !important;
+}
+
+/* Force compact sections */
+.aria-section,
+.testimonials-section,
+.final-cta-section {
+  min-height: auto !important;
+  height: auto !important;
+  overflow: visible !important;
 }
