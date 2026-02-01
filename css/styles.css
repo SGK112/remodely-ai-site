@@ -14925,10 +14925,24 @@ section {
   .mobile-hero-subtitle {
     font-size: 1.125rem !important;
     line-height: 1.6 !important;
-    color: #cbd5e1 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
     text-align: center !important;
     margin: 0 !important;
     max-width: 320px !important;
+  }
+
+  /* Ensure all text is visible on dark background */
+  .mobile-hero-content,
+  .mobile-hero-content * {
+    color: #ffffff;
+  }
+
+  .mobile-hero-content .text-orange {
+    color: #f97316 !important;
+  }
+
+  .mobile-hero-content .mobile-hero-subtitle {
+    color: rgba(255, 255, 255, 0.8) !important;
   }
 
   /* Mobile middle section */
