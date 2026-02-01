@@ -29,6 +29,45 @@ document.addEventListener('DOMContentLoaded', function() {
   const isMobile = window.innerWidth <= 768;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Toast notification
+  function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast-notification');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      background: ${type === 'error' ? '#f97316' : '#f97316'};
+      color: #fff;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 10001;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      animation: toastIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // Add toast animation styles
+  const toastStyle = document.createElement('style');
+  toastStyle.textContent = `
+    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    @keyframes toastOut { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+  `;
+  document.head.appendChild(toastStyle);
+
   // =====================================================
   // SCROLL PROGRESS BAR
   // =====================================================
@@ -275,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
     toast.style.cssText = 'background:#1e293b;color:#fff;padding:12px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:flex;align-items:center;gap:10px;transform:translateX(100%);transition:transform 0.3s ease;';
 
     if (type === 'success') toast.style.borderLeft = '4px solid #22c55e';
-    if (type === 'error') toast.style.borderLeft = '4px solid #ef4444';
+    if (type === 'error') toast.style.borderLeft = '4px solid #f97316';
 
     toast.textContent = message;
     container.appendChild(toast);
@@ -424,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Thanks! We\'ll be in touch within 24 hours.', 'success');
           } else {
             submitBtn.innerHTML = 'Error - Try Again';
-            submitBtn.style.background = '#dc2626';
+            submitBtn.style.background = '#ea580c';
           }
 
           setTimeout(() => {
@@ -474,13 +513,409 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   const mobileGraderForm = document.getElementById('mobileGraderForm');
-  if (mobileGraderForm) {
-    mobileGraderForm.addEventListener('submit', function(e) {
+  const mobileFormCard = document.getElementById('mobileFormCard');
+  const mobileFormLoading = document.getElementById('mobileFormLoading');
+  const mobileFormResults = document.getElementById('mobileFormResults');
+
+  if (mobileGraderForm && mobileFormLoading && mobileFormResults) {
+    mobileGraderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const urlInput = document.getElementById('mobile-url');
-      if (urlInput && urlInput.value) {
-        window.location.href = '/grader.html?url=' + encodeURIComponent(normalizeUrl(urlInput.value));
+      if (!urlInput || !urlInput.value) return;
+
+      const url = normalizeUrl(urlInput.value);
+
+      // Show loading, hide form
+      mobileGraderForm.style.display = 'none';
+      mobileFormLoading.style.display = 'flex';
+      if (mobileFormCard) mobileFormCard.classList.add('has-results');
+
+      // Update progress indicator
+      if (window.updateGraderProgress) window.updateGraderProgress(2);
+
+      // Animate loading steps
+      const loadingBar = document.getElementById('mobileLoadingBar');
+      const steps = ['loadStep1', 'loadStep2', 'loadStep3', 'loadStep4'];
+      let currentStep = 0;
+
+      function advanceStep() {
+        if (currentStep > 0) {
+          const prevStep = document.getElementById(steps[currentStep - 1]);
+          if (prevStep) {
+            prevStep.classList.remove('active');
+            prevStep.classList.add('done');
+          }
+        }
+        if (currentStep < steps.length) {
+          const step = document.getElementById(steps[currentStep]);
+          if (step) step.classList.add('active');
+          if (loadingBar) loadingBar.style.width = ((currentStep + 1) / steps.length * 100) + '%';
+          currentStep++;
+        }
       }
+
+      advanceStep();
+      const stepInterval = setInterval(advanceStep, 800);
+
+      try {
+        const response = await fetch('https://remodely-backend.onrender.com/api/grader', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await response.json();
+        clearInterval(stepInterval);
+        if (!response.ok) throw new Error(data.error || 'Analysis failed');
+
+        // Complete loading animation
+        if (loadingBar) loadingBar.style.width = '100%';
+        steps.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.classList.remove('active'); el.classList.add('done'); }
+        });
+
+        // Quick transition to results
+        await new Promise(r => setTimeout(r, 200));
+        mobileFormLoading.style.display = 'none';
+        mobileFormResults.style.display = 'block';
+        mobileFormResults.classList.add('loading-results');
+
+        // Update progress indicator to step 3 (results)
+        if (window.updateGraderProgress) window.updateGraderProgress(3);
+
+        // Get elements
+        const scoreValue = document.getElementById('mobileScoreValue');
+        const scoreCircle = document.getElementById('mobileScoreCircle');
+        const scoreMessage = document.getElementById('mobileScoreMessage');
+        const messageBox = document.getElementById('mobileResultsMessage');
+        const ariaCtaTitle = document.getElementById('ariaCtaTitle');
+        const ariaCtaSubtitle = document.getElementById('ariaCtaSubtitle');
+        const breakdown = document.getElementById('mobileResultsBreakdown');
+        const ariaCta = document.getElementById('mobileResultsAria');
+        const divider = document.querySelector('.mobile-results-divider');
+        const unlockBtn = document.getElementById('mobileUnlockBtn');
+        const retryBtn = document.getElementById('mobileResultsRetry');
+        const leadForm = document.getElementById('mobileLeadForm');
+        const leadBack = document.getElementById('mobileLeadBack');
+        const leadFields = document.getElementById('mobileLeadFields');
+
+        const score = data.scores?.overall || 0;
+        const scoreColor = score >= 70 ? '#10b981' : score >= 40 ? '#f59e0b' : '#f97316';
+        const textColor = score >= 70 ? '#047857' : score >= 40 ? '#d97706' : '#ea580c';
+
+        // Hide elements initially for progressive reveal
+        if (messageBox) { messageBox.style.opacity = '0'; messageBox.style.transform = 'translateY(10px)'; }
+        if (breakdown) breakdown.innerHTML = '';
+        if (ariaCta) { ariaCta.style.opacity = '0'; ariaCta.style.transform = 'translateY(10px)'; }
+        if (divider) { divider.style.opacity = '0'; }
+        if (unlockBtn) { unlockBtn.style.opacity = '0'; unlockBtn.style.transform = 'translateY(10px)'; }
+        if (retryBtn) { retryBtn.style.opacity = '0'; }
+        if (leadForm) { leadForm.style.display = 'none'; }
+
+        // Store context for Aria
+        window.ariaContext = window.ariaContext || {};
+        window.ariaContext.websiteUrl = url;
+        window.ariaContext.score = score;
+        window.ariaContext.categories = data.scores;
+
+        // STEP 1: Animate score counting up with digital effect
+        let currentScore = 0;
+        const scoreIncrement = score / 50; // 50 steps for smoother animation
+        if (scoreValue) scoreValue.classList.add('counting');
+        if (scoreCircle) scoreCircle.classList.add('scanning');
+
+        const scoreInterval = setInterval(() => {
+          currentScore = Math.min(currentScore + scoreIncrement, score);
+          const displayScore = Math.round(currentScore);
+          if (scoreValue) {
+            scoreValue.textContent = displayScore;
+            scoreValue.style.color = textColor;
+          }
+          if (scoreCircle) {
+            const deg = (currentScore / 100) * 360;
+            // Add gold accent to the leading edge
+            const goldGlow = `rgba(251, 191, 36, 0.8)`;
+            scoreCircle.style.background = `conic-gradient(
+              ${scoreColor} 0deg,
+              ${scoreColor} ${Math.max(0, deg - 8)}deg,
+              ${goldGlow} ${Math.max(0, deg - 4)}deg,
+              ${goldGlow} ${deg}deg,
+              #e2e8f0 ${deg}deg,
+              #e2e8f0 360deg
+            )`;
+            // Add glow effect
+            scoreCircle.style.boxShadow = `
+              0 4px 20px rgba(0, 0, 0, 0.08),
+              inset 0 0 0 3px rgba(251, 191, 36, 0.3),
+              0 0 30px rgba(251, 191, 36, ${0.2 + (currentScore / score) * 0.3})
+            `;
+          }
+          if (currentScore >= score) {
+            clearInterval(scoreInterval);
+            if (scoreValue) scoreValue.classList.remove('counting');
+            if (scoreCircle) scoreCircle.classList.remove('scanning');
+            // Final state without gold edge
+            if (scoreCircle) {
+              scoreCircle.style.background = `conic-gradient(${scoreColor} ${(score / 100) * 360}deg, #e2e8f0 ${(score / 100) * 360}deg)`;
+              scoreCircle.style.boxShadow = `
+                0 4px 20px rgba(0, 0, 0, 0.08),
+                inset 0 0 0 3px rgba(251, 191, 36, 0.2),
+                0 0 20px ${scoreColor}40
+              `;
+            }
+          }
+        }, 20);
+
+        // STEP 2: Show message after score animation (0.5s delay)
+        await new Promise(r => setTimeout(r, 500));
+        if (messageBox) {
+          messageBox.classList.remove('score-low', 'score-high');
+          if (score < 40) {
+            messageBox.classList.add('score-low');
+            if (scoreMessage) scoreMessage.innerHTML = '<strong>Your business is invisible to AI.</strong> Customers asking ChatGPT or Google AI won\'t find you.';
+          } else if (score < 70) {
+            if (scoreMessage) scoreMessage.innerHTML = '<strong>You\'re losing leads to competitors.</strong> A few fixes could have AI sending you customers weekly.';
+          } else {
+            messageBox.classList.add('score-high');
+            if (scoreMessage) scoreMessage.innerHTML = '<strong>You\'re ahead of most competitors!</strong> Small tweaks could make AI your #1 lead source.';
+          }
+          messageBox.style.transition = 'all 0.4s ease';
+          messageBox.style.opacity = '1';
+          messageBox.style.transform = 'translateY(0)';
+        }
+
+        // STEP 3: Build and reveal breakdown items one by one
+        const scores = data.scores || {};
+        const categories = [
+          { key: 'ai_visibility', name: 'AI Visibility', score: scores.ai_visibility || 0 },
+          { key: 'business', name: 'Business Essentials', score: scores.business_essentials || 0 },
+          { key: 'seo', name: 'SEO & Content', score: scores.seo?.meta_tags || 0 },
+          { key: 'technical', name: 'Technical', score: Math.round(((scores.technical?.https || 0) + (scores.technical?.speed || 0) + (scores.technical?.mobile || 0)) / 3) }
+        ];
+
+        for (let i = 0; i < categories.length; i++) {
+          await new Promise(r => setTimeout(r, 150));
+          const cat = categories[i];
+          const scoreClass = cat.score >= 70 ? 'good' : cat.score >= 40 ? 'ok' : 'bad';
+          const icon = cat.score >= 70
+            ? '<svg class="mobile-result-item-icon pass" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>'
+            : '<svg class="mobile-result-item-icon fail" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>';
+
+          const itemHtml = `<div class="mobile-result-item result-item-reveal" style="opacity:0;transform:translateX(-20px)">
+            <span class="mobile-result-item-label">${icon} ${cat.name}</span>
+            <span class="mobile-result-item-score ${scoreClass}">${cat.score}/100</span>
+          </div>`;
+
+          if (breakdown) {
+            breakdown.insertAdjacentHTML('beforeend', itemHtml);
+            const newItem = breakdown.lastElementChild;
+            // Trigger animation
+            requestAnimationFrame(() => {
+              newItem.style.transition = 'all 0.3s ease';
+              newItem.style.opacity = '1';
+              newItem.style.transform = 'translateX(0)';
+            });
+          }
+        }
+
+        // STEP 4: Show Aria CTA with emphasis
+        await new Promise(r => setTimeout(r, 200));
+        if (ariaCtaTitle) ariaCtaTitle.textContent = score < 40 ? 'Fix This Now - Free Call' : score < 70 ? 'Get Your Action Plan' : 'Maximize Your Leads';
+        if (ariaCtaSubtitle) ariaCtaSubtitle.textContent = score < 40 ? 'Aria shows you exactly what to fix' : score < 70 ? '2-min call - prioritized fixes list' : 'Learn how to get even more from AI';
+        if (ariaCta) {
+          ariaCta.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          ariaCta.style.opacity = '1';
+          ariaCta.style.transform = 'translateY(0)';
+        }
+
+        // STEP 5: Show secondary options
+        await new Promise(r => setTimeout(r, 300));
+        if (divider) { divider.style.transition = 'opacity 0.3s ease'; divider.style.opacity = '1'; }
+        if (unlockBtn) {
+          unlockBtn.style.transition = 'all 0.3s ease';
+          unlockBtn.style.opacity = '1';
+          unlockBtn.style.transform = 'translateY(0)';
+        }
+        await new Promise(r => setTimeout(r, 150));
+        if (retryBtn) { retryBtn.style.transition = 'opacity 0.3s ease'; retryBtn.style.opacity = '1'; }
+
+        mobileFormResults.classList.remove('loading-results');
+
+        // Unlock button shows lead form
+        if (unlockBtn) {
+          unlockBtn.onclick = () => {
+            mobileFormResults.style.display = 'none';
+            if (leadForm) leadForm.style.display = 'block';
+          };
+        }
+
+        // Back button returns to results
+        if (leadBack) {
+          leadBack.onclick = () => {
+            if (leadForm) leadForm.style.display = 'none';
+            mobileFormResults.style.display = 'block';
+          };
+        }
+
+        // Lead form submission
+        if (leadFields) {
+          leadFields.onsubmit = async (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('leadNameInput');
+            const emailInput = document.getElementById('leadEmailInput');
+            const phoneInput = document.getElementById('leadPhoneInput');
+            const submitBtn = document.getElementById('mobileLeadSubmit');
+
+            const leadData = {
+              name: nameInput?.value || '',
+              email: emailInput?.value || '',
+              phone: phoneInput?.value || '',
+              website: url,
+              score: score,
+              categories: data.scores,
+              source: 'mobile-grader',
+              timestamp: new Date().toISOString()
+            };
+
+            // Show loading
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = '<span>Unlocking...</span>';
+            }
+
+            try {
+              // Submit to Firebase if available
+              if (typeof firebase !== 'undefined' && firebase.firestore) {
+                await firebase.firestore().collection('leads').add(leadData);
+              }
+
+              // Store in session for Aria context
+              window.ariaContext = { ...window.ariaContext, ...leadData };
+              sessionStorage.setItem('ariaContext', JSON.stringify(window.ariaContext));
+
+              // Redirect to full report
+              window.location.href = '/grader.html?url=' + encodeURIComponent(url);
+            } catch (err) {
+              console.error('Lead submission error:', err);
+              // Still redirect on error
+              window.location.href = '/grader.html?url=' + encodeURIComponent(url);
+            }
+          };
+        }
+
+        // Retry button
+        if (retryBtn) {
+          retryBtn.onclick = () => {
+            mobileFormResults.style.display = 'none';
+            if (leadForm) leadForm.style.display = 'none';
+            mobileGraderForm.style.display = 'flex';
+            urlInput.value = '';
+            if (mobileFormCard) mobileFormCard.classList.remove('has-results');
+            // Reset animations for next time
+            if (messageBox) { messageBox.style.opacity = ''; messageBox.style.transform = ''; }
+            if (ariaCta) { ariaCta.style.opacity = ''; ariaCta.style.transform = ''; }
+            if (divider) divider.style.opacity = '';
+            if (unlockBtn) { unlockBtn.style.opacity = ''; unlockBtn.style.transform = ''; }
+            if (retryBtn) retryBtn.style.opacity = '';
+            // Reset progress indicator
+            if (window.updateGraderProgress) window.updateGraderProgress(1);
+          };
+        }
+
+      } catch (err) {
+        console.error('Grader error:', err);
+        clearInterval(stepInterval);
+
+        // Reset loading animation
+        if (loadingBar) loadingBar.style.width = '0%';
+        steps.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.classList.remove('active', 'done'); }
+        });
+
+        mobileFormLoading.style.display = 'none';
+        mobileGraderForm.style.display = 'flex';
+        if (mobileFormCard) mobileFormCard.classList.remove('has-results');
+        showToast('Could not analyze website. Please try again.', 'error');
+      }
+    });
+  }
+
+  // =====================================================
+  // ARIA - AI ASSISTANT INTEGRATION
+  // =====================================================
+  // Store grader data for Aria context
+  window.ariaContext = {
+    websiteUrl: null,
+    score: null,
+    categories: null,
+    userName: null,
+    userEmail: null,
+    userPhone: null
+  };
+
+  // Aria phone number - update this with your actual Aria number
+  const ARIA_PHONE = '+14803139663';
+
+  // Function to call Aria with context
+  function callAria() {
+    // Build context message for Aria
+    let contextMsg = '';
+    if (window.ariaContext.websiteUrl) {
+      contextMsg = `Website: ${window.ariaContext.websiteUrl}`;
+      if (window.ariaContext.score) {
+        contextMsg += `, Score: ${window.ariaContext.score}/100`;
+      }
+    }
+
+    // Log the context (in production, this could be sent to your backend)
+    console.log('Calling Aria with context:', window.ariaContext);
+
+    // Initiate the call
+    window.location.href = `tel:${ARIA_PHONE}`;
+  }
+
+  // Aria FAB button
+  const ariaFab = document.getElementById('ariaFab');
+  if (ariaFab) {
+    ariaFab.addEventListener('click', callAria);
+  }
+
+  // Talk to Aria button in Aria section
+  const talkToAriaBtn = document.getElementById('talkToAriaBtn');
+  if (talkToAriaBtn) {
+    talkToAriaBtn.addEventListener('click', callAria);
+  }
+
+  // Final CTA button - direct call to Aria
+  const finalCtaBtn = document.getElementById('finalCtaBtn');
+  if (finalCtaBtn) {
+    finalCtaBtn.addEventListener('click', callAria);
+  }
+
+  // Results Aria button - call with website context
+  const mobileResultsAria = document.getElementById('mobileResultsAria');
+  if (mobileResultsAria) {
+    mobileResultsAria.addEventListener('click', callAria);
+  }
+
+  // Update Aria context when grader completes
+  const originalMobileGraderHandler = mobileGraderForm?.onsubmit;
+  if (mobileGraderForm) {
+    const originalSubmit = mobileGraderForm.onsubmit;
+    // Context is already updated in the grader submit handler above
+  }
+
+  // Note: Lead form in results now handles sessionStorage for grader context
+
+  // Capture contact form data for Aria
+  const contactFormEl = document.getElementById('contact-form');
+  if (contactFormEl) {
+    contactFormEl.addEventListener('input', (e) => {
+      if (e.target.name === 'name') window.ariaContext.userName = e.target.value;
+      if (e.target.name === 'email') window.ariaContext.userEmail = e.target.value;
+      if (e.target.name === 'phone') window.ariaContext.userPhone = e.target.value;
     });
   }
 
@@ -618,7 +1053,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   // MOBILE FORM CARD EXPANSION
   // =====================================================
-  const mobileFormCard = document.getElementById('mobileFormCard');
   const expandFormBtn = document.getElementById('expandFormBtn');
   const closeFormBtn = document.getElementById('closeFormBtn');
 
@@ -652,69 +1086,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // =====================================================
-  // HERO GRADER CARD - MOBILE FULLSCREEN EXPANSION
-  // =====================================================
-  const heroGraderCard = document.getElementById('heroGraderCard');
-  const heroGraderClose = document.getElementById('heroGraderClose');
-
-  if (heroGraderCard) {
-    const isMobileDevice = () => window.innerWidth <= 768;
-
-    function expandHeroGrader() {
-      if (!isMobileDevice()) return;
-      heroGraderCard.classList.add('expanded');
-      document.body.classList.add('grader-expanded');
-      // Focus the URL input
-      setTimeout(() => {
-        const urlInput = document.getElementById('hero-url');
-        if (urlInput) urlInput.focus();
-      }, 300);
-    }
-
-    function collapseHeroGrader() {
-      heroGraderCard.classList.remove('expanded');
-      document.body.classList.remove('grader-expanded');
-    }
-
-    // Expand when clicking on the card (but not on form elements when already expanded)
-    heroGraderCard.addEventListener('click', (e) => {
-      if (!heroGraderCard.classList.contains('expanded') && isMobileDevice()) {
-        // Don't expand if clicking on close button
-        if (e.target.closest('.lead-form-close')) return;
-        expandHeroGrader();
-      }
-    });
-
-    // Close button
-    if (heroGraderClose) {
-      heroGraderClose.addEventListener('click', (e) => {
-        e.stopPropagation();
-        collapseHeroGrader();
-      });
-    }
-
-    // Expand when input is focused on mobile
-    const heroUrlInput = document.getElementById('hero-url');
-    if (heroUrlInput) {
-      heroUrlInput.addEventListener('focus', () => {
-        if (isMobileDevice() && !heroGraderCard.classList.contains('expanded')) {
-          expandHeroGrader();
-        }
-      });
-    }
-  }
 
   // =====================================================
   // KEYBOARD ACCESSIBILITY
   // =====================================================
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      // Close hero grader card if expanded
-      if (heroGraderCard && heroGraderCard.classList.contains('expanded')) {
-        heroGraderCard.classList.remove('expanded');
-        document.body.classList.remove('grader-expanded');
-      }
       // Close mobile form if expanded
       if (mobileFormCard && mobileFormCard.classList.contains('expanded')) {
         mobileFormCard.classList.remove('expanded');
