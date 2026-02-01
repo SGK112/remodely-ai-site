@@ -6,7 +6,6 @@ Multi-tenant Aria AI Receptionist System
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from grader import grade_website
-from models import db, AriaCompany, AriaLead
 import os
 import smtplib
 import ssl
@@ -18,25 +17,37 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-# Database config
-database_url = os.environ.get('DATABASE_URL', 'sqlite:///aria.db')
-# Fix for Render PostgreSQL URL format
-if database_url.startswith('postgres://'):
-    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+# Database config - check if DATABASE_URL is set
+database_url = os.environ.get('DATABASE_URL')
+DB_ENABLED = database_url is not None
 
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_recycle': 300,
-    'pool_pre_ping': True
-}
+if DB_ENABLED:
+    from models import db, AriaCompany, AriaLead
 
-# Initialize database
-db.init_app(app)
+    # Fix for Render PostgreSQL URL format
+    if database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
 
-# Create tables on startup
-with app.app_context():
-    db.create_all()
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_recycle': 300,
+        'pool_pre_ping': True
+    }
+
+    # Initialize database
+    db.init_app(app)
+
+    # Create tables on startup
+    with app.app_context():
+        try:
+            db.create_all()
+            print("Database tables created successfully")
+        except Exception as e:
+            print(f"Database initialization error: {e}")
+            DB_ENABLED = False
+else:
+    print("DATABASE_URL not set - Aria multi-tenant features disabled")
 
 # Email config
 SMTP_USER = os.environ.get('SMTP_USER', '')
@@ -234,9 +245,22 @@ https://remodely.ai"""
 # ARIA COMPANY ENDPOINTS (Multi-tenant)
 # =============================================================================
 
+def require_db():
+    """Check if database is enabled, return error response if not"""
+    if not DB_ENABLED:
+        return jsonify({
+            'success': False,
+            'error': 'Database not configured. Set DATABASE_URL environment variable.'
+        }), 503
+    return None
+
+
 @app.route('/api/aria/companies', methods=['GET'])
 def list_companies():
     """List all Aria companies"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     companies = AriaCompany.query.order_by(AriaCompany.created_at.desc()).all()
     return jsonify({
         'success': True,
@@ -248,6 +272,9 @@ def list_companies():
 @app.route('/api/aria/companies', methods=['POST'])
 def create_company():
     """Create a new Aria company (tenant)"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     data = request.get_json()
 
     required = ['name', 'email']
@@ -295,6 +322,9 @@ def create_company():
 @app.route('/api/aria/companies/<company_id>', methods=['GET'])
 def get_company(company_id):
     """Get a specific company by ID or slug"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
@@ -311,6 +341,9 @@ def get_company(company_id):
 @app.route('/api/aria/companies/<company_id>', methods=['PUT'])
 def update_company(company_id):
     """Update company settings"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
@@ -372,6 +405,9 @@ def update_company(company_id):
 @app.route('/api/aria/companies/<company_id>', methods=['DELETE'])
 def delete_company(company_id):
     """Delete a company and all its leads"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
@@ -396,6 +432,9 @@ def delete_company(company_id):
 @app.route('/api/aria/companies/<company_id>/leads', methods=['GET'])
 def list_leads(company_id):
     """List all leads for a company"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
@@ -431,6 +470,9 @@ def list_leads(company_id):
 @app.route('/api/aria/companies/<company_id>/leads', methods=['POST'])
 def create_lead(company_id):
     """Create a new lead (typically from VAPI webhook)"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
@@ -482,6 +524,9 @@ def create_lead(company_id):
 @app.route('/api/aria/leads/<lead_id>', methods=['GET'])
 def get_lead(lead_id):
     """Get a specific lead"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     lead = AriaLead.query.get(lead_id)
 
     if not lead:
@@ -496,6 +541,9 @@ def get_lead(lead_id):
 @app.route('/api/aria/leads/<lead_id>', methods=['PUT'])
 def update_lead(lead_id):
     """Update lead status and notes"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     lead = AriaLead.query.get(lead_id)
 
     if not lead:
@@ -532,6 +580,9 @@ def update_lead(lead_id):
 @app.route('/api/aria/leads/<lead_id>', methods=['DELETE'])
 def delete_lead(lead_id):
     """Delete a lead"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     lead = AriaLead.query.get(lead_id)
 
     if not lead:
@@ -553,6 +604,9 @@ def delete_lead(lead_id):
 @app.route('/api/aria/webhook/vapi', methods=['POST'])
 def vapi_webhook():
     """Handle VAPI webhook events"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     data = request.get_json()
 
     event_type = data.get('type')
@@ -660,6 +714,9 @@ View in dashboard: https://remodely.ai/client-dashboard.html"""
 @app.route('/api/aria/companies/<company_id>/stats', methods=['GET'])
 def company_stats(company_id):
     """Get statistics for a company"""
+    db_error = require_db()
+    if db_error:
+        return db_error
     company = AriaCompany.query.filter(
         (AriaCompany.id == company_id) | (AriaCompany.slug == company_id)
     ).first()
