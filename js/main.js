@@ -855,24 +855,15 @@ document.addEventListener('DOMContentLoaded', function() {
     userPhone: null
   };
 
-  // Aria phone number - update this with your actual Aria number
-  const ARIA_PHONE = '+14803139663';
+  // Aria phone number - SET YOUR OWN NUMBER HERE
+  const ARIA_PHONE = null; // Replace with your Aria phone number
 
   // Function to call Aria with context
   function callAria() {
-    // Build context message for Aria
-    let contextMsg = '';
-    if (window.ariaContext.websiteUrl) {
-      contextMsg = `Website: ${window.ariaContext.websiteUrl}`;
-      if (window.ariaContext.score) {
-        contextMsg += `, Score: ${window.ariaContext.score}/100`;
-      }
+    if (!ARIA_PHONE) {
+      alert('Aria phone number not configured. Contact help.remodely@gmail.com to set up.');
+      return;
     }
-
-    // Log the context (in production, this could be sent to your backend)
-    console.log('Calling Aria with context:', window.ariaContext);
-
-    // Initiate the call
     window.location.href = `tel:${ARIA_PHONE}`;
   }
 
