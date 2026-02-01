@@ -14888,10 +14888,9 @@ section {
     display: flex !important;
     flex-direction: column !important;
     background: #0f172a !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
-    padding: 24px 24px 160px !important;
-    padding-top: calc(24px + env(safe-area-inset-top)) !important;
+    min-height: auto !important;
+    padding: 20px 20px 180px !important;
+    padding-top: calc(20px + env(safe-area-inset-top)) !important;
     justify-content: flex-start !important;
     align-items: center !important;
   }
@@ -14901,7 +14900,7 @@ section {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
-    margin-bottom: 40px !important;
+    margin-bottom: 24px !important;
   }
 
   .mobile-hero-logo {
@@ -14952,17 +14951,17 @@ section {
     align-items: center !important;
     width: 100% !important;
     max-width: 400px !important;
-    margin-top: 40px !important;
+    margin-top: 0 !important;
   }
 
   /* Mobile headline styling */
   .mobile-hero-headline {
-    font-size: 2.25rem !important;
+    font-size: 2rem !important;
     font-weight: 800 !important;
-    line-height: 1.15 !important;
+    line-height: 1.2 !important;
     color: #ffffff !important;
     text-align: center !important;
-    margin: 0 0 2rem 0 !important;
+    margin: 0 0 1rem 0 !important;
     letter-spacing: -0.02em !important;
   }
 
