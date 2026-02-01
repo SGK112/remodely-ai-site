@@ -16083,3 +16083,180 @@ section.section-gray .early-adopter h2 {
   color: #cbd5e1 !important;
 }
 
+/* ===========================================
+   PC LAYOUT - HERO SPACING & HORIZONTAL SCROLLING
+   =========================================== */
+@media (min-width: 1024px) {
+  /* Hero - More breathing room */
+  .hero {
+    padding: 8rem 0 6rem !important;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-grid {
+    gap: 4rem !important;
+    align-items: center;
+  }
+
+  .hero-headline-large {
+    font-size: 4rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem !important;
+    max-width: 500px;
+  }
+
+  /* Services - Horizontal scroll */
+  .services-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 1.5rem !important;
+    padding: 1rem 0 2rem !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #f97316 #1e293b;
+  }
+
+  .services-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .services-grid::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .services-grid::-webkit-scrollbar-thumb {
+    background: #f97316;
+    border-radius: 4px;
+  }
+
+  .services-grid .service-card {
+    flex: 0 0 350px !important;
+    min-width: 350px !important;
+    scroll-snap-align: start;
+  }
+
+  .services-grid .service-card-featured {
+    flex: 0 0 500px !important;
+    min-width: 500px !important;
+  }
+
+  /* Why Cards - Horizontal scroll */
+  .why-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 1.5rem !important;
+    padding: 1rem 0 2rem !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #f97316 #1e293b;
+  }
+
+  .why-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .why-grid::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .why-grid::-webkit-scrollbar-thumb {
+    background: #f97316;
+    border-radius: 4px;
+  }
+
+  .why-grid .why-card {
+    flex: 0 0 320px !important;
+    min-width: 320px !important;
+    scroll-snap-align: start;
+  }
+
+  /* Process Steps - Horizontal scroll */
+  .process-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 2rem !important;
+    padding: 1rem 0 2rem !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #f97316 #1e293b;
+  }
+
+  .process-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .process-grid::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .process-grid::-webkit-scrollbar-thumb {
+    background: #f97316;
+    border-radius: 4px;
+  }
+
+  .process-grid .process-step {
+    flex: 0 0 280px !important;
+    min-width: 280px !important;
+    scroll-snap-align: start;
+  }
+
+  /* Section spacing */
+  .section {
+    padding: 6rem 0 !important;
+  }
+
+  .section-header {
+    margin-bottom: 3rem !important;
+  }
+
+  .section-header h2 {
+    font-size: 2.75rem !important;
+  }
+}
+
+/* Large screens - even more space */
+@media (min-width: 1440px) {
+  .hero {
+    padding: 10rem 0 8rem !important;
+  }
+
+  .hero-headline-large {
+    font-size: 4.5rem !important;
+  }
+
+  .services-grid .service-card {
+    flex: 0 0 400px !important;
+    min-width: 400px !important;
+  }
+
+  .services-grid .service-card-featured {
+    flex: 0 0 600px !important;
+    min-width: 600px !important;
+  }
+
+  .why-grid .why-card {
+    flex: 0 0 360px !important;
+    min-width: 360px !important;
+  }
+
+  .process-grid .process-step {
+    flex: 0 0 320px !important;
+    min-width: 320px !important;
+  }
+}
+
