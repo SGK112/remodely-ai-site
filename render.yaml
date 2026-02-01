@@ -1,4 +1,5 @@
 services:
+  # Static Website
   - type: web
     name: remodely-ai-site
     runtime: static
@@ -43,3 +44,33 @@ services:
       - type: rewrite
         source: /launch-playbook
         destination: /launch-playbook.html
+
+  # API Service with Aria Multi-tenant System
+  - type: web
+    name: remodely-api
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r api/requirements.txt
+    startCommand: cd api && gunicorn server:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: remodely-db
+          property: connectionString
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM_EMAIL
+        sync: false
+    healthCheckPath: /api/health
+
+databases:
+  - name: remodely-db
+    plan: free
+    region: oregon
+    databaseName: remodely
+    user: remodely
