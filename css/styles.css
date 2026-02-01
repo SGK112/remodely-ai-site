@@ -14922,6 +14922,15 @@ section {
     color: #f97316 !important;
   }
 
+  .mobile-hero-subtitle {
+    font-size: 1.125rem !important;
+    line-height: 1.6 !important;
+    color: #cbd5e1 !important;
+    text-align: center !important;
+    margin: 0 !important;
+    max-width: 320px !important;
+  }
+
   /* Mobile middle section */
   .mobile-hero-middle {
     display: flex !important;
