@@ -855,38 +855,35 @@ document.addEventListener('DOMContentLoaded', function() {
     userPhone: null
   };
 
-  // Aria phone number - UPDATE THIS WITH YOUR ARIA NUMBER
-  const ARIA_PHONE = null; // Set your Aria phone number here, e.g., '+18005551234'
-
-  // Aria scheduling link (alternative to phone)
-  const ARIA_SCHEDULE_URL = 'https://calendly.com/remodely-ai/aria-call'; // Update with your scheduling link
+  // Aria AI phone number (Twilio)
+  const ARIA_PHONE = '+16028334780';
 
   // Function to call Aria with context
   function callAria() {
-    // Build report context to pass to Aria
+    // Build report context
     const context = {
-      website: window.ariaContext?.websiteUrl || 'Not provided',
-      score: window.ariaContext?.score || 'Not graded',
+      website: window.ariaContext?.websiteUrl || null,
+      score: window.ariaContext?.score || null,
       timestamp: new Date().toISOString()
     };
 
-    // Store context for Aria to retrieve
+    // Store context for Aria to retrieve via backend
     localStorage.setItem('ariaCallContext', JSON.stringify(context));
 
-    if (ARIA_PHONE) {
-      // Direct phone call
-      window.location.href = `tel:${ARIA_PHONE}`;
-    } else if (ARIA_SCHEDULE_URL) {
-      // Open scheduling link with context in URL params
-      const url = new URL(ARIA_SCHEDULE_URL);
-      if (context.website !== 'Not provided') {
-        url.searchParams.set('website', context.website);
-        url.searchParams.set('score', context.score);
-      }
-      window.open(url.toString(), '_blank');
-    } else {
-      alert('Aria is being set up. Email help.remodely@gmail.com to schedule a call.');
+    // If we have grader data, log it to backend before call
+    if (context.website) {
+      fetch('https://voicenowcrm.com/api/aria-realtime/pre-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          callerContext: context,
+          source: 'remodely-grader'
+        })
+      }).catch(err => console.log('Pre-call context log failed:', err));
     }
+
+    // Initiate call to Aria
+    window.location.href = `tel:${ARIA_PHONE}`;
   }
 
   // Aria FAB button
