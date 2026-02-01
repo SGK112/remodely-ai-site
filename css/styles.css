@@ -16534,3 +16534,30 @@ section.section-gray .early-adopter h2 {
   }
 }
 
+/* ===========================================
+   PROCESS GRID - CENTERED
+   =========================================== */
+.process-grid {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 2rem !important;
+  max-width: 1000px;
+  margin: 0 auto !important;
+}
+
+.process-step {
+  flex: 0 0 300px;
+  max-width: 300px;
+}
+
+/* ===========================================
+   SOLUTION CARDS - WHITE TEXT
+   =========================================== */
+.solution-card h4 {
+  color: #ffffff !important;
+}
+
+.solution-card p {
+  color: #cbd5e1 !important;
+}
+
