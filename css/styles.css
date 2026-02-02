@@ -17902,3 +17902,269 @@ button svg,
 }
 
 
+
+/* ====================================
+   ARIA VOICE CHAT MODAL
+   ==================================== */
+
+.aria-chat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.aria-chat-overlay.active {
+  display: flex;
+}
+
+.aria-chat-modal {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.aria-chat-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.aria-chat-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.aria-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.aria-chat-avatar {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aria-chat-avatar svg {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+}
+
+.aria-chat-title h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.aria-chat-status {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.aria-chat-status.connected {
+  color: #22c55e;
+}
+
+.aria-chat-status.listening {
+  color: #f97316;
+}
+
+.aria-chat-status.speaking {
+  color: #3b82f6;
+}
+
+.aria-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  min-height: 200px;
+  max-height: 400px;
+}
+
+.aria-chat-welcome {
+  text-align: center;
+  color: #94a3b8;
+  padding: 2rem 1rem;
+}
+
+.aria-chat-welcome p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.aria-message {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.aria-message.user {
+  align-items: flex-end;
+}
+
+.aria-message.assistant {
+  align-items: flex-start;
+}
+
+.aria-message-bubble {
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.aria-message.user .aria-message-bubble {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.aria-message.assistant .aria-message-bubble {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-bottom-left-radius: 4px;
+}
+
+.aria-message-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+  padding: 0 0.5rem;
+}
+
+.aria-chat-controls {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.aria-mic-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.aria-mic-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.4);
+}
+
+.aria-mic-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+.aria-mic-btn.listening {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  animation: pulse-mic 1.5s infinite;
+}
+
+.aria-mic-btn.speaking {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.aria-mic-btn.listening .mic-icon,
+.aria-mic-btn.speaking .mic-icon {
+  display: none;
+}
+
+.aria-mic-btn.listening .stop-icon,
+.aria-mic-btn.speaking .stop-icon {
+  display: block !important;
+}
+
+.aria-mic-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0;
+  z-index: -1;
+}
+
+.aria-mic-btn.listening .aria-mic-pulse {
+  animation: pulse-ring 1.5s infinite;
+}
+
+@keyframes pulse-mic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.aria-mic-hint {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .aria-chat-modal {
+    max-height: 100vh;
+    border-radius: 0;
+    height: 100%;
+  }
+  
+  .aria-chat-messages {
+    max-height: none;
+    flex: 1;
+  }
+}
