@@ -8,7 +8,7 @@ class AriaVoiceChat {
     this.wsUrl = options.wsUrl || 'wss://aria-bridge.onrender.com/web-chat';
     this.voice = options.voice || 'coral';
     this.companySlug = options.companySlug || 'remodely';
-    this.greeting = options.greeting || "Hey there! Thanks for calling Remodely AI. I'm Aria, your AI assistant. Are you a contractor or business owner looking to grow with AI?";
+    this.greeting = options.greeting || "Hey! I'm Aria from Remodely AI. How can I help you today?";
 
     this.ws = null;
     this.audioContext = null;
