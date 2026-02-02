@@ -22,6 +22,9 @@ class AriaVoiceChat {
     this.audioQueue = [];
     this.isPlaying = false;
 
+    // Blob URL for cleanup
+    this.processorBlobUrl = null;
+
     // Callbacks
     this.onStateChange = options.onStateChange || (() => {});
     this.onTranscript = options.onTranscript || (() => {});
@@ -40,8 +43,13 @@ class AriaVoiceChat {
         }
       });
 
-      // Create audio context for recording
+      // Create audio context for recording and playback
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+
+      // Resume audio context immediately (required for mobile)
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
 
       // Connect to aria-bridge
       await this.connect();
@@ -105,29 +113,65 @@ class AriaVoiceChat {
   }
 
   buildInstructions() {
-    return `# ARIA - REMODELY AI VOICE ASSISTANT
+    return `# ARIA - REMODELY AI SOLUTIONS EXPERT
 
 You are Aria, the AI voice assistant for Remodely AI. You're warm, knowledgeable, and genuinely excited to help contractors and small business owners grow with AI.
 
 ## LANGUAGE RULE - CRITICAL
-**ALWAYS SPEAK ENGLISH.** You must respond in English at all times.
+**ALWAYS SPEAK ENGLISH.** You must respond in English at all times, regardless of what language the caller speaks.
 
 ## YOUR GREETING
 "${this.greeting}"
 
-## ABOUT REMODELY AI
-Remodely AI builds AI-powered software for contractors and home service businesses:
-- AI Receptionist - Answer calls 24/7, book appointments, send quotes
-- Free AI Visibility Grader - Shows how AI assistants find their business
-- Custom Websites - Fast, mobile-first sites that convert
-- SEO & Local Rankings - Get found when customers search
+## WHAT REMODELY AI OFFERS
+
+**1. Voice AI & AI Receptionist**
+- 24/7 call answering - never miss a lead
+- Books appointments directly into your calendar
+- Sends instant quotes via text
+- Handles FAQs and routing
+- Costs less than a part-time employee
+
+**2. AI Agents & Chatbots**
+- Website chat widgets that qualify leads
+- Text/SMS automation
+- Lead follow-up sequences
+- Customer support bots
+- Integration with CRMs
+
+**3. Business Automation**
+- Workflow automation (reduce manual tasks)
+- Invoice and payment reminders
+- Review request automation
+- Job scheduling systems
+- Inventory alerts
+
+**4. Web Design & Development**
+- Fast, mobile-first contractor websites
+- Conversion-optimized landing pages
+- Service area pages for local SEO
+- Portfolio and project galleries
+- Online booking integration
+
+**5. SEO & Local Marketing**
+- Google Business Profile optimization
+- Local keyword rankings
+- Citation building
+- Review generation strategies
+- Monthly SEO reports
+
+**6. AI Visibility Grader**
+- Free tool at remodely.ai
+- Shows how ChatGPT, Perplexity, Grok find their business
+- Identifies gaps in AI discoverability
+- Provides actionable recommendations
 
 ## YOUR MISSION
 1. BUILD RAPPORT - Be friendly, curious about their business
-2. UNCOVER PAIN POINTS - Missing calls? Losing leads? Admin overload?
-3. EDUCATE ON AI - Help them see how AI solves their problems
+2. UNCOVER PAIN POINTS - Missing calls? Losing leads? Admin overload? Poor website?
+3. MATCH SOLUTIONS - Connect their pain to the right Remodely service
 4. CAPTURE INFO - Name, email, business type
-5. BOOK DEMO - Get them scheduled for a walkthrough
+5. BOOK DEMO - Get them scheduled for a personalized walkthrough
 
 ## SPEECH RULES
 - **ENGLISH ONLY** - Always respond in English
@@ -135,11 +179,14 @@ Remodely AI builds AI-powered software for contractors and home service business
 - Sound conversational, use contractions
 - One question at a time
 - Be genuinely helpful, not pushy
+- Listen for pain points and match them to solutions
 
 Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
   }
 
   handleMessage(msg) {
+    console.log('[ARIA] Message:', msg.type, msg.text ? msg.text.substring(0, 50) : '');
+
     switch (msg.type) {
       case 'audio':
         this.queueAudio(msg.audio);
@@ -147,11 +194,13 @@ Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
 
       case 'transcript':
         // User's speech transcription
+        console.log('[ARIA] User said:', msg.text);
         this.onTranscript(msg.text, 'user');
         break;
 
       case 'response_text':
         // ARIA's response text
+        console.log('[ARIA] Aria said:', msg.text);
         this.onResponse(msg.text);
         break;
 
@@ -166,8 +215,12 @@ Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
         break;
 
       case 'error':
+        console.error('[ARIA] Error:', msg.message);
         this.onError(msg.message);
         break;
+
+      default:
+        console.log('[ARIA] Unknown message type:', msg.type);
     }
   }
 
@@ -256,7 +309,8 @@ Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
       registerProcessor('pcm-processor', PCMProcessor);
     `;
     const blob = new Blob([processorCode], { type: 'application/javascript' });
-    return URL.createObjectURL(blob);
+    this.processorBlobUrl = URL.createObjectURL(blob);
+    return this.processorBlobUrl;
   }
 
   stopListening() {
@@ -287,6 +341,11 @@ Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
 
   async playNextAudio() {
     if (this.isPlaying || this.audioQueue.length === 0) return;
+
+    // Resume audio context if suspended (required for mobile browsers)
+    if (this.audioContext.state === 'suspended') {
+      await this.audioContext.resume();
+    }
 
     this.isPlaying = true;
 
@@ -361,7 +420,15 @@ Remember: Every conversation is an opportunity. Be genuine, be helpful!`;
       this.ws = null;
     }
 
+    // Clean up blob URL to prevent memory leak
+    if (this.processorBlobUrl) {
+      URL.revokeObjectURL(this.processorBlobUrl);
+      this.processorBlobUrl = null;
+    }
+
     this.isConnected = false;
+    this.audioQueue = [];
+    this.isPlaying = false;
     this.onStateChange('stopped');
   }
 }

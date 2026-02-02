@@ -1700,7 +1700,7 @@
       </div>
 
       <!-- Aria CTA - Mobile -->
-      <button class="aria-mobile-cta" id="ariaMobileCta" onclick="window.location.href='tel:+16028334780'">
+      <button class="aria-mobile-cta" id="ariaMobileCta">
         <span class="aria-mobile-cta__icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
@@ -1710,9 +1710,9 @@
         </span>
         <span class="aria-mobile-cta__text">
           <strong>Get Your Free Action Plan</strong>
-          <small>2-min call - Aria will explain what to fix</small>
+          <small>Voice chat with Aria - she'll explain what to fix</small>
         </span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
       </button>
 
       <!-- Urgent Warning for Low Scores -->
@@ -2724,6 +2724,191 @@
       });
     })();
 
+  </script>
+
+  <!-- ARIA Voice Chat Modal -->
+  <div class="aria-chat-overlay" id="ariaChatOverlay">
+    <div class="aria-chat-modal">
+      <button class="aria-chat-close" id="ariaChatClose">&times;</button>
+
+      <div class="aria-chat-header">
+        <div class="aria-chat-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </div>
+        <div class="aria-chat-title">
+          <h3>Voice Chat with Aria</h3>
+          <span class="aria-chat-status" id="ariaChatStatus">Connecting...</span>
+        </div>
+      </div>
+
+      <div class="aria-chat-messages" id="ariaChatMessages">
+        <div class="aria-chat-welcome">
+          <p>Speak naturally - Aria is listening!</p>
+        </div>
+      </div>
+
+      <div class="aria-chat-controls">
+        <button class="aria-mic-btn" id="ariaMicBtn">
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+          <svg class="stop-icon" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="6" width="12" height="12" rx="2"/>
+          </svg>
+          <div class="aria-mic-pulse"></div>
+        </button>
+        <p class="aria-mic-hint" id="ariaMicHint">Tap to end chat</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARIA Voice Chat Script -->
+  <script src="/js/aria-voice-chat.js?v=3"></script>
+  <script>
+  (function() {
+    const overlay = document.getElementById('ariaChatOverlay');
+    const closeBtn = document.getElementById('ariaChatClose');
+    const micBtn = document.getElementById('ariaMicBtn');
+    const statusEl = document.getElementById('ariaChatStatus');
+    const messagesEl = document.getElementById('ariaChatMessages');
+    const hintEl = document.getElementById('ariaMicHint');
+
+    let ariaChat = null;
+    let isActive = false;
+
+    function openVoiceChat() {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      if (!isActive) {
+        startVoiceChat();
+      }
+    }
+
+    function closeVoiceChat() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      if (ariaChat) {
+        ariaChat.stop();
+        ariaChat = null;
+        isActive = false;
+        resetUI();
+      }
+    }
+
+    function resetUI() {
+      micBtn.classList.remove('listening', 'speaking');
+      statusEl.textContent = 'Connecting...';
+      statusEl.className = 'aria-chat-status';
+      hintEl.textContent = 'Please wait...';
+      messagesEl.innerHTML = '<div class="aria-chat-welcome"><p>Speak naturally - Aria is listening!</p></div>';
+    }
+
+    function addMessage(text, role) {
+      const welcome = messagesEl.querySelector('.aria-chat-welcome');
+      if (welcome) welcome.remove();
+
+      const msg = document.createElement('div');
+      msg.className = 'aria-message ' + role;
+      msg.innerHTML = '<span class="aria-message-label">' + (role === 'user' ? 'You' : 'Aria') + '</span><div class="aria-message-bubble">' + text + '</div>';
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function startVoiceChat() {
+      if (isActive) {
+        ariaChat.stop();
+        ariaChat = null;
+        isActive = false;
+        resetUI();
+        return;
+      }
+
+      statusEl.textContent = 'Connecting...';
+      hintEl.textContent = 'Please wait...';
+
+      try {
+        ariaChat = new AriaVoiceChat({
+          onStateChange: function(state) {
+            switch(state) {
+              case 'connected':
+                statusEl.textContent = 'Connected';
+                statusEl.className = 'aria-chat-status connected';
+                hintEl.textContent = 'Listening...';
+                micBtn.classList.add('listening');
+                break;
+              case 'listening':
+                statusEl.textContent = 'Listening...';
+                statusEl.className = 'aria-chat-status listening';
+                micBtn.classList.remove('speaking');
+                micBtn.classList.add('listening');
+                hintEl.textContent = 'Speak now';
+                break;
+              case 'speaking':
+                statusEl.textContent = 'Aria is speaking';
+                statusEl.className = 'aria-chat-status speaking';
+                micBtn.classList.remove('listening');
+                micBtn.classList.add('speaking');
+                hintEl.textContent = 'Aria is responding';
+                break;
+              case 'disconnected':
+              case 'stopped':
+                resetUI();
+                break;
+            }
+          },
+          onTranscript: function(text, role) {
+            if (role === 'user') addMessage(text, 'user');
+          },
+          onResponse: function(text) {
+            addMessage(text, 'assistant');
+          },
+          onError: function(error) {
+            statusEl.textContent = 'Error: ' + error;
+            console.error('[ARIA]', error);
+          }
+        });
+
+        await ariaChat.start();
+        isActive = true;
+        micBtn.classList.add('listening');
+        ariaChat.startListening();
+
+      } catch (error) {
+        statusEl.textContent = 'Failed to connect';
+        hintEl.textContent = 'Tap to retry';
+        console.error('[ARIA]', error);
+      }
+    }
+
+    closeBtn.addEventListener('click', closeVoiceChat);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeVoiceChat();
+    });
+    micBtn.addEventListener('click', function() {
+      if (isActive) {
+        closeVoiceChat();
+      } else {
+        startVoiceChat();
+      }
+    });
+
+    // Wire up Aria CTA button
+    const ariaCta = document.getElementById('ariaMobileCta');
+    if (ariaCta) {
+      ariaCta.addEventListener('click', function(e) {
+        e.preventDefault();
+        openVoiceChat();
+      });
+    }
+
+    window.openAriaVoiceChat = openVoiceChat;
+  })();
   </script>
 </body>
 </html>

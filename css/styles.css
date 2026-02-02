@@ -8870,6 +8870,12 @@ html {
     animation: slideUpCard 0.6s cubic-bezier(0.32, 0.72, 0, 1) 0.5s forwards;
   }
 
+  /* Slide down off-screen when scrolling */
+  .mobile-form-card.scroll-hidden {
+    transform: translateY(100%) !important;
+    pointer-events: none;
+  }
+
   @keyframes slideUpCard {
     to { transform: translateY(0); }
   }
@@ -18104,6 +18110,10 @@ button svg,
 .aria-mic-btn svg {
   width: 32px;
   height: 32px;
+}
+
+.aria-mic-btn .stop-icon {
+  display: none;
 }
 
 .aria-mic-btn.listening {

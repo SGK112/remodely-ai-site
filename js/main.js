@@ -855,53 +855,26 @@ document.addEventListener('DOMContentLoaded', function() {
     userPhone: null
   };
 
-  // Aria AI phone number (Twilio)
-  const ARIA_PHONE = '+16028334780';
-
-  // Function to call Aria with context
+  // Function to open voice chat with Aria
   function callAria() {
-    // Build report context
-    const context = {
-      website: window.ariaContext?.websiteUrl || null,
-      score: window.ariaContext?.score || null,
-      timestamp: new Date().toISOString()
-    };
-
-    // Store context for Aria to retrieve via backend
-    localStorage.setItem('ariaCallContext', JSON.stringify(context));
-
-    // If we have grader data, log it to backend before call
-    if (context.website) {
-      fetch('https://voicenowcrm.com/api/aria-realtime/pre-call', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          callerContext: context,
-          source: 'remodely-grader'
-        })
-      }).catch(err => console.log('Pre-call context log failed:', err));
+    // Use the voice chat instead of phone call
+    if (window.openAriaVoiceChat) {
+      window.openAriaVoiceChat();
+    } else {
+      console.error('[ARIA] Voice chat not initialized');
     }
-
-    // Initiate call to Aria
-    window.location.href = `tel:${ARIA_PHONE}`;
   }
 
-  // Expose callAria globally for onclick handlers
+  // Expose callAria globally for any legacy onclick handlers
   window.callAria = callAria;
 
-  // Aria FAB button
+  // Aria FAB button - opens voice chat
   const ariaFab = document.getElementById('ariaFab');
   if (ariaFab) {
     ariaFab.addEventListener('click', callAria);
   }
 
-  // Talk to Aria button in Aria section
-  const talkToAriaBtn = document.getElementById('talkToAriaBtn');
-  if (talkToAriaBtn) {
-    talkToAriaBtn.addEventListener('click', callAria);
-  }
-
-  // Final CTA button - direct call to Aria
+  // Final CTA button - opens voice chat
   const finalCtaBtn = document.getElementById('finalCtaBtn');
   if (finalCtaBtn) {
     finalCtaBtn.addEventListener('click', callAria);
