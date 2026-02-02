@@ -18364,3 +18364,46 @@ button svg,
     padding: 16px 20px !important;
   }
 }
+
+/* ====================================
+   FIX: Hide old mobile-toggle, use new mobile-menu
+   ==================================== */
+@media (max-width: 768px) {
+  /* Hide old hamburger */
+  .navbar .mobile-toggle {
+    display: none !important;
+  }
+
+  /* Hide regular navbar on mobile */
+  .navbar {
+    display: none !important;
+  }
+
+  /* Ensure mobile menu overlay shows properly */
+  .mobile-menu-overlay {
+    display: none;
+  }
+
+  .mobile-menu-overlay.active {
+    display: flex !important;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Show navbar on larger screens */
+@media (min-width: 769px) {
+  .navbar {
+    display: block !important;
+  }
+
+  .mobile-menu-btn,
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+}

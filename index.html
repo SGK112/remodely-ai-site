@@ -120,10 +120,10 @@
         </svg>
         <span class="mobile-hero-logo-text">REMODELY<span>.AI</span></span>
       </a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" style="display:flex !important; flex-direction:column; gap:5px; background:none; border:none; padding:10px; cursor:pointer;">
+        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
+        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
+        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
       </button>
     </div>
 
@@ -1349,22 +1349,43 @@
     var menuClose = document.getElementById('mobileMenuClose');
     var menuLinks = document.querySelectorAll('.mobile-menu-nav a');
 
-    if (!menuBtn || !menuOverlay) return;
+    console.log('Mobile menu init:', { menuBtn: !!menuBtn, menuOverlay: !!menuOverlay });
+
+    if (!menuBtn || !menuOverlay) {
+      console.error('Mobile menu elements not found');
+      return;
+    }
 
     function openMenu() {
+      console.log('Opening menu');
+      menuOverlay.style.display = 'flex';
       menuOverlay.classList.add('active');
       menuBtn.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
+      console.log('Closing menu');
       menuOverlay.classList.remove('active');
       menuBtn.classList.remove('active');
       document.body.style.overflow = '';
+      setTimeout(function() {
+        if (!menuOverlay.classList.contains('active')) {
+          menuOverlay.style.display = 'none';
+        }
+      }, 300);
     }
 
-    menuBtn.addEventListener('click', openMenu);
-    menuClose.addEventListener('click', closeMenu);
+    menuBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openMenu();
+    });
+
+    if (menuClose) {
+      menuClose.addEventListener('click', closeMenu);
+    }
+
     menuOverlay.addEventListener('click', function(e) {
       if (e.target === menuOverlay) closeMenu();
     });
@@ -1372,6 +1393,8 @@
     menuLinks.forEach(function(link) {
       link.addEventListener('click', closeMenu);
     });
+
+    console.log('Mobile menu ready');
   })();
   </script>
 
