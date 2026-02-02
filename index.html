@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Updated: Feb 2 2026 - Voice Chat + Scroll Hide v84 -->
+<!-- Updated: Feb 2 2026 - SEO + UI Refinements v85 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -23,8 +23,9 @@
   <meta name="twitter:title" content="Can AI Find Your Business? | Free Visibility Grader">
   <meta name="twitter:description" content="Free AI visibility score. See how ChatGPT, Grok, and Perplexity discover your business.">
 
-  <!-- Favicon -->
-  <link rel="icon" href="data:,">
+  <!-- Favicon - Remodely Logo -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234285F4'/%3E%3Cstop offset='33%25' stop-color='%23EA4335'/%3E%3Cstop offset='66%25' stop-color='%23FBBC05'/%3E%3Cstop offset='100%25' stop-color='%2334A853'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 21V10l9-7 9 7v11' stroke='url(%23g)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 21h-7' stroke='%2334A853' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234285F4'/%3E%3Cstop offset='33%25' stop-color='%23EA4335'/%3E%3Cstop offset='66%25' stop-color='%23FBBC05'/%3E%3Cstop offset='100%25' stop-color='%2334A853'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 21V10l9-7 9 7v11' stroke='url(%23g)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M21 21h-7' stroke='%2334A853' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,32 +33,93 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/styles.css?v=91">
+  <link rel="stylesheet" href="/css/styles.css?v=92">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
 
-  <!-- Structured Data: Organization -->
+  <!-- Structured Data: Organization + LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
     "name": "Remodely AI",
     "legalName": "Remodely AI LLC",
     "url": "https://remodely.ai",
     "logo": "https://remodely.ai/images/og-image.png",
-    "description": "AI-powered software for small businesses. AI receptionist, smart scheduling, instant quotes, client portals, and payment systems.",
+    "image": "https://remodely.ai/images/og-image.png",
+    "description": "AI consulting and software solutions for contractors and small businesses. We build AI receptionists, chatbots, automation systems, and websites that help trades businesses grow.",
+    "slogan": "AI Software for Contractors",
+    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Phoenix",
       "addressRegion": "AZ",
+      "postalCode": "85001",
       "addressCountry": "US"
     },
-    "email": "help.remodely@gmail.com",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "33.4484",
+      "longitude": "-112.0740"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "serviceType": ["AI Consulting", "Voice AI", "Business Automation", "Web Development", "SEO"],
     "sameAs": [
-      "https://github.com/SGK112"
+      "https://github.com/SGK112",
+      "https://x.com/RemodelAI"
     ],
-    "foundingDate": "2026"
+    "foundingDate": "2026",
+    "knowsAbout": ["Artificial Intelligence", "Voice AI", "Chatbots", "Business Automation", "Contractor Software", "Home Services", "SEO", "Web Development"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "AI Solutions for Contractors",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "AI Receptionist",
+            "description": "24/7 AI-powered call answering, appointment booking, and lead capture"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "AI Chatbots",
+            "description": "Website chat widgets and SMS automation for lead qualification"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Business Automation",
+            "description": "Workflow automation, invoicing, and review management"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Web Design",
+            "description": "Mobile-first contractor websites optimized for conversions"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "SEO & Local Marketing",
+            "description": "Google Business optimization, local rankings, and AI visibility"
+          }
+        }
+      ]
+    }
   }
   </script>
 
@@ -67,7 +129,17 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Remodely AI",
-    "url": "https://remodely.ai"
+    "url": "https://remodely.ai",
+    "description": "AI-powered software and consulting for contractors and home service businesses",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Remodely AI"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://remodely.ai/grader.html?url={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
 
@@ -76,20 +148,55 @@
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Remodely AI",
+    "name": "Remodely AI Visibility Grader",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "description": "AI-powered business management software with AI receptionist, smart scheduling, instant quotes, client portals, and automated payments.",
+    "description": "Free AI visibility analysis tool. See how ChatGPT, Perplexity, and other AI assistants discover and recommend your business.",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Early adopter pricing available"
+      "description": "Free AI visibility grading tool"
     },
     "creator": {
       "@type": "Organization",
       "name": "Remodely AI LLC"
-    }
+    },
+    "featureList": ["AI Visibility Score", "SEO Analysis", "Performance Metrics", "Actionable Recommendations"]
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is AI visibility and why does it matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI visibility refers to how well AI assistants like ChatGPT, Perplexity, and Grok can find and recommend your business. As more consumers use AI to find services, businesses with high AI visibility get more referrals and leads."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can an AI receptionist help my contracting business?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An AI receptionist answers calls 24/7, books appointments, sends quotes, and captures leads even when you're on a job site. It ensures you never miss a call and converts more inquiries into paying customers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What types of businesses does Remodely AI work with?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We specialize in contractors and home service businesses including plumbers, electricians, HVAC technicians, roofers, landscapers, painters, and general contractors. Our AI solutions are built specifically for the trades."
+        }
+      }
+    ]
   }
   </script>
 </head>
@@ -120,10 +227,10 @@
         </svg>
         <span class="mobile-hero-logo-text">REMODELY<span>.AI</span></span>
       </a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" style="display:flex !important; flex-direction:column; gap:5px; background:none; border:none; padding:10px; cursor:pointer;">
-        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
-        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
-        <span style="display:block; width:24px; height:2px; background:#fff; border-radius:2px;"></span>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
 
@@ -934,10 +1041,10 @@
           <h2>Let's talk about your business.</h2>
           <p>30-minute call. No obligation. We'll map out which tools make sense for you.</p>
           <div class="contact-details">
-            <a href="mailto:help.remodely@gmail.com" class="contact-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              help.remodely@gmail.com
-            </a>
+            <button type="button" class="contact-link" onclick="window.openAriaVoiceChat && window.openAriaVoiceChat()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              Talk to Aria
+            </button>
             <span class="contact-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
               Phoenix, Arizona
@@ -1204,7 +1311,7 @@
   </script>
 
   <!-- Scripts -->
-  <script src="/js/aria-voice-chat.js?v=3"></script>
+  <script src="/js/aria-voice-chat.js?v=4"></script>
   <script src="/js/main.js?v=14"></script>
 
   <!-- ARIA Voice Chat Init -->
