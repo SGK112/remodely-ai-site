@@ -725,6 +725,124 @@ View in dashboard: https://remodely.ai/client-dashboard.html"""
 
 
 # =============================================================================
+# ARIA LEAD WEBHOOK (for aria-bridge integration)
+# =============================================================================
+
+@app.route('/api/aria-lead', methods=['POST'])
+def aria_lead_webhook():
+    """
+    Receive leads from aria-bridge/voiceflow-crm
+    This is the main webhook for capturing leads from ARIA voice calls
+    """
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    data = request.get_json()
+    print(f"📞 Received lead webhook: {json.dumps(data, indent=2)[:500]}")
+
+    # Get or create company (default to Remodely)
+    company_slug = data.get('companySlug', 'remodely')
+    company = AriaCompany.query.filter_by(slug=company_slug).first()
+
+    if not company:
+        # Create Remodely as default company if not exists
+        company = AriaCompany(
+            name='Remodely AI',
+            slug='remodely',
+            email='help.remodely@gmail.com',
+            phone='+16028334780',
+            website='https://remodely.ai',
+            business_type='AI Software',
+            plan='enterprise'
+        )
+        db.session.add(company)
+        db.session.commit()
+        print(f"   Created default company: {company.name}")
+
+    # Extract lead data from various formats
+    lead_data = data.get('lead', data)
+
+    # Create lead
+    lead = AriaLead(
+        company_id=company.id,
+        caller_name=lead_data.get('name') or lead_data.get('callerName') or lead_data.get('contactName'),
+        caller_phone=lead_data.get('phone') or lead_data.get('callerPhone') or lead_data.get('from'),
+        caller_email=lead_data.get('email') or lead_data.get('callerEmail'),
+        call_id=lead_data.get('callId') or lead_data.get('call_id'),
+        call_duration=lead_data.get('duration') or lead_data.get('callDuration'),
+        call_recording_url=lead_data.get('recordingUrl') or lead_data.get('recording'),
+        call_transcript=lead_data.get('transcript') or lead_data.get('callTranscript'),
+        call_summary=lead_data.get('summary') or lead_data.get('callSummary') or lead_data.get('notes'),
+        lead_type=lead_data.get('type', 'new_customer'),
+        service_requested=lead_data.get('service') or lead_data.get('serviceRequested') or lead_data.get('interest'),
+        urgency=lead_data.get('urgency', 'normal'),
+        sentiment=lead_data.get('sentiment'),
+        status='new'
+    )
+
+    # Handle qualification data
+    qualification = lead_data.get('qualification', {})
+    if qualification:
+        lead.notes = f"Business Type: {qualification.get('businessType', 'N/A')}\n"
+        lead.notes += f"Company Size: {qualification.get('companySize', 'N/A')}\n"
+        lead.notes += f"Lead Volume: {qualification.get('leadVolume', 'N/A')}\n"
+        lead.notes += f"Pain Points: {qualification.get('painPoints', 'N/A')}\n"
+        lead.notes += f"Current Tools: {qualification.get('currentTools', 'N/A')}\n"
+        lead.notes += f"Timeline: {qualification.get('timeline', 'N/A')}\n"
+        lead.notes += f"Decision Maker: {qualification.get('decisionMaker', 'N/A')}"
+
+    # Handle appointment scheduling
+    if lead_data.get('appointment') or lead_data.get('appointmentScheduled'):
+        lead.appointment_scheduled = True
+        apt_time = lead_data.get('appointmentTime') or lead_data.get('appointment', {}).get('datetime')
+        if apt_time:
+            try:
+                lead.appointment_datetime = datetime.fromisoformat(apt_time.replace('Z', '+00:00'))
+            except:
+                pass
+        lead.appointment_notes = lead_data.get('appointmentNotes') or lead_data.get('appointment', {}).get('notes')
+
+    db.session.add(lead)
+    db.session.commit()
+
+    print(f"   ✅ Lead saved: {lead.caller_name or 'Unknown'} ({lead.caller_phone})")
+
+    # Send notification email
+    if company.notify_on_lead and company.notify_email:
+        try:
+            send_lead_notification(company, lead)
+            print(f"   📧 Notification sent to {company.notify_email}")
+        except Exception as e:
+            print(f"   ⚠️ Failed to send notification: {e}")
+
+    return jsonify({
+        'success': True,
+        'message': 'Lead captured successfully',
+        'lead': lead.to_dict()
+    }), 201
+
+
+@app.route('/api/aria-lead', methods=['GET'])
+def list_all_leads():
+    """List all leads across all companies (for dashboard)"""
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    limit = request.args.get('limit', 50, type=int)
+    offset = request.args.get('offset', 0, type=int)
+
+    leads = AriaLead.query.order_by(AriaLead.created_at.desc()).offset(offset).limit(limit).all()
+
+    return jsonify({
+        'success': True,
+        'leads': [l.to_dict() for l in leads],
+        'count': len(leads)
+    })
+
+
+# =============================================================================
 # STATS ENDPOINT
 # =============================================================================
 
