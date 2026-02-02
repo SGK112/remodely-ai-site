@@ -157,3 +157,106 @@ class AriaLead(db.Model):
             'status': self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+
+
+class Client(db.Model):
+    """
+    Authenticated client for the dashboard
+    Links Firebase Auth users to backend data
+    """
+    __tablename__ = 'clients'
+
+    id = db.Column(db.String(36), primary_key=True, default=generate_uuid)
+    firebase_uid = db.Column(db.String(128), unique=True, nullable=False)  # Firebase Auth UID
+
+    # Profile
+    email = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255))
+    company_name = db.Column(db.String(255))
+    phone = db.Column(db.String(20))
+
+    # Dashboard Stats
+    active_projects = db.Column(db.Integer, default=0)
+    website_traffic = db.Column(db.Integer, default=0)
+    search_rankings = db.Column(db.Integer, default=0)
+    leads_generated = db.Column(db.Integer, default=0)
+
+    # Subscription
+    plan = db.Column(db.String(50), default="free")  # free, starter, pro, enterprise
+    subscription_status = db.Column(db.String(50), default="active")
+
+    # Timestamps
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_login = db.Column(db.DateTime)
+
+    # Relationships
+    projects = db.relationship('ClientProject', backref='client', lazy='dynamic', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f'<Client {self.email}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'name': self.name,
+            'company_name': self.company_name,
+            'phone': self.phone,
+            'active_projects': self.active_projects,
+            'website_traffic': self.website_traffic,
+            'search_rankings': self.search_rankings,
+            'leads_generated': self.leads_generated,
+            'plan': self.plan,
+            'subscription_status': self.subscription_status,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'projects': [p.to_dict() for p in self.projects]
+        }
+
+
+class ClientProject(db.Model):
+    """
+    Projects for a client (website, SEO, AI agent, etc.)
+    """
+    __tablename__ = 'client_projects'
+
+    id = db.Column(db.String(36), primary_key=True, default=generate_uuid)
+    client_id = db.Column(db.String(36), db.ForeignKey('clients.id'), nullable=False)
+
+    # Project Info
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    project_type = db.Column(db.String(50))  # website, seo, voice_ai, automation, ai_agent
+    status = db.Column(db.String(50), default="active")  # active, completed, on_hold, cancelled
+
+    # Progress
+    progress = db.Column(db.Integer, default=0)  # 0-100%
+
+    # URLs/Resources
+    website_url = db.Column(db.String(255))
+    staging_url = db.Column(db.String(255))
+
+    # Timestamps
+    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    due_date = db.Column(db.DateTime)
+    completed_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<ClientProject {self.name}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'project_type': self.project_type,
+            'status': self.status,
+            'progress': self.progress,
+            'website_url': self.website_url,
+            'staging_url': self.staging_url,
+            'start_date': self.start_date.isoformat() if self.start_date else None,
+            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'completed_at': self.completed_at.isoformat() if self.completed_at else None
+        }

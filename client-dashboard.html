@@ -790,16 +790,63 @@
       }
     });
 
-    // Load user dashboard data
+    // API Base URL
+    const API_BASE = 'https://remodely-grader.onrender.com';
+
+    // Load user dashboard data from backend API
     async function loadUserDashboard(user) {
       try {
-        // Try to get user's client data
+        // First, authenticate/register with backend
+        const authResponse = await fetch(`${API_BASE}/api/clients/auth`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firebase_uid: user.uid,
+            email: user.email,
+            name: user.displayName || ''
+          })
+        });
+
+        const authData = await authResponse.json();
+        console.log('Backend auth response:', authData);
+
+        if (!authData.success) {
+          console.error('Backend auth failed:', authData.error);
+          // Fallback to Firestore if backend fails
+          await loadFromFirestore(user);
+          return;
+        }
+
+        const client = authData.client;
+
+        // Update stats from backend
+        document.getElementById('active-projects').textContent = client.active_projects || 0;
+        document.getElementById('website-traffic').textContent = formatNumber(client.website_traffic || 0);
+        document.getElementById('search-rankings').textContent = client.search_rankings || 0;
+        document.getElementById('leads-generated').textContent = client.leads_generated || 0;
+
+        // Load projects
+        if (client.projects && client.projects.length > 0) {
+          renderProjects(client.projects);
+        }
+
+      } catch (error) {
+        console.error('Error loading from backend:', error);
+        // Fallback to Firestore
+        await loadFromFirestore(user);
+      }
+    }
+
+    // Fallback: Load from Firestore if backend is unavailable
+    async function loadFromFirestore(user) {
+      try {
         const clientDoc = await db.collection('clients').doc(user.uid).get();
 
         if (clientDoc.exists) {
           const data = clientDoc.data();
 
-          // Update stats
           if (data.activeProjects !== undefined) {
             document.getElementById('active-projects').textContent = data.activeProjects;
           }
@@ -813,12 +860,10 @@
             document.getElementById('leads-generated').textContent = data.leadsGenerated;
           }
 
-          // Load projects
           if (data.projects && data.projects.length > 0) {
             renderProjects(data.projects);
           }
         } else {
-          // Create initial client document
           await db.collection('clients').doc(user.uid).set({
             email: user.email,
             name: user.displayName || '',
@@ -828,7 +873,7 @@
           });
         }
       } catch (error) {
-        console.error('Error loading dashboard:', error);
+        console.error('Firestore fallback error:', error);
       }
     }
 

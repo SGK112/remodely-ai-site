@@ -25,12 +25,17 @@ db = None
 AriaCompany = None
 AriaLead = None
 
+Client = None
+ClientProject = None
+
 if database_url:
     try:
-        from models import db as _db, AriaCompany as _AriaCompany, AriaLead as _AriaLead
+        from models import db as _db, AriaCompany as _AriaCompany, AriaLead as _AriaLead, Client as _Client, ClientProject as _ClientProject
         db = _db
         AriaCompany = _AriaCompany
         AriaLead = _AriaLead
+        Client = _Client
+        ClientProject = _ClientProject
 
         # Fix for Render PostgreSQL URL format
         if database_url.startswith('postgres://'):
@@ -888,6 +893,189 @@ def company_stats(company_id):
     })
 
 
+# ==============================================================================
+# CLIENT DASHBOARD API
+# ==============================================================================
+
+@app.route('/api/clients/auth', methods=['POST', 'OPTIONS'])
+def client_auth():
+    """
+    Authenticate/register client after Firebase login
+    Expects: { firebase_uid, email, name (optional) }
+    Returns: Client data
+    """
+    if request.method == 'OPTIONS':
+        return '', 204
+
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'error': 'No data provided'}), 400
+
+    firebase_uid = data.get('firebase_uid')
+    email = data.get('email')
+
+    if not firebase_uid or not email:
+        return jsonify({'success': False, 'error': 'firebase_uid and email required'}), 400
+
+    try:
+        # Find or create client
+        client = Client.query.filter_by(firebase_uid=firebase_uid).first()
+
+        if client:
+            # Update last login
+            client.last_login = datetime.utcnow()
+            if data.get('name'):
+                client.name = data.get('name')
+            db.session.commit()
+        else:
+            # Create new client
+            client = Client(
+                firebase_uid=firebase_uid,
+                email=email,
+                name=data.get('name', ''),
+                company_name=data.get('company_name', ''),
+                phone=data.get('phone', ''),
+                last_login=datetime.utcnow()
+            )
+            db.session.add(client)
+            db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'client': client.to_dict()
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/clients/me', methods=['GET'])
+def get_client():
+    """Get current client data by Firebase UID (passed in header)"""
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    firebase_uid = request.headers.get('X-Firebase-UID')
+    if not firebase_uid:
+        return jsonify({'success': False, 'error': 'X-Firebase-UID header required'}), 401
+
+    try:
+        client = Client.query.filter_by(firebase_uid=firebase_uid).first()
+        if not client:
+            return jsonify({'success': False, 'error': 'Client not found'}), 404
+
+        return jsonify({
+            'success': True,
+            'client': client.to_dict()
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/clients/me', methods=['PUT'])
+def update_client():
+    """Update current client profile"""
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    firebase_uid = request.headers.get('X-Firebase-UID')
+    if not firebase_uid:
+        return jsonify({'success': False, 'error': 'X-Firebase-UID header required'}), 401
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'error': 'No data provided'}), 400
+
+    try:
+        client = Client.query.filter_by(firebase_uid=firebase_uid).first()
+        if not client:
+            return jsonify({'success': False, 'error': 'Client not found'}), 404
+
+        # Update allowed fields
+        if 'name' in data:
+            client.name = data['name']
+        if 'company_name' in data:
+            client.company_name = data['company_name']
+        if 'phone' in data:
+            client.phone = data['phone']
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'client': client.to_dict()
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/clients/me/projects', methods=['GET'])
+def get_client_projects():
+    """Get all projects for current client"""
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    firebase_uid = request.headers.get('X-Firebase-UID')
+    if not firebase_uid:
+        return jsonify({'success': False, 'error': 'X-Firebase-UID header required'}), 401
+
+    try:
+        client = Client.query.filter_by(firebase_uid=firebase_uid).first()
+        if not client:
+            return jsonify({'success': False, 'error': 'Client not found'}), 404
+
+        projects = [p.to_dict() for p in client.projects]
+
+        return jsonify({
+            'success': True,
+            'projects': projects
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/clients/me/stats', methods=['GET'])
+def get_client_stats():
+    """Get dashboard stats for current client"""
+    db_error = require_db()
+    if db_error:
+        return db_error
+
+    firebase_uid = request.headers.get('X-Firebase-UID')
+    if not firebase_uid:
+        return jsonify({'success': False, 'error': 'X-Firebase-UID header required'}), 401
+
+    try:
+        client = Client.query.filter_by(firebase_uid=firebase_uid).first()
+        if not client:
+            return jsonify({'success': False, 'error': 'Client not found'}), 404
+
+        return jsonify({
+            'success': True,
+            'stats': {
+                'active_projects': client.active_projects,
+                'website_traffic': client.website_traffic,
+                'search_rankings': client.search_rankings,
+                'leads_generated': client.leads_generated
+            }
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/', methods=['GET'])
 def index():
     return jsonify({
@@ -897,7 +1085,9 @@ def index():
             'grader': '/api/grade',
             'aria_companies': '/api/aria/companies',
             'aria_leads': '/api/aria/companies/<id>/leads',
-            'vapi_webhook': '/api/aria/webhook/vapi'
+            'vapi_webhook': '/api/aria/webhook/vapi',
+            'client_auth': '/api/clients/auth',
+            'client_dashboard': '/api/clients/me'
         }
     })
 
