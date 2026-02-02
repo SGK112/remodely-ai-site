@@ -772,12 +772,24 @@
       }
     });
 
-    // Google sign-in
+    // Google sign-in (using redirect to avoid COOP issues)
     googleSignInBtn.addEventListener('click', async () => {
       const provider = new firebase.auth.GoogleAuthProvider();
       try {
-        await auth.signInWithPopup(provider);
+        // Use redirect instead of popup to avoid Cross-Origin-Opener-Policy issues
+        await auth.signInWithRedirect(provider);
       } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    // Handle redirect result on page load
+    auth.getRedirectResult().then((result) => {
+      if (result.user) {
+        console.log('Signed in via redirect:', result.user.email);
+      }
+    }).catch((error) => {
+      if (error.code !== 'auth/no-auth-event') {
         showMessage('Error: ' + error.message, 'error');
       }
     });
