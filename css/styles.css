@@ -1713,6 +1713,40 @@ p {
   transform: translateY(-4px);
 }
 
+a.solution-card {
+  text-decoration: none;
+  display: block;
+}
+
+.solution-card-featured {
+  position: relative;
+  border-color: #f97316;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(234, 88, 12, 0.1));
+}
+
+.solution-card-featured:hover {
+  border-color: #ea580c;
+  box-shadow: 0 20px 40px -12px rgba(249, 115, 22, 0.3);
+}
+
+.solution-card-featured .solution-icon {
+  color: #fff;
+}
+
+.solution-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .solution-icon {
   width: 56px;
   height: 56px;
