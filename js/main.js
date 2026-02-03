@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
       left: 50%;
       transform: translateX(-50%);
       padding: 12px 24px;
-      background: ${type === 'error' ? '#f97316' : '#f97316'};
+      background: ${type === 'error' ? '#ef4444' : '#10b981'};
       color: #fff;
       border-radius: 12px;
       font-size: 14px;
@@ -419,6 +419,15 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.style.background = '';
             submitBtn.disabled = false;
           }, 3000);
+        }).catch(error => {
+          console.error('Contact form submission error:', error);
+          submitBtn.innerHTML = 'Error - Try Again';
+          showToast('Error sending message. Please try again.', 'error');
+          setTimeout(() => {
+            submitBtn.innerHTML = originalContent;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+          }, 3000);
         });
       } else {
         setTimeout(() => {
@@ -466,6 +475,16 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.style.background = '#ea580c';
           }
 
+          setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+          }, 3000);
+        }).catch(error => {
+          console.error('Hero lead form submission error:', error);
+          submitBtn.innerHTML = 'Error - Try Again';
+          submitBtn.style.background = '#ea580c';
+          showToast('Error submitting request. Please try again.', 'error');
           setTimeout(() => {
             submitBtn.innerHTML = originalText;
             submitBtn.style.background = '';
@@ -1097,6 +1116,4 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   const yearSpan = document.querySelector('.current-year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-  console.log('Remodely AI - Optimized JS loaded');
 });

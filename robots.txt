@@ -1,9 +1,48 @@
 # Robots.txt for Remodely AI
 # https://remodely.ai
 
+# Default rules for all crawlers
 User-agent: *
 Allow: /
 Disallow: /images/generated/
+Disallow: /admin.html
+Disallow: /client-dashboard.html
+Disallow: /launch-playbook.html
+Disallow: /business-plan.html
 
-# Sitemap
+# AI Crawlers - Explicitly allow for AI discoverability
+# ChatGPT / OpenAI
+User-agent: GPTBot
+Allow: /
+Allow: /grader.html
+Allow: /careers.html
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Allow: /grader.html
+Allow: /careers.html
+
+# Common Crawl (used by many AI models)
+User-agent: CCBot
+Allow: /
+Allow: /grader.html
+Allow: /careers.html
+
+# Anthropic / Claude
+User-agent: anthropic-ai
+Allow: /
+Allow: /grader.html
+Allow: /careers.html
+
+User-agent: Claude-Web
+Allow: /
+Allow: /grader.html
+Allow: /careers.html
+
+# Google AI / Gemini (extended snippet for AI features)
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap location
 Sitemap: https://remodely.ai/sitemap.xml

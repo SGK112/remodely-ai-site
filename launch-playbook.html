@@ -104,48 +104,48 @@
             <div class="goal-card">
               <label class="goal-label">Paying Customers</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="customers-target" placeholder="10"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="customers-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="customers-target" placeholder="10" aria-label="Paying customers target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="customers-actual" placeholder="0" aria-label="Paying customers actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="customers"></div></div>
             </div>
             <div class="goal-card">
               <label class="goal-label">MRR ($)</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="mrr-target" placeholder="3000"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="mrr-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="mrr-target" placeholder="3000" aria-label="MRR target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="mrr-actual" placeholder="0" aria-label="MRR actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="mrr"></div></div>
             </div>
             <div class="goal-card">
               <label class="goal-label">Demos Given</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="demos-target" placeholder="40"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="demos-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="demos-target" placeholder="40" aria-label="Demos given target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="demos-actual" placeholder="0" aria-label="Demos given actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="demos"></div></div>
             </div>
             <div class="goal-card">
               <label class="goal-label">Trials Started</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="trials-target" placeholder="20"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="trials-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="trials-target" placeholder="20" aria-label="Trials started target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="trials-actual" placeholder="0" aria-label="Trials started actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="trials"></div></div>
             </div>
             <div class="goal-card">
               <label class="goal-label">Contractors Contacted</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="contacts-target" placeholder="100"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="contacts-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="contacts-target" placeholder="100" aria-label="Contractors contacted target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="contacts-actual" placeholder="0" aria-label="Contractors contacted actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="contacts"></div></div>
             </div>
             <div class="goal-card">
               <label class="goal-label">LinkedIn Followers</label>
               <div class="goal-inputs">
-                <div class="goal-field"><span>Target</span><input type="number" data-goal="linkedin-target" placeholder="500"></div>
-                <div class="goal-field"><span>Actual</span><input type="number" data-goal="linkedin-actual" placeholder="0"></div>
+                <div class="goal-field"><span>Target</span><input type="number" data-goal="linkedin-target" placeholder="500" aria-label="LinkedIn followers target"></div>
+                <div class="goal-field"><span>Actual</span><input type="number" data-goal="linkedin-actual" placeholder="0" aria-label="LinkedIn followers actual"></div>
               </div>
               <div class="goal-bar-wrap"><div class="goal-bar-fill" data-goal-bar="linkedin"></div></div>
             </div>
@@ -268,9 +268,9 @@
           <div id="authSignedOut">
             <div class="auth-methods">
               <div class="auth-method">
-                <label class="auth-label">Email (Magic Link)</label>
+                <label class="auth-label" for="authEmail">Email (Magic Link)</label>
                 <div class="auth-input-group">
-                  <input type="email" id="authEmail" placeholder="you@example.com" class="auth-input">
+                  <input type="email" id="authEmail" placeholder="you@example.com" class="auth-input" aria-label="Email address">
                   <button class="playbook-btn playbook-btn-primary" onclick="sendMagicLink()">Send Link</button>
                 </div>
                 <p class="auth-hint">We'll send you a sign-in link. No password needed.</p>
