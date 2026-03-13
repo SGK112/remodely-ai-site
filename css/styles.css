@@ -8655,13 +8655,13 @@ html {
   }
 
   .mobile-hero-headline {
-    font-size: 2.75rem;
+    font-size: 3.25rem;
     font-weight: 800;
     color: #fff;
-    line-height: 1.0;
-    margin: 0 0 28px 0;
+    line-height: 0.95;
+    margin: 0 0 20px 0;
     text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    letter-spacing: -0.04em;
+    letter-spacing: -0.05em;
   }
 
   /* Accent Text */
@@ -8849,12 +8849,12 @@ html {
   }
 
   .mobile-hero-stat-number {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 800;
     color: #fff;
     line-height: 1;
     margin-bottom: 6px;
-    text-shadow: 0 2px 20px rgba(249, 115, 22, 0.4);
+    text-shadow: 0 2px 20px rgba(249, 115, 22, 0.5);
   }
 
   .mobile-hero-stat-label {
@@ -15199,7 +15199,8 @@ section {
   .mobile-hero-subtitle {
     font-size: 1.25rem !important;
     line-height: 1.5 !important;
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500 !important;
     text-align: center !important;
     margin: 0 !important;
     max-width: 340px !important;
@@ -16506,7 +16507,18 @@ section.section-gray .early-adopter h2 {
 
 @media (max-width: 768px) {
   .products-section {
-    padding: 3rem 1rem;
+    padding: 3.5rem 1rem;
+  }
+
+  .products-section .section-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .products-section .section-subtitle {
+    font-size: 1.0625rem;
+    color: #64748b;
   }
 
   .products-grid {
@@ -16519,15 +16531,15 @@ section.section-gray .early-adopter h2 {
   }
 
   .product-card-inner {
-    padding: 1.75rem 1.5rem;
+    padding: 2rem 1.5rem;
   }
 
   .product-card h3 {
-    font-size: 1.375rem;
+    font-size: 1.5rem;
   }
 
   .product-stat-number {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
   }
 
   .product-card-actions {
@@ -16536,6 +16548,33 @@ section.section-gray .early-adopter h2 {
 
   .product-card-actions .btn {
     width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .product-card-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .product-card-tagline {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  .product-features li {
+    font-size: 1rem;
+  }
+
+  .product-flagship-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .product-flagship-visual {
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -18045,23 +18084,46 @@ button svg,
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .aria-section {
-    padding: 2.5rem 1rem !important;
+    padding: 3rem 1rem !important;
   }
 
   .aria-intro {
-    padding: 1.75rem 1.25rem !important;
+    padding: 2rem 1.5rem !important;
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
   }
 
   .aria-section h2 {
-    font-size: 1.5rem !important;
+    font-size: 1.75rem !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .aria-tagline {
+    font-size: 1.1875rem !important;
+  }
+
+  .aria-desc {
+    font-size: 1.0625rem !important;
+    line-height: 1.65 !important;
   }
 
   .aria-stat strong {
-    font-size: 1.375rem !important;
+    font-size: 1.5rem !important;
   }
 
   .aria-stat span {
-    font-size: 0.625rem !important;
+    font-size: 0.6875rem !important;
+  }
+
+  .aria-cta {
+    padding: 18px 24px !important;
+    font-size: 1.0625rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 24px rgba(249, 115, 22, 0.35) !important;
+  }
+
+  .aria-proof {
+    font-size: 0.9375rem !important;
   }
 }
 
@@ -18692,14 +18754,24 @@ button svg,
   margin: 0;
 }
 
+/* Tablet adjustments */
+@media (max-width: 768px) {
+  .aria-chat-modal {
+    max-width: 100%;
+    margin: 1rem;
+    max-height: 85vh;
+  }
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .aria-chat-modal {
     max-height: 100vh;
     border-radius: 0;
     height: 100%;
+    margin: 0;
   }
-  
+
   .aria-chat-messages {
     max-height: none;
     flex: 1;
@@ -18950,5 +19022,170 @@ button svg,
   .mobile-menu-btn,
   .mobile-menu-overlay {
     display: none !important;
+  }
+}
+
+/* ===========================================
+   VISUAL POLISH - ENTRANCE ANIMATIONS
+   Subtle scroll-triggered fade-ups
+   =========================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Product cards entrance */
+.product-card,
+.product-card-featured {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.product-flagship {
+  animation: fadeInScale 0.7s ease-out both;
+}
+
+/* Orange glow pulse on flagship */
+.product-card-glow {
+  animation: glowRotate 4s ease-in-out infinite, glowPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+/* Aria CTA button shimmer */
+.aria-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Product btn glow enhanced */
+.product-btn-glow {
+  animation: btnGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes btnGlow {
+  from { box-shadow: 0 6px 24px rgba(249, 115, 22, 0.3); }
+  to { box-shadow: 0 8px 32px rgba(249, 115, 22, 0.5); }
+}
+
+/* Enhanced mobile form CTA */
+@media (max-width: 768px) {
+  .mobile-form-cta {
+    font-size: 1.0625rem !important;
+    font-weight: 700 !important;
+    padding: 16px 24px !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Bigger section headers on mobile */
+  .section-header h2 {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Early adopter section mobile polish */
+  .early-adopter {
+    padding: 2.5rem 1.5rem !important;
+    border-radius: 20px !important;
+  }
+
+  .early-adopter h2 {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .early-adopter p {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* CTA section - bolder on mobile */
+  .cta-section h2 {
+    font-size: 1.875rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.15 !important;
+  }
+
+  .cta-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .cta-buttons .btn {
+    width: 100% !important;
+    padding: 1rem !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+  }
+
+  /* Contact section mobile polish */
+  .contact-simple {
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .contact-left h2 {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .contact-form-card {
+    border-radius: 20px !important;
+  }
+
+  /* About section mobile */
+  .about-minimal h2 {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+  }
+
+  .about-minimal p {
+    font-size: 1.0625rem !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Phone mockup on mobile - centered and bigger */
+  .product-phone-mockup {
+    width: 260px !important;
+    margin: 0 auto !important;
   }
 }
