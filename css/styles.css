@@ -16539,6 +16539,215 @@ section.section-gray .early-adopter h2 {
   }
 }
 
+/* Flagship full-width card layout */
+.product-flagship {
+  margin-bottom: 2rem;
+}
+
+.product-flagship-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.product-card-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.product-badge-app {
+  background: #000 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-badge-live {
+  background: #10b981 !important;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.product-badge-free {
+  background: #3b82f6 !important;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.product-card-icon-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+/* 2-column features list */
+.product-features-2col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem !important;
+}
+
+/* Phone mockup */
+.product-flagship-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.product-phone-mockup {
+  width: 280px;
+  background: #000;
+  border-radius: 36px;
+  padding: 12px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+.product-phone-screen {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 26px;
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.phone-app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phone-avatar-small {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  border-radius: 50%;
+}
+
+.phone-app-header strong {
+  color: #fff;
+  font-size: 0.9375rem;
+  display: block;
+}
+
+.phone-online {
+  color: #22c55e;
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.phone-messages {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.phone-msg {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  max-width: 88%;
+}
+
+.phone-msg-aria {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fed7aa;
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+}
+
+.phone-msg-user {
+  background: #334155;
+  color: #e2e8f0;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+
+.phone-input-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #64748b;
+  font-size: 0.8125rem;
+}
+
+.phone-input-bar svg {
+  color: #f97316;
+}
+
+/* Coming Soon */
+.products-coming-soon {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.coming-soon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  font-size: 0.9375rem;
+}
+
+.coming-soon-text svg {
+  color: #f97316;
+}
+
+.coming-soon-text a {
+  color: #f97316;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.coming-soon-text a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .product-flagship-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .product-flagship-visual {
+    order: -1;
+  }
+
+  .product-phone-mockup {
+    width: 240px;
+  }
+
+  .product-phone-screen {
+    min-height: 360px;
+  }
+
+  .product-features-2col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .product-card-badges {
+    margin-bottom: 1rem;
+  }
+}
+
 /* ===========================================
    ARIA HERO CARD - NEVER MISS A LEAD
    =========================================== */
