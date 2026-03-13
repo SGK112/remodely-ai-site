@@ -34,7 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/styles.css?v=95">
+  <link rel="stylesheet" href="/css/styles.css?v=96">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -313,6 +313,7 @@
         <nav class="mobile-menu-nav">
           <a href="/grader.html">Free Grader</a>
           <a href="#services">Services</a>
+          <a href="#demos">Demos</a>
           <a href="#products">Products</a>
           <a href="#about">About</a>
           <a href="/client-dashboard.html" class="mobile-menu-login">
@@ -562,6 +563,7 @@
         <ul class="nav-links">
           <li><a href="/grader.html">Free Grader</a></li>
           <li><a href="#services">Services</a></li>
+          <li><a href="#demos">Demos</a></li>
           <li><a href="#products">Products</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="/client-dashboard.html" class="nav-login">Client Login</a></li>
@@ -790,6 +792,59 @@
           </div>
           <h4 style="color: #ffffff !important;">Backlinks</h4>
           <p style="color: #cbd5e1 !important;">Build authority with quality links.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Showcase Section -->
+  <section id="demos" class="section video-showcase-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>See It In Action</h2>
+        <p class="section-subtitle">Watch how Remodely AI transforms real businesses.</p>
+      </div>
+
+      <div class="video-grid">
+        <!-- Featured Video - Aria Demo -->
+        <div class="video-card video-card-featured">
+          <div class="video-embed" id="videoAria" data-video-id="YOUR_YOUTUBE_ID_HERE" data-platform="youtube">
+            <div class="video-placeholder">
+              <div class="video-placeholder-icon">
+                <svg viewBox="0 0 24 24" width="64" height="64" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(249,115,22,0.9)"/><path d="M10 8l6 4-6 4V8z" fill="#fff"/></svg>
+              </div>
+              <div class="video-placeholder-info">
+                <h3>Meet Aria — Your AI Receptionist</h3>
+                <p>Watch Aria answer a real call, book an appointment, and send a quote — all in under 60 seconds.</p>
+              </div>
+              <div class="video-placeholder-badge">
+                <span class="video-duration">Coming Soon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Videos -->
+        <div class="video-card" id="videoProduct" data-video-id="YOUR_YOUTUBE_ID_2" data-platform="youtube">
+          <div class="video-placeholder video-placeholder-sm">
+            <div class="video-placeholder-icon">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(249,115,22,0.9)"/><path d="M10 8l6 4-6 4V8z" fill="#fff"/></svg>
+            </div>
+            <h4>VoiceNow CRM Walkthrough</h4>
+            <p>Full tour of the mobile app + Aria integration</p>
+            <span class="video-duration">Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="video-card" id="videoGrader" data-video-id="YOUR_YOUTUBE_ID_3" data-platform="youtube">
+          <div class="video-placeholder video-placeholder-sm">
+            <div class="video-placeholder-icon">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(59,130,246,0.9)"/><path d="M10 8l6 4-6 4V8z" fill="#fff"/></svg>
+            </div>
+            <h4>AI Visibility Grader</h4>
+            <p>How to check if AI can find your business</p>
+            <span class="video-duration">Coming Soon</span>
+          </div>
         </div>
       </div>
     </div>
@@ -2094,6 +2149,45 @@
       });
     });
 
+  })();
+  </script>
+
+  <!-- Video Embed - Click to Load (Performance Optimized) -->
+  <script>
+  (function() {
+    // Click-to-load YouTube embeds for performance
+    document.querySelectorAll('[data-video-id]').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var videoId = this.dataset.videoId;
+        var platform = this.dataset.platform || 'youtube';
+        if (!videoId || videoId === 'YOUR_YOUTUBE_ID_HERE' || videoId.startsWith('YOUR_')) return;
+
+        var embed = this.querySelector('.video-embed') || this;
+        var placeholder = embed.querySelector('.video-placeholder') || this.querySelector('.video-placeholder');
+        if (!placeholder) return;
+
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.border = '0';
+        iframe.setAttribute('loading', 'lazy');
+
+        if (platform === 'youtube') {
+          iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0';
+        } else if (platform === 'vimeo') {
+          iframe.src = 'https://player.vimeo.com/video/' + videoId + '?autoplay=1';
+        }
+
+        placeholder.style.position = 'relative';
+        placeholder.innerHTML = '';
+        placeholder.appendChild(iframe);
+      });
+    });
   })();
   </script>
 </body>
