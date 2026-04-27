@@ -652,6 +652,78 @@
       transition: all 0.3s ease;
     }
 
+    /* Google Signals panel — Core Web Vitals + official-tool deep links */
+    .google-signals { border-color: rgba(66, 133, 244, 0.25); }
+    .google-signals__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .google-signals__head h3 {
+      margin: 0;
+      background: linear-gradient(90deg, #4285F4 0%, #EA4335 33%, #FBBC05 66%, #34A853 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .google-signals__sub { color: var(--gray-500); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cwv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .cwv-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cwv-card__label { font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .cwv-card__value { font-size: 1.5rem; font-weight: 800; line-height: 1.1; color: #fff; }
+    .cwv-card__value--good { color: #34A853; }
+    .cwv-card__value--warn { color: #FBBC05; }
+    .cwv-card__value--bad  { color: #EA4335; }
+    .cwv-card__hint { font-size: 0.72rem; color: var(--gray-500); }
+    .cwv-card--unavailable { opacity: 0.5; }
+    .cwv-card--unavailable .cwv-card__value { font-size: 0.85rem; font-weight: 600; color: var(--gray-400); }
+    .schema-warnings {
+      background: rgba(234, 67, 53, 0.08);
+      border: 1px solid rgba(234, 67, 53, 0.25);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #f8c1ba;
+    }
+    .schema-warnings strong { color: #EA4335; display: block; margin-bottom: 6px; }
+    .schema-warnings ul { margin: 0; padding-left: 18px; }
+    .schema-warnings li { margin: 4px 0; }
+    .google-tools-bar { display: flex; flex-wrap: wrap; gap: 10px; }
+    .google-tools-bar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 9px 14px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .google-tools-bar a:hover {
+      background: rgba(66, 133, 244, 0.12);
+      border-color: rgba(66, 133, 244, 0.4);
+      transform: translateY(-1px);
+    }
+    .google-tools-bar a::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4285F4, #34A853);
+    }
+
     .score-section::before {
       content: '';
       position: absolute;
@@ -2089,6 +2161,20 @@
         </div>
       </div>
 
+      <!-- Google Signals (Core Web Vitals + Official Tools) -->
+      <div class="score-section google-signals" id="googleSignals" style="display:none;">
+        <div class="google-signals__head">
+          <h3>Google Signals</h3>
+          <span class="google-signals__sub" id="googleSignalsSub">Powered by Google PageSpeed Insights · mobile</span>
+        </div>
+        <div class="cwv-grid" id="cwvGrid"></div>
+        <div class="schema-warnings" id="schemaWarningsBox" style="display:none;">
+          <strong>Schema issue Google would flag:</strong>
+          <ul id="schemaWarningsList"></ul>
+        </div>
+        <div class="google-tools-bar" id="googleToolsBar"></div>
+      </div>
+
       <!-- 2-Step Lead Form -->
       <div class="email-gate" id="emailGate">
         <!-- Progress Indicator -->
@@ -2394,6 +2480,89 @@
       scoreEl.textContent = score;
     }
 
+    // Render Google Signals panel: Core Web Vitals + deep links to Google's official tools
+    function renderGoogleSignals(data) {
+      const panel = document.getElementById('googleSignals');
+      if (!panel) return;
+
+      const cwv = data.details && data.details.core_web_vitals;
+      const tools = data.google_tools || {};
+      const warnings = (data.details && data.details.schema_warnings) || [];
+
+      // Show panel whenever we have either CWV data or tool links (always true)
+      panel.style.display = '';
+
+      // Core Web Vitals cards — Google's "good" thresholds:
+      // LCP < 2.5s, INP < 200ms, CLS < 0.1, Perf score >= 90
+      const grid = document.getElementById('cwvGrid');
+      grid.innerHTML = '';
+
+      const fmtMs = ms => ms == null ? null : (ms >= 1000 ? (ms / 1000).toFixed(1) + 's' : Math.round(ms) + 'ms');
+      const cls = (v, good, warn) => v == null ? '' : (v <= good ? 'cwv-card__value--good' : (v <= warn ? 'cwv-card__value--warn' : 'cwv-card__value--bad'));
+
+      const addCard = (label, value, valueClass, hint) => {
+        const card = document.createElement('div');
+        card.className = 'cwv-card' + (value == null ? ' cwv-card--unavailable' : '');
+        card.innerHTML = `
+          <div class="cwv-card__label">${label}</div>
+          <div class="cwv-card__value ${valueClass || ''}">${value == null ? 'Unavailable' : value}</div>
+          ${hint ? `<div class="cwv-card__hint">${hint}</div>` : ''}
+        `;
+        grid.appendChild(card);
+      };
+
+      if (cwv && cwv.available) {
+        addCard('Performance', cwv.performance_score + '/100',
+          cls(100 - cwv.performance_score, 10, 50), 'Lighthouse mobile');
+        addCard('LCP', fmtMs(cwv.lcp_ms), cls(cwv.lcp_ms, 2500, 4000), 'Largest Contentful Paint');
+        addCard('CLS', cwv.cls != null ? cwv.cls.toFixed(2) : null,
+          cls(cwv.cls, 0.1, 0.25), 'Cumulative Layout Shift');
+        addCard('INP', fmtMs(cwv.inp_ms), cls(cwv.inp_ms, 200, 500), 'Interaction to Next Paint');
+        addCard('FCP', fmtMs(cwv.fcp_ms), cls(cwv.fcp_ms, 1800, 3000), 'First Contentful Paint');
+        addCard('TTFB', fmtMs(cwv.ttfb_ms), cls(cwv.ttfb_ms, 800, 1800), 'Time to First Byte');
+
+        const sub = document.getElementById('googleSignalsSub');
+        if (sub) sub.textContent = `Powered by Google PageSpeed Insights · ${cwv.strategy || 'mobile'}`;
+      } else {
+        addCard('Core Web Vitals', null, '', cwv && cwv.reason ? cwv.reason : 'PSI did not return data');
+        const sub = document.getElementById('googleSignalsSub');
+        if (sub) sub.textContent = 'Run on Google PageSpeed Insights for full vitals →';
+      }
+
+      // Schema warnings (e.g. aggregateRating on Service)
+      const warnBox = document.getElementById('schemaWarningsBox');
+      const warnList = document.getElementById('schemaWarningsList');
+      if (warnings.length > 0) {
+        warnList.innerHTML = warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('');
+        warnBox.style.display = '';
+      } else {
+        warnBox.style.display = 'none';
+      }
+
+      // Deep links to Google's official tools
+      const bar = document.getElementById('googleToolsBar');
+      bar.innerHTML = '';
+      const links = [
+        { key: 'rich_results', label: 'Rich Results Test' },
+        { key: 'pagespeed', label: 'PageSpeed Insights' },
+        { key: 'mobile_friendly', label: 'Mobile-Friendly Test' },
+        { key: 'safe_browsing', label: 'Safe Browsing' },
+      ];
+      links.forEach(l => {
+        if (!tools[l.key]) return;
+        const a = document.createElement('a');
+        a.href = tools[l.key];
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = l.label;
+        bar.appendChild(a);
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
     // Generate quick wins based on scores
     function generateQuickWins(data) {
       const quickWins = [];
@@ -2512,6 +2681,9 @@
       updateScoreBar('mobileBar', 'mobileScore', scores.technical.mobile);
       updateScoreBar('speedBar', 'speedScore', scores.technical.speed);
       updateScoreBar('imagesBar', 'imagesScore', scores.technical.images);
+
+      // Google Signals panel — render Core Web Vitals + deep links
+      renderGoogleSignals(data);
 
       // Store gated content for unlock
       window.gatedData = {
