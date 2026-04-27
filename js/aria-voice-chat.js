@@ -40,7 +40,7 @@ class AriaVoiceChat {
     try {
       const res = await fetch(
         `https://www.voicenowcrm.com/api/aria-companies/by-phone/${encodeURIComponent('+16028335307')}`,
-        { signal: AbortSignal.timeout(4000) }
+        { signal: AbortSignal.timeout(2500) }
       );
       if (!res.ok) return null;
       const data = await res.json();
@@ -54,9 +54,10 @@ class AriaVoiceChat {
 
   async start() {
     try {
-      // Pre-fetch the live tenant prompt before opening the WS so we send
-      // the right systemInstructions on connect.
-      this.tenantPrompt = await this.fetchTenantPrompt();
+      // Kick off the tenant-prompt fetch in parallel — don't block mic
+      // permission or WS connect. We only need the result by the time we
+      // send the config message in the WS onopen handler.
+      this._tenantPromptPromise = this.fetchTenantPrompt();
 
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -89,16 +90,19 @@ class AriaVoiceChat {
     return new Promise((resolve, reject) => {
       this.ws = new WebSocket(this.wsUrl);
 
-      this.ws.onopen = () => {
+      this.ws.onopen = async () => {
         console.log('[ARIA] Connected to server');
 
-        // Send configuration — prefer live tenant prompt fetched in start(),
-        // fall back to the local buildInstructions() blob if fetch failed.
+        // Resolve the in-flight tenant-prompt fetch. If it's not done yet,
+        // wait briefly (already raced with the WS handshake so usually instant).
+        // Falls back to the local buildInstructions() blob if fetch failed.
+        let prompt = null;
+        try { prompt = await this._tenantPromptPromise; } catch (_) {}
         this.ws.send(JSON.stringify({
           type: 'config',
           voice: this.voice,
           companySlug: this.companySlug,
-          systemInstructions: this.tenantPrompt || this.buildInstructions()
+          systemInstructions: prompt || this.buildInstructions()
         }));
       };
 

@@ -19590,3 +19590,55 @@ button svg,
   /* In-house value prop — already responsive via .why-grid; just ensure padding */
   #why-inhouse .why-card { padding: 20px 16px; }
 }
+
+/* =====================================================
+   VOICENOW FLAGSHIP CARD — visibility fixes (2026-04-27)
+   The inner gradient (#0f172a → #1e293b) was blending into the page bg
+   (#0c1222). User reported "VoiceNow content is almost invisible." Boost
+   contrast: brighter inner background, explicit text colors, brighter
+   features list, and a solid border so the card reads as a card.
+   ===================================================== */
+.product-card-featured .product-card-inner {
+  background: linear-gradient(135deg, #1e293b 0%, #2d3a52 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+.product-card-featured h3 {
+  color: #ffffff !important;
+  font-size: 2rem;
+}
+.product-card-featured .product-card-tagline {
+  color: #fb923c !important;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.product-card-featured .product-card-desc {
+  color: #e2e8f0 !important;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+.product-card-featured .product-features li {
+  color: #f1f5f9 !important;
+  font-size: 0.95rem;
+}
+.product-card-featured .product-features svg {
+  color: #fb923c !important;
+}
+.product-card-featured .product-stat-number {
+  color: #fb923c !important;
+  font-weight: 800;
+}
+.product-card-featured .product-stat-label {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+.product-card-featured .product-card-badge {
+  color: #ffffff;
+}
+
+/* Phone mockup contrast on mobile */
+@media (max-width: 768px) {
+  .product-card-featured .product-card-inner {
+    padding: 1.75rem 1.25rem;
+  }
+  .product-card-featured h3 { font-size: 1.5rem; }
+  .product-card-featured .product-card-desc { font-size: 0.95rem; }
+}
