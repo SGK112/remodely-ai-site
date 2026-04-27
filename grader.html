@@ -517,13 +517,6 @@
       font-weight: 500;
     }
 
-    .score-card__score {
-      font-size: 3rem;
-      font-weight: 700;
-      line-height: 1;
-      color: #fff;
-    }
-
     .score-card__grade {
       display: inline-block;
       padding: 5px 14px;
@@ -1996,6 +1989,17 @@
       .aria-chat-modal { max-height: 100vh; border-radius: 0; height: 100%; margin: 0; }
       .aria-chat-messages { max-height: none; flex: 1; }
     }
+
+    /* Google Signals — mobile: 2-up grid, larger value text */
+    @media (max-width: 600px) {
+      .google-signals { padding: 22px; }
+      .google-signals__head { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .cwv-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .cwv-card { padding: 12px 14px; }
+      .cwv-card__value { font-size: 1.25rem; }
+      .google-tools-bar { gap: 8px; }
+      .google-tools-bar a { padding: 8px 12px; font-size: 0.8rem; flex: 1 1 calc(50% - 4px); justify-content: center; }
+    }
   </style>
 </head>
 <body>
@@ -2732,7 +2736,7 @@
             issuesList.innerHTML = '';
             gd.issues.forEach(issue => {
               const li = document.createElement('li');
-              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + escapeHtml(issue) + '</span>';
               issuesList.appendChild(li);
             });
           }
@@ -2743,7 +2747,7 @@
             recsList.innerHTML = '';
             gd.recommendations.forEach(rec => {
               const li = document.createElement('li');
-              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
+              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + escapeHtml(rec) + '</span>';
               recsList.appendChild(li);
             });
           }
@@ -2838,7 +2842,7 @@
       if (data.issues && data.issues.length > 0) {
         data.issues.forEach(issue => {
           const li = document.createElement('li');
-          li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+          li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + escapeHtml(issue) + '</span>';
           issuesList.appendChild(li);
         });
         document.getElementById('issuesSection').style.display = 'block';
@@ -2852,7 +2856,7 @@
       if (data.recommendations && data.recommendations.length > 0) {
         data.recommendations.forEach(rec => {
           const li = document.createElement('li');
-          li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
+          li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + escapeHtml(rec) + '</span>';
           recsList.appendChild(li);
         });
         document.getElementById('recsSection').style.display = 'block';
@@ -2941,7 +2945,7 @@
             issuesList.innerHTML = '';
             data.issues.forEach(issue => {
               const li = document.createElement('li');
-              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + issue + '</span>';
+              li.innerHTML = '<span class="list-icon icon-issue">!</span><span>' + escapeHtml(issue) + '</span>';
               issuesList.appendChild(li);
             });
           }
@@ -2952,7 +2956,7 @@
             recsList.innerHTML = '';
             data.recommendations.forEach(rec => {
               const li = document.createElement('li');
-              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + rec + '</span>';
+              li.innerHTML = '<span class="list-icon icon-rec">+</span><span>' + escapeHtml(rec) + '</span>';
               recsList.appendChild(li);
             });
           }
