@@ -1697,6 +1697,71 @@
         overflow: hidden;
       }
     }
+
+    /* Footer — self-contained to match grader's dark theme */
+    .site-footer {
+      margin-top: 80px;
+      border-top: 1px solid var(--glass-border);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: var(--glass-blur);
+      padding: 48px 20px 32px;
+    }
+    .site-footer__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    .site-footer__brand a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .site-footer__brand a span { color: var(--accent); }
+    .site-footer__tagline {
+      margin-top: 12px;
+      color: var(--gray-400);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .site-footer h5 {
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .site-footer ul { list-style: none; padding: 0; margin: 0; }
+    .site-footer li { margin-bottom: 10px; }
+    .site-footer a {
+      color: var(--gray-400);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s;
+    }
+    .site-footer a:hover { color: var(--accent); }
+    .site-footer__bottom {
+      max-width: 1100px;
+      margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--gray-500);
+      font-size: 0.85rem;
+    }
+    .site-footer__legal a { margin-left: 18px; color: var(--gray-500); }
+    @media (max-width: 720px) {
+      .site-footer__inner { grid-template-columns: 1fr 1fr; }
+      .site-footer__brand { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 <body>
@@ -2993,5 +3058,50 @@
     window.openAriaVoiceChat = openVoiceChat;
   })();
   </script>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <a href="/">REMODELY<span>.AI</span></a>
+        <p class="site-footer__tagline">AI software for small businesses. Built by people from the trades who learned to code.</p>
+      </div>
+      <div>
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="/#services">AI Receptionist</a></li>
+          <li><a href="/#services">Smart Scheduler</a></li>
+          <li><a href="/#services">Instant Quotes</a></li>
+          <li><a href="/#services">Client Portal</a></li>
+          <li><a href="/#services">Review Engine</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Tools</h5>
+        <ul>
+          <li><a href="/grader.html">Free Grader</a></li>
+          <li><a href="/smart-scheduler.html">Smart Scheduler</a></li>
+          <li><a href="/#demos">Demos</a></li>
+          <li><a href="/#products">Products</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/careers.html">Careers</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="https://github.com/SGK112">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <p>&copy; 2026 Remodely AI LLC. All rights reserved.</p>
+      <div class="site-footer__legal">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
