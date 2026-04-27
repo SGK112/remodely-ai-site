@@ -25,3 +25,7 @@ build/
 # Temporary files
 *.tmp
 *.temp
+
+# Python bytecode (from minify script)
+__pycache__/
+*.pyc
