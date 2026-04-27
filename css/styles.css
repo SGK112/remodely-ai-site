@@ -19439,3 +19439,107 @@ button svg,
   .faq-item summary { padding: 14px 16px; font-size: 0.96rem; }
   .faq-answer { padding: 0 16px 16px; }
 }
+
+/* =====================================================
+   STICKY BOTTOM CTA BAR
+   - Mobile-first: full-width pill at the bottom edge
+   - Desktop: compact floating pill bottom-right
+   - Hidden until user scrolls past the hero
+   ===================================================== */
+.sticky-cta {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9990;
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(249, 115, 22, 0.08);
+  transform: translateY(120%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+  opacity: 0;
+}
+.sticky-cta.sticky-cta--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.sticky-cta__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  transition: transform 0.15s, background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+.sticky-cta__btn:active { transform: scale(0.97); }
+.sticky-cta__btn--primary {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+.sticky-cta__btn--primary:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #fff;
+}
+.sticky-cta__btn--secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.sticky-cta__btn--secondary:hover {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.3);
+  color: #fb923c;
+}
+.sticky-cta__btn--ghost {
+  flex: 0 0 auto;
+  padding: 11px 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+}
+.sticky-cta__btn--ghost:hover { color: #fff; }
+.sticky-cta__phone span { display: none; }
+
+/* Tablet — slightly more comfortable */
+@media (min-width: 600px) {
+  .sticky-cta {
+    left: auto;
+    right: 16px;
+    bottom: 16px;
+    max-width: 480px;
+    padding: 12px;
+  }
+  .sticky-cta__btn { padding: 12px 22px; font-size: 0.95rem; }
+}
+
+/* Desktop — compact floating pill, doesn't dominate the viewport */
+@media (min-width: 992px) {
+  .sticky-cta { padding: 10px; gap: 6px; }
+  .sticky-cta__btn { padding: 10px 18px; font-size: 0.88rem; }
+}
+
+/* Tighter on small phones — hide phone-only icon button if cramped */
+@media (max-width: 380px) {
+  .sticky-cta__btn--ghost { display: none; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta { transition: opacity 0.2s; transform: none; }
+  .sticky-cta:not(.sticky-cta--visible) { opacity: 0; pointer-events: none; }
+}
