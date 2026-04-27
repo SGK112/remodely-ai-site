@@ -35,9 +35,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-  <!-- Styles — preload to start fetch earlier and improve LCP -->
-  <link rel="preload" as="style" href="/css/styles.css?v=96">
-  <link rel="stylesheet" href="/css/styles.css?v=96" fetchpriority="high">
+  <!-- Styles — minified production build, preloaded for early fetch + LCP boost.
+       Source of truth is /css/styles.css; minifier in scripts/minify-css.py
+       regenerates styles.min.css before each deploy. -->
+  <link rel="preload" as="style" href="/css/styles.min.css?v=97">
+  <link rel="stylesheet" href="/css/styles.min.css?v=97" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
