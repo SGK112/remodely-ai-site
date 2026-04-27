@@ -7,8 +7,10 @@ class AriaVoiceChat {
   constructor(options = {}) {
     this.wsUrl = options.wsUrl || 'wss://aria-bridge.onrender.com/web-chat';
     this.voice = options.voice || 'coral';
-    this.companySlug = options.companySlug || 'remodely';
-    this.greeting = options.greeting || "Hey! I'm Aria from Remodely AI. How can I help you today?";
+    // Use the Remodely AI consulting-firm AriaCompany (slug=remodely-ai), NOT
+    // the VoiceNow CRM one (slug=remodely). Brand pronounced "Re-MOD-uh-lee".
+    this.companySlug = options.companySlug || 'remodely-ai';
+    this.greeting = options.greeting || "Hey, I'm Aria from Remodely AI — pronounced Re-MOD-uh-lee. What can I help you build?";
 
     this.ws = null;
     this.audioContext = null;
@@ -32,8 +34,30 @@ class AriaVoiceChat {
     this.onError = options.onError || (() => {});
   }
 
+  async fetchTenantPrompt() {
+    // Pull the live AriaCompany customPrompt so we don't have a stale prompt
+    // hardcoded in this JS file. Falls back to buildInstructions() on failure.
+    try {
+      const res = await fetch(
+        `https://www.voicenowcrm.com/api/aria-companies/by-phone/${encodeURIComponent('+16028335307')}`,
+        { signal: AbortSignal.timeout(4000) }
+      );
+      if (!res.ok) return null;
+      const data = await res.json();
+      const prompt = data?.company?.customPrompt;
+      return (prompt && prompt.trim()) ? prompt.trim() : null;
+    } catch (e) {
+      console.warn('[ARIA] Live prompt fetch failed, using local fallback:', e.message);
+      return null;
+    }
+  }
+
   async start() {
     try {
+      // Pre-fetch the live tenant prompt before opening the WS so we send
+      // the right systemInstructions on connect.
+      this.tenantPrompt = await this.fetchTenantPrompt();
+
       // Request microphone access
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -68,12 +92,13 @@ class AriaVoiceChat {
       this.ws.onopen = () => {
         console.log('[ARIA] Connected to server');
 
-        // Send configuration
+        // Send configuration — prefer live tenant prompt fetched in start(),
+        // fall back to the local buildInstructions() blob if fetch failed.
         this.ws.send(JSON.stringify({
           type: 'config',
           voice: this.voice,
           companySlug: this.companySlug,
-          systemInstructions: this.buildInstructions()
+          systemInstructions: this.tenantPrompt || this.buildInstructions()
         }));
       };
 
