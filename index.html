@@ -35,11 +35,32 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
-  <!-- Styles — minified production build, preloaded for early fetch + LCP boost.
-       Source of truth is /css/styles.css; minifier in scripts/minify-css.py
-       regenerates styles.min.css before each deploy. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=97">
-  <link rel="stylesheet" href="/css/styles.min.css?v=97" fetchpriority="high">
+  <!-- Critical above-the-fold CSS — inlined so first paint doesn't wait on the full stylesheet.
+       These rules cover background, navbar, hero typography, and mobile hero so the LCP
+       element renders as soon as the HTML parses. -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0c1222;color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
+    .animated-bg{position:fixed;inset:0;background:linear-gradient(135deg,#0c1222 0%,#1a2332 50%,#0c1222 100%);z-index:-1}
+    .container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+    .mobile-hero-content{position:relative;z-index:1;padding:1.25rem 1rem 2rem;min-height:100vh;display:flex;flex-direction:column}
+    .mobile-hero-top{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0 1.5rem}
+    .mobile-hero-headline{font-size:clamp(1.75rem,8vw,2.75rem);font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin:0 0 1rem;color:#fff}
+    .mobile-hero-headline .text-orange{color:#f97316}
+    .mobile-hero-subtitle{font-size:1.05rem;color:rgba(255,255,255,0.75);line-height:1.55;margin:0 0 1.5rem}
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 0;background:rgba(12,18,34,0.85);backdrop-filter:blur(12px)}
+    .hero{position:relative;padding:6rem 0 4rem;overflow:hidden}
+    .hero-headline-large{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.05;letter-spacing:-0.02em;margin:0 0 1.25rem;color:#fff}
+    .hero-subtitle{font-size:1.15rem;line-height:1.6;color:rgba(255,255,255,0.7);margin:0 0 2rem;max-width:560px}
+  </style>
+
+  <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
+       Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
+  <link rel="preload" as="style" href="/css/styles.min.css?v=98">
+  <link rel="stylesheet" href="/css/styles.min.css?v=98" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -203,7 +224,7 @@
   }
   </script>
 
-  <!-- Structured Data: FAQPage - Expanded for AI discoverability -->
+  <!-- Structured Data: FAQPage — mirrors the visible FAQ on the page so Google can use it for rich results -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -211,66 +232,98 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is AI visibility and why does it matter?",
+        "name": "How much does AI consulting cost vs. our current marketing spend?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AI visibility refers to how well AI assistants like ChatGPT, Perplexity, and Grok can find and recommend your business. As more consumers use AI to find services, businesses with high AI visibility get more referrals and leads."
+          "text": "Most of our remodeling and construction clients were spending $4,000–$12,000/month across an SEO agency, an answering service, a marketing-automation SaaS, a website host, and ad management. Our typical engagement is a one-time setup plus a flat monthly that lands well below the sum of what we replace — usually 40–70% lower. We give you the math up front, in writing, with the named services we expect to retire."
         }
       },
       {
         "@type": "Question",
-        "name": "How does ChatGPT find and recommend businesses?",
+        "name": "How long until we can drop our outside agencies and SaaS tools?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "ChatGPT uses training data and web browsing to understand businesses. To rank well, you need clear website content, proper schema markup, strong online presence, and accurate business information across directories. Our AI Visibility Grader shows you exactly what ChatGPT can see about your business."
+          "text": "Phase 1 (audit + roadmap) takes 1–2 weeks. Phase 2 (build + integrate) takes 4–8 weeks depending on how many tools you're replacing. Most clients are off at least their SEO retainer and answering service within 90 days. We don't rip anything out until the replacement is live and your team is trained."
         }
       },
       {
         "@type": "Question",
-        "name": "What is Perplexity SEO and how do I optimize for it?",
+        "name": "Will AI replace my office staff?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Perplexity is an AI search engine that combines web search with AI responses. To optimize for Perplexity, focus on clear, factual content, FAQ pages, comprehensive service descriptions, and authoritative backlinks. Unlike traditional SEO, Perplexity prioritizes direct answers over keyword density."
+          "text": "No — it replaces the worst parts of their job so they can focus on the highest-leverage work. AI answers after-hours calls, handles routine intake, schedules estimates, and chases follow-ups. Your office manager spends time on actual customer relationships and project coordination, not message-pad triage. Most clients keep the same headcount and grow revenue."
         }
       },
       {
         "@type": "Question",
-        "name": "How can an AI receptionist help my contracting business?",
+        "name": "Can it integrate with QuickBooks, Jobber, ServiceTitan, and our existing tools?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "An AI receptionist answers calls 24/7, books appointments, sends quotes, and captures leads even when you're on a job site. It ensures you never miss a call and converts more inquiries into paying customers."
+          "text": "Yes. API integration and mapping is the core of what we do. We connect QuickBooks for invoicing, Jobber, ServiceTitan, and HousecallPro for jobs and dispatch, Google Calendar for scheduling, Twilio for SMS and voice, Stripe for payments, and supplier portals for material pricing. If a tool exposes an API or webhooks, we wire it. If it doesn't, we'll tell you up front before you sign."
         }
       },
       {
         "@type": "Question",
-        "name": "What types of businesses does Remodely AI work with?",
+        "name": "What about AI making things up — hallucinations on customer calls?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We specialize in contractors and home service businesses including plumbers, electricians, HVAC technicians, roofers, landscapers, painters, and general contractors. Our AI solutions are built specifically for the trades."
+          "text": "The AI is locked to your real data: services, materials, pricing tiers, service areas, scheduling rules, financing options. It cannot invent a phone number, an address, or a quote it doesn't have grounding for. When it doesn't know, it says 'let me get a human on this' and routes the call. Every conversation is recorded and reviewable."
         }
       },
       {
         "@type": "Question",
-        "name": "How do I check if AI can find my business?",
+        "name": "How does AI Search Optimization differ from regular SEO?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use our free AI Visibility Grader at remodely.ai. Enter your website URL and get an instant analysis of how ChatGPT, Perplexity, Grok, and other AI assistants see your business. You'll get a score and specific recommendations to improve."
+          "text": "Google still matters, but ChatGPT, Perplexity, Claude, and Grok now answer 30%+ of buyer-research queries directly — they cite sources instead of sending users to them. To get cited, your site needs structured data (Schema.org), clear FAQ blocks, citable statistics, real local signals, and content the language models can quote. We optimize for both — our free AI Visibility Grader at remodely.ai/grader.html shows where you stand today."
         }
       },
       {
         "@type": "Question",
-        "name": "What is the difference between AI SEO and traditional SEO?",
+        "name": "Do we own everything you build?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Traditional SEO focuses on ranking in Google search results through keywords, backlinks, and technical optimization. AI SEO focuses on how AI models understand and recommend your business. AI models prioritize clear information, schema markup, factual accuracy, and comprehensive answers over keyword optimization."
+          "text": "Yes. The website, the CRM data, the call recordings, the AI agent prompts, the integrations — everything lives in your accounts on infrastructure we set up in your name. If you ever decide to part ways, you keep the system and the data. No marketing-platform jail. That is the entire point."
         }
       },
       {
         "@type": "Question",
-        "name": "How much does AI visibility optimization cost?",
+        "name": "Do we need our own developers, data scientists, or AI experts?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Our AI Visibility Grader is free. For full optimization services including AI receptionist, website design, and ongoing SEO, packages start at $500/month. We offer custom solutions based on your business needs with no long-term contracts."
+          "text": "No. The whole reason this works for remodelers is that you don't need a tech team to run it. We build, integrate, document, and train. Your office manager and crew leads operate the system day to day. We stay on retainer for changes, new integrations, and quarterly tune-ups — at a fraction of an in-house developer salary."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you produce video content — explainers, project walkthroughs, social cuts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. AI video creation is part of the stack: avatar talking-head explainers, before-and-after reels generated from your jobsite photos, financing-options videos, and short-form social cuts for Instagram and TikTok. Refresh weekly without hiring a videographer or editor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you build us a real iOS or Android app?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Native iOS apps through Xcode and TestFlight, Android through Google Play, and cross-platform builds with Expo / React Native when speed-to-market matters. Common builds: a customer-facing branded app, a crew dispatch app, and a sales-rep in-home quoting tool. Apps are owned by you under your Apple Developer and Google Play accounts — not ours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "We're contractors, not web guys. Will this be over our heads?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "That's exactly who we built this for. You don't write code, manage servers, or touch a CMS. Daily operation looks like answering messages on your phone, glancing at a dashboard, and approving the AI's suggested follow-ups. We handle the technical layer; you handle customers, crews, and projects — what you're already good at."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if our company isn't remodeling or construction?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We focus on remodeling, construction, and home services because that's where we have the deepest pattern library — but the underlying playbook (replace external SaaS, integrate APIs, deploy AI agents, own your data) applies to plumbers, HVAC, landscapers, roofers, and similar service trades. Run the free grader at remodely.ai/grader.html and we'll tell you on the consult call whether we are the right fit."
         }
       }
     ]
@@ -740,13 +793,73 @@
         </div>
       </div>
 
-      <!-- Other Solutions Gallery -->
+      <!-- Consulting & Marketing Services -->
       <div class="solutions-header">
-        <h3>More Solutions</h3>
-        <p>Everything else you need to dominate online</p>
+        <h3>AI Consulting Built for Remodelers &amp; Contractors</h3>
+        <p><strong>Construction guys aren't web guys — that's why we exist.</strong> We specialize in remodeling, construction, and home-services businesses, replacing the $2,000–$10,000/mo agencies, marketing SaaS stacks, and answering services that drain margin. <strong>Stop renting your marketing. Own it.</strong> Bring it in-house with AI, keep the savings, own the data.</p>
       </div>
 
       <div class="solutions-gallery">
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">AI Video Creation</h4>
+          <p style="color: #cbd5e1 !important;">Project walkthroughs, before-and-after reels, finance-options explainers, and supplier-spec videos — generated from your jobsite photos and brand voice. Refresh weekly without a film crew.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">Marketing Automation</h4>
+          <p style="color: #cbd5e1 !important;">Quote follow-ups, post-install review requests, seasonal-promo SMS, and "haven't heard back?" nudges — built around your job pipeline, not a generic CRM template.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="4" x2="12" y2="20"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">API Integration &amp; Mapping</h4>
+          <p style="color: #cbd5e1 !important;">Connect QuickBooks, Jobber, ServiceTitan, Google Calendar, Twilio, and supplier portals so an estimate, a deposit, a calendar block, and a job folder happen from one click.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2h-4M12 2v13M8 6l4-4 4 4"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">AI Strategy &amp; Audit</h4>
+          <p style="color: #cbd5e1 !important;">Where AI actually saves a contractor money — call answering, lead intake, takeoffs, scheduling — and where it doesn't. Roadmap with effort, ROI, and risk per move.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">AI Content &amp; SEO</h4>
+          <p style="color: #cbd5e1 !important;">Service-area pages, material guides (granite vs quartz, tile vs LVP), and project pillar content with the schema that wins ChatGPT, Perplexity, and Grok citations.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2a3 3 0 00-3 3v4a3 3 0 006 0V5a3 3 0 00-3-3Z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">Custom AI Agents</h4>
+          <p style="color: #cbd5e1 !important;">Voice + chat agents trained on your services, materials, and pricing. Replace the $300/mo answering service and book jobs in your tone — escalating to a human the second it matters.</p>
+        </div>
+
         <div class="solution-card">
           <div class="solution-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -754,7 +867,7 @@
             </svg>
           </div>
           <h4 style="color: #ffffff !important;">Custom Websites</h4>
-          <p style="color: #cbd5e1 !important;">Fast, mobile-first sites built to convert.</p>
+          <p style="color: #cbd5e1 !important;">Fast, mobile-first sites with quote forms, finance applications, and project galleries — all wired to your tools. Replaces $200–500/mo Wix or "marketing platform" subscriptions.</p>
         </div>
 
         <div class="solution-card">
@@ -763,8 +876,8 @@
               <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
             </svg>
           </div>
-          <h4 style="color: #ffffff !important;">SEO & Rankings</h4>
-          <p style="color: #cbd5e1 !important;">Get found when customers search.</p>
+          <h4 style="color: #ffffff !important;">SEO &amp; AI Visibility</h4>
+          <p style="color: #cbd5e1 !important;">Rank in Google AND get cited by ChatGPT, Perplexity, and Grok. Stop the $1,500/mo SEO retainer that ships you a PDF every month — own a strategy that compounds.</p>
         </div>
 
         <div class="solution-card">
@@ -774,7 +887,7 @@
             </svg>
           </div>
           <h4 style="color: #ffffff !important;">Local Listings</h4>
-          <p style="color: #cbd5e1 !important;">Dominate Google, Yelp & 50+ directories.</p>
+          <p style="color: #cbd5e1 !important;">Google Business Profile, Yelp, and 50+ niche directories aligned and monitored — the backbone of local AI discovery.</p>
         </div>
 
         <div class="solution-card">
@@ -783,8 +896,8 @@
               <path d="M12 2a4 4 0 014 4v1a1 1 0 001 1h1a4 4 0 010 8h-1a1 1 0 00-1 1v1a4 4 0 01-8 0v-1a1 1 0 00-1-1H6a4 4 0 010-8h1a1 1 0 001-1V6a4 4 0 014-4z"/><circle cx="12" cy="12" r="2"/>
             </svg>
           </div>
-          <h4 style="color: #ffffff !important;">AI Monitoring</h4>
-          <p style="color: #cbd5e1 !important;">24/7 alerts before issues hurt you.</p>
+          <h4 style="color: #ffffff !important;">AI Monitoring &amp; Ops</h4>
+          <p style="color: #cbd5e1 !important;">24/7 alerts on form failures, broken integrations, and slipping rankings before they cost a deal.</p>
         </div>
 
         <div class="solution-card">
@@ -793,8 +906,28 @@
               <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
             </svg>
           </div>
-          <h4 style="color: #ffffff !important;">Backlinks</h4>
-          <p style="color: #cbd5e1 !important;">Build authority with quality links.</p>
+          <h4 style="color: #ffffff !important;">Authority &amp; Backlinks</h4>
+          <p style="color: #cbd5e1 !important;">Earn links from sites the AIs trust. Domain authority is what makes large language models cite you instead of your competitor.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">iOS &amp; Android App Development</h4>
+          <p style="color: #cbd5e1 !important;">Native iOS apps shipped through Xcode and TestFlight, Android via Google Play, plus cross-platform Expo / React Native builds — branded customer-facing apps and crew dispatch tools without a $50k agency invoice.</p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+          </div>
+          <h4 style="color: #ffffff !important;">Implementation &amp; Training</h4>
+          <p style="color: #cbd5e1 !important;">We don't just hand off a tool and disappear. Your team gets walked through the system, trained on the workflows, and supported as it scales.</p>
         </div>
       </div>
     </div>
@@ -1405,6 +1538,172 @@
           <a href="#contact" class="btn btn-white">Book a Free Call</a>
           <a href="#services" class="btn btn-ghost">See Solutions</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- In-House Value Prop / Why It Pays For Itself -->
+  <section class="section section-dark" id="why-inhouse">
+    <div class="container">
+      <div class="section-header">
+        <h2>Stop Renting Your Marketing. Own It.</h2>
+        <p class="section-subtitle">A typical remodeling company spends $4,000–$12,000 every month on outside web, SEO, ads, answering services, and marketing SaaS — and still feels like they don't own anything. We rewire it.</p>
+      </div>
+
+      <div class="why-grid" style="margin-top:2rem">
+        <div class="why-card">
+          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="why-number">$48k+</div>
+          <h4>Annual Savings</h4>
+          <p>Replace the SEO retainer, the answering service, the marketing SaaS, and the form-and-CRM stack with one in-house AI system you actually own.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="why-number">90 days</div>
+          <h4>To Independence</h4>
+          <p>From audit to live, in-house operation. Most clients are off their old SEO and answering-service contracts within a quarter.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0M3 12h18"/></svg></div>
+          <div class="why-number">100%</div>
+          <h4>You Own the Data</h4>
+          <p>Every lead, call recording, customer interaction, and ranking signal lives in your accounts. No vendor lock-in. No "we'll send your data when you cancel."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Study: Surprise Granite -->
+  <section class="section" id="case-study">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge" style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(249,115,22,0.12);color:#fb923c;font-size:0.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">Client Case Study</span>
+        <h2>Surprise Granite — A Stone Yard That Owns Its Marketing</h2>
+        <p class="section-subtitle">Family-run granite, marble, and quartz fabricator in Phoenix metro. Replaced a five-figure outside marketing stack with an in-house AI operation in 2026.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:32px">
+        <div style="padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px">
+          <div style="font-size:2rem;font-weight:800;color:#fb923c;line-height:1">400+</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">Five-star projects</div>
+        </div>
+        <div style="padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px">
+          <div style="font-size:2rem;font-weight:800;color:#fb923c;line-height:1">24/7</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">AI line answering calls</div>
+        </div>
+        <div style="padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px">
+          <div style="font-size:2rem;font-weight:800;color:#fb923c;line-height:1">10+</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">SaaS tools retired</div>
+        </div>
+        <div style="padding:24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px">
+          <div style="font-size:2rem;font-weight:800;color:#fb923c;line-height:1">A grade</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-top:6px">AI visibility score</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(249,115,22,0.05);border:1px solid rgba(249,115,22,0.2);border-radius:16px;padding:32px;line-height:1.7">
+        <p style="margin-bottom:16px"><strong style="color:#fff">What we built for them:</strong> SEO-rich material guides and remodeling pages, custom JSON-LD schema (resolving Search Console errors and unlocking rich results), a 24/7 AI receptionist that books in-home estimates, automated quote &amp; review follow-ups, and a unified CRM-to-calendar-to-billing data pipe.</p>
+        <p style="margin-bottom:16px"><strong style="color:#fff">The result:</strong> Surprise Granite stopped paying for an SEO agency, an answering service, and three overlapping marketing platforms — and started ranking higher and answering more calls than before.</p>
+        <a href="https://www.surprisegranite.com/" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:8px">
+          See Surprise Granite live
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:6px"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section (with FAQPage schema for Google rich results) -->
+  <section class="section section-dark" id="faq">
+    <div class="container" style="max-width:880px">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+        <p class="section-subtitle">What contractors actually ask before bringing AI in-house.</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>How much does AI consulting cost vs. our current marketing spend?</summary>
+          <div class="faq-answer">
+            <p>Most of our remodeling and construction clients were spending $4,000–$12,000/month across an SEO agency, an answering service, a marketing-automation SaaS, a website host, and ad management. Our typical engagement is a one-time setup plus a flat monthly that lands well below the sum of what we replace — usually 40–70% lower. We give you the math up front, in writing, with the named services we expect to retire.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How long until we can drop our outside agencies and SaaS tools?</summary>
+          <div class="faq-answer">
+            <p>Phase 1 (audit + roadmap) takes 1–2 weeks. Phase 2 (build + integrate) takes 4–8 weeks depending on how many tools you're replacing. Most clients are off at least their SEO retainer and answering service within 90 days. We don't rip anything out until the replacement is live and your team is trained.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Will AI replace my office staff?</summary>
+          <div class="faq-answer">
+            <p>No — it replaces the worst parts of their job so they can focus on the highest-leverage work. AI answers after-hours calls, handles routine intake, schedules estimates, and chases follow-ups. Your office manager spends time on actual customer relationships and project coordination, not message-pad triage. Most clients keep the same headcount and grow revenue.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can it integrate with QuickBooks, Jobber, ServiceTitan, and our existing tools?</summary>
+          <div class="faq-answer">
+            <p>Yes. API integration and mapping is the core of what we do. We connect QuickBooks for invoicing, Jobber/ServiceTitan/HCP for jobs and dispatch, Google Calendar for scheduling, Twilio for SMS &amp; voice, Stripe for payments, and supplier portals for material pricing. If a tool exposes an API or webhooks, we wire it. If it doesn't, we'll tell you up front before you sign.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What about AI making things up — hallucinations on customer calls?</summary>
+          <div class="faq-answer">
+            <p>The AI is locked to your real data: services, materials, pricing tiers, service areas, scheduling rules, financing options. It can't invent a phone number, an address, or a quote it doesn't have grounding for. When it doesn't know, it says "let me get a human on this" and routes the call. Every conversation is recorded and reviewable.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How does AI Search Optimization differ from regular SEO?</summary>
+          <div class="faq-answer">
+            <p>Google still matters, but ChatGPT, Perplexity, Claude, and Grok now answer 30%+ of buyer-research queries directly — they cite sources instead of sending users to them. To get cited, your site needs structured data (Schema.org), clear FAQ blocks, citable statistics, real local signals, and content the language models can quote. We optimize for both — our free <a href="/grader.html" style="color:#fb923c">AI Visibility Grader</a> shows where you stand today.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do we own everything you build?</summary>
+          <div class="faq-answer">
+            <p>Yes. The website, the CRM data, the call recordings, the AI agent prompts, the integrations — everything lives in your accounts on infrastructure we set up in your name. If you ever decide to part ways, you keep the system and the data. No "marketing-platform jail." That's the entire point.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do we need our own developers, data scientists, or AI experts?</summary>
+          <div class="faq-answer">
+            <p>No. The whole reason this works for remodelers is that you don't need a tech team to run it. We build, integrate, document, and train. Your office manager and crew leads operate the system day to day. We stay on retainer for changes, new integrations, and quarterly tune-ups — at a fraction of an in-house developer salary.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can you produce video content — explainers, project walkthroughs, social cuts?</summary>
+          <div class="faq-answer">
+            <p>Yes. AI video creation is part of the stack: avatar talking-head explainers, before-and-after reels generated from your jobsite photos, financing-options videos, and short-form social cuts for Instagram and TikTok. Refresh weekly without hiring a videographer or editor.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can you build us a real iOS or Android app?</summary>
+          <div class="faq-answer">
+            <p>Yes. Native iOS apps through Xcode and TestFlight, Android through Google Play, and cross-platform builds with Expo / React Native when speed-to-market matters. Common builds for our clients: a customer-facing branded app (book estimates, track project status, view financing, leave reviews), a crew dispatch app (job sheets, photos, time tracking), and a sales-rep tool (instant in-home quoting on iPad). Apps are owned by you under your Apple Developer and Google Play accounts — not ours.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>We're contractors, not web guys. Will this be over our heads?</summary>
+          <div class="faq-answer">
+            <p>That's exactly who we built this for. You don't write code, you don't manage servers, and you don't touch a CMS. Daily operation looks like answering messages on your phone, glancing at a dashboard, and approving the AI's suggested follow-ups. We handle the technical layer; you handle customers, crews, and projects — what you're already good at.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What if our company isn't remodeling or construction?</summary>
+          <div class="faq-answer">
+            <p>We focus on remodeling, construction, and home services because that's where we have the deepest pattern library — but the underlying playbook (replace external SaaS, integrate APIs, deploy AI agents, own your data) applies to plumbers, HVAC, landscapers, roofers, and similar service trades. Run the <a href="/grader.html" style="color:#fb923c">free grader</a> and we'll tell you on the consult call whether we're the right fit.</p>
+          </div>
+        </details>
       </div>
     </div>
   </section>
