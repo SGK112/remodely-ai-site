@@ -2911,7 +2911,18 @@
           }).catch(err => console.log('Firebase error:', err));
         }
 
-        // 2. Send email report (fire and forget)
+        // 2. Send email report (fire and forget). Send the FULL analysis so
+        //    the email can render real Quick Wins, issues, recommendations,
+        //    Google signals — not just a top-line score and a CTA.
+        const fullAnalysis = analysisData ? {
+          scores: analysisData.scores || {},
+          details: analysisData.details || {},
+          issues: analysisData.issues || [],
+          recommendations: analysisData.recommendations || [],
+          googleSignals: analysisData.googleSignals || analysisData.google_signals || (analysisData.details && analysisData.details.core_web_vitals) || null,
+          tools: analysisData.tools || analysisData.google_tools || {},
+          quickWins: typeof generateQuickWins === 'function' ? generateQuickWins(analysisData) : []
+        } : null;
         fetch(EMAIL_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -2919,10 +2930,11 @@
             email: email,
             name: 'there',
             url: urlInput.value,
-            scores: analysisData?.scores || {}
+            scores: analysisData?.scores || {},
+            analysis: fullAnalysis
           })
-        }).then(() => console.log('Email sent'))
-          .catch(e => console.log('Email API not ready yet:', e.message));
+        }).then(r => console.log('Email send:', r.ok ? 'OK' : 'FAILED ' + r.status))
+          .catch(e => console.log('Email API error:', e.message));
 
         // 3. UNLOCK the gated sections (but don't hide the email gate)
         document.querySelectorAll('.gated-section').forEach(el => {
@@ -3037,7 +3049,17 @@
         // Store collected info for CTA
         window.collectedLead = { name, phone, email: currentEmail, preferredTime };
 
-        // Re-send email with phone so it includes "Call Me Now" button
+        // Re-send email with phone so it includes "Call Me Now" button.
+        // Same full analysis payload as Step 1 so the rich report renders.
+        const fullAnalysis2 = analysisData ? {
+          scores: analysisData.scores || {},
+          details: analysisData.details || {},
+          issues: analysisData.issues || [],
+          recommendations: analysisData.recommendations || [],
+          googleSignals: analysisData.googleSignals || analysisData.google_signals || (analysisData.details && analysisData.details.core_web_vitals) || null,
+          tools: analysisData.tools || analysisData.google_tools || {},
+          quickWins: typeof generateQuickWins === 'function' ? generateQuickWins(analysisData) : []
+        } : null;
         fetch(EMAIL_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -3047,9 +3069,10 @@
             url: urlInput.value,
             phone: phone,
             preferredTime: preferredTime,
-            scores: analysisData?.scores || {}
+            scores: analysisData?.scores || {},
+            analysis: fullAnalysis2
           })
-        }).then(() => console.log('Updated email sent with call link'))
+        }).then(r => console.log('Updated email send:', r.ok ? 'OK' : 'FAILED ' + r.status))
           .catch(e => console.log('Email update failed:', e.message));
 
         // ALWAYS show success (don't wait for Firebase)
