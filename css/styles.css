@@ -1480,6 +1480,68 @@ p {
 }
 
 /* =====================================================
+   CASE STUDY — Surprise Granite
+   Centered, on-palette, mobile-first. No inline styles.
+   ===================================================== */
+.case-study-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.case-study-stat {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.case-study-stat__num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fb923c;
+  line-height: 1;
+}
+
+.case-study-stat__label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+.case-study-body {
+  background: rgba(249, 115, 22, 0.05);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 16px;
+  padding: 32px;
+  line-height: 1.7;
+}
+
+.case-study-body p {
+  margin: 0 0 16px 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.case-study-body p:last-of-type {
+  margin-bottom: 24px;
+}
+
+.case-study-body strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.case-study-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =====================================================
    TECH STACK - TABBED INTERFACE
    ===================================================== */
 .tech-strip-section {
@@ -16624,7 +16686,7 @@ section.section-gray .early-adopter h2 {
 }
 
 .product-features svg {
-  color: #10b981;
+  color: #f97316;
   flex-shrink: 0;
   margin-top: 3px;
 }
@@ -16744,6 +16806,30 @@ section.section-gray .early-adopter h2 {
     display: flex;
     justify-content: center;
   }
+
+  /* Mobile centering pass — icons, badges, and CTAs sit on the grid axis */
+  .product-card {
+    align-items: center;
+    text-align: center;
+  }
+  .product-card .product-card-icon,
+  .product-card .product-card-badges,
+  .product-card .product-card-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .product-card .product-features {
+    width: 100%;
+  }
+  .product-card .product-features li {
+    text-align: left;
+  }
+  /* Flagship card content stays left-aligned on mobile (it has the phone mockup) */
+  .product-card-featured,
+  .product-card-featured .product-flagship-content {
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 /* Flagship full-width card layout */
@@ -16765,27 +16851,35 @@ section.section-gray .early-adopter h2 {
   margin-bottom: 1.25rem;
 }
 
+/* Status badges share the orange/dark palette — no green/blue/black accents.
+   Variant differentiation is via fill vs outline, not hue. */
 .product-badge-app {
-  background: #000 !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
 .product-badge-live {
-  background: #10b981 !important;
+  background: transparent !important;
+  border: 1px solid #f97316;
+  color: #f97316 !important;
   width: fit-content;
   margin-bottom: 1rem;
 }
 
 .product-badge-free {
-  background: #3b82f6 !important;
+  background: transparent !important;
+  border: 1px solid #f97316;
+  color: #f97316 !important;
   width: fit-content;
   margin-bottom: 1rem;
 }
 
+/* Was a green gradient — unified with the flagship orange icon */
 .product-card-icon-green {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
 }
 
 /* 2-column features list */
@@ -19554,15 +19648,13 @@ button svg,
   body { padding-bottom: 96px; }
   /* Section padding tighter on phones */
   #why-inhouse, #case-study, #faq { padding: 3rem 0; }
-  /* Case study stat tiles: 2 per row on phones, 1 on tiny phones */
-  #case-study .container > div[style*="grid-template-columns"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-    margin-bottom: 24px !important;
+  /* Case study stat tiles: 2 per row on phones */
+  .case-study-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
   }
-  #case-study .container > div[style*="background:rgba(249,115,22"] {
-    padding: 22px !important;
-  }
+  .case-study-body { padding: 22px; }
   /* Tighter solution cards on mobile so 13 cards aren't 13 huge tiles */
   .solutions-gallery { gap: 10px; }
   .solution-card { padding: 18px 16px; }
@@ -19578,12 +19670,12 @@ button svg,
 }
 @media (max-width: 480px) {
   body { padding-bottom: 88px; }
-  #case-study .container > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr 1fr !important;
+  .case-study-stats {
+    grid-template-columns: 1fr 1fr;
   }
-  #case-study .container > div[style*="background:rgba(249,115,22"] {
-    padding: 18px !important;
-    font-size: 0.92rem !important;
+  .case-study-body {
+    padding: 18px;
+    font-size: 0.92rem;
   }
   /* Slightly smaller hero on tiny screens */
   .mobile-hero-headline { font-size: clamp(1.6rem, 7.5vw, 2.4rem); }
