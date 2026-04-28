@@ -19744,3 +19744,103 @@ button svg,
   .product-card-featured h3 { font-size: 1.5rem; }
   .product-card-featured .product-card-desc { font-size: 0.95rem; }
 }
+
+/* =====================================================
+   MOBILE ALIGNMENT POLISH (2026-04-28)
+   Final pass: center icons/buttons in their containers,
+   normalize padding to a grid, fix column-flex centering.
+   ===================================================== */
+@media (max-width: 768px) {
+  /* Contact links: column flex needs align-items:center, not just
+     justify-content. Without this the links are left-aligned even
+     though .contact-simple has text-align:center. */
+  .contact-details {
+    align-items: center;
+  }
+  .contact-link {
+    justify-content: center;
+  }
+
+  /* "Why" cards on /#why-inhouse — center icon + number + heading axis */
+  .why-card {
+    text-align: center;
+  }
+  .why-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Solution cards already use text-align:center; ensure inner buttons
+     (if any get added later) also sit on the axis. */
+  .solution-card .btn,
+  .solution-card a {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* FAQ items: full-width tappable summary, consistent padding */
+  .faq-item summary {
+    padding: 18px 16px;
+  }
+  .faq-answer {
+    padding: 0 16px 18px;
+  }
+
+  /* Aria hero stats wrap evenly on small phones — equal cells */
+  .aria-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  .aria-hero-stat {
+    min-width: 0;
+  }
+
+  /* Section header axis: tighter, centered, consistent margin */
+  .section-header {
+    text-align: center;
+    padding: 0 16px;
+  }
+  .section-header .section-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Section subtitle line-length cap so it doesn't read as a wall of text */
+  .section-subtitle {
+    max-width: 36ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Tap targets: any button at least 44px tall on mobile */
+  .btn,
+  button,
+  .contact-link,
+  .sticky-cta__btn {
+    min-height: 44px;
+  }
+
+  /* Container padding: 16px gutter, no exceptions on phones */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Aria hero stats stack into 1 column on tiny phones — readable */
+  .aria-hero-stats {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .aria-hero-stat .stat-number {
+    font-size: 1.4rem;
+  }
+
+  /* Section padding tighter on small phones */
+  .section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
