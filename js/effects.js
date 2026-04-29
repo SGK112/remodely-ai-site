@@ -90,13 +90,24 @@
     if (prefersReducedMotion) return;
     if (!('IntersectionObserver' in window)) return;
 
+    // Tall content blocks (.pillar, .terminal-block) need an extra-low
+     // threshold or they never fire on long pages — leaving them
+     // permanently invisible. Use a tiny threshold and a fallback timer.
     const targets = document.querySelectorAll(
-      '.pillar, .paths__card, .journey__step, .dev-card, ' +
-      '.terminal-block, .case-study-stat, .case-study-body, ' +
+      '.paths__card, .journey__step, .dev-card, ' +
+      '.case-study-stat, .case-study-body, ' +
       '.section-header, .why-card, .live-tool, .aria-stat'
     );
 
     targets.forEach((el) => el.classList.add('rmd-reveal'));
+
+    // Failsafe: after 3 seconds, force-reveal anything still hidden so
+    // a missed observer call can never leave content invisible.
+    setTimeout(() => {
+      document.querySelectorAll('.rmd-reveal:not(.rmd-reveal--visible)').forEach((el) => {
+        el.classList.add('rmd-reveal--visible');
+      });
+    }, 3000);
 
     const observer = new IntersectionObserver(
       (entries) => {
