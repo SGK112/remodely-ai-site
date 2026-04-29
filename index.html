@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=113">
-  <link rel="stylesheet" href="/css/styles.min.css?v=113" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=114">
+  <link rel="stylesheet" href="/css/styles.min.css?v=114" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -1805,6 +1805,118 @@
           <p>One in-house AI system you own. Aria runs the calls and texts. Your domain runs the storefront and the payment portal. Your own apps run on your Apple Developer account. Your own data, your own code, your own savings.</p>
           <p>Most clients are off their outside contracts in <span class="hl">90 days</span>, paying <span class="hl">40&ndash;70% less</span>, with better outcomes than the stack we replaced.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Journey — how a lead becomes a customer -->
+  <section class="section section-dark" id="journey">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">The funnel, end-to-end</span>
+        <h2>How a lead becomes a customer</h2>
+        <p class="section-subtitle">Every step the visitor takes leaves a trail. Every trail leaves a CRM record. No leaks, no "we'll get to it Monday."</p>
+      </div>
+
+      <ol class="journey">
+        <li class="journey__step">
+          <span class="journey__num">01</span>
+          <div class="journey__body">
+            <h4>Visitor lands on your site</h4>
+            <p>Maybe from Google. Maybe from ChatGPT citing your service-area page. Maybe from a Google Business Profile listing we tuned.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">02</span>
+          <div class="journey__body">
+            <h4>Engages a tool</h4>
+            <p>3D room designer. Countertop calculator. Blueprint takeoff. Each one solves a real problem in 30 seconds. They came to look at your site; they leave with a result.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">03</span>
+          <div class="journey__body">
+            <h4>Hands over their email</h4>
+            <p>Native email gate to deliver the result. Project type, square footage, rough budget all come with it. You don't have to ask twice.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">04</span>
+          <div class="journey__body">
+            <h4>Lead lands in your CRM</h4>
+            <p>Tagged by source, project type, urgency. Aria reads the trail before the first call so she knows what they want.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">05</span>
+          <div class="journey__body">
+            <h4>Aria calls or texts</h4>
+            <p>Within minutes. References the project they just designed. Books the in-home estimate without you ever picking up the phone.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">06</span>
+          <div class="journey__body">
+            <h4>Estimator shows up prepared</h4>
+            <p>Materials list, square footage, jobsite photos already in hand. No "let me come back next week with numbers." Closes the job in one visit.</p>
+          </div>
+        </li>
+        <li class="journey__step">
+          <span class="journey__num">07</span>
+          <div class="journey__body">
+            <h4>Deposit collected on the spot</h4>
+            <p>Stripe, Square, or QuickBooks invoice sent before they sign. Money lands in the account you already use. No new logins for the office.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Choose Your Path — 3 paths to working with us -->
+  <section class="section section-dark" id="paths">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Three ways in</span>
+        <h2>Choose your path</h2>
+        <p class="section-subtitle">Use what we've already built. Hire us to build a stack on your accounts. Or embed our agents under your name.</p>
+      </div>
+
+      <div class="paths">
+        <article class="paths__card">
+          <div class="paths__head">
+            <span class="paths__chip">designer</span>
+            <span class="paths__chip">calculator</span>
+            <span class="paths__chip">takeoff</span>
+          </div>
+          <div class="paths__label">Run the tools yourself</div>
+          <h4>Free, no signup.</h4>
+          <p>Use our calculators, designers, and takeoff tools right now. They live on the live sites you can already see. Bring your project, get a result in seconds.</p>
+          <a href="#solutions" class="paths__cta">See the tools <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="paths__card paths__card--featured">
+          <div class="paths__head">
+            <span class="paths__chip">stripe</span>
+            <span class="paths__chip">twilio</span>
+            <span class="paths__chip">app store</span>
+          </div>
+          <div class="paths__label">Have us build the stack</div>
+          <h4>We do the heavy lifting.</h4>
+          <p>30-minute audit, then a written roadmap, then a 90-day build. Your apps and integrations sit on your own Apple Developer, Stripe, and Twilio accounts so you keep ownership when we're done.</p>
+          <a href="#contact" class="paths__cta">Book the audit <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="paths__card">
+          <div class="paths__head">
+            <span class="paths__chip">voice</span>
+            <span class="paths__chip">sms</span>
+            <span class="paths__chip">chat</span>
+          </div>
+          <div class="paths__label">Embed our agents</div>
+          <h4>Aria, white-labeled.</h4>
+          <p>Use Aria's voice and SMS agents under your business name. We provision the Twilio numbers, train her on your services, and keep her current. You keep control and the data.</p>
+          <a href="#contact" class="paths__cta">Talk to us <span aria-hidden="true">→</span></a>
+        </article>
       </div>
     </div>
   </section>
