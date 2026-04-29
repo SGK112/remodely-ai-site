@@ -16538,29 +16538,20 @@ section.section-gray .early-adopter h2 {
   border: none;
   padding: 0;
   position: relative;
-  border-radius: 24px;
+  border-radius: 20px;
 }
 
+/* Killed: the rotating/static orange ring read as a beige decorative
+   wrap around the card. Flagship card is now just a clean container. */
 .product-card-glow {
-  position: absolute;
-  inset: -2px;
-  border-radius: 26px;
-  background: linear-gradient(135deg, #f97316, #ea580c, #f97316, #f97316);
-  background-size: 300% 300%;
-  animation: glowRotate 4s ease-in-out infinite;
-  z-index: 0;
-}
-
-@keyframes glowRotate {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  display: none !important;
 }
 
 .product-card-inner {
   position: relative;
   z-index: 1;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 22px;
+  background: #131c2e;
+  border-radius: 20px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
@@ -19700,40 +19691,48 @@ button svg,
    contrast: brighter inner background, explicit text colors, brighter
    features list, and a solid border so the card reads as a card.
    ===================================================== */
+/* Flagship card: clean structure, professional, easy to read.
+   Single dark surface, thin neutral border, single accent color
+   (orange) used only for the title-supporting tagline and CTA. */
 .product-card-featured .product-card-inner {
-  background: linear-gradient(135deg, #1e293b 0%, #2d3a52 100%) !important;
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  background: #131c2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem;
 }
 .product-card-featured h3 {
   color: #ffffff !important;
-  font-size: 2rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .product-card-featured .product-card-tagline {
   color: #fb923c !important;
-  font-weight: 600;
-  font-size: 1.05rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
 }
 .product-card-featured .product-card-desc {
-  color: #e2e8f0 !important;
-  font-size: 1rem;
-  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 .product-card-featured .product-features li {
-  color: #f1f5f9 !important;
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 0.9rem;
 }
 .product-card-featured .product-features svg {
   color: #fb923c !important;
 }
 .product-card-featured .product-stat-number {
-  color: #fb923c !important;
-  font-weight: 800;
+  color: #ffffff !important;
+  font-weight: 700;
 }
 .product-card-featured .product-stat-label {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: rgba(255, 255, 255, 0.55) !important;
 }
 .product-card-featured .product-card-badge {
-  color: #ffffff;
+  color: #fb923c;
 }
 
 /* Phone mockup contrast on mobile */
@@ -19741,106 +19740,22 @@ button svg,
   .product-card-featured .product-card-inner {
     padding: 1.75rem 1.25rem;
   }
-  .product-card-featured h3 { font-size: 1.5rem; }
-  .product-card-featured .product-card-desc { font-size: 0.95rem; }
+  .product-card-featured h3 { font-size: 1.4rem; }
+  .product-card-featured .product-card-desc { font-size: 0.9rem; }
 }
 
 /* =====================================================
-   MOBILE ALIGNMENT POLISH (2026-04-28)
-   Final pass: center icons/buttons in their containers,
-   normalize padding to a grid, fix column-flex centering.
+   MOBILE ALIGNMENT (scoped, low blast radius)
+   Only the specific fixes — no site-wide button heights or
+   subtitle clamps that broke compact layouts last pass.
    ===================================================== */
 @media (max-width: 768px) {
-  /* Contact links: column flex needs align-items:center, not just
-     justify-content. Without this the links are left-aligned even
-     though .contact-simple has text-align:center. */
+  /* Contact links: column flex needs align-items:center to actually
+     center horizontally. justify-content alone does nothing in column. */
   .contact-details {
     align-items: center;
   }
   .contact-link {
     justify-content: center;
-  }
-
-  /* "Why" cards on /#why-inhouse — center icon + number + heading axis */
-  .why-card {
-    text-align: center;
-  }
-  .why-icon {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Solution cards already use text-align:center; ensure inner buttons
-     (if any get added later) also sit on the axis. */
-  .solution-card .btn,
-  .solution-card a {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* FAQ items: full-width tappable summary, consistent padding */
-  .faq-item summary {
-    padding: 18px 16px;
-  }
-  .faq-answer {
-    padding: 0 16px 18px;
-  }
-
-  /* Aria hero stats wrap evenly on small phones — equal cells */
-  .aria-hero-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
-  }
-  .aria-hero-stat {
-    min-width: 0;
-  }
-
-  /* Section header axis: tighter, centered, consistent margin */
-  .section-header {
-    text-align: center;
-    padding: 0 16px;
-  }
-  .section-header .section-badge {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Section subtitle line-length cap so it doesn't read as a wall of text */
-  .section-subtitle {
-    max-width: 36ch;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Tap targets: any button at least 44px tall on mobile */
-  .btn,
-  button,
-  .contact-link,
-  .sticky-cta__btn {
-    min-height: 44px;
-  }
-
-  /* Container padding: 16px gutter, no exceptions on phones */
-  .container {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Aria hero stats stack into 1 column on tiny phones — readable */
-  .aria-hero-stats {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.5rem;
-  }
-  .aria-hero-stat .stat-number {
-    font-size: 1.4rem;
-  }
-
-  /* Section padding tighter on small phones */
-  .section {
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
   }
 }
