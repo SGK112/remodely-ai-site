@@ -21329,3 +21329,217 @@ body::after {
 .aria-hero-btn {
   will-change: transform;
 }
+
+/* =====================================================
+   FULL DARK + DENSE STARS (2026-04-29 — VoiceNow-style)
+   Stop pussyfooting. Pure near-black, hundreds of bright stars,
+   centered hero, two big CTAs. Lift the VoiceNow marketing aesthetic.
+   ===================================================== */
+
+/* PURE DARK BACKGROUND — overrides whatever the body had */
+html, body {
+  background: #04060d !important;
+}
+
+body::before,
+body::after {
+  z-index: 0;
+}
+
+/* Full-bleed starfield — body::after now opacity 1, no blend mode,
+   bigger background-size so individual stars are clearly visible. */
+body::after {
+  background-size: 1600px 1000px !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Centered VoiceNow-style hero */
+.hero--centered {
+  min-height: 86vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0 4rem;
+  text-align: center;
+  position: relative;
+  background: transparent;
+}
+
+.hero--centered .container {
+  max-width: 920px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero--centered .hero-eyebrow {
+  margin: 0;
+  justify-content: center;
+}
+
+.hero--centered .hero-display {
+  font-size: clamp(2.6rem, 7.5vw, 6rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.04em !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  max-width: 14ch;
+  text-wrap: balance;
+}
+
+.hero--centered .hero-lede {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem) !important;
+  line-height: 1.6 !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  max-width: 60ch;
+  margin: 0 auto !important;
+  text-wrap: balance;
+}
+
+/* Two-button row, VoiceNow CRM marketing style */
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 28px;
+  border-radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  white-space: nowrap;
+}
+
+.hero-btn--primary {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35),
+              0 1px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.hero-btn--primary:hover {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(249, 115, 22, 0.45),
+              0 1px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.hero-btn--ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.hero-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-2px);
+}
+
+.hero-microcopy {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.42) !important;
+  margin: 4px 0 0 0 !important;
+  letter-spacing: 0.04em;
+}
+
+.hero--centered .hero-spec {
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.hero--centered .hero-grader-inline {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.hero--centered .hero-grader-inline__row {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero--centered .hero-grader-inline__row:focus-within {
+  border-color: rgba(249, 115, 22, 0.6);
+  background: rgba(249, 115, 22, 0.06);
+}
+
+/* Kill the old hero-grid layout — we're centered now */
+.hero--centered .hero-grid,
+.hero--centered .hero-content,
+.hero--centered .hero-visual,
+.hero--centered .hero-iso {
+  display: contents;
+}
+
+/* The pre-existing hero glow blobs are kept but tuned brighter for the
+   pure-black background so they actually register. */
+.hero::before {
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.22) 0%, rgba(249, 115, 22, 0) 60%);
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+}
+
+.hero::after {
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.14) 0%, rgba(251, 146, 60, 0) 65%);
+}
+
+/* Remove the section-dark stardust override — the body starfield handles
+   it now. The previous overlay was darkening the dust too much. */
+.section-dark {
+  background-image: none !important;
+}
+
+.section-dark::before {
+  background: rgba(4, 6, 13, 0.55) !important;
+}
+
+/* Section-dark backgrounds become solid near-black so content reads
+   clearly over the body starfield without competing patterns */
+.section-dark {
+  background-color: rgba(4, 6, 13, 0.7) !important;
+  backdrop-filter: blur(0.5px);
+}
+
+@media (max-width: 768px) {
+  .hero--centered {
+    min-height: auto;
+    padding: 4rem 0 3rem;
+  }
+  .hero--centered .container {
+    gap: 1.2rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+  }
+  .hero-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
