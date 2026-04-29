@@ -378,3 +378,28 @@
     boot2();
   }
 })();
+
+/* ===================================================================
+ * STICKY CTA — auto-hide when footer is in view (2026-04-29)
+ * The user-prompted "we know you've reached the bottom, get out of
+ * the way" UX. IntersectionObserver on the <footer>; when it enters
+ * the viewport, add .sticky-cta--at-footer; remove on exit.
+ * =================================================================== */
+(() => {
+  if (!('IntersectionObserver' in window)) return;
+  const start = () => {
+    const bar = document.getElementById('stickyCta');
+    const footer = document.querySelector('footer.footer');
+    if (!bar || !footer) return;
+    const obs = new IntersectionObserver((entries) => {
+      const inView = entries[0].isIntersecting;
+      bar.classList.toggle('sticky-cta--at-footer', inView);
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0 });
+    obs.observe(footer);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();

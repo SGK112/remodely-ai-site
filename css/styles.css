@@ -21619,7 +21619,11 @@ body {
   opacity: 1;
 }
 
-/* All star layers stay BEHIND content. Sections are z-index 1+. */
+/* All star layers stay BEHIND content. Sections are z-index 1+.
+   IMPORTANT: don't include sticky/fixed elements here — they have
+   their own positioning, and forcing position:relative on them
+   breaks their entire layout. The sticky CTA learned this the hard
+   way. */
 .section,
 .hero,
 .social-proof-bar,
@@ -21627,12 +21631,19 @@ section,
 header,
 footer,
 nav,
-.sticky-cta,
 .exit-intent-overlay,
-.aria-voice-overlay,
 .mobile-form-card {
   position: relative;
   z-index: 1;
+}
+
+/* Sticky CTA + voice overlay keep their fixed positioning, z-index
+   bumped above the starfield so they always render on top. */
+.sticky-cta {
+  z-index: 9990 !important;
+}
+.aria-voice-overlay {
+  z-index: 9995 !important;
 }
 
 /* Hero glow blobs sit ABOVE the stars but BELOW content for depth */
@@ -21892,4 +21903,173 @@ nav,
 ::-moz-selection {
   background: rgba(249, 115, 22, 0.35);
   color: #ffffff;
+}
+
+/* =====================================================
+   STICKY CTA — separate UX for desktop vs mobile (2026-04-29)
+   Web: floating compact pill bottom-right, doesn't dominate.
+   Mobile: full-width bar at bottom, big tappable buttons.
+   Auto-hides when the footer enters view (see effects.js).
+   ===================================================== */
+
+/* MOBILE FIRST — full-width bar, big tappables */
+.sticky-cta {
+  position: fixed !important;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(10, 15, 26, 0.92);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.55),
+              0 0 24px rgba(249, 115, 22, 0.12);
+  transform: translateY(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1),
+              opacity 0.3s ease;
+  z-index: 9990;
+}
+
+.sticky-cta.sticky-cta--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* When the footer is in view, get out of the way */
+.sticky-cta.sticky-cta--at-footer {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sticky-cta__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+  transition: transform 0.18s ease, background 0.18s ease,
+              border-color 0.18s ease, color 0.18s ease;
+}
+
+.sticky-cta__btn:active {
+  transform: scale(0.96);
+}
+
+.sticky-cta__btn--primary {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.45),
+              0 1px 0 rgba(255, 255, 255, 0.18) inset;
+}
+
+.sticky-cta__btn--primary:hover {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+}
+
+.sticky-cta__btn--secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.sticky-cta__btn--secondary:hover {
+  background: rgba(249, 115, 22, 0.14);
+  border-color: rgba(249, 115, 22, 0.4);
+  color: #fb923c;
+}
+
+.sticky-cta__btn--ghost {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+}
+
+.sticky-cta__btn--ghost:hover {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+}
+
+.sticky-cta__phone span {
+  display: none;
+}
+
+/* Body padding so the bar never covers content / footer */
+@media (max-width: 599px) {
+  body {
+    padding-bottom: 84px;
+  }
+}
+
+/* TABLET — pill stays on left edge of viewport, breathing room */
+@media (min-width: 600px) {
+  .sticky-cta {
+    left: auto;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    max-width: 460px;
+    padding: 8px;
+  }
+  .sticky-cta__btn {
+    flex: 0 0 auto;
+    padding: 12px 22px;
+    font-size: 0.95rem;
+  }
+}
+
+/* DESKTOP — compact, doesn't dominate. Bottom-right corner. */
+@media (min-width: 992px) {
+  .sticky-cta {
+    padding: 7px;
+    gap: 6px;
+  }
+  .sticky-cta__btn {
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    min-height: 40px;
+  }
+  .sticky-cta__btn--ghost {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* TINY phones — drop the icon-only phone button to save space */
+@media (max-width: 380px) {
+  .sticky-cta__btn--ghost {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta {
+    transition: opacity 0.25s ease;
+    transform: none;
+  }
+  .sticky-cta:not(.sticky-cta--visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
