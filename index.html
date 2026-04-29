@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=115">
-  <link rel="stylesheet" href="/css/styles.min.css?v=115" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=116">
+  <link rel="stylesheet" href="/css/styles.min.css?v=116" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -663,29 +663,16 @@
         </div>
 
         <div class="hero-visual">
-          <div class="hero-lead-form">
-            <div class="lead-form-card" id="heroGraderCard">
-              <div class="lead-form-header">
-                <h3>Grade Your Website</h3>
-                <p>Get your AI visibility score instantly</p>
-              </div>
-              <form id="hero-grader-form" class="lead-form-body">
-                <div class="lead-form-group">
-                  <input type="url" id="hero-url" name="url" placeholder="https://yourcompany.com" required aria-label="Website URL">
-                </div>
-                <button type="submit" class="lead-form-submit">
-                  Get My Score
-                  <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
-              </form>
-              <div class="lead-form-footer">
-                <div class="lead-form-trust">
-                  <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                  <span>Instant results. No signup required.</span>
-                </div>
-              </div>
-            </div>
+          <div class="hero-iso">
+            <img src="/images/textures/hero-isometric.svg" alt="Diagram of a contractor business wired together: phone, CRM, calendar, invoice, and free lead-gen tools, all connected by data flow." width="600" height="540" loading="eager"/>
           </div>
+          <form id="hero-grader-form" class="hero-grader-inline">
+            <label for="hero-url" class="hero-grader-inline__label">Run your site through our grader &mdash; instant, free, no signup</label>
+            <div class="hero-grader-inline__row">
+              <input type="url" id="hero-url" name="url" placeholder="https://yourcompany.com" required aria-label="Website URL"/>
+              <button type="submit">Grade it &nbsp;&rarr;</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -1917,6 +1904,61 @@
           <p>Use Aria's voice and SMS agents under your business name. We provision the Twilio numbers, train her on your services, and keep her current. You keep control and the data.</p>
           <a href="#contact" class="paths__cta">Talk to us <span aria-hidden="true">→</span></a>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- For your developer — technical credibility section -->
+  <section class="section section-dark" id="for-dev">
+    <div class="container">
+      <div class="dev-band">
+        <div class="dev-band__head">
+          <span class="dev-band__chip">FOR YOUR DEVELOPER</span>
+          <h2>Hand this page to whoever maintains your website.</h2>
+          <p>Most contractors we work with already pay someone for marketing or web. That person is going to look at this site after you do. So: this is for them.</p>
+        </div>
+
+        <div class="dev-band__grid">
+          <div class="dev-card">
+            <div class="dev-card__title"><span class="dev-card__dot"></span> stack</div>
+            <ul>
+              <li><span>frontend</span><span class="v">Next.js / React / TypeScript / Tailwind</span></li>
+              <li><span>backend</span><span class="v">Node, Python, Render, Vercel</span></li>
+              <li><span>db</span><span class="v">Supabase / Firebase / Postgres</span></li>
+              <li><span>voice</span><span class="v">OpenAI Realtime, Twilio, Deepgram</span></li>
+              <li><span>llm</span><span class="v">Claude (Anthropic), GPT-4o, Gemini</span></li>
+              <li><span>mobile</span><span class="v">Expo / React Native + native iOS / Android</span></li>
+            </ul>
+          </div>
+
+          <div class="dev-card">
+            <div class="dev-card__title"><span class="dev-card__dot"></span> integrations we wire</div>
+            <ul>
+              <li><span>payments</span><span class="v">Stripe, Square, QuickBooks Online</span></li>
+              <li><span>field ops</span><span class="v">Jobber, ServiceTitan, HousecallPro</span></li>
+              <li><span>calendar</span><span class="v">Google Calendar, Apple Calendar</span></li>
+              <li><span>comms</span><span class="v">Twilio voice + SMS, Resend, Gmail</span></li>
+              <li><span>storage</span><span class="v">Cloudinary, S3, Drive</span></li>
+              <li><span>schema</span><span class="v">JSON-LD LocalBusiness, FAQPage, HowTo</span></li>
+            </ul>
+          </div>
+
+          <div class="dev-card">
+            <div class="dev-card__title"><span class="dev-card__dot"></span> what stays with the client</div>
+            <ul>
+              <li><span>repo</span><span class="v">on their GitHub org</span></li>
+              <li><span>domains</span><span class="v">on their registrar</span></li>
+              <li><span>hosting</span><span class="v">on their Render / Vercel</span></li>
+              <li><span>app store</span><span class="v">on their Apple Developer account</span></li>
+              <li><span>twilio</span><span class="v">on their Twilio sub-account</span></li>
+              <li><span>data</span><span class="v">in their database, exportable any time</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dev-band__foot">
+          <p>If you're the developer reading this: we'd rather work with you than around you. Call <a href="tel:+16028334780">(602) 833-4780</a> or email <a href="mailto:hello@remodely.ai">hello@remodely.ai</a> &mdash; happy to talk shop.</p>
+        </div>
       </div>
     </div>
   </section>

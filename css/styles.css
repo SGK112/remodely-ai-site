@@ -20777,3 +20777,313 @@ section {
     animation: none;
   }
 }
+
+/* =====================================================
+   STARDUST — overhauled, no longer afraid of it (2026-04-29)
+   Was 50% opacity + mix-blend-mode screen which made it nearly
+   invisible. Now full opacity, no blend mode, with a SECOND denser
+   layer for the hero so the headline reads against actual sky.
+   ===================================================== */
+body::after {
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  background-size: 1000px 700px !important;
+}
+
+/* A second tighter star layer over the hero specifically */
+.hero {
+  background-image:
+    url('/images/textures/stardust.svg'),
+    radial-gradient(ellipse at 50% 30%, rgba(249, 115, 22, 0.10) 0%, transparent 50%);
+  background-size: 700px 500px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+  background-position: 0 0, center;
+}
+
+/* Stardust over the dark sections more visibly */
+.section-dark {
+  background-image: url('/images/textures/stardust.svg'), none !important;
+  background-size: 900px 600px;
+  background-repeat: repeat;
+  background-blend-mode: lighten;
+}
+
+.section-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 16, 0.6);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section-dark > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* =====================================================
+   HERO ISOMETRIC — the new right column visual
+   ===================================================== */
+.hero-iso {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 1.5rem 0;
+  filter: drop-shadow(0 24px 60px rgba(249, 115, 22, 0.18));
+}
+
+.hero-iso img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+}
+
+/* Inline grader form below the iso, replacing the big card form */
+.hero-grader-inline {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-grader-inline__label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 8px;
+}
+
+.hero-grader-inline__row {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 4px;
+  transition: border-color 0.18s ease;
+}
+
+.hero-grader-inline__row:focus-within {
+  border-color: rgba(249, 115, 22, 0.5);
+  background: rgba(249, 115, 22, 0.04);
+}
+
+.hero-grader-inline__row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+.hero-grader-inline__row input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-grader-inline__row button {
+  background: #f97316;
+  color: #ffffff;
+  border: none;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.hero-grader-inline__row button:hover {
+  background: #ea580c;
+}
+
+@media (max-width: 768px) {
+  .hero-iso {
+    padding: 0 0 1rem 0;
+  }
+  .hero-grader-inline__row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-grader-inline__row button {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   DEV BAND — "for your developer" technical credibility
+   Three-column spec sheet with mono everywhere, dotted leader
+   lines, distinct from the marketing-card vocabulary.
+   ===================================================== */
+#for-dev {
+  position: relative;
+  overflow: hidden;
+}
+
+#for-dev::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/textures/blueprint-grid.svg');
+  background-size: 500px 333px;
+  background-repeat: repeat;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dev-band {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: rgba(10, 15, 26, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 36px;
+  backdrop-filter: blur(8px);
+}
+
+.dev-band__head {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.dev-band__chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: #fb923c;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+
+.dev-band__head h2 {
+  color: #ffffff !important;
+  font-size: clamp(1.6rem, 3vw, 2.2rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px 0 !important;
+  line-height: 1.2;
+}
+
+.dev-band__head p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+.dev-band__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.dev-card {
+  background: #0a0f1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 20px;
+  font-family: var(--mono);
+}
+
+.dev-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.dev-card__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f97316;
+  display: inline-block;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.6);
+}
+
+.dev-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.dev-card li {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.dev-card li > span:first-child {
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: lowercase;
+}
+
+.dev-card li .v {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.dev-band__foot {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.dev-band__foot p {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  line-height: 1.7;
+}
+
+.dev-band__foot a {
+  color: #fb923c;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(251, 146, 60, 0.4);
+}
+
+.dev-band__foot a:hover {
+  color: #fed7aa;
+  border-bottom-color: #fb923c;
+}
+
+@media (max-width: 640px) {
+  .dev-band {
+    padding: 22px 18px;
+    border-radius: 12px;
+  }
+  .dev-card li {
+    grid-template-columns: 64px 1fr;
+    font-size: 0.75rem;
+  }
+}
