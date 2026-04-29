@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=109">
-  <link rel="stylesheet" href="/css/styles.min.css?v=109" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=110">
+  <link rel="stylesheet" href="/css/styles.min.css?v=110" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -793,6 +793,8 @@
         </div>
       </div>
 
+      <!-- HIDDEN 2026-04-28: Live Tools & Examples section, restore by removing the wrapping <div hidden> -->
+      <div hidden aria-hidden="true">
       <!-- Live Lead-Gen Tools & Examples — try in browser, view what we ship -->
       <div class="solutions-header">
         <h3>Live Tools &amp; Examples</h3>
@@ -927,6 +929,7 @@
         </a>
         -->
       </div>
+      </div><!-- /HIDDEN Live Tools & Examples wrapper -->
 
       <!-- Consulting & Marketing Services -->
       <div class="solutions-header solutions-header--secondary">
@@ -1409,6 +1412,8 @@
     </div>
   </section>
 
+  <!-- HIDDEN 2026-04-28: Our Products section. Restore by removing the wrapping <div hidden>. -->
+  <div hidden aria-hidden="true">
   <!-- Our Products Section -->
   <section id="products" class="section products-section">
     <div class="container">
@@ -1653,6 +1658,7 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Our Products wrapper -->
 
   <!-- Early Adopter Section -->
   <section class="section section-gray">
