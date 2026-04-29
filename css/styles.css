@@ -20603,3 +20603,177 @@ button svg,
     font-size: 1.2rem !important;
   }
 }
+
+/* =====================================================
+   STARDUST + BLUEPRINT — atmospheric backgrounds (2026-04-29)
+   Layered subtly behind dark sections so the dark surfaces stop
+   reading as flat-black and start feeling like they have depth.
+   Stardust = white particles for sky / "cosmic" feel.
+   Blueprint grid = orange-tinted construction grid for trades feel.
+   ===================================================== */
+
+/* The body's existing dark gradient gets stardust layered on top.
+   Stars stay fixed while the page scrolls — feels like sky behind. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/images/textures/stardust.svg');
+  background-size: 1200px 800px;
+  background-repeat: repeat;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+/* Make sure section content stays above the stardust layer */
+.section,
+.hero,
+.social-proof-bar,
+section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero: soft orange glow blob behind the headline. Pure CSS, animated
+   subtly so it feels alive without ever drawing attention to itself. */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: -10%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, rgba(249, 115, 22, 0) 60%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
+  animation: heroGlowDrift 18s ease-in-out infinite alternate;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.10) 0%, rgba(251, 146, 60, 0) 65%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(30px);
+  animation: heroGlowDrift 22s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes heroGlowDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, -30px) scale(1.08); }
+}
+
+/* Hero content needs to sit above the glow blobs */
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after {
+    animation: none;
+  }
+}
+
+/* Construction blueprint grid behind the case study — thematic,
+   ties the SG section to the trades. Subtle orange grid that reads
+   as "we draw plans" without being literal. */
+#case-study {
+  position: relative;
+  overflow: hidden;
+}
+
+#case-study::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/textures/blueprint-grid.svg');
+  background-size: 600px 400px;
+  background-repeat: repeat;
+  pointer-events: none;
+  opacity: 0.55;
+  z-index: 0;
+}
+
+#case-study .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Pillars and terminal-block sit on a self-contained #0a0f1a surface
+   that should NOT have stardust bleeding through. The mix-blend-mode
+   does this naturally, but for crispness on the code-block surfaces
+   we add a tiny extra darkness inside them. */
+.pillars,
+.terminal-block,
+.paths__card,
+.aria-stats {
+  position: relative;
+  z-index: 2;
+}
+
+/* Journey gets a soft orange dot trail glow at each numbered marker —
+   gives the illusion of energy moving through the funnel. */
+.journey__num {
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.25), inset 0 0 0 1px rgba(249, 115, 22, 0.1);
+}
+
+/* Add a faint orange pulse on the top corner of paths cards */
+.paths__card {
+  position: relative;
+  overflow: hidden;
+}
+
+.paths__card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, rgba(249, 115, 22, 0) 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.paths__card:hover::after,
+.paths__card--featured::after {
+  opacity: 1;
+}
+
+/* Headline accents — a small orange chevron cursor style for select
+   section headlines, openclaw.ai-style "> Talk to Aria — Live" feel.
+   Apply with .heading-cursor class on h2/h3. */
+.heading-cursor::before {
+  content: '> ';
+  color: #f97316;
+  font-weight: 700;
+  margin-right: 4px;
+  animation: cursorBlink 1.4s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 60%   { opacity: 1; }
+  61%, 100% { opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-cursor::before {
+    animation: none;
+  }
+}
