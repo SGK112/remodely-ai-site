@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=107">
-  <link rel="stylesheet" href="/css/styles.min.css?v=107" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=108">
+  <link rel="stylesheet" href="/css/styles.min.css?v=108" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -793,10 +793,10 @@
         </div>
       </div>
 
-      <!-- Live Lead-Gen Tools — try in browser, capture lead -->
+      <!-- Live Lead-Gen Tools & Examples — try in browser, view what we ship -->
       <div class="solutions-header">
-        <h3>Try Our Tools — Free, In Your Browser</h3>
-        <p>Each one is a live working tool. We built them for our own clients and we're sharing them. Use them on a real project, see the output, decide if you want what we build for you.</p>
+        <h3>Live Tools &amp; Examples</h3>
+        <p>Every tile below is a working page. Try the free tools on a real project. View the payment portal and storefront we built for our case-study client. Each one captures leads — yours could too.</p>
       </div>
 
       <div class="live-tools">
@@ -869,6 +869,61 @@
             </span>
           </div>
         </button>
+
+        <a href="https://www.surprisegranite.com/pay/" target="_blank" rel="noopener" class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2" y="6" width="20" height="13" rx="2"/>
+              <line x1="2" y1="11" x2="22" y2="11"/>
+              <line x1="6" y1="15" x2="10" y2="15"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Live Example</span>
+            <h4>Payment Portal</h4>
+            <p>Branded invoice and deposit page. Wires into Stripe, Square, and QuickBooks — your money flows where you already book it.</p>
+            <span class="live-tool__cta">View Live Portal
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <a href="https://www.surprisegranite.com/cart/" target="_blank" rel="noopener" class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="9" cy="20" r="1.5"/>
+              <circle cx="18" cy="20" r="1.5"/>
+              <path d="M3 3h2l2.4 12.2a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 7H6"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Live Example</span>
+            <h4>Online Storefront</h4>
+            <p>Sell materials, packages, or services on your own domain. Cart, checkout, taxes, shipping — built into the same site Aria already runs on.</p>
+            <span class="live-tool__cta">View Live Store
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <a href="sms:+16028335307?&body=Hi%20Aria%2C%20I%20want%20to%20see%20how%20your%20SMS%20agent%20works." class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              <line x1="8" y1="10" x2="8.01" y2="10"/>
+              <line x1="12" y1="10" x2="12.01" y2="10"/>
+              <line x1="16" y1="10" x2="16.01" y2="10"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Live Demo</span>
+            <h4>SMS &amp; MMS AI Agents</h4>
+            <p>Text our line and Aria replies in seconds — quotes, scheduling, photo intake. Twilio numbers we provision under your business, not ours.</p>
+            <span class="live-tool__cta">Text +1 (602) 833-5307
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
       </div>
 
       <!-- Consulting & Marketing Services -->
