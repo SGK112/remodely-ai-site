@@ -19979,3 +19979,127 @@ button svg,
     font-size: 0.85rem;
   }
 }
+
+/* =====================================================
+   PILLARS — editorial replacement for the 13-icon-card grid
+   Numbered rows, asymmetric layout (number column + content
+   column), subtle separator. Reads as a magazine list, not as
+   a Pinterest grid of identical-looking cards.
+   ===================================================== */
+.pillars {
+  display: flex;
+  flex-direction: column;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.pillar {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 32px;
+  padding: 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pillar:first-of-type {
+  border-top: none;
+  padding-top: 16px;
+}
+
+.pillar__num {
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+  color: rgba(249, 115, 22, 0.8);
+  letter-spacing: -0.02em;
+  padding-top: 4px;
+}
+
+.pillar__body h4 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.pillar__body p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0 0 16px 0;
+  max-width: 60ch;
+}
+
+.pillar__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pillar__list li {
+  position: relative;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pillar__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f97316;
+  opacity: 0.55;
+}
+
+.pillar__links {
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+}
+
+.pillar__links a {
+  color: #fb923c;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(251, 146, 60, 0.3);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.pillar__links a:hover {
+  color: #fed7aa;
+  border-bottom-color: #fb923c;
+}
+
+.pillar__links span[aria-hidden] {
+  margin: 0 8px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 640px) {
+  .pillar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 32px 0;
+  }
+  .pillar__num {
+    font-size: 1.5rem;
+  }
+  .pillar__body h4 {
+    font-size: 1.25rem;
+  }
+  .pillar__body p {
+    font-size: 0.95rem;
+  }
+}
