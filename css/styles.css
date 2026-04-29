@@ -21669,3 +21669,227 @@ nav,
     will-change: auto;
   }
 }
+
+/* =====================================================
+   PILLAR + JOURNEY + PATHS H4 — visibility lockdown
+   Some upstream rule is applying -webkit-text-fill-color:transparent
+   to h4s in the dark sections, leaving the pillar titles as ghost
+   outlines. Nuke it with maximum specificity at the end of the file.
+   ===================================================== */
+.pillars .pillar .pillar__body h4,
+.journey .journey__step .journey__body h4,
+.paths .paths__card h4,
+.dev-band .dev-card .dev-card__title,
+.terminal-block .terminal-block__title {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Same for paragraph copy in those blocks — make sure nothing dims them */
+.pillars .pillar .pillar__body > p,
+.journey .journey__step .journey__body p,
+.paths .paths__card p {
+  color: rgba(255, 255, 255, 0.78) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.78) !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  opacity: 1 !important;
+}
+
+/* =====================================================
+   WOW LAYER — animated accents, custom transitions, depth
+   Last polish pass. Animated gradient on the hero accent word,
+   live-pulse eyebrow status, clip-path section seams, more glow.
+   ===================================================== */
+
+/* Animated gradient text on the headline accent ("contractors") */
+.hero-display__accent {
+  background: linear-gradient(
+    90deg,
+    #f97316 0%,
+    #fb923c 25%,
+    #fdba74 50%,
+    #fb923c 75%,
+    #f97316 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: accentSweep 8s linear infinite;
+}
+
+@keyframes accentSweep {
+  0%   { background-position: 0% center; }
+  100% { background-position: 250% center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-display__accent { animation: none; }
+}
+
+/* Live status dot in the hero eyebrow — green pulse signals
+   "this company is active right now." Subtle, not gimmicky. */
+.hero-eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 0;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.7), 0 0 14px rgba(34, 197, 94, 0.4);
+  animation: livePulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes livePulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.3); opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow::before { animation: none; }
+}
+
+/* Custom section seam — orange glow line slicing between dark sections.
+   Replaces the default abrupt stacking with a deliberate transition. */
+.section-dark + .section-dark {
+  position: relative;
+}
+
+.section-dark + .section-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 80%;
+  max-width: 700px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(249, 115, 22, 0.5) 50%,
+    transparent 100%
+  );
+  z-index: 3;
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
+}
+
+/* Big wow on hero — angled gradient backdrop seam at bottom of hero */
+.hero::before {
+  z-index: 0;
+}
+
+.hero {
+  position: relative;
+}
+
+/* HERO SCROLL CUE — small animated arrow at bottom of hero,
+   nudges first-time visitors to keep going */
+.hero--centered::after {
+  content: '↓';
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.35);
+  animation: scrollNudge 2.2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes scrollNudge {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+  50%      { transform: translateX(-50%) translateY(8px); opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero--centered::after { animation: none; }
+}
+
+@media (max-width: 768px) {
+  .hero--centered::after { bottom: 16px; font-size: 1rem; }
+}
+
+/* Bigger orange glow bloom on the hero from below — sun rising */
+.hero--centered::before {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 100%,
+      rgba(249, 115, 22, 0.35) 0%,
+      rgba(249, 115, 22, 0.10) 30%,
+      rgba(249, 115, 22, 0) 70%) !important;
+  filter: blur(0) !important;
+  animation: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Section header eyebrow chip — small mono label above each h2 */
+.section-header .section-badge {
+  font-family: var(--mono) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  color: #fb923c !important;
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+/* Bigger, bolder section headlines on dark sections */
+.section-dark .section-header h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.15 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+/* Section subtitle styling — tighter, balanced */
+.section-dark .section-header .section-subtitle {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: clamp(1rem, 1.4vw, 1.15rem) !important;
+  line-height: 1.65 !important;
+  max-width: 60ch;
+  margin: 0 auto !important;
+  text-wrap: balance;
+}
+
+/* Selection style — subtle orange wash */
+::selection {
+  background: rgba(249, 115, 22, 0.35);
+  color: #ffffff;
+}
+::-moz-selection {
+  background: rgba(249, 115, 22, 0.35);
+  color: #ffffff;
+}
