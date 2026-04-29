@@ -21631,16 +21631,21 @@ section,
 header,
 footer,
 nav,
-.exit-intent-overlay,
 .mobile-form-card {
   position: relative;
   z-index: 1;
 }
 
-/* Sticky CTA + voice overlay keep their fixed positioning, z-index
-   bumped above the starfield so they always render on top. */
+/* Sticky CTA + voice overlay + exit-intent modal keep their fixed
+   positioning, z-index bumped above the starfield so they always
+   render on top. (Adding any of these to the relative reset above
+   breaks them — they fall out of the viewport and render inline.
+   Already burned by this bug twice.) */
 .sticky-cta {
   z-index: 9990 !important;
+}
+.exit-intent-overlay {
+  z-index: 9998 !important;
 }
 .aria-voice-overlay {
   z-index: 9995 !important;
@@ -22072,4 +22077,128 @@ nav,
     opacity: 0;
     pointer-events: none;
   }
+}
+
+/* =====================================================
+   EXIT-INTENT MODAL — restyled for dark theme
+   The original was white-on-light, jarring against the dark+stars
+   site. Now matches the terminal-block / sticky-cta vocabulary:
+   dark surface, glass backdrop, mono eyebrow, orange primary CTA.
+   ===================================================== */
+.exit-intent-overlay {
+  background: rgba(4, 6, 13, 0.80) !important;
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+}
+
+.exit-intent-modal {
+  background: linear-gradient(180deg, #0f1525 0%, #0a0f1a 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 16px !important;
+  padding: 28px !important;
+  max-width: 440px !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6),
+              0 0 60px rgba(249, 115, 22, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.exit-intent-close {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  top: 16px !important;
+  right: 16px !important;
+}
+
+.exit-intent-close:hover {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border-color: rgba(249, 115, 22, 0.4) !important;
+}
+
+.exit-intent-header {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08) !important;
+  padding-bottom: 16px !important;
+  margin-bottom: 18px !important;
+}
+
+.exit-intent-logo {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+}
+
+/* Mono eyebrow line above the modal title */
+.exit-intent-header > div:not(.exit-intent-logo) > p {
+  font-family: var(--mono) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase;
+}
+
+.exit-intent-header strong {
+  color: #ffffff !important;
+  font-size: 1rem;
+}
+
+.exit-intent-title {
+  color: #ffffff !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 10px !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+.exit-intent-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 22px !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.exit-intent-cta {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  padding: 14px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease !important;
+}
+
+.exit-intent-cta:hover {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(249, 115, 22, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.exit-intent-dismiss {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.85rem !important;
+  font-family: var(--mono) !important;
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 0 !important;
+  margin-top: 4px;
+  transition: color 0.15s ease;
+}
+
+.exit-intent-dismiss:hover {
+  color: #ffffff !important;
 }
