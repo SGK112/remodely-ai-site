@@ -19759,3 +19759,72 @@ button svg,
     justify-content: center;
   }
 }
+
+/* =====================================================
+   ARIA STATS CARD — final clean design (2026-04-28)
+   Three competing definitions exist higher in the stylesheet from
+   prior iterations. This block at the end wins by source order.
+   Each stat is its own subtle elevated tile inside a dark surface,
+   so numbers, labels, and the grid axis all read cleanly.
+   ===================================================== */
+.aria-stats {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 460px !important;
+  margin: 0 auto 28px !important;
+  padding: 8px !important;
+  background: #0a0f1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 18px !important;
+}
+
+.aria-stat {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  padding: 18px 10px !important;
+  min-height: 110px !important;
+}
+
+.aria-stat strong {
+  display: block !important;
+  color: #fb923c !important;
+  font-size: 1.625rem !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 8px !important;
+}
+
+.aria-stat span {
+  display: block !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.01em !important;
+}
+
+@media (max-width: 480px) {
+  .aria-stats {
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+  .aria-stat {
+    padding: 14px 6px !important;
+    min-height: 100px !important;
+  }
+  .aria-stat strong {
+    font-size: 1.4rem !important;
+  }
+  .aria-stat span {
+    font-size: 0.7rem !important;
+  }
+}
