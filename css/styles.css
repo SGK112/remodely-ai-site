@@ -20162,3 +20162,206 @@ button svg,
     gap: 4px 14px;
   }
 }
+
+/* =====================================================
+   HERO — editorial typography (2026-04-29)
+   Big display headline, mono eyebrow, mono spec-line.
+   Drops the 4-feature checkmark grid for a cleaner read.
+   ===================================================== */
+.hero-content--editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-eyebrow span {
+  color: #fb923c !important;
+  font-weight: 600;
+}
+
+.hero-display {
+  font-size: clamp(2.6rem, 6.4vw, 5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+}
+
+.hero-display__accent {
+  color: #f97316 !important;
+}
+
+.hero-lede {
+  font-size: clamp(1rem, 1.5vw, 1.15rem) !important;
+  line-height: 1.65 !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  max-width: 56ch;
+  margin: 0 !important;
+}
+
+.hero-spec {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55) !important;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-spec span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.hero-spec__sep {
+  color: rgba(249, 115, 22, 0.55) !important;
+}
+
+@media (max-width: 768px) {
+  .hero-content--editorial {
+    gap: 1rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem;
+  }
+  .hero-spec {
+    font-size: 0.7rem;
+    gap: 0 0.4rem;
+  }
+}
+
+/* =====================================================
+   TERMINAL BLOCK — reusable, used by Why-section console
+   readout. Same dark surface + mono treatment as .pillars.
+   ===================================================== */
+.terminal-block {
+  max-width: 880px;
+  margin: 2.5rem auto 0;
+  background: #0a0f1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-family: var(--mono);
+  padding: 22px 24px 24px;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.terminal-block__title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin: 0 0 14px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  letter-spacing: 0;
+}
+
+.terminal-block__title--reply {
+  margin-top: 22px;
+}
+
+.terminal-block__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.terminal-block__key {
+  white-space: nowrap;
+}
+
+.terminal-block__dots {
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px);
+}
+
+.terminal-block__val {
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.terminal-block__row--total {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+  padding-top: 8px;
+  font-weight: 600;
+}
+
+.terminal-block__row--total .terminal-block__key,
+.terminal-block__row--total .terminal-block__val {
+  color: #ffffff !important;
+}
+
+.terminal-block__row--accent {
+  border-top: none;
+  padding-top: 0;
+}
+
+.terminal-block__row--accent .terminal-block__val {
+  color: #fb923c !important;
+}
+
+.terminal-block__output {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.terminal-block__output p {
+  margin: 0 0 12px 0 !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-family: var(--mono) !important;
+  max-width: none !important;
+}
+
+.terminal-block__output p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.terminal-block__output .hl {
+  color: #fb923c;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .terminal-block {
+    padding: 18px 16px;
+    font-size: 0.78rem;
+  }
+  .terminal-block__title {
+    font-size: 0.78rem;
+  }
+  .terminal-block__row {
+    font-size: 0.78rem;
+    grid-template-columns: 1fr auto;
+    gap: 4px 8px;
+  }
+  .terminal-block__dots {
+    display: none;
+  }
+  .terminal-block__output {
+    font-size: 0.8rem;
+  }
+}

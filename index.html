@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=112">
-  <link rel="stylesheet" href="/css/styles.min.css?v=112" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=113">
+  <link rel="stylesheet" href="/css/styles.min.css?v=113" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -639,42 +639,26 @@
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
-        <div class="hero-content">
-          <h1 class="hero-headline-large">Lead Gen Tools<br>for Contractors</h1>
-          <p class="hero-subtitle">iOS apps, online stores, and tools that turn website visitors into leads. Built for remodelers, GCs, plumbers, HVAC, and home services.</p>
-          <div class="hero-features">
-            <div class="hero-feature">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span>Apple App Development</span>
-            </div>
-            <div class="hero-feature">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span>Online Stores &amp; Payments</span>
-            </div>
-            <div class="hero-feature">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span>Free Lead Gen Tools</span>
-            </div>
-            <div class="hero-feature">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <span>AI Voice &amp; SMS Agents</span>
-            </div>
-          </div>
-
-          <!-- Mobile Stats -->
-          <div class="hero-stats-mobile">
-            <div class="hero-stat-mobile">
-              <strong>500+</strong>
-              <span>Sites Graded</span>
-            </div>
-            <div class="hero-stat-mobile">
-              <strong>30s</strong>
-              <span>Instant Results</span>
-            </div>
-            <div class="hero-stat-mobile">
-              <strong>Free</strong>
-              <span>No Signup</span>
-            </div>
+        <div class="hero-content hero-content--editorial">
+          <div class="hero-eyebrow"><span>~</span> /remodely.ai &mdash; Phoenix, AZ</div>
+          <h1 class="hero-display">
+            Lead generation<br>
+            tools for<br>
+            <span class="hero-display__accent">contractors</span>.
+          </h1>
+          <p class="hero-lede">We build the iOS apps, online stores, payment portals, and free tools that turn your website visitors into qualified leads. For remodelers, general contractors, plumbers, HVAC, roofers, landscapers, and anyone whose business runs on the phone.</p>
+          <div class="hero-spec">
+            <span>apps</span>
+            <span class="hero-spec__sep">/</span>
+            <span>stores</span>
+            <span class="hero-spec__sep">/</span>
+            <span>payments</span>
+            <span class="hero-spec__sep">/</span>
+            <span>ai voice</span>
+            <span class="hero-spec__sep">/</span>
+            <span>sms</span>
+            <span class="hero-spec__sep">/</span>
+            <span>seo</span>
           </div>
         </div>
 
@@ -1778,24 +1762,48 @@
         <p class="section-subtitle">A typical remodeling company spends $4,000 to $12,000 every month on outside web, SEO, ads, answering services, and marketing SaaS. They still don't own any of it. We fix that.</p>
       </div>
 
-      <div class="why-grid" style="margin-top:2rem">
-        <div class="why-card">
-          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-          <div class="why-number">$48k+</div>
-          <h4>Annual Savings</h4>
-          <p>Replace the SEO retainer, the answering service, the marketing SaaS, and the form-and-CRM stack with one in-house AI system you actually own.</p>
+      <div class="terminal-block">
+        <div class="terminal-block__title">$ contractor.monthly_marketing_spend()</div>
+        <div class="terminal-block__row">
+          <span class="terminal-block__key">SEO retainer</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$1,500&ndash;$3,500</span>
         </div>
-        <div class="why-card">
-          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-          <div class="why-number">90 days</div>
-          <h4>To Independence</h4>
-          <p>From audit to live, in-house operation. Most clients are off their old SEO and answering-service contracts within a quarter.</p>
+        <div class="terminal-block__row">
+          <span class="terminal-block__key">Answering service</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$300&ndash;$800</span>
         </div>
-        <div class="why-card">
-          <div class="why-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0M3 12h18"/></svg></div>
-          <div class="why-number">100%</div>
-          <h4>You Own the Data</h4>
-          <p>Every lead, call recording, customer interaction, and ranking signal lives in your accounts. No vendor lock-in. No "we'll send your data when you cancel."</p>
+        <div class="terminal-block__row">
+          <span class="terminal-block__key">Marketing SaaS (CRM, forms, automation)</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$400&ndash;$1,200</span>
+        </div>
+        <div class="terminal-block__row">
+          <span class="terminal-block__key">Ad management retainer</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$1,000&ndash;$3,500</span>
+        </div>
+        <div class="terminal-block__row">
+          <span class="terminal-block__key">Website host + maintenance</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$200&ndash;$500</span>
+        </div>
+        <div class="terminal-block__row terminal-block__row--total">
+          <span class="terminal-block__key">total / month</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$3,400&ndash;$9,500</span>
+        </div>
+        <div class="terminal-block__row terminal-block__row--total terminal-block__row--accent">
+          <span class="terminal-block__key">total / year</span>
+          <span class="terminal-block__dots"></span>
+          <span class="terminal-block__val">$40,800&ndash;$114,000</span>
+        </div>
+
+        <div class="terminal-block__title terminal-block__title--reply">$ remodely.ai --replace-stack</div>
+        <div class="terminal-block__output">
+          <p>One in-house AI system you own. Aria runs the calls and texts. Your domain runs the storefront and the payment portal. Your own apps run on your Apple Developer account. Your own data, your own code, your own savings.</p>
+          <p>Most clients are off their outside contracts in <span class="hl">90 days</span>, paying <span class="hl">40&ndash;70% less</span>, with better outcomes than the stack we replaced.</p>
         </div>
       </div>
     </div>
