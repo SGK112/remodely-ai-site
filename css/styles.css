@@ -21087,3 +21087,245 @@ body::after {
     font-size: 0.75rem;
   }
 }
+
+/* =====================================================
+   FULL-BODY UX — movement, depth, scroll-reveal (2026-04-29)
+   Companion to /js/effects.js. All effects respect
+   prefers-reduced-motion via the JS module gating reveal/tilt.
+   ===================================================== */
+
+/* Scroll progress bar — slim orange line at top of viewport */
+#rmd-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316 0%, #fb923c 50%, #f97316 100%);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+  transition: transform 80ms linear;
+}
+
+/* Scroll-reveal: fade up + slight scale */
+.rmd-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.rmd-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rmd-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Hero iso — depth, hover tilt is handled by JS, but static state has
+   shadow + slight float animation for life when no mouse */
+.hero-iso {
+  perspective: 1200px;
+  position: relative;
+}
+
+.hero-iso img {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+  animation: heroIsoFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes heroIsoFloat {
+  0%   { transform: translateY(0) rotateY(-1deg); }
+  100% { transform: translateY(-8px) rotateY(1deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-iso img { animation: none; }
+}
+
+/* Pillar / paths card depth on hover */
+.pillar:hover .pillar__num {
+  background: #131c2e;
+  border-color: rgba(249, 115, 22, 0.7);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.paths__card,
+.dev-card {
+  transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.3s ease,
+              background 0.3s ease;
+}
+
+.dev-card:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+  background: #0f1525;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4),
+              0 0 30px rgba(249, 115, 22, 0.06);
+}
+
+.paths__card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45),
+              0 0 36px rgba(249, 115, 22, 0.08);
+}
+
+.paths__card--featured {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4),
+              0 0 32px rgba(249, 115, 22, 0.12);
+}
+
+/* Journey step depth on hover */
+.journey__step {
+  transition: transform 0.25s ease;
+}
+
+.journey__step:hover {
+  transform: translateX(4px);
+}
+
+.journey__step:hover .journey__num {
+  border-color: rgba(249, 115, 22, 0.8);
+  box-shadow: 0 0 18px rgba(249, 115, 22, 0.4),
+              inset 0 0 0 1px rgba(249, 115, 22, 0.2);
+  color: #fff !important;
+  background: rgba(249, 115, 22, 0.15);
+}
+
+/* Hero entrance — staggered fade-up from above-the-fold elements */
+.hero-eyebrow,
+.hero-display,
+.hero-lede,
+.hero-spec {
+  animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-eyebrow   { animation-delay: 0.1s; }
+.hero-display   { animation-delay: 0.2s; }
+.hero-lede      { animation-delay: 0.4s; }
+.hero-spec      { animation-delay: 0.55s; }
+
+.hero-iso       { animation: heroFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
+.hero-grader-inline { animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both; }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow, .hero-display, .hero-lede, .hero-spec,
+  .hero-iso, .hero-grader-inline {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Subtle pulse on the dev-card dot indicator */
+.dev-card__dot {
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(249, 115, 22, 0.6); opacity: 1; }
+  50%      { box-shadow: 0 0 12px rgba(249, 115, 22, 0.9); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-card__dot { animation: none; }
+}
+
+/* Section transition glow — orange line at bottom of dark sections
+   gives an editorial seam between sections */
+.section-dark + .section-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(249, 115, 22, 0.4) 50%,
+    transparent 100%
+  );
+}
+
+/* =====================================================
+   CURSOR GLOW + ISO LAYER PARALLAX (effects.js wave 2)
+   ===================================================== */
+
+/* Soft orange spotlight that follows the cursor on dark sections.
+   Auto-hidden on touch devices via JS guard. */
+#rmd-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.18) 0%,
+    rgba(249, 115, 22, 0.08) 30%,
+    rgba(249, 115, 22, 0) 70%
+  );
+  filter: blur(16px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: screen;
+}
+
+#rmd-cursor-glow.rmd-cursor-glow--visible {
+  opacity: 1;
+}
+
+/* Iso-parallax: hero-iso uses --iso-x / --iso-y CSS vars set by JS
+   on mousemove. The transform layers on top of the entrance/float
+   animations via composition. */
+.hero-iso img {
+  transform:
+    translateX(calc(var(--iso-x, 0) * 18px))
+    translateY(calc(var(--iso-y, 0) * 14px))
+    rotateY(calc(var(--iso-x, 0) * 4deg))
+    rotateX(calc(var(--iso-y, 0) * -3deg));
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-iso img {
+    transform: none;
+  }
+}
+
+/* Tighter selector for buttons that get magnetic treatment so the
+   cursor pickup feels responsive. */
+.hero-grader-inline__row button,
+.paths__cta,
+.lead-form-submit,
+.aria-cta,
+.case-study-cta,
+.aria-hero-btn {
+  will-change: transform;
+}
