@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=106">
-  <link rel="stylesheet" href="/css/styles.min.css?v=106" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=107">
+  <link rel="stylesheet" href="/css/styles.min.css?v=107" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -793,9 +793,87 @@
         </div>
       </div>
 
-      <!-- Consulting & Marketing Services -->
+      <!-- Live Lead-Gen Tools — try in browser, capture lead -->
       <div class="solutions-header">
-        <h3>AI Consulting Built for Remodelers &amp; Contractors</h3>
+        <h3>Try Our Tools — Free, In Your Browser</h3>
+        <p>Each one is a live working tool. We built them for our own clients and we're sharing them. Use them on a real project, see the output, decide if you want what we build for you.</p>
+      </div>
+
+      <div class="live-tools">
+        <a href="https://www.surprisegranite.com/tools/room-designer/" target="_blank" rel="noopener" class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 9l9-6 9 6v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+              <path d="M9 22V12h6v10"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Free Tool</span>
+            <h4>3D Room Designer</h4>
+            <p>Drop in walls, fixtures, and finishes. Share the layout with your contractor before the first site visit.</p>
+            <span class="live-tool__cta">Open Designer
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <a href="https://www.surprisegranite.com/tools/countertop-calculator/" target="_blank" rel="noopener" class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="4" y="4" width="16" height="16" rx="2"/>
+              <path d="M9 9h2M13 9h2M9 13h2M13 13h2M9 17h6"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Free Tool</span>
+            <h4>Countertop Calculator</h4>
+            <p>Instant ballpark on materials, edges, and labor for any kitchen or bath countertop project.</p>
+            <span class="live-tool__cta">Run a Quote
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <a href="https://surprisegranite.com/tools/blueprint-takeoff/" target="_blank" rel="noopener" class="live-tool">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M9 13h2M9 17h6M13 13h2"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Free Tool</span>
+            <h4>Blueprint Takeoff</h4>
+            <p>Upload a plan, get square footage, linear footage, and material counts in seconds — built for estimators.</p>
+            <span class="live-tool__cta">Upload a Blueprint
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <button type="button" class="live-tool live-tool--button" onclick="window.openAriaVoiceChat && window.openAriaVoiceChat()">
+          <div class="live-tool__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/>
+              <path d="M19 11v1a7 7 0 01-14 0v-1"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </div>
+          <div class="live-tool__body">
+            <span class="live-tool__badge">Live Demo</span>
+            <h4>Talk to Aria</h4>
+            <p>Real AI voice agent. Ask her anything — what we build, how she handles your calls, what it costs.</p>
+            <span class="live-tool__cta">Start Voice Chat
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Consulting & Marketing Services -->
+      <div class="solutions-header solutions-header--secondary">
+        <h3>What We Build For Clients</h3>
         <p><strong>Construction guys aren't web guys — that's why we exist.</strong> We specialize in remodeling, construction, and home-services businesses, replacing the $2,000–$10,000/mo agencies, marketing SaaS stacks, and answering services that drain margin. <strong>Stop renting your marketing. Own it.</strong> Bring it in-house with AI, keep the savings, own the data.</p>
       </div>
 
