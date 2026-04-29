@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=118">
-  <link rel="stylesheet" href="/css/styles.min.css?v=118" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=119">
+  <link rel="stylesheet" href="/css/styles.min.css?v=119" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -331,6 +331,9 @@
   </script>
 </head>
 <body>
+  <!-- 3-layer parallax starfield — JS drives bg-position on scroll -->
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
   <!-- Clean B2B Background - No starfield -->
 
   <!-- ===== MOBILE PRESENTATION MODE ===== -->
@@ -2414,7 +2417,7 @@
   <!-- Scripts (deferred — non-critical for first paint) -->
   <script src="/js/aria-voice-chat.js?v=7" defer></script>
   <script src="/js/main.js?v=15" defer></script>
-  <script src="/js/effects.js?v=1" defer></script>
+  <script src="/js/effects.js?v=2" defer></script>
 
   <!-- ARIA Voice Chat Init -->
   <script>

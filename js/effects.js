@@ -43,22 +43,29 @@
   }
 
   /* ---------------------------------------------------------------
-     2. PARALLAX STARDUST (two layers, different scroll speeds)
-     The body::after stardust stays fixed via CSS. We additionally
-     translate the dark sections' bg position on scroll so the dust
-     drifts at a slower rate than content — depth illusion.
+     2. PARALLAX STARFIELD (3 layers — deep / mid / near)
+     Three independent star layers drift at different rates so
+     scrolling reveals real depth. Deep barely moves (far away),
+     mid medium, near fastest (foreground).
      --------------------------------------------------------------- */
   function initParallaxStars() {
     if (prefersReducedMotion) return;
 
-    const sections = document.querySelectorAll('.section-dark, .hero');
+    const layerMid  = document.querySelector('.starfield-mid');
+    const layerNear = document.querySelector('.starfield-near');
+
+    // Drive the deep layer (body::before) via a CSS variable so we
+    // don't have to manipulate the pseudo-element directly.
+    const deepStyle = document.createElement('style');
+    deepStyle.textContent = 'body::before{background-position:0 var(--deep-y,0px)!important;}';
+    document.head.appendChild(deepStyle);
+
     let ticking = false;
     const update = () => {
       const y = window.scrollY;
-      sections.forEach((s, i) => {
-        const rate = 0.18 + (i % 3) * 0.04;
-        s.style.backgroundPositionY = `${y * rate * -1}px`;
-      });
+      document.body.style.setProperty('--deep-y', `${(-y * 0.10).toFixed(1)}px`);
+      if (layerMid)  layerMid.style.backgroundPositionY  = `${(-y * 0.30).toFixed(1)}px`;
+      if (layerNear) layerNear.style.backgroundPositionY = `${(-y * 0.55).toFixed(1)}px`;
       ticking = false;
     };
 
@@ -72,6 +79,8 @@
       },
       { passive: true }
     );
+
+    update();
   }
 
   /* ---------------------------------------------------------------

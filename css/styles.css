@@ -21543,3 +21543,109 @@ body::after {
     width: 100%;
   }
 }
+
+/* =====================================================
+   3-LAYER PARALLAX STARFIELD (2026-04-29)
+   Replaces single stardust.svg with three layers totaling ~2360
+   stars. Each layer has its own background-size and parallax rate,
+   so scrolling reveals real depth — distant tiny stars drift slow,
+   mid stars medium, foreground bright stars fastest.
+   ===================================================== */
+
+/* Wipe the old single-layer body::after rules — we re-declare below */
+body::after {
+  display: none !important;
+}
+
+/* DEEP layer — fixed to viewport, slowest parallax, dimmest */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/images/textures/stars-deep.svg');
+  background-size: 2400px 1500px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+  will-change: background-position;
+}
+
+/* MID + NEAR layers — applied to the body via a wrapper */
+body {
+  position: relative;
+}
+
+.starfield-mid,
+.starfield-near {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-repeat: repeat;
+  will-change: background-position;
+}
+
+.starfield-mid {
+  background-image: url('/images/textures/stars-mid.svg');
+  background-size: 1800px 1200px;
+  opacity: 0.95;
+}
+
+.starfield-near {
+  background-image: url('/images/textures/stars-near.svg');
+  background-size: 1400px 1000px;
+  opacity: 1;
+}
+
+/* All star layers stay BEHIND content. Sections are z-index 1+. */
+.section,
+.hero,
+.social-proof-bar,
+section,
+header,
+footer,
+nav,
+.sticky-cta,
+.exit-intent-overlay,
+.aria-voice-overlay,
+.mobile-form-card {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero glow blobs sit ABOVE the stars but BELOW content for depth */
+.hero::before,
+.hero::after {
+  z-index: 1;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Section-dark surfaces are translucent so the starfield shows through.
+   This was the missing piece — opaque dark sections were hiding all
+   the stars under content. */
+.section-dark {
+  background-color: rgba(4, 6, 13, 0.78) !important;
+  backdrop-filter: blur(0.5px);
+}
+
+.section-dark::before {
+  display: none !important;
+}
+
+/* For lighter surfaces (white/gray), stars stay hidden behind the
+   solid bg as expected — no override needed. */
+
+/* prefers-reduced-motion: still show all 3 layers, just no parallax */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  .starfield-mid,
+  .starfield-near {
+    will-change: auto;
+  }
+}
