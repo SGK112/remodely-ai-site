@@ -19986,120 +19986,179 @@ button svg,
    column), subtle separator. Reads as a magazine list, not as
    a Pinterest grid of identical-looking cards.
    ===================================================== */
+/* Terminal / Claude Code aesthetic. The pillars block has its own dark
+   surface so it works regardless of the parent section bg, and every
+   text color is !important because the global stylesheet's h4 / p / li
+   rules use !important too — without it the bullet text was invisible. */
+:root {
+  --mono: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', 'SF Mono', Menlo, Consolas, ui-monospace, monospace;
+}
+
 .pillars {
-  display: flex;
-  flex-direction: column;
   max-width: 880px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0;
+  background: #0a0f1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--mono);
+}
+
+/* Fake terminal title bar */
+.pillars::before {
+  content: '~ /remodely.ai $ what_we_build';
+  display: block;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
 }
 
 .pillar {
   display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 32px;
-  padding: 40px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  padding: 24px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .pillar:first-of-type {
   border-top: none;
-  padding-top: 16px;
 }
 
 .pillar__num {
-  font-family: 'JetBrains Mono', 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
-  font-size: 2rem;
-  font-weight: 500;
-  line-height: 1;
-  color: rgba(249, 115, 22, 0.8);
-  letter-spacing: -0.02em;
-  padding-top: 4px;
+  font-family: var(--mono) !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  line-height: 1.7 !important;
+  color: rgba(249, 115, 22, 0.9) !important;
+  letter-spacing: 0 !important;
+  padding-top: 2px;
 }
+
+.pillar__num::before { content: '['; opacity: 0.55; }
+.pillar__num::after  { content: ']'; opacity: 0.55; }
 
 .pillar__body h4 {
-  color: #ffffff;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 0 0 12px 0;
-  line-height: 1.2;
+  color: #ffffff !important;
+  font-family: var(--mono) !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  margin: 0 0 10px 0 !important;
+  line-height: 1.4 !important;
 }
 
-.pillar__body p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
-  line-height: 1.65;
-  margin: 0 0 16px 0;
-  max-width: 60ch;
+.pillar__body > p {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-family: var(--mono) !important;
+  font-size: 0.85rem !important;
+  line-height: 1.7 !important;
+  margin: 0 0 14px 0 !important;
+  max-width: 64ch;
 }
 
 .pillar__list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 14px 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.85 !important;
 }
 
 .pillar__list li {
-  position: relative;
-  padding-left: 18px;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  position: relative !important;
+  padding-left: 30px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
 }
 
+/* Tree characters: ├── for middle, └── for last */
 .pillar__list li::before {
-  content: '';
-  position: absolute;
+  content: '├──' !important;
+  position: absolute !important;
   left: 0;
-  top: 9px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #f97316;
-  opacity: 0.55;
+  top: 0;
+  color: rgba(249, 115, 22, 0.55) !important;
+  font-family: var(--mono);
+  background: none !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  opacity: 1 !important;
+}
+
+.pillar__list li:last-child::before {
+  content: '└──' !important;
 }
 
 .pillar__links {
-  margin: 4px 0 0 0;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
-  line-height: 1.6;
+  margin: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 0.8rem !important;
+  line-height: 1.9 !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 18px;
 }
 
 .pillar__links a {
-  color: #fb923c;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(251, 146, 60, 0.3);
-  transition: border-color 0.15s ease, color 0.15s ease;
+  color: #fb923c !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: color 0.15s ease;
+}
+
+.pillar__links a::before {
+  content: '→ ';
+  color: rgba(249, 115, 22, 0.6);
+  margin-right: 2px;
 }
 
 .pillar__links a:hover {
-  color: #fed7aa;
-  border-bottom-color: #fb923c;
+  color: #fed7aa !important;
 }
 
+/* Hide inline · separators — gap on flex container handles spacing */
 .pillar__links span[aria-hidden] {
-  margin: 0 8px;
-  color: rgba(255, 255, 255, 0.25);
+  display: none !important;
 }
 
 @media (max-width: 640px) {
+  .pillars {
+    border-radius: 10px;
+  }
+  .pillars::before {
+    padding: 10px 16px;
+    font-size: 0.72rem;
+  }
   .pillar {
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 32px 0;
+    gap: 6px;
+    padding: 20px 16px;
   }
   .pillar__num {
-    font-size: 1.5rem;
+    font-size: 0.78rem !important;
   }
   .pillar__body h4 {
-    font-size: 1.25rem;
+    font-size: 0.98rem !important;
   }
-  .pillar__body p {
-    font-size: 0.95rem;
+  .pillar__body > p {
+    font-size: 0.8rem !important;
+  }
+  .pillar__list {
+    font-size: 0.78rem !important;
+  }
+  .pillar__list li {
+    padding-left: 26px !important;
+  }
+  .pillar__links {
+    font-size: 0.76rem !important;
+    gap: 4px 14px;
   }
 }
