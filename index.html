@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=108">
-  <link rel="stylesheet" href="/css/styles.min.css?v=108" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=109">
+  <link rel="stylesheet" href="/css/styles.min.css?v=109" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -906,6 +906,7 @@
           </div>
         </a>
 
+        <!-- HIDDEN 2026-04-28: SMS & MMS AI Agents tile, restore by uncommenting
         <a href="sms:+16028335307?&body=Hi%20Aria%2C%20I%20want%20to%20see%20how%20your%20SMS%20agent%20works." class="live-tool">
           <div class="live-tool__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -924,6 +925,7 @@
             </span>
           </div>
         </a>
+        -->
       </div>
 
       <!-- Consulting & Marketing Services -->
@@ -1415,6 +1417,8 @@
         <p class="section-subtitle">AI software we build, ship, and stand behind.</p>
       </div>
 
+      <!-- HIDDEN 2026-04-28: Flagship VoiceNow card — wrap unchanged -->
+      <div hidden aria-hidden="true">
       <!-- Flagship: VoiceNow CRM + Aria — Full Width -->
       <div class="product-flagship">
         <div class="product-card product-card-featured">
@@ -1532,6 +1536,7 @@
           </div>
         </div>
       </div>
+      </div><!-- /HIDDEN flagship wrapper -->
 
       <!-- Secondary Products Grid -->
       <div class="products-grid">

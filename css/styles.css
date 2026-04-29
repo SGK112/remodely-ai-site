@@ -19905,8 +19905,12 @@ button svg,
   margin-bottom: 0.6rem;
 }
 
+/* !important needed because .services-section uses bg: #0f172a and other
+   global h4 rules in this file fight with default var(--primary) which
+   is now near-black — without it the title rendered nearly invisible
+   on the dark card. */
 .live-tool h4 {
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0 0 0.4rem 0;
@@ -19914,7 +19918,7 @@ button svg,
 }
 
 .live-tool p {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.7) !important;
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0 0 0.85rem 0;
