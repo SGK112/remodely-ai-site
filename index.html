@@ -2588,7 +2588,7 @@
   </script>
 
   <!-- Scripts (deferred — non-critical for first paint) -->
-  <script src="/js/aria-voice-chat.js?v=7" defer></script>
+  <script src="/js/aria-voice-chat.js?v=8" defer></script>
   <script src="/js/main.js?v=15" defer></script>
   <script src="/js/effects.js?v=4" defer></script>
 
@@ -2694,7 +2694,9 @@
             addMessage(text, 'assistant');
           },
           onError: function(error) {
-            statusEl.textContent = 'Error: ' + error;
+            // Show the friendly message inline so the user sees what's wrong
+            statusEl.textContent = error.length > 80 ? 'Connection error' : error;
+            if (hintEl) hintEl.textContent = error.length > 80 ? error : 'Tap to retry';
             console.error('[ARIA]', error);
           }
         });
@@ -2705,8 +2707,12 @@
         ariaChat.startListening();
 
       } catch (error) {
-        statusEl.textContent = 'Failed to connect';
-        hintEl.textContent = 'Tap to retry';
+        // The widget's onError already populated friendly text. Only fall
+        // back to a generic message if nothing was set.
+        if (!statusEl.textContent || statusEl.textContent === 'Connecting...') {
+          statusEl.textContent = 'Connection failed';
+          if (hintEl) hintEl.textContent = 'Tap to retry';
+        }
         console.error('[ARIA]', error);
       }
     }

@@ -81,7 +81,20 @@ class AriaVoiceChat {
 
     } catch (error) {
       console.error('[ARIA] Start failed:', error);
-      this.onError(error.message || 'Failed to start voice chat');
+      // Distinguish mic permission denial from generic connect failure —
+      // the user needs different UX for each. NotAllowedError = user
+      // clicked "block" or browser policy; NotFoundError = no mic device.
+      let friendly = error.message || 'Failed to start voice chat';
+      if (error.name === 'NotAllowedError' || /permission|denied/i.test(error.message || '')) {
+        friendly = 'Microphone access blocked. Click the lock/camera icon in your browser address bar, allow microphone for this site, then try again.';
+      } else if (error.name === 'NotFoundError') {
+        friendly = 'No microphone detected. Connect a mic or check your system audio settings, then try again.';
+      } else if (error.name === 'NotReadableError') {
+        friendly = 'Microphone is busy. Close any other app using the mic (Zoom, FaceTime, etc.) and try again.';
+      } else if (error.name === 'OverconstrainedError' || error.name === 'SecurityError') {
+        friendly = 'Browser blocked the mic. Make sure you\'re on https:// and try again.';
+      }
+      this.onError(friendly);
       throw error;
     }
   }
