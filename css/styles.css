@@ -22843,3 +22843,189 @@ nav,
               0 0 36px rgba(249, 115, 22, 0.08);
   height: auto;
 }
+
+/* =====================================================
+   HERO IMAGERY OVERHAUL — real transparent PNGs, BIGGER (2026-04-30)
+   Cutouts have real alpha now, so we drop mix-blend-mode entirely
+   and let the subjects sit on the dark page naturally. Sized way up.
+   ===================================================== */
+.hero-img {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 24px 60px rgba(249, 115, 22, 0.35))
+          drop-shadow(0 0 32px rgba(0, 0, 0, 0.6));
+}
+
+.hero-img--hardhat {
+  top: 4%;
+  left: -8%;
+  width: clamp(260px, 28vw, 460px) !important;
+  height: auto !important;
+  transform: rotate(-12deg);
+  --r: -12deg;
+}
+
+.hero-img--cones {
+  bottom: 6%;
+  right: -6%;
+  width: clamp(240px, 26vw, 420px) !important;
+  height: auto !important;
+  transform: rotate(8deg);
+  --r: 8deg;
+}
+
+@media (max-width: 900px) {
+  .hero-img--hardhat { width: clamp(200px, 32vw, 280px) !important; top: 2%; left: -12%; }
+  .hero-img--cones   { width: clamp(180px, 30vw, 260px) !important; bottom: 4%; right: -10%; }
+}
+
+@media (max-width: 600px) {
+  .hero-img { display: block; opacity: 0.55 !important; }
+  .hero-img--hardhat { width: 180px !important; top: 1%; left: -18%; }
+  .hero-img--cones   { width: 160px !important; bottom: 2%; right: -16%; }
+}
+
+/* Solutions hero image — make it dominate the section */
+.solutions-hero-img {
+  display: block;
+  width: 100%;
+  max-width: 920px;
+  margin: 32px auto 8px;
+  border: none !important;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6),
+              0 0 64px rgba(249, 115, 22, 0.18) !important;
+  border-radius: 0 !important;
+  background: transparent;
+  height: auto;
+}
+
+/* =====================================================
+   HERO GRADER FORM AS PRIMARY CTA (2026-04-30)
+   The grader form is now THE hero CTA. Bigger, glowy, distinct.
+   Old two-button row collapsed to a single understated link below.
+   ===================================================== */
+.hero-grader-inline--primary {
+  width: 100%;
+  max-width: 640px !important;
+  margin: 0.5rem auto 0 !important;
+  position: relative;
+}
+
+.hero-grader-inline--primary::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at center,
+    rgba(249, 115, 22, 0.35) 0%,
+    rgba(249, 115, 22, 0) 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: -1;
+  animation: graderGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes graderGlow {
+  0%   { opacity: 0.6; transform: scale(0.98); }
+  100% { opacity: 1;   transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grader-inline--primary::before { animation: none; }
+}
+
+.hero-grader-inline--primary .hero-grader-inline__row {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 2px solid rgba(249, 115, 22, 0.45) !important;
+  border-radius: 14px !important;
+  padding: 6px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
+              0 0 0 4px rgba(249, 115, 22, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-grader-inline--primary .hero-grader-inline__row:focus-within {
+  border-color: rgba(249, 115, 22, 0.85) !important;
+  background: rgba(249, 115, 22, 0.06) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
+              0 0 0 6px rgba(249, 115, 22, 0.10),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.hero-grader-inline--primary input {
+  font-size: 1rem !important;
+  padding: 16px 18px !important;
+}
+
+.hero-grader-inline--primary button {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%) !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  padding: 16px 26px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.45),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.18s ease, background 0.18s ease;
+  letter-spacing: -0.005em;
+}
+
+.hero-grader-inline--primary button:hover {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%) !important;
+  transform: translateY(-1px);
+}
+
+.hero-microcopy {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin: 0 !important;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* Secondary action — the now-demoted "Talk to Aria" link */
+.hero-actions--secondary {
+  display: flex !important;
+  justify-content: center;
+  margin-top: 6px !important;
+}
+
+.hero-btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.hero-btn-link:hover {
+  color: #fb923c;
+}
+
+.hero-btn-link svg {
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .hero-grader-inline--primary .hero-grader-inline__row {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  .hero-grader-inline--primary input,
+  .hero-grader-inline--primary button {
+    width: 100% !important;
+  }
+}
