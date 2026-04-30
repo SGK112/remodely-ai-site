@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=124">
-  <link rel="stylesheet" href="/css/styles.min.css?v=124" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=125">
+  <link rel="stylesheet" href="/css/styles.min.css?v=125" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -662,17 +662,19 @@
       <p class="hero-microcopy">No signup. No credit card. Real AI. Real answers.</p>
 
       <div class="hero-spec">
-        <span>apps</span>
+        <span class="hero-spec__lead">we grade</span>
+        <span class="hero-spec__sep">·</span>
+        <span>ai visibility</span>
         <span class="hero-spec__sep">/</span>
-        <span>stores</span>
+        <span>schema</span>
         <span class="hero-spec__sep">/</span>
-        <span>payments</span>
+        <span>mobile</span>
         <span class="hero-spec__sep">/</span>
-        <span>ai voice</span>
+        <span>speed</span>
         <span class="hero-spec__sep">/</span>
-        <span>sms</span>
+        <span>accessibility</span>
         <span class="hero-spec__sep">/</span>
-        <span>seo</span>
+        <span>security</span>
       </div>
 
       <!-- Inline grader form, anchored from the primary CTA -->
@@ -682,6 +684,80 @@
           <button type="submit">Grade it &nbsp;&rarr;</button>
         </div>
       </form>
+
+      <!-- Hero pipeline visual — inline SVG, no network requests, SEO-titled.
+           Reads left-to-right as the audit pipeline: site → grader → score
+           → fix → ship → app store / payments. Dotted lines tie the nodes
+           into a visual narrative tying construction-trades and tech. -->
+      <div class="hero-pipeline" role="img" aria-labelledby="hp-title hp-desc">
+        <svg viewBox="0 0 880 140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" fill="none">
+          <title id="hp-title">Contractor website audit pipeline diagram</title>
+          <desc id="hp-desc">Visual diagram showing how the Remodely AI grader analyzes a contractor's website, generates fixes, and ships them to the App Store and payment systems.</desc>
+          <defs>
+            <linearGradient id="hpEdge" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="rgba(249,115,22,0)"/>
+              <stop offset="50%" stop-color="rgba(249,115,22,0.55)"/>
+              <stop offset="100%" stop-color="rgba(249,115,22,0)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Connecting dotted line -->
+          <line x1="60" y1="70" x2="820" y2="70" stroke="rgba(249,115,22,0.35)" stroke-width="1" stroke-dasharray="3 5"/>
+
+          <!-- Animated data dot -->
+          <circle r="3" fill="#fb923c">
+            <animateMotion dur="6s" repeatCount="indefinite" path="M60,70 L820,70"/>
+          </circle>
+
+          <!-- Node 1: Website -->
+          <g transform="translate(60,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <rect x="-12" y="-9" width="24" height="18" rx="2" stroke="#fb923c" stroke-width="1.2" fill="none"/>
+            <line x1="-12" y1="-3" x2="12" y2="-3" stroke="#fb923c" stroke-width="0.8"/>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">SITE</text>
+          </g>
+
+          <!-- Node 2: Grader (search/scan) -->
+          <g transform="translate(212,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <circle cx="-3" cy="-3" r="7" stroke="#fb923c" stroke-width="1.4" fill="none"/>
+            <line x1="3" y1="3" x2="9" y2="9" stroke="#fb923c" stroke-width="1.4" stroke-linecap="round"/>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">GRADE</text>
+          </g>
+
+          <!-- Node 3: Score -->
+          <g transform="translate(364,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <text text-anchor="middle" dy="3" fill="#fb923c" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">87</text>
+            <text x="9" y="-1" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="6">/100</text>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">SCORE</text>
+          </g>
+
+          <!-- Node 4: Fix (code) -->
+          <g transform="translate(516,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <path d="M-9,-5 L-13,0 L-9,5 M9,-5 L13,0 L9,5" stroke="#fb923c" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <line x1="-3" y1="-7" x2="3" y2="7" stroke="#fb923c" stroke-width="1" stroke-linecap="round"/>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">FIX</text>
+          </g>
+
+          <!-- Node 5: Ship (rocket / box) -->
+          <g transform="translate(668,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#fb923c" stroke-width="1.2" fill="none"/>
+            <path d="M-8,-3 L8,-3" stroke="#fb923c" stroke-width="1"/>
+            <path d="M-2,-8 L-2,-3 M2,-8 L2,-3" stroke="#fb923c" stroke-width="1"/>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">SHIP</text>
+          </g>
+
+          <!-- Node 6: $ payment -->
+          <g transform="translate(820,70)">
+            <circle r="26" fill="#0a0f1a" stroke="rgba(249,115,22,0.45)" stroke-width="1"/>
+            <text text-anchor="middle" dy="5" fill="#fb923c" font-family="JetBrains Mono, monospace" font-size="16" font-weight="600">$</text>
+            <text y="48" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">PAID</text>
+          </g>
+        </svg>
+      </div>
     </div>
   </section>
 
@@ -788,6 +864,88 @@
           <p>HSTS, mixed content, security headers, version disclosure, redirect chain.</p>
           <span class="hp-tool__cta">Check security →</span>
         </a>
+      </div>
+
+      <!-- Construction-tech accents floating in this section -->
+      <div class="tools-deco" aria-hidden="true">
+        <svg class="tools-deco__chip tools-deco__chip--1" viewBox="0 0 64 64" fill="none">
+          <!-- hardhat -->
+          <path d="M14 44h36v6H14z" stroke="#fb923c" stroke-width="1.5"/>
+          <path d="M16 44c0-9 6-16 16-16s16 7 16 16" stroke="#fb923c" stroke-width="1.5"/>
+          <path d="M28 28v-6m8 6v-6" stroke="#fb923c" stroke-width="1.5"/>
+          <circle cx="32" cy="44" r="2" fill="#fb923c"/>
+        </svg>
+        <svg class="tools-deco__chip tools-deco__chip--2" viewBox="0 0 64 64" fill="none">
+          <!-- blueprint with grid -->
+          <rect x="8" y="10" width="48" height="44" rx="2" stroke="#fb923c" stroke-width="1.5"/>
+          <path d="M8 22h48M8 32h48M8 42h48M20 10v44M32 10v44M44 10v44" stroke="#fb923c" stroke-width="0.6" opacity="0.5"/>
+          <path d="M14 28L20 22L26 30L34 18L44 24" stroke="#fb923c" stroke-width="1.5" fill="none"/>
+          <circle cx="14" cy="28" r="1.5" fill="#fb923c"/>
+          <circle cx="44" cy="24" r="1.5" fill="#fb923c"/>
+        </svg>
+        <svg class="tools-deco__chip tools-deco__chip--3" viewBox="0 0 64 64" fill="none">
+          <!-- ruler -->
+          <rect x="6" y="22" width="52" height="20" rx="2" stroke="#fb923c" stroke-width="1.5"/>
+          <path d="M14 22v8M22 22v6M30 22v8M38 22v6M46 22v8M54 22v6" stroke="#fb923c" stroke-width="1.2"/>
+        </svg>
+        <svg class="tools-deco__chip tools-deco__chip--4" viewBox="0 0 64 64" fill="none">
+          <!-- circuit node -->
+          <circle cx="32" cy="32" r="6" stroke="#fb923c" stroke-width="1.5"/>
+          <path d="M32 8v18M32 38v18M8 32h18M38 32h18" stroke="#fb923c" stroke-width="1.5"/>
+          <circle cx="8" cy="32" r="2" fill="#fb923c"/>
+          <circle cx="56" cy="32" r="2" fill="#fb923c"/>
+          <circle cx="32" cy="8" r="2" fill="#fb923c"/>
+          <circle cx="32" cy="56" r="2" fill="#fb923c"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       INTEGRATIONS CHYRON — scrolling logo strip showing what we wire
+       Each brand the contractor's web guy already knows. Endless loop.
+       ================================================================= -->
+  <section class="chyron-section" aria-label="Integrations we wire">
+    <div class="chyron-label">
+      <span class="chyron-label__dot"></span>
+      <span>WIRES INTO</span>
+    </div>
+    <div class="chyron">
+      <div class="chyron-track">
+        <!-- Group A — duplicated for seamless loop -->
+        <div class="chyron-group">
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.479 9.883c-1.626-.604-2.512-1.067-2.512-1.803 0-.622.511-.977 1.421-.977 1.668 0 3.382.643 4.567 1.221l.666-4.111c-.943-.45-2.844-1.183-5.45-1.183-1.846 0-3.385.481-4.483 1.379-1.144.94-1.733 2.302-1.733 3.951 0 2.991 1.83 4.27 4.812 5.347 1.92.685 2.566 1.171 2.566 1.926 0 .728-.624 1.144-1.768 1.144-1.43 0-3.768-.704-5.293-1.609l-.689 4.137c1.295.752 3.715 1.5 6.207 1.5 1.957 0 3.594-.464 4.7-1.336 1.234-.978 1.875-2.398 1.875-4.155 0-3.061-1.871-4.34-4.886-5.431z"/></svg>Stripe</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.508 17.508c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm-9.034 9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482z"/></svg>Twilio</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.04 19.46c-.34 0-.66-.04-.97-.13l-.45 1.55c-.06.22-.27.37-.5.37-.04 0-.08 0-.13-.01-.27-.07-.43-.35-.36-.62l.42-1.46C8.58 18.65 7 17 6.62 14.94c-.05-.27.13-.53.4-.58.27-.05.53.13.58.4.34 1.86 1.92 3.21 3.79 3.21h.65c2.1 0 3.81-1.71 3.81-3.81s-1.71-3.81-3.81-3.81h-1.13c-2.65 0-4.81-2.16-4.81-4.81S8.27 0.73 10.92 0.73h.04l.42-1.46c.07-.27.35-.43.62-.36.27.07.43.35.36.62l-.42 1.46c2.04.36 3.62 1.97 3.97 4.01.05.27-.13.53-.4.58-.27.05-.53-.13-.58-.4-.34-1.86-1.92-3.21-3.79-3.21h-.04c-2.1 0-3.81 1.71-3.81 3.81s1.71 3.81 3.81 3.81h1.13c2.65 0 4.81 2.16 4.81 4.81s-2.16 4.81-4.81 4.81z"/></svg>QuickBooks</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M0 0v24h24V0H0zm14.7 14.4H9.3V9.3h5.4v5.1z"/></svg>Square</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.774-2.757a.79.79 0 0 0 .392-.681v-6.737l2.018 1.165a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.488 4.495zm-9.65-4.125a4.47 4.47 0 0 1-.535-3.014l.142.085 4.774 2.757a.78.78 0 0 0 .785 0l5.829-3.366v2.33a.072.072 0 0 1-.029.062L9.745 19.95a4.5 4.5 0 0 1-6.135-1.645zM2.347 7.825a4.485 4.485 0 0 1 2.343-1.973V11.6a.766.766 0 0 0 .388.676l5.804 3.353-2.018 1.164a.076.076 0 0 1-.071 0l-4.82-2.787a4.504 4.504 0 0 1-1.626-6.182zm16.59 3.855-5.83-3.387L15.119 7.13a.072.072 0 0 1 .071 0l4.821 2.785a4.5 4.5 0 0 1-.676 8.07v-5.913a.79.79 0 0 0-.396-.692zm2.01-3.029-.141-.085-4.774-2.781a.776.776 0 0 0-.785 0L9.409 9.151V6.825a.072.072 0 0 1 .03-.061l4.82-2.782a4.5 4.5 0 0 1 6.688 4.66zM8.31 12.391l-2.02-1.164a.08.08 0 0 1-.038-.057V5.578a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.71 4.962a.79.79 0 0 0-.393.681zm1.097-2.365 2.598-1.5 2.6 1.5v2.999l-2.59 1.5-2.6-1.5z"/></svg>OpenAI</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.3045 3.2877h-3.7253l6.7857 17.4246h3.7253zM6.694 3.2877L0 20.7123h3.802l1.3686-3.5512h7.0042l1.3686 3.5512h3.802L10.6234 3.2877zm-.2257 10.717l2.293-5.9461 2.293 5.9461z"/></svg>Anthropic</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>Apple</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>Google</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</span>
+          <span class="chyron-item">Jobber</span>
+          <span class="chyron-item">ServiceTitan</span>
+          <span class="chyron-item">HousecallPro</span>
+          <span class="chyron-item">Deepgram</span>
+          <span class="chyron-item">Resend</span>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="chyron-group" aria-hidden="true">
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.479 9.883c-1.626-.604-2.512-1.067-2.512-1.803 0-.622.511-.977 1.421-.977 1.668 0 3.382.643 4.567 1.221l.666-4.111c-.943-.45-2.844-1.183-5.45-1.183-1.846 0-3.385.481-4.483 1.379-1.144.94-1.733 2.302-1.733 3.951 0 2.991 1.83 4.27 4.812 5.347 1.92.685 2.566 1.171 2.566 1.926 0 .728-.624 1.144-1.768 1.144-1.43 0-3.768-.704-5.293-1.609l-.689 4.137c1.295.752 3.715 1.5 6.207 1.5 1.957 0 3.594-.464 4.7-1.336 1.234-.978 1.875-2.398 1.875-4.155 0-3.061-1.871-4.34-4.886-5.431z"/></svg>Stripe</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.508 17.508c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm-9.034 9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482z"/></svg>Twilio</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073z"/></svg>OpenAI</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.3045 3.2877h-3.7253l6.7857 17.4246h3.7253zM6.694 3.2877L0 20.7123h3.802l1.3686-3.5512h7.0042l1.3686 3.5512h3.802L10.6234 3.2877zm-.2257 10.717l2.293-5.9461 2.293 5.9461z"/></svg>Anthropic</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43z"/></svg>Apple</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2"/></svg>Google</span>
+          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577"/></svg>GitHub</span>
+          <span class="chyron-item">QuickBooks</span>
+          <span class="chyron-item">Square</span>
+          <span class="chyron-item">Jobber</span>
+          <span class="chyron-item">ServiceTitan</span>
+          <span class="chyron-item">HousecallPro</span>
+          <span class="chyron-item">Deepgram</span>
+          <span class="chyron-item">Resend</span>
+        </div>
       </div>
     </div>
   </section>
@@ -1013,6 +1171,11 @@
       <div class="pillars">
         <div class="pillar">
           <div class="pillar__num">01</div>
+          <svg class="pillar__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="9" y="3" width="14" height="26" rx="2" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="15" y1="25" x2="17" y2="25" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="11" y="6" width="10" height="15" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+          </svg>
           <div class="pillar__body">
             <h4>iOS &amp; Android Apps</h4>
             <p>Native apps for your customers, your crew, and your sales reps. Built with Xcode and TestFlight, shipped through your own Apple Developer and Google Play accounts so you keep ownership the day you sign.</p>
@@ -1026,6 +1189,12 @@
 
         <div class="pillar">
           <div class="pillar__num">02</div>
+          <svg class="pillar__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M3 8h26l-2 14H5L3 8z" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M11 8V5a3 3 0 016 0v3" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="11" cy="26" r="2" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="21" cy="26" r="2" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
           <div class="pillar__body">
             <h4>Online Stores &amp; Payment Portals</h4>
             <p>Sell materials and packages on your own domain. Take deposits, progress payments, and final invoices through Stripe, Square, or QuickBooks. Same site Aria already runs on, no second login.</p>
@@ -1044,6 +1213,11 @@
 
         <div class="pillar">
           <div class="pillar__num">03</div>
+          <svg class="pillar__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M4 26l8-12 6 8 4-5 6 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="22" cy="9" r="3" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="4" y1="26" x2="28" y2="26" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
           <div class="pillar__body">
             <h4>Lead Generation Tools</h4>
             <p>Calculators, designers, and takeoff tools that solve a real problem for your visitor in 30 seconds. They hand over their email to get the result. You get a qualified lead with the project details already in hand.</p>
@@ -1065,6 +1239,12 @@
 
         <div class="pillar">
           <div class="pillar__num">04</div>
+          <svg class="pillar__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M16 4a4 4 0 00-4 4v6a4 4 0 008 0V8a4 4 0 00-4-4z" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M24 14v2a8 8 0 01-16 0v-2" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="16" y1="24" x2="16" y2="28" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="12" y1="28" x2="20" y2="28" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
           <div class="pillar__body">
             <h4>AI Voice &amp; SMS Agents</h4>
             <p>Aria answers your phone and your texts 24/7. She is locked to your real services, pricing, and service areas, so she never invents a number or a quote. When she doesn't know, she escalates.</p>
@@ -1078,6 +1258,11 @@
 
         <div class="pillar">
           <div class="pillar__num">05</div>
+          <svg class="pillar__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="20.5" y1="20.5" x2="27" y2="27" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M10 14h8M14 10v8" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+          </svg>
           <div class="pillar__body">
             <h4>Getting Found</h4>
             <p>The tools above don't matter if nobody finds them. We rank you on Google and get you cited by ChatGPT, Perplexity, and Grok. The new search reads schema, FAQs, and authority signals — we build all three.</p>
