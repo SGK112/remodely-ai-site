@@ -22755,3 +22755,91 @@ nav,
     grid-row: auto;
   }
 }
+
+/* Force spec line to ONE row, no wrap, scale to fit (2026-04-29) */
+.hero-spec--even {
+  flex-wrap: nowrap !important;
+  gap: 0 !important;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+.hero-spec--even span {
+  font-size: clamp(0.62rem, 1.5vw, 0.82rem) !important;
+  padding-right: clamp(10px, 2vw, 18px) !important;
+  white-space: nowrap !important;
+}
+.hero-spec--even span:not(:last-child)::after {
+  margin-left: clamp(4px, 1vw, 8px);
+  position: relative !important;
+  right: auto !important;
+}
+
+/* =====================================================
+   AI-GENERATED CONSTRUCTION IMAGERY (2026-04-30)
+   Isolated subjects on black backgrounds (Flux Schnell), used as
+   atmospheric anchors. mix-blend-mode: screen lets them sit on the
+   dark page without visible black-box edges. Always behind text.
+   ===================================================== */
+.hero-img {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  filter: drop-shadow(0 12px 40px rgba(249, 115, 22, 0.25));
+  animation: heroImgFloat 14s ease-in-out infinite alternate;
+}
+
+.hero-img--hardhat {
+  top: 8%;
+  left: -6%;
+  width: 280px;
+  height: auto;
+  transform: rotate(-8deg);
+  animation-delay: 0s;
+}
+
+.hero-img--cones {
+  bottom: 10%;
+  right: -4%;
+  width: 240px;
+  height: auto;
+  transform: rotate(6deg);
+  animation-delay: -7s;
+}
+
+@keyframes heroImgFloat {
+  0%   { transform: translateY(0) rotate(var(--r, -8deg)); }
+  100% { transform: translateY(-12px) rotate(calc(var(--r, -8deg) + 2deg)); }
+}
+
+.hero-img--hardhat { --r: -8deg; }
+.hero-img--cones   { --r: 6deg; }
+
+@media (max-width: 900px) {
+  .hero-img--hardhat { width: 180px; top: 4%; left: -10%; opacity: 0.25; }
+  .hero-img--cones   { width: 160px; bottom: 6%; right: -8%; opacity: 0.25; }
+}
+
+@media (max-width: 600px) {
+  .hero-img { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-img { animation: none; }
+}
+
+/* Solutions header image — sits below the description, full-width-ish */
+.solutions-hero-img {
+  display: block;
+  width: 100%;
+  max-width: 880px;
+  margin: 28px auto 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5),
+              0 0 36px rgba(249, 115, 22, 0.08);
+  height: auto;
+}
