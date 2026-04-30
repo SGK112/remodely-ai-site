@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=123">
-  <link rel="stylesheet" href="/css/styles.min.css?v=123" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=124">
+  <link rel="stylesheet" href="/css/styles.min.css?v=124" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -685,7 +685,7 @@
     </div>
   </section>
 
-  <!-- Social Proof Bar -->
+  <!-- HIDDEN 2026-04-29: Social proof bar — generic stats, replaced by the live tool count below.
   <section class="social-proof-bar">
     <div class="container">
       <div class="proof-bar-inner">
@@ -701,9 +701,99 @@
           <strong>AI-ready</strong> recommendations
         </div>
       </div>
+    </div>-->
+  </section>
+
+  <!-- =================================================================
+       NEW HOMEPAGE TOOLS SHOWCASE — 9 free tools, the actual product.
+       Comes immediately after the hero so the visitor's first scroll
+       lands on what they can use right now, not slogans.
+       ================================================================= -->
+  <section class="section section-dark" id="tools-showcase">
+    <div class="container">
+      <div class="section-header" style="text-align:center;max-width:760px;margin:0 auto 36px;">
+        <span class="section-badge">9 free tools · live · no signup</span>
+        <h2 class="heading-cursor">Try it before you trust us.</h2>
+        <p class="section-subtitle">Every tool below is live, free, and gives you a real answer in under a minute. We built them on the same stack we'll build for you. Run one. See the output. Decide.</p>
+      </div>
+
+      <div class="hp-tools-grid">
+        <a href="/grader.html" class="hp-tool hp-tool--featured">
+          <span class="hp-tool__num">[00]</span>
+          <span class="hp-tool__chip">master</span>
+          <h3>AI Visibility Grader</h3>
+          <p>The full audit. Runs every check below and combines them into a single AI-visibility score with email report.</p>
+          <span class="hp-tool__cta">Run the full grader →</span>
+        </a>
+
+        <a href="/tools/compare/" class="hp-tool">
+          <span class="hp-tool__num">[01]</span>
+          <h3>Competitor Compare</h3>
+          <p>Two URLs in, side-by-side scorecard out. Twelve metrics, winner per axis, share-friendly result.</p>
+          <span class="hp-tool__cta">Compare →</span>
+        </a>
+
+        <a href="/tools/ai-probe/" class="hp-tool">
+          <span class="hp-tool__num">[02]</span>
+          <h3>AI Assistant Probe</h3>
+          <p>Asks Claude and GPT-4o "tell me about your business" and grades whether they know who you are.</p>
+          <span class="hp-tool__cta">Probe →</span>
+        </a>
+
+        <a href="/tools/fix-it/" class="hp-tool">
+          <span class="hp-tool__num">[03]</span>
+          <h3>Code Snippet Fixer</h3>
+          <p>Paste-ready JSON-LD, meta tags, robots.txt — pre-filled with your real business data.</p>
+          <span class="hp-tool__cta">Generate fixes →</span>
+        </a>
+
+        <a href="/tools/gbp/" class="hp-tool">
+          <span class="hp-tool__num">[04]</span>
+          <h3>GBP Audit</h3>
+          <p>Audits the signals linking your site to your Google Business Profile listing.</p>
+          <span class="hp-tool__cta">Audit GBP →</span>
+        </a>
+
+        <a href="/tools/schema/" class="hp-tool">
+          <span class="hp-tool__num">[05]</span>
+          <h3>Schema Validator</h3>
+          <p>Real JSON-LD validation. Required fields per type, Search Console warnings flagged.</p>
+          <span class="hp-tool__cta">Validate →</span>
+        </a>
+
+        <a href="/tools/mobile/" class="hp-tool">
+          <span class="hp-tool__num">[06]</span>
+          <h3>Mobile UX Check</h3>
+          <p>Tap-to-call, viewport, font sizes, responsive images. 70% of contractor leads are mobile.</p>
+          <span class="hp-tool__cta">Check mobile →</span>
+        </a>
+
+        <a href="/tools/a11y/" class="hp-tool">
+          <span class="hp-tool__num">[07]</span>
+          <h3>Accessibility Check</h3>
+          <p>Real a11y audit. Alt-text quality, heading order, form labels, button semantics.</p>
+          <span class="hp-tool__cta">Check a11y →</span>
+        </a>
+
+        <a href="/tools/sitemap/" class="hp-tool">
+          <span class="hp-tool__num">[08]</span>
+          <h3>Sitemap &amp; Robots</h3>
+          <p>Fetches robots.txt and sitemap.xml directly. Checks for AI bot rules (GPTBot, ClaudeBot).</p>
+          <span class="hp-tool__cta">Audit crawlability →</span>
+        </a>
+
+        <a href="/tools/https/" class="hp-tool">
+          <span class="hp-tool__num">[09]</span>
+          <h3>HTTPS &amp; Security</h3>
+          <p>HSTS, mixed content, security headers, version disclosure, redirect chain.</p>
+          <span class="hp-tool__cta">Check security →</span>
+        </a>
+      </div>
     </div>
   </section>
 
+  <!-- HIDDEN 2026-04-29: redesign — Aria hero stats card moved out of the homepage flow. Restore by removing <div hidden>. -->
+  <div hidden aria-hidden="true">
   <!-- Why AI Section -->
   <section class="section section-dark" id="value">
     <div class="container">
@@ -739,10 +829,14 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN #value -->
 
   <!-- Services Section -->
   <section id="services" class="section services-section">
     <div class="container">
+      <!-- HIDDEN 2026-04-29 redesign: Aria stats hero card. The 9-tools showcase
+           above is the new lead element; this duplicates intent. -->
+      <div hidden aria-hidden="true">
       <!-- Hero Card - Never Miss a Lead -->
       <div class="aria-hero-card">
         <div class="aria-hero-content">
@@ -770,6 +864,7 @@
           <p class="aria-hero-note" style="color: #ffffff !important;">Real AI. Real conversation. Try it free.</p>
         </div>
       </div>
+      </div><!-- /HIDDEN aria-hero-card -->
 
       <!-- HIDDEN 2026-04-28: Live Tools & Examples section, restore by removing the wrapping <div hidden> -->
       <div hidden aria-hidden="true">
@@ -1189,6 +1284,8 @@
   </section>
 
   <!-- Tech Stack Section -->
+    <!-- HIDDEN 2026-04-29 redesign: Tech stack section -->
+  <div hidden aria-hidden="true">
   <section class="section section-dark tech-strip-section" id="tech-stack">
     <div class="container">
       <div class="section-header">
@@ -1473,6 +1570,7 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Tech stack section -->
 
   <!-- HIDDEN 2026-04-28: Our Products section. Restore by removing the wrapping <div hidden>. -->
   <div hidden aria-hidden="true">
@@ -1722,6 +1820,8 @@
   </section>
   </div><!-- /HIDDEN Our Products wrapper -->
 
+  <!-- HIDDEN 2026-04-29 redesign: Founding-100 early adopter section -->
+  <div hidden aria-hidden="true">
   <!-- Early Adopter Section -->
   <section class="section section-gray">
     <div class="container">
@@ -1733,7 +1833,10 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Founding-100 -->
 
+  <!-- HIDDEN 2026-04-29 redesign: generic CTA section, redundant with hero CTA -->
+  <div hidden aria-hidden="true">
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="container">
@@ -1747,8 +1850,11 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN generic CTA section -->
 
   <!-- In-House Value Prop / Why It Pays For Itself -->
+    <!-- HIDDEN 2026-04-29 redesign: Why-inhouse terminal cost readout -->
+  <div hidden aria-hidden="true">
   <section class="section section-dark" id="why-inhouse">
     <div class="container">
       <div class="section-header">
@@ -1802,8 +1908,11 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Why-inhouse terminal cost readout -->
 
   <!-- Customer Journey — how a lead becomes a customer -->
+    <!-- HIDDEN 2026-04-29 redesign: Customer journey 7-step -->
+  <div hidden aria-hidden="true">
   <section class="section section-dark" id="journey">
     <div class="container">
       <div class="section-header">
@@ -1865,8 +1974,11 @@
       </ol>
     </div>
   </section>
+  </div><!-- /HIDDEN Customer journey 7-step -->
 
   <!-- Choose Your Path — 3 paths to working with us -->
+    <!-- HIDDEN 2026-04-29 redesign: Choose your path 3-card -->
+  <div hidden aria-hidden="true">
   <section class="section section-dark" id="paths">
     <div class="container">
       <div class="section-header">
@@ -1914,6 +2026,7 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Choose your path 3-card -->
 
   <!-- For your developer — technical credibility section -->
   <section class="section section-dark" id="for-dev">
@@ -2152,6 +2265,8 @@
   </section>
 
   <!-- About Section -->
+    <!-- HIDDEN 2026-04-29 redesign: About / We are builders too -->
+  <div hidden aria-hidden="true">
   <section id="about" class="section section-dark">
     <div class="container">
       <div class="about-minimal">
@@ -2161,8 +2276,11 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN About / We are builders too -->
 
   <!-- Meet Aria Section - Mobile Only -->
+    <!-- HIDDEN 2026-04-29 redesign: Aria voice chat (Lets Talk Numbers) -->
+  <div hidden aria-hidden="true">
   <section class="section aria-section">
     <div class="container">
       <div class="aria-intro">
@@ -2214,6 +2332,7 @@
       </div>
     </div>
   </section>
+  </div><!-- /HIDDEN Aria voice chat (Lets Talk Numbers) -->
 
   <!-- ARIA Voice Chat Modal -->
   <div class="aria-chat-overlay" id="ariaChatOverlay">
