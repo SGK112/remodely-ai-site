@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitor Compare — Free Tool · Remodely AI</title>
+  <meta name="description" content="Run any two contractor websites through our AI visibility grader and see who wins on each axis. Free, instant, no signup.">
+  <link rel="canonical" href="https://www.remodely.ai/tools/compare/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Competitor Compare — Remodely AI">
+  <meta property="og:description" content="See how your contractor site stacks up against your competition. Side-by-side AI visibility & SEO diff in 30 seconds.">
+  <meta property="og:url" content="https://www.remodely.ai/tools/compare/">
+  <meta property="og:image" content="https://www.remodely.ai/images/og.png">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts (mono for terminal accents) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.min.css?v=123">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32">
+
+  <style>
+    /* ============================================================
+       Tool-specific layout. Inherits palette + components from the
+       master stylesheet (.terminal-block, .pillars vocabulary).
+       ============================================================ */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .tool-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tool-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0 0 12px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-eyebrow a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .tool-eyebrow a:hover {
+      color: #fb923c;
+      border-bottom-color: #fb923c;
+    }
+
+    .tool-eyebrow .accent {
+      color: #fb923c;
+      font-weight: 600;
+    }
+
+    .tool-title {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #ffffff;
+      margin: 0 0 14px 0;
+      max-width: 18ch;
+    }
+
+    .tool-title .hl {
+      color: #f97316;
+    }
+
+    .tool-lede {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      max-width: 60ch;
+      margin: 0 0 36px 0;
+    }
+
+    /* Form */
+    .compare-form {
+      background: linear-gradient(180deg, #0f1525 0%, #0a0f1a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .compare-input {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .compare-input label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .compare-input input {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .compare-input input::placeholder { color: rgba(255, 255, 255, 0.3); }
+    .compare-input input:focus {
+      border-color: rgba(249, 115, 22, 0.6);
+      background: rgba(249, 115, 22, 0.06);
+    }
+
+    .compare-vs {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(249, 115, 22, 0.85);
+      align-self: center;
+      padding-bottom: 14px;
+    }
+
+    .compare-submit {
+      margin-top: 18px;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .compare-submit:hover {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(249, 115, 22, 0.45),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .compare-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 700px) {
+      .compare-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .compare-vs {
+        text-align: center;
+        padding: 0;
+      }
+    }
+
+    /* Loading */
+    .compare-loading {
+      display: none;
+      padding: 32px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: var(--mono);
+      font-size: 0.9rem;
+    }
+
+    .compare-loading .lines {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .compare-loading .lines div {
+      opacity: 0;
+      animation: lineFade 0.5s forwards;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .compare-loading .lines .ok { color: #4ade80; }
+
+    @keyframes lineFade {
+      to { opacity: 1; }
+    }
+
+    /* Result */
+    .compare-result {
+      display: none;
+    }
+
+    .verdict {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 28px 24px;
+      background: linear-gradient(180deg, rgba(249, 115, 22, 0.04) 0%, #0a0f1a 100%);
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .verdict__col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .verdict__col--right { text-align: right; align-items: flex-end; }
+
+    .verdict__label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .verdict__domain {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: #ffffff;
+      word-break: break-all;
+    }
+
+    .verdict__score {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: #ffffff;
+    }
+
+    .verdict__score--win { color: #fb923c; }
+
+    .verdict__vs {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.1em;
+    }
+
+    .verdict__crown {
+      font-size: 1rem;
+      font-family: var(--mono);
+      color: #fb923c;
+      margin-top: 4px;
+    }
+
+    /* Diff table */
+    .diff-table {
+      background: #0a0f1a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .diff-row {
+      display: grid;
+      grid-template-columns: 1fr 60px 60px 60px 60px;
+      gap: 10px;
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+    }
+
+    .diff-row:first-child { border-top: none; }
+
+    .diff-row__label {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .diff-row__score {
+      text-align: right;
+      color: rgba(255, 255, 255, 0.78);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .diff-row__score--win {
+      color: #fb923c;
+      font-weight: 600;
+    }
+
+    .diff-row__delta {
+      text-align: right;
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .diff-row__delta.up   { color: #4ade80; }
+    .diff-row__delta.down { color: #f87171; }
+    .diff-row__delta.tie  { color: rgba(255, 255, 255, 0.35); }
+
+    .diff-row__winner {
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: right;
+    }
+
+    .diff-row__winner.a { color: #fb923c; }
+    .diff-row__winner.b { color: #fb923c; }
+
+    .diff-header {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .diff-header .diff-row__score,
+    .diff-header .diff-row__label,
+    .diff-header .diff-row__delta,
+    .diff-header .diff-row__winner {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 700px) {
+      .diff-row {
+        grid-template-columns: 1fr 56px 56px;
+        gap: 8px;
+        padding: 12px 14px;
+        font-size: 0.78rem;
+      }
+      .diff-row__delta,
+      .diff-row__winner { display: none; }
+      .verdict {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .verdict__col,
+      .verdict__col--right { text-align: center; align-items: center; }
+      .verdict__vs { padding: 0; }
+    }
+
+    /* CTA after result */
+    .compare-cta {
+      background: #0a0f1a;
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .compare-cta h3 {
+      color: #ffffff;
+      font-size: 1.4rem;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.015em;
+    }
+
+    .compare-cta p {
+      color: rgba(255, 255, 255, 0.65);
+      margin: 0 0 18px 0;
+    }
+
+    .compare-cta .btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .compare-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .compare-cta a.primary {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #ffffff;
+    }
+    .compare-cta a.primary:hover { transform: translateY(-2px); }
+
+    .compare-cta a.ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .compare-error {
+      display: none;
+      padding: 16px 20px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 3-layer parallax starfield -->
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
+
+  <main class="tool-page">
+    <p class="tool-eyebrow">
+      <a href="/grader.html">← Free Grader</a>
+      <span style="color:rgba(255,255,255,0.3);">/</span>
+      <span class="accent">/tools/compare</span>
+    </p>
+
+    <h1 class="tool-title">
+      Who's <span class="hl">winning</span><br>
+      the AI search<br>
+      battle?
+    </h1>
+
+    <p class="tool-lede">
+      Pick any two contractor sites — yours and your toughest competitor — and see who wins on AI visibility, schema, content, and speed. Side-by-side, axis by axis, in about 30 seconds.
+    </p>
+
+    <form class="compare-form" id="compareForm">
+      <div class="compare-row">
+        <div class="compare-input">
+          <label for="url1">Your site</label>
+          <input type="url" id="url1" name="url1" placeholder="https://yourcompany.com" required>
+        </div>
+        <span class="compare-vs">VS</span>
+        <div class="compare-input">
+          <label for="url2">Competitor</label>
+          <input type="url" id="url2" name="url2" placeholder="https://competitor.com" required>
+        </div>
+      </div>
+      <button type="submit" class="compare-submit" id="compareSubmit">Run the comparison &nbsp;&rarr;</button>
+      <div class="compare-error" id="compareError"></div>
+    </form>
+
+    <div class="compare-loading" id="compareLoading">
+      <div>Running both sites through 12 checks…</div>
+      <div class="lines" id="loadingLines"></div>
+    </div>
+
+    <div class="compare-result" id="compareResult">
+      <!-- populated by JS -->
+    </div>
+  </main>
+
+  <!-- Sticky CTA inherits from the master site -->
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="Quick actions" hidden>
+    <a href="/grader.html" class="sticky-cta__btn sticky-cta__btn--primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Full Grader</span>
+    </a>
+    <a href="/" class="sticky-cta__btn sticky-cta__btn--secondary">
+      <span>← Home</span>
+    </a>
+  </div>
+
+  <script>
+    const API = 'https://remodely-backend.onrender.com/api/grader/compare';
+
+    const form    = document.getElementById('compareForm');
+    const submit  = document.getElementById('compareSubmit');
+    const loading = document.getElementById('compareLoading');
+    const lines   = document.getElementById('loadingLines');
+    const result  = document.getElementById('compareResult');
+    const errorEl = document.getElementById('compareError');
+
+    // Reveal sticky CTA on scroll
+    (function() {
+      const bar = document.getElementById('stickyCta');
+      let shown = false;
+      function reveal() {
+        if (shown) return;
+        if (window.scrollY > 240) {
+          bar.hidden = false;
+          requestAnimationFrame(() => bar.classList.add('sticky-cta--visible'));
+          shown = true;
+          window.removeEventListener('scroll', reveal);
+        }
+      }
+      window.addEventListener('scroll', reveal, { passive: true });
+    })();
+
+    function pushLine(text, ok) {
+      const div = document.createElement('div');
+      div.className = ok ? 'ok' : '';
+      div.style.animationDelay = (lines.children.length * 200) + 'ms';
+      div.textContent = (ok ? '✓ ' : '› ') + text;
+      lines.appendChild(div);
+    }
+
+    function renderResult(data) {
+      const { a, b, diff, summary } = data;
+      const aDom = a.domain || a.url;
+      const bDom = b.domain || b.url;
+      const aOverall = a.scores.overall;
+      const bOverall = b.scores.overall;
+      const verdictWinner = summary.verdict;
+
+      let verdictText = 'Too close to call.';
+      if (verdictWinner === 'a') verdictText = `${aDom} wins.`;
+      else if (verdictWinner === 'b') verdictText = `${bDom} wins.`;
+
+      let html = '';
+
+      html += `
+        <div class="verdict">
+          <div class="verdict__col">
+            <div class="verdict__label">Site A</div>
+            <div class="verdict__domain">${aDom}</div>
+            <div class="verdict__score ${verdictWinner === 'a' ? 'verdict__score--win' : ''}">${aOverall}</div>
+            ${verdictWinner === 'a' ? '<div class="verdict__crown">▲ winner</div>' : ''}
+          </div>
+          <div class="verdict__vs">VS</div>
+          <div class="verdict__col verdict__col--right">
+            <div class="verdict__label">Site B</div>
+            <div class="verdict__domain">${bDom}</div>
+            <div class="verdict__score ${verdictWinner === 'b' ? 'verdict__score--win' : ''}">${bOverall}</div>
+            ${verdictWinner === 'b' ? '<div class="verdict__crown">▲ winner</div>' : ''}
+          </div>
+        </div>
+      `;
+
+      html += `
+        <div class="diff-table">
+          <div class="diff-row diff-header">
+            <div class="diff-row__label">Metric</div>
+            <div class="diff-row__score">A</div>
+            <div class="diff-row__score">B</div>
+            <div class="diff-row__delta">Δ</div>
+            <div class="diff-row__winner">Winner</div>
+          </div>
+      `;
+      diff.forEach(d => {
+        const aWin = d.winner === 'a';
+        const bWin = d.winner === 'b';
+        const deltaClass = d.delta > 4 ? 'up' : d.delta < -4 ? 'down' : 'tie';
+        const deltaText  = d.delta === 0 ? '—' : (d.delta > 0 ? '+' : '') + d.delta;
+        const winnerLabel = aWin ? 'A' : bWin ? 'B' : '·';
+        const winnerClass = aWin ? 'a' : bWin ? 'b' : '';
+        html += `
+          <div class="diff-row">
+            <div class="diff-row__label">${d.label}</div>
+            <div class="diff-row__score ${aWin ? 'diff-row__score--win' : ''}">${d.a}</div>
+            <div class="diff-row__score ${bWin ? 'diff-row__score--win' : ''}">${d.b}</div>
+            <div class="diff-row__delta ${deltaClass}">${deltaText}</div>
+            <div class="diff-row__winner ${winnerClass}">${winnerLabel}</div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+
+      const shareUrl = `${location.origin}${location.pathname}?a=${encodeURIComponent(a.url)}&b=${encodeURIComponent(b.url)}`;
+      const tweet = encodeURIComponent(`I scored ${aOverall} vs ${bOverall} (${verdictText}) on Remodely's free competitor grader. ${shareUrl}`);
+
+      html += `
+        <div class="compare-cta">
+          <h3>${verdictText}</h3>
+          <p>Want the full breakdown — every issue, every fix, in your inbox?</p>
+          <div class="btns">
+            <a class="primary" href="/grader.html?url=${encodeURIComponent(a.url)}">Run the full grader on Site A &rarr;</a>
+            <a class="ghost" href="https://twitter.com/intent/tweet?text=${tweet}" target="_blank" rel="noopener">Share result</a>
+          </div>
+        </div>
+      `;
+
+      result.innerHTML = html;
+      result.style.display = 'block';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      result.style.display = 'none';
+      lines.innerHTML = '';
+      loading.style.display = 'block';
+      submit.disabled = true;
+
+      const url1 = document.getElementById('url1').value.trim();
+      const url2 = document.getElementById('url2').value.trim();
+
+      // Live status pings — purely for show but accurate to what's happening
+      const fakeProgress = [
+        ['Fetching page A', 0],
+        ['Fetching page B', 200],
+        ['Checking schema (JSON-LD)', 700],
+        ['Measuring Core Web Vitals', 1200],
+        ['Scoring AI visibility signals', 2200],
+        ['Building diff', 3000],
+      ];
+      fakeProgress.forEach(([t, ms]) => setTimeout(() => pushLine(t), ms));
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url1, url2 }),
+        });
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Comparison failed');
+        }
+        pushLine('Done', true);
+        loading.style.display = 'none';
+        renderResult(data);
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        loading.style.display = 'none';
+        errorEl.textContent = err.message || 'Something went wrong. Try again.';
+        errorEl.style.display = 'block';
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    // Pre-fill from URL params (so share links work)
+    (function() {
+      const p = new URLSearchParams(location.search);
+      const a = p.get('a'), b = p.get('b');
+      if (a) document.getElementById('url1').value = a;
+      if (b) document.getElementById('url2').value = b;
+      if (a && b) {
+        // Auto-submit if both are pre-filled
+        setTimeout(() => form.requestSubmit(), 200);
+      }
+    })();
+  </script>
+
+  <script src="/js/effects.js?v=4" defer></script>
+</body>
+</html>

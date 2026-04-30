@@ -44,6 +44,9 @@ services:
       - type: rewrite
         source: /launch-playbook
         destination: /launch-playbook.html
+      - type: rewrite
+        source: /tools/compare
+        destination: /tools/compare/index.html
 
   # API Service with Aria Multi-tenant System
   - type: web
