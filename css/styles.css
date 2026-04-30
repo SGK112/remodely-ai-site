@@ -23114,3 +23114,8 @@ nav,
     background-image: none !important;
   }
 }
+
+/* Hardhat off — corner-accessory move was wrong (2026-04-30) */
+.hero--centered {
+  background-image: none !important;
+}
