@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=130">
-  <link rel="stylesheet" href="/css/styles.min.css?v=130" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=131">
+  <link rel="stylesheet" href="/css/styles.min.css?v=131" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://remodely.ai/">
@@ -704,46 +704,43 @@
        INTEGRATIONS CHYRON — scrolling logo strip showing what we wire
        Each brand the contractor's web guy already knows. Endless loop.
        ================================================================= -->
-  <section class="chyron-section" aria-label="Integrations we wire">
+  <section class="chyron-section" aria-label="The contractor stack we wire into">
     <div class="chyron-label">
       <span class="chyron-label__dot"></span>
-      <span>WIRES INTO</span>
+      <span>WIRES INTO YOUR STACK</span>
     </div>
     <div class="chyron">
       <div class="chyron-track">
-        <!-- Group A — duplicated for seamless loop -->
+        <!-- Group A — contractor business stack only. Payments, accounting,
+             field-ops CRMs, calendar, photos, comms. Nothing dev-infra. -->
         <div class="chyron-group">
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.479 9.883c-1.626-.604-2.512-1.067-2.512-1.803 0-.622.511-.977 1.421-.977 1.668 0 3.382.643 4.567 1.221l.666-4.111c-.943-.45-2.844-1.183-5.45-1.183-1.846 0-3.385.481-4.483 1.379-1.144.94-1.733 2.302-1.733 3.951 0 2.991 1.83 4.27 4.812 5.347 1.92.685 2.566 1.171 2.566 1.926 0 .728-.624 1.144-1.768 1.144-1.43 0-3.768-.704-5.293-1.609l-.689 4.137c1.295.752 3.715 1.5 6.207 1.5 1.957 0 3.594-.464 4.7-1.336 1.234-.978 1.875-2.398 1.875-4.155 0-3.061-1.871-4.34-4.886-5.431z"/></svg>Stripe</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.508 17.508c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm-9.034 9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482z"/></svg>Twilio</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.04 19.46c-.34 0-.66-.04-.97-.13l-.45 1.55c-.06.22-.27.37-.5.37-.04 0-.08 0-.13-.01-.27-.07-.43-.35-.36-.62l.42-1.46C8.58 18.65 7 17 6.62 14.94c-.05-.27.13-.53.4-.58.27-.05.53.13.58.4.34 1.86 1.92 3.21 3.79 3.21h.65c2.1 0 3.81-1.71 3.81-3.81s-1.71-3.81-3.81-3.81h-1.13c-2.65 0-4.81-2.16-4.81-4.81S8.27 0.73 10.92 0.73h.04l.42-1.46c.07-.27.35-.43.62-.36.27.07.43.35.36.62l-.42 1.46c2.04.36 3.62 1.97 3.97 4.01.05.27-.13.53-.4.58-.27.05-.53-.13-.58-.4-.34-1.86-1.92-3.21-3.79-3.21h-.04c-2.1 0-3.81 1.71-3.81 3.81s1.71 3.81 3.81 3.81h1.13c2.65 0 4.81 2.16 4.81 4.81s-2.16 4.81-4.81 4.81z"/></svg>QuickBooks</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M0 0v24h24V0H0zm14.7 14.4H9.3V9.3h5.4v5.1z"/></svg>Square</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.774-2.757a.79.79 0 0 0 .392-.681v-6.737l2.018 1.165a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.488 4.495zm-9.65-4.125a4.47 4.47 0 0 1-.535-3.014l.142.085 4.774 2.757a.78.78 0 0 0 .785 0l5.829-3.366v2.33a.072.072 0 0 1-.029.062L9.745 19.95a4.5 4.5 0 0 1-6.135-1.645zM2.347 7.825a4.485 4.485 0 0 1 2.343-1.973V11.6a.766.766 0 0 0 .388.676l5.804 3.353-2.018 1.164a.076.076 0 0 1-.071 0l-4.82-2.787a4.504 4.504 0 0 1-1.626-6.182zm16.59 3.855-5.83-3.387L15.119 7.13a.072.072 0 0 1 .071 0l4.821 2.785a4.5 4.5 0 0 1-.676 8.07v-5.913a.79.79 0 0 0-.396-.692zm2.01-3.029-.141-.085-4.774-2.781a.776.776 0 0 0-.785 0L9.409 9.151V6.825a.072.072 0 0 1 .03-.061l4.82-2.782a4.5 4.5 0 0 1 6.688 4.66zM8.31 12.391l-2.02-1.164a.08.08 0 0 1-.038-.057V5.578a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.71 4.962a.79.79 0 0 0-.393.681zm1.097-2.365 2.598-1.5 2.6 1.5v2.999l-2.59 1.5-2.6-1.5z"/></svg>OpenAI</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.3045 3.2877h-3.7253l6.7857 17.4246h3.7253zM6.694 3.2877L0 20.7123h3.802l1.3686-3.5512h7.0042l1.3686 3.5512h3.802L10.6234 3.2877zm-.2257 10.717l2.293-5.9461 2.293 5.9461z"/></svg>Anthropic</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>Apple</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>Google</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</span>
+          <span class="chyron-item">Stripe</span>
+          <span class="chyron-item">Square</span>
+          <span class="chyron-item">QuickBooks</span>
           <span class="chyron-item">Jobber</span>
           <span class="chyron-item">ServiceTitan</span>
           <span class="chyron-item">HousecallPro</span>
-          <span class="chyron-item">Deepgram</span>
-          <span class="chyron-item">Resend</span>
+          <span class="chyron-item">Buildertrend</span>
+          <span class="chyron-item">CompanyCam</span>
+          <span class="chyron-item">Google&nbsp;Calendar</span>
+          <span class="chyron-item">Apple&nbsp;Calendar</span>
+          <span class="chyron-item">Mailchimp</span>
+          <span class="chyron-item">Twilio</span>
         </div>
         <!-- Duplicate for seamless loop -->
         <div class="chyron-group" aria-hidden="true">
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.479 9.883c-1.626-.604-2.512-1.067-2.512-1.803 0-.622.511-.977 1.421-.977 1.668 0 3.382.643 4.567 1.221l.666-4.111c-.943-.45-2.844-1.183-5.45-1.183-1.846 0-3.385.481-4.483 1.379-1.144.94-1.733 2.302-1.733 3.951 0 2.991 1.83 4.27 4.812 5.347 1.92.685 2.566 1.171 2.566 1.926 0 .728-.624 1.144-1.768 1.144-1.43 0-3.768-.704-5.293-1.609l-.689 4.137c1.295.752 3.715 1.5 6.207 1.5 1.957 0 3.594-.464 4.7-1.336 1.234-.978 1.875-2.398 1.875-4.155 0-3.061-1.871-4.34-4.886-5.431z"/></svg>Stripe</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.508 17.508c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm-9.034 9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482zm0-9.034c-.343.343-.792.515-1.241.515s-.898-.172-1.241-.515c-.685-.685-.685-1.797 0-2.482.685-.685 1.797-.685 2.482 0 .685.685.685 1.797 0 2.482z"/></svg>Twilio</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073z"/></svg>OpenAI</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.3045 3.2877h-3.7253l6.7857 17.4246h3.7253zM6.694 3.2877L0 20.7123h3.802l1.3686-3.5512h7.0042l1.3686 3.5512h3.802L10.6234 3.2877zm-.2257 10.717l2.293-5.9461 2.293 5.9461z"/></svg>Anthropic</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43z"/></svg>Apple</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2"/></svg>Google</span>
-          <span class="chyron-item"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577"/></svg>GitHub</span>
-          <span class="chyron-item">QuickBooks</span>
+          <span class="chyron-item">Stripe</span>
           <span class="chyron-item">Square</span>
+          <span class="chyron-item">QuickBooks</span>
           <span class="chyron-item">Jobber</span>
           <span class="chyron-item">ServiceTitan</span>
           <span class="chyron-item">HousecallPro</span>
-          <span class="chyron-item">Deepgram</span>
-          <span class="chyron-item">Resend</span>
+          <span class="chyron-item">Buildertrend</span>
+          <span class="chyron-item">CompanyCam</span>
+          <span class="chyron-item">Google&nbsp;Calendar</span>
+          <span class="chyron-item">Apple&nbsp;Calendar</span>
+          <span class="chyron-item">Mailchimp</span>
+          <span class="chyron-item">Twilio</span>
         </div>
       </div>
     </div>

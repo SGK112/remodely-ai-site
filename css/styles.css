@@ -23119,3 +23119,127 @@ nav,
 .hero--centered {
   background-image: none !important;
 }
+
+/* =====================================================
+   CHYRON FINAL — text-only contractor stack (2026-04-30)
+   No fake brand SVGs, no dev-infra brands. Just the brand
+   wordmarks of the platforms a contractor recognizes as their
+   business stack: payments, accounting, CRMs, calendar, photos.
+   Even spacing, consistent rhythm.
+   ===================================================== */
+.chyron-section {
+  padding: 56px 0 !important;
+  background: rgba(4, 6, 13, 0.4) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.chyron-label {
+  font-family: var(--mono);
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.32em !important;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 36px !important;
+}
+
+.chyron-label__dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50%;
+  background: #fb923c !important;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.7) !important;
+  animation: chyronDotPulse 2.4s ease-in-out infinite;
+}
+
+.chyron {
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 10%, black 90%, transparent 100%);
+}
+
+.chyron-track {
+  display: flex;
+  width: max-content;
+  animation: chyronScroll 50s linear infinite;
+}
+
+.chyron-group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* Each item — clean even spacing, no SVG, no border between items.
+   Consistent left-right padding gives an even rhythm. */
+.chyron-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 56px !important;
+  height: 64px;
+  font-family: var(--mono) !important;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.005em !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+  white-space: nowrap;
+  border: none !important;
+  text-transform: none;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+/* Subtle dot separator between items, vertically centered */
+.chyron-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.45);
+}
+
+.chyron-track:hover .chyron-item {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.chyron-track:hover .chyron-item:hover {
+  color: #ffffff !important;
+}
+
+.chyron:hover .chyron-track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 900px) {
+  .chyron-section { padding: 40px 0 !important; }
+  .chyron-label   { font-size: 0.7rem !important; margin-bottom: 24px !important; letter-spacing: 0.24em !important; }
+  .chyron-item    { padding: 0 36px !important; font-size: 1.15rem !important; height: 52px; }
+  .chyron-track   { animation-duration: 36s; }
+}
+
+@media (max-width: 600px) {
+  .chyron-section { padding: 32px 0 !important; }
+  .chyron-item    { padding: 0 24px !important; font-size: 1rem !important; height: 44px; }
+  .chyron-item:not(:last-child)::after {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chyron-track { animation: none; }
+  .chyron { mask-image: none; -webkit-mask-image: none; overflow-x: auto; }
+  .chyron-label__dot { animation: none; }
+}
