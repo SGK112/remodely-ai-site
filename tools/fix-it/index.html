@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fix-It Snippets — Free Tool · Remodely AI</title>
+  <meta name="description" content="Paste-ready code snippets for every SEO issue on your contractor site. Schema, meta tags, robots.txt — your developer can drop them in.">
+  <link rel="canonical" href="https://www.remodely.ai/tools/fix-it/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fix-It Snippets — Remodely AI">
+  <meta property="og:description" content="Stop reading SEO advice. Get the actual code your developer needs to paste in. Free, instant, generated from your real business data.">
+  <meta property="og:url" content="https://www.remodely.ai/tools/fix-it/">
+  <meta property="og:image" content="https://www.remodely.ai/images/og.png">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.min.css?v=123">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .tool-page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tool-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0 0 12px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tool-eyebrow a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+    .tool-eyebrow a:hover { color: #fb923c; border-bottom-color: #fb923c; }
+    .tool-eyebrow .accent { color: #fb923c; font-weight: 600; }
+
+    .tool-title {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #ffffff;
+      margin: 0 0 14px 0;
+      max-width: 18ch;
+    }
+    .tool-title .hl { color: #f97316; }
+
+    .tool-lede {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      max-width: 60ch;
+      margin: 0 0 36px 0;
+    }
+
+    .fix-form {
+      background: linear-gradient(180deg, #0f1525 0%, #0a0f1a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .fix-input { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .fix-input label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .fix-input input {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .fix-input input:focus {
+      border-color: rgba(249, 115, 22, 0.6);
+      background: rgba(249, 115, 22, 0.06);
+    }
+
+    .fix-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+    .fix-submit:hover {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      transform: translateY(-2px);
+    }
+    .fix-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .fix-loading {
+      display: none;
+      padding: 22px;
+      background: #0a0f1a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      font-family: var(--mono);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+    .fix-loading .lines { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .fix-loading .lines div { opacity: 0; animation: lf 0.4s forwards; color: rgba(255, 255, 255, 0.6); }
+    .fix-loading .lines .ok { color: #4ade80; }
+    @keyframes lf { to { opacity: 1; } }
+
+    .fix-result { display: none; }
+
+    .fix-summary {
+      background: linear-gradient(180deg, rgba(249, 115, 22, 0.06) 0%, #0a0f1a 100%);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 18px;
+    }
+
+    .fix-summary__count {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #fb923c;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .fix-summary__text {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .fix-summary__biz {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: 10px;
+    }
+
+    .snippet {
+      background: #0a0f1a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .snippet__head {
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: start;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .snippet__num {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: #fb923c;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      align-self: center;
+    }
+
+    .snippet__title {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.01em;
+    }
+
+    .snippet__where {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .snippet__why {
+      padding: 12px 22px;
+      background: rgba(249, 115, 22, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+    }
+
+    .snippet__why::before {
+      content: 'why → ';
+      font-family: var(--mono);
+      color: #fb923c;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      margin-right: 4px;
+    }
+
+    .snippet__codewrap {
+      position: relative;
+    }
+
+    .snippet__code {
+      margin: 0;
+      padding: 18px 22px 18px 22px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.88);
+      background: #04060d;
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    .snippet__copy {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 7px 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 7px;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .snippet__copy:hover {
+      background: rgba(249, 115, 22, 0.15);
+      border-color: rgba(249, 115, 22, 0.4);
+      color: #fb923c;
+    }
+
+    .snippet__copy.copied {
+      background: rgba(74, 222, 128, 0.15);
+      border-color: rgba(74, 222, 128, 0.4);
+      color: #4ade80;
+    }
+
+    .fix-cta {
+      background: #0a0f1a;
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .fix-cta h3 { color: #ffffff; font-size: 1.3rem; margin: 0 0 8px 0; letter-spacing: -0.015em; }
+    .fix-cta p { color: rgba(255, 255, 255, 0.65); margin: 0 0 18px 0; }
+    .fix-cta .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .fix-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .fix-cta a.primary {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #fff;
+    }
+    .fix-cta a.primary:hover { transform: translateY(-2px); }
+    .fix-cta a.ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .fix-error {
+      display: none;
+      padding: 16px 20px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .snippet__head {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .snippet__num { width: fit-content; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
+
+  <main class="tool-page">
+    <p class="tool-eyebrow">
+      <a href="/grader.html">← Free Grader</a>
+      <span style="color:rgba(255,255,255,0.3);">/</span>
+      <span class="accent">/tools/fix-it</span>
+    </p>
+
+    <h1 class="tool-title">
+      Stop reading <span class="hl">SEO advice</span>.<br>
+      Get the actual code.
+    </h1>
+
+    <p class="tool-lede">
+      Drop your URL. We pull your real business data, find the gaps, and generate paste-ready snippets — meta tags, JSON-LD schema, Open Graph, robots.txt — with your actual name, phone, and address filled in. Hand it to your developer.
+    </p>
+
+    <form class="fix-form" id="fixForm">
+      <div class="fix-input">
+        <label for="fixUrl">Your website</label>
+        <input type="url" id="fixUrl" name="url" placeholder="https://yourcompany.com" required>
+      </div>
+      <button type="submit" class="fix-submit" id="fixSubmit">Generate paste-ready snippets &nbsp;&rarr;</button>
+      <div class="fix-error" id="fixError"></div>
+    </form>
+
+    <div class="fix-loading" id="fixLoading">
+      <div>Reading your site → extracting business data → generating snippets</div>
+      <div class="lines" id="loadingLines"></div>
+    </div>
+
+    <div class="fix-result" id="fixResult"></div>
+  </main>
+
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="Quick actions" hidden>
+    <a href="/grader.html" class="sticky-cta__btn sticky-cta__btn--primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Full Grader</span>
+    </a>
+    <a href="/tools/ai-probe/" class="sticky-cta__btn sticky-cta__btn--secondary"><span>AI Probe</span></a>
+  </div>
+
+  <script>
+    const API = 'https://remodely-backend.onrender.com/api/grader/fix-it';
+
+    const form    = document.getElementById('fixForm');
+    const submit  = document.getElementById('fixSubmit');
+    const loading = document.getElementById('fixLoading');
+    const lines   = document.getElementById('loadingLines');
+    const result  = document.getElementById('fixResult');
+    const errorEl = document.getElementById('fixError');
+
+    (function() {
+      const bar = document.getElementById('stickyCta');
+      let shown = false;
+      function reveal() {
+        if (shown) return;
+        if (window.scrollY > 220) {
+          bar.hidden = false;
+          requestAnimationFrame(() => bar.classList.add('sticky-cta--visible'));
+          shown = true;
+          window.removeEventListener('scroll', reveal);
+        }
+      }
+      window.addEventListener('scroll', reveal, { passive: true });
+    })();
+
+    function pushLine(text, ok) {
+      const div = document.createElement('div');
+      div.className = ok ? 'ok' : '';
+      div.style.animationDelay = (lines.children.length * 220) + 'ms';
+      div.textContent = (ok ? '✓ ' : '› ') + text;
+      lines.appendChild(div);
+    }
+
+    function escape(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function renderResult(data) {
+      const { snippets, business } = data;
+
+      let html = '';
+
+      const bizSummary = [
+        business.name && `name: ${business.name}`,
+        business.phone && `phone: ${business.phone}`,
+        business.email && `email: ${business.email}`,
+        business.address.city && `city: ${business.address.city}${business.address.region ? ', ' + business.address.region : ''}`,
+      ].filter(Boolean).join('  ·  ');
+
+      html += `
+        <div class="fix-summary">
+          <div class="fix-summary__count">${snippets.length} fix${snippets.length === 1 ? '' : 'es'}</div>
+          <div class="fix-summary__text">Paste-ready snippets generated from <strong style="color:#fff">${escape(data.domain)}</strong>. Each one has your real data filled in.</div>
+          ${bizSummary ? `<div class="fix-summary__biz">${escape(bizSummary)}</div>` : ''}
+        </div>
+      `;
+
+      snippets.forEach((sn, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        html += `
+          <div class="snippet" data-snippet-id="${escape(sn.id)}">
+            <div class="snippet__head">
+              <span class="snippet__num">[${num}]</span>
+              <div>
+                <h3 class="snippet__title">${escape(sn.title)}</h3>
+                <p class="snippet__where">${escape(sn.where)}</p>
+              </div>
+            </div>
+            <div class="snippet__why">${escape(sn.why)}</div>
+            <div class="snippet__codewrap">
+              <button type="button" class="snippet__copy" data-code="${i}">Copy</button>
+              <pre class="snippet__code">${escape(sn.code)}</pre>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="fix-cta">
+          <h3>Need someone to install these for you?</h3>
+          <p>We'll do it. We'll also wire up your CRM, schedule sync, and AI receptionist while we're in there.</p>
+          <div class="btns">
+            <a class="primary" href="/#contact">Talk to us &rarr;</a>
+            <a class="ghost" href="/grader.html?url=${encodeURIComponent(data.url)}">Run the full grader</a>
+          </div>
+        </div>
+      `;
+
+      result.innerHTML = html;
+      result.style.display = 'block';
+
+      // Wire up copy buttons
+      result.querySelectorAll('.snippet__copy').forEach((btn, i) => {
+        btn.addEventListener('click', async () => {
+          const code = snippets[i].code;
+          try {
+            await navigator.clipboard.writeText(code);
+            const original = btn.textContent;
+            btn.textContent = 'Copied ✓';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = original;
+              btn.classList.remove('copied');
+            }, 1800);
+          } catch (err) {
+            btn.textContent = 'Copy failed';
+          }
+        });
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      result.style.display = 'none';
+      lines.innerHTML = '';
+      loading.style.display = 'block';
+      submit.disabled = true;
+
+      const url = document.getElementById('fixUrl').value.trim();
+
+      [
+        ['Fetching your page', 0],
+        ['Extracting meta + JSON-LD', 500],
+        ['Parsing phone, email, address', 1100],
+        ['Detecting missing schema', 1700],
+        ['Generating snippets with your data', 2400],
+      ].forEach(([t, ms]) => setTimeout(() => pushLine(t), ms));
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Fix-it failed');
+        pushLine('Done', true);
+        loading.style.display = 'none';
+        renderResult(data);
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        loading.style.display = 'none';
+        errorEl.textContent = err.message || 'Something went wrong. Try again.';
+        errorEl.style.display = 'block';
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    (function() {
+      const p = new URLSearchParams(location.search);
+      const u = p.get('url');
+      if (u) {
+        document.getElementById('fixUrl').value = u;
+        setTimeout(() => form.requestSubmit(), 200);
+      }
+    })();
+  </script>
+
+  <script src="/js/effects.js?v=4" defer></script>
+</body>
+</html>

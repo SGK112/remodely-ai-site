@@ -50,6 +50,9 @@ services:
       - type: rewrite
         source: /tools/ai-probe
         destination: /tools/ai-probe/index.html
+      - type: rewrite
+        source: /tools/fix-it
+        destination: /tools/fix-it/index.html
 
   # API Service with Aria Multi-tenant System
   - type: web
