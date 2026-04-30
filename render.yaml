@@ -53,6 +53,27 @@ services:
       - type: rewrite
         source: /tools/fix-it
         destination: /tools/fix-it/index.html
+      - type: rewrite
+        source: /tools/gbp
+        destination: /tools/gbp/index.html
+      - type: rewrite
+        source: /tools/schema
+        destination: /tools/schema/index.html
+      - type: rewrite
+        source: /tools/mobile
+        destination: /tools/mobile/index.html
+      - type: rewrite
+        source: /tools/a11y
+        destination: /tools/a11y/index.html
+      - type: rewrite
+        source: /tools/sitemap
+        destination: /tools/sitemap/index.html
+      - type: rewrite
+        source: /tools/https
+        destination: /tools/https/index.html
+      - type: rewrite
+        source: /tools
+        destination: /tools/index.html
 
   # API Service with Aria Multi-tenant System
   - type: web

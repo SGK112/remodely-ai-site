@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTPS & Security Check — Free Tool · Remodely AI</title>
+  <meta name="description" content="HTTPS enabled, HTTP redirect, HSTS, mixed content, security headers (CSP, X-Content-Type-Options, Referrer-Policy).">
+  <link rel="canonical" href="https://www.remodely.ai/tools/https/">
+
+  <meta property="og:title" content="HTTPS & Security Check — Remodely AI">
+  <meta property="og:description" content="HTTPS enabled, HTTP redirect, HSTS, mixed content, security headers (CSP, X-Content-Type-Options, Referrer-Policy).">
+  <meta property="og:url" content="https://www.remodely.ai/tools/https/">
+  <meta property="og:image" content="https://www.remodely.ai/images/og.png">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.min.css?v=123">
+  <link rel="stylesheet" href="/tools/_shared.css?v=1">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32">
+</head>
+
+<body>
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
+
+  <main class="tool-page">
+    <p class="tool-eyebrow">
+      <a href="/grader.html">← Free Grader</a>
+      <span style="color:rgba(255,255,255,0.3);">/</span>
+      <span class="accent">/tools/https</span>
+    </p>
+
+    <h1 class="tool-title">Is your site<br><span class="hl">secure</span>?</h1>
+    <p class="tool-lede">Beyond the lock icon. We check HTTPS final URL, HTTP→HTTPS redirect, HSTS, X-Content-Type-Options, Referrer-Policy, CSP, mixed content (http:// resources on an https:// page), and Server header version disclosure.</p>
+
+    <form class="x-form" id="xForm">
+      <div class="x-input">
+        <label for="xUrl">Your website</label>
+        <input type="url" id="xUrl" name="url" placeholder="https://yourcompany.com" required>
+      </div>
+      <button type="submit" class="x-submit" id="xSubmit">Check security headers &nbsp;&rarr;</button>
+      <div class="x-error" id="xError"></div>
+    </form>
+
+    <div class="x-loading" id="xLoading">
+      <div>Fetching page → reading response headers → scoring</div>
+      <div class="lines" id="loadingLines"></div>
+    </div>
+
+    <div class="x-result" id="xResult"></div>
+  </main>
+
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="Quick actions" hidden>
+    <a href="/grader.html" class="sticky-cta__btn sticky-cta__btn--primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Full Grader</span>
+    </a>
+    <a href="/tools/fix-it/" class="sticky-cta__btn sticky-cta__btn--secondary"><span>Fix-It</span></a>
+  </div>
+
+  <script>
+    const API = 'https://remodely-backend.onrender.com/api/grader/https';
+    const TOOL = {{
+      slug: 'https',
+      verdictNoun: 'security',
+      loadingLines: [
+        ['Fetching the page over HTTPS', 0],
+        ['Checking HTTP redirect to HTTPS', 700],
+        ['Reading security headers', 1400],
+        ['Scanning for mixed content', 2000],
+        ['Checking Server header for version disclosure', 2700],
+        ['Scoring', 3300],
+      ],
+    }};
+  </script>
+  <script src="/tools/_shared.js?v=1" defer></script>
+  <script src="/js/effects.js?v=4" defer></script>
+</body>
+</html>
