@@ -47,6 +47,9 @@ services:
       - type: rewrite
         source: /tools/compare
         destination: /tools/compare/index.html
+      - type: rewrite
+        source: /tools/ai-probe
+        destination: /tools/ai-probe/index.html
 
   # API Service with Aria Multi-tenant System
   - type: web

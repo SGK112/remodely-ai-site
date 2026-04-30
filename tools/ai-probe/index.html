@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Assistant Probe — Free Tool · Remodely AI</title>
+  <meta name="description" content="Does ChatGPT or Claude actually know your business? We ask them and grade what they say. Free, instant, no signup.">
+  <link rel="canonical" href="https://www.remodely.ai/tools/ai-probe/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AI Assistant Probe — Remodely AI">
+  <meta property="og:description" content="ChatGPT and Claude are answering customer questions about contractors. Find out what they say about you. Free in 30 seconds.">
+  <meta property="og:url" content="https://www.remodely.ai/tools/ai-probe/">
+  <meta property="og:image" content="https://www.remodely.ai/images/og.png">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.min.css?v=123">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .tool-page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tool-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.5);
+      margin: 0 0 12px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tool-eyebrow a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+    .tool-eyebrow a:hover { color: #fb923c; border-bottom-color: #fb923c; }
+    .tool-eyebrow .accent { color: #fb923c; font-weight: 600; }
+
+    .tool-title {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #ffffff;
+      margin: 0 0 14px 0;
+      max-width: 18ch;
+    }
+    .tool-title .hl { color: #f97316; }
+
+    .tool-lede {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      max-width: 60ch;
+      margin: 0 0 36px 0;
+    }
+
+    .probe-form {
+      background: linear-gradient(180deg, #0f1525 0%, #0a0f1a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .probe-input { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .probe-input label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .probe-input input {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .probe-input input:focus {
+      border-color: rgba(249, 115, 22, 0.6);
+      background: rgba(249, 115, 22, 0.06);
+    }
+    .probe-input small {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .probe-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+    .probe-submit:hover {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      transform: translateY(-2px);
+    }
+    .probe-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .probe-loading {
+      display: none;
+      padding: 28px;
+      background: #0a0f1a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      font-family: var(--mono);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+    .probe-loading .lines { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .probe-loading .lines div { opacity: 0; animation: lf 0.4s forwards; color: rgba(255, 255, 255, 0.6); }
+    .probe-loading .lines .ok { color: #4ade80; }
+    @keyframes lf { to { opacity: 1; } }
+
+    .probe-result { display: none; }
+
+    .probe-overall {
+      background: linear-gradient(180deg, rgba(249, 115, 22, 0.06) 0%, #0a0f1a 100%);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .probe-overall__score {
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: #fb923c;
+    }
+    .probe-overall__label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 6px;
+    }
+    .probe-overall__verdict {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .probe-overall__sub {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .probe-models { display: flex; flex-direction: column; gap: 12px; }
+
+    .probe-model {
+      background: #0a0f1a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .probe-model__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+    .probe-model__name {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .probe-model__name .provider {
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+      margin-left: 6px;
+    }
+    .probe-model__score {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fb923c;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .probe-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .probe-check {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 5px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+    .probe-check.yes {
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      color: #4ade80;
+    }
+    .probe-check.no {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .probe-response {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.78);
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .probe-error-card {
+      padding: 12px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      color: #fca5a5;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+    }
+
+    .probe-cta {
+      background: #0a0f1a;
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .probe-cta h3 {
+      color: #ffffff;
+      font-size: 1.3rem;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.015em;
+    }
+    .probe-cta p {
+      color: rgba(255, 255, 255, 0.65);
+      margin: 0 0 18px 0;
+    }
+    .probe-cta .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .probe-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.18s ease;
+    }
+    .probe-cta a.primary {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #fff;
+    }
+    .probe-cta a.primary:hover { transform: translateY(-2px); }
+    .probe-cta a.ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .probe-error {
+      display: none;
+      padding: 16px 20px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .probe-overall { grid-template-columns: 1fr; gap: 14px; text-align: center; }
+      .probe-overall__score { font-size: 3rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
+
+  <main class="tool-page">
+    <p class="tool-eyebrow">
+      <a href="/grader.html">← Free Grader</a>
+      <span style="color:rgba(255,255,255,0.3);">/</span>
+      <span class="accent">/tools/ai-probe</span>
+    </p>
+
+    <h1 class="tool-title">
+      What does <span class="hl">ChatGPT</span><br>
+      say about your<br>
+      business?
+    </h1>
+
+    <p class="tool-lede">
+      Customers are asking AI assistants for contractor recommendations. We ask Claude and GPT-4o "Tell me about your business" and grade what they say. Strong response = customers find you. Weak response = invisible.
+    </p>
+
+    <form class="probe-form" id="probeForm">
+      <div class="probe-input">
+        <label for="probeUrl">Your website</label>
+        <input type="url" id="probeUrl" name="url" placeholder="https://yourcompany.com" required>
+        <small>We'll auto-detect your business name and location from the page.</small>
+      </div>
+      <button type="submit" class="probe-submit" id="probeSubmit">Probe the AI assistants &nbsp;&rarr;</button>
+      <div class="probe-error" id="probeError"></div>
+    </form>
+
+    <div class="probe-loading" id="probeLoading">
+      <div>Reading your site → asking Claude → asking GPT-4o → scoring responses</div>
+      <div class="lines" id="loadingLines"></div>
+    </div>
+
+    <div class="probe-result" id="probeResult"></div>
+  </main>
+
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="Quick actions" hidden>
+    <a href="/grader.html" class="sticky-cta__btn sticky-cta__btn--primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Full Grader</span>
+    </a>
+    <a href="/tools/compare/" class="sticky-cta__btn sticky-cta__btn--secondary"><span>Compare</span></a>
+  </div>
+
+  <script>
+    const API = 'https://remodely-backend.onrender.com/api/grader/ai-probe';
+
+    const form    = document.getElementById('probeForm');
+    const submit  = document.getElementById('probeSubmit');
+    const loading = document.getElementById('probeLoading');
+    const lines   = document.getElementById('loadingLines');
+    const result  = document.getElementById('probeResult');
+    const errorEl = document.getElementById('probeError');
+
+    (function() {
+      const bar = document.getElementById('stickyCta');
+      let shown = false;
+      function reveal() {
+        if (shown) return;
+        if (window.scrollY > 220) {
+          bar.hidden = false;
+          requestAnimationFrame(() => bar.classList.add('sticky-cta--visible'));
+          shown = true;
+          window.removeEventListener('scroll', reveal);
+        }
+      }
+      window.addEventListener('scroll', reveal, { passive: true });
+    })();
+
+    function pushLine(text, ok) {
+      const div = document.createElement('div');
+      div.className = ok ? 'ok' : '';
+      div.style.animationDelay = (lines.children.length * 250) + 'ms';
+      div.textContent = (ok ? '✓ ' : '› ') + text;
+      lines.appendChild(div);
+    }
+
+    function escape(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function renderResult(data) {
+      const { business, results, summary } = data;
+      const aiPct = summary.overall_score;
+
+      let html = '';
+      html += `
+        <div class="probe-overall">
+          <div class="probe-overall__score">${aiPct}</div>
+          <div>
+            <div class="probe-overall__label">AI presence score · ${escape(business.name)}</div>
+            <div class="probe-overall__verdict">${escape(summary.verdict)}</div>
+            <div class="probe-overall__sub">Probed ${summary.total_probed} models · found by ${summary.found_by} · cited URL by ${summary.cited_correctly_by}</div>
+          </div>
+        </div>
+      `;
+
+      html += `<div class="probe-models">`;
+      results.forEach((r) => {
+        if (r.error) {
+          html += `
+            <div class="probe-model">
+              <div class="probe-model__head">
+                <div class="probe-model__name">${escape(r.provider || r.model)}<span class="provider">${escape(r.model)}</span></div>
+                <div class="probe-model__score">—</div>
+              </div>
+              <div class="probe-error-card">${escape(r.error)}</div>
+            </div>
+          `;
+          return;
+        }
+        const checks = [
+          ['Mentions name',      r.mentions_name],
+          ['Cites URL',          r.cites_url],
+          ['Mentions location',  r.mentions_location],
+          ['Mentions services',  r.mentions_services],
+        ];
+        html += `
+          <div class="probe-model">
+            <div class="probe-model__head">
+              <div class="probe-model__name">${escape(r.provider || r.model)}<span class="provider">${escape(r.model)}</span></div>
+              <div class="probe-model__score">${r.score}</div>
+            </div>
+            <div class="probe-checks">
+              ${checks.map(([l, v]) => `<span class="probe-check ${v ? 'yes' : 'no'}">${v ? '✓' : '✕'} ${l}</span>`).join('')}
+            </div>
+            <div class="probe-response">${escape(r.response || '(no response)')}</div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+
+      const tweet = encodeURIComponent(`I scored ${aiPct}/100 for AI assistant visibility (${summary.verdict}). Probed Claude + GPT-4o with Remodely's free tool: ${location.origin}${location.pathname}`);
+      html += `
+        <div class="probe-cta">
+          <h3>Want to climb that score?</h3>
+          <p>The full grader will tell you exactly what to fix so the AIs cite you next time.</p>
+          <div class="btns">
+            <a class="primary" href="/grader.html?url=${encodeURIComponent(data.url)}">Run the full grader →</a>
+            <a class="ghost" href="https://twitter.com/intent/tweet?text=${tweet}" target="_blank" rel="noopener">Share result</a>
+          </div>
+        </div>
+      `;
+
+      result.innerHTML = html;
+      result.style.display = 'block';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      result.style.display = 'none';
+      lines.innerHTML = '';
+      loading.style.display = 'block';
+      submit.disabled = true;
+
+      const url = document.getElementById('probeUrl').value.trim();
+
+      const fakeProgress = [
+        ['Reading your site', 0],
+        ['Detecting business name + location', 600],
+        ['Asking Anthropic Claude', 1500],
+        ['Asking OpenAI GPT-4o', 2400],
+        ['Checking responses for citations', 3500],
+        ['Scoring', 4500],
+      ];
+      fakeProgress.forEach(([t, ms]) => setTimeout(() => pushLine(t), ms));
+
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Probe failed');
+        pushLine('Done', true);
+        loading.style.display = 'none';
+        renderResult(data);
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        loading.style.display = 'none';
+        errorEl.textContent = err.message || 'Something went wrong. Try again.';
+        errorEl.style.display = 'block';
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    (function() {
+      const p = new URLSearchParams(location.search);
+      const u = p.get('url');
+      if (u) {
+        document.getElementById('probeUrl').value = u;
+        setTimeout(() => form.requestSubmit(), 200);
+      }
+    })();
+  </script>
+
+  <script src="/js/effects.js?v=4" defer></script>
+</body>
+</html>
