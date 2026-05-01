@@ -19051,19 +19051,51 @@ button svg,
   }
 }
 
-/* Mobile adjustments */
+/* Mobile adjustments — tighten header, mic button, and padding so the
+   panel doesn't feel bloated on a 6.1" phone. Goal: more transcript
+   visible, less chrome. */
 @media (max-width: 480px) {
+  .aria-chat-overlay { padding: 0; }
   .aria-chat-modal {
-    max-height: 100vh;
+    max-height: 100dvh;
     border-radius: 0;
-    height: 100%;
+    height: 100dvh;
     margin: 0;
   }
-
+  .aria-chat-close {
+    top: 0.625rem;
+    right: 0.625rem;
+    width: 32px;
+    height: 32px;
+    font-size: 1.25rem;
+  }
+  .aria-chat-header {
+    padding: 1rem 1rem 0.875rem;
+    gap: 0.75rem;
+  }
+  .aria-chat-avatar { width: 40px; height: 40px; }
+  .aria-chat-avatar svg { width: 20px; height: 20px; }
+  .aria-chat-title h3 { font-size: 1.05rem; }
+  .aria-chat-status { font-size: 0.78rem; }
   .aria-chat-messages {
     max-height: none;
     flex: 1;
+    padding: 1rem;
   }
+  .aria-chat-welcome { padding: 1.25rem 0.5rem; }
+  .aria-chat-welcome p { font-size: 0.92rem; }
+  .aria-message-bubble {
+    max-width: 88%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.92rem;
+  }
+  .aria-chat-controls {
+    padding: 0.875rem 1rem 1.125rem;
+    gap: 0.4rem;
+  }
+  .aria-mic-btn { width: 60px; height: 60px; }
+  .aria-mic-btn svg { width: 26px; height: 26px; }
+  .aria-mic-hint { font-size: 0.78rem; }
 }
 
 /* ====================================
