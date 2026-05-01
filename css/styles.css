@@ -23652,3 +23652,37 @@ nav,
 @media (max-width: 768px) {
   .hero, .chyron-section, section, .container { max-width: 100% !important; }
 }
+
+/* TIER CARDS — solid backgrounds + high-contrast text on mobile.
+   Default cards used rgba(255,255,255,0.02) which let the starfield show
+   through and washed text out. Force solid backgrounds + crisp white type. */
+@media (max-width: 768px) {
+  .tier {
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  }
+  .tier:hover { background: #131c2e !important; }
+  .tier--featured {
+    background: linear-gradient(180deg, rgba(249, 115, 22, 0.15) 0%, #0f172a 100%) !important;
+    border-color: rgba(249, 115, 22, 0.55) !important;
+  }
+  .tier__title { color: #ffffff !important; font-weight: 800 !important; }
+  .tier__desc { color: rgba(255, 255, 255, 0.92) !important; }
+  .tier__list li { color: rgba(255, 255, 255, 0.88) !important; }
+  .tier__list code { background: rgba(255, 255, 255, 0.12) !important; color: #fdba74 !important; }
+  .tier__cta { color: #fdba74 !important; font-weight: 700 !important; }
+  /* Tier section header text — readable over starfield */
+  .tiers-title { color: #ffffff !important; }
+  .tiers-lede { color: rgba(255, 255, 255, 0.85) !important; }
+  .tiers-eyebrow { color: rgba(255, 255, 255, 0.78) !important; background: rgba(0, 0, 0, 0.4) !important; }
+  .tiers-foot { color: rgba(255, 255, 255, 0.78) !important; }
+  /* Pill labels inside cards */
+  .tier__pill { background: rgba(0, 0, 0, 0.5) !important; }
+  .tier__pill--cloud { color: #93c5fd !important; }
+  .tier__pill--featured { color: #fdba74 !important; }
+  .tier__pill--alacarte { color: #ffffff !important; }
+  /* Section background — kill the orange ellipse on mobile so the cards
+     are the visual anchor, not a faded glow that fights the text. */
+  .tiers-section { background: transparent !important; }
+}
