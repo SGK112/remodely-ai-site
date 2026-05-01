@@ -23370,6 +23370,190 @@ nav,
   img, video, iframe { max-width: 100% !important; height: auto !important; }
 }
 
+/* ====================================================================
+   THREE TIERS SECTION — pick your path: cloud / self-host / à-la-carte
+   ==================================================================== */
+.tiers-section {
+  position: relative;
+  padding: 6rem 0 4rem;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(249, 115, 22, 0.06), transparent 60%),
+    transparent;
+}
+.tiers-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 1rem;
+}
+.tiers-eyebrow__dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.8);
+  animation: tiersDot 2.4s ease-in-out infinite;
+}
+@keyframes tiersDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.85); }
+}
+.tiers-title {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+.tiers-lede {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  max-width: 56ch;
+  margin: 0 0 2.5rem;
+}
+
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+.tier:hover {
+  border-color: rgba(249, 115, 22, 0.32);
+  background: rgba(255, 255, 255, 0.035);
+  transform: translateY(-3px);
+}
+.tier--featured {
+  border-color: rgba(249, 115, 22, 0.4);
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: 0 12px 40px rgba(249, 115, 22, 0.08), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+.tier--featured::before {
+  content: 'MOST POPULAR';
+  position: absolute;
+  top: -10px; left: 1.5rem;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+}
+.tier__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.tier__num {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  color: rgba(249, 115, 22, 0.8);
+  letter-spacing: 0.04em;
+}
+.tier__pill {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.6);
+}
+.tier__pill--cloud { color: #93c5fd; border-color: rgba(147, 197, 253, 0.2); background: rgba(59, 130, 246, 0.08); }
+.tier__pill--featured { color: #fdba74; border-color: rgba(253, 186, 116, 0.3); background: rgba(249, 115, 22, 0.1); }
+.tier__pill--alacarte { color: #d1d5db; }
+.tier__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin: 0.25rem 0 0;
+}
+.tier__desc {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  margin: 0;
+}
+.tier__list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.tier__list li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.tier__list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #f97316;
+  font-weight: 700;
+}
+.tier__list code {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #fdba74;
+}
+.tier__list strong { color: #fff; }
+.tier__cta {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f97316;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, transform 0.2s ease;
+  align-self: flex-start;
+}
+.tier__cta:hover { color: #fdba74; transform: translateX(2px); }
+.tiers-foot {
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.95rem;
+}
+.tiers-foot a { color: #f97316; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 900px) {
+  .tiers-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+  .tiers-section { padding: 4rem 0 2.5rem; }
+  .tier { padding: 1.5rem 1.25rem; }
+  .tier__title { font-size: 1.2rem; }
+}
+
 /* Mobile nav drawer must be FULLY opaque. The previous rgba(15,23,42,0.98)
    with backdrop-filter blur let the chyron, hero spec block, and grader
    pill visibly bleed through on iOS Safari (backdrop-filter is unreliable
