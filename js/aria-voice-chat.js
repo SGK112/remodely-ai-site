@@ -404,47 +404,56 @@ You are the demo. Be sharp, capture the lead, close for the consult.`;
       float32[i] = pcm16[i] / 32768;
     }
 
-    this.audioQueue.push(float32);
-    this.playNextAudio();
+    // Schedule this chunk on the audio clock immediately. Each chunk gets its
+    // own BufferSourceNode but they're scheduled back-to-back via
+    // `nextPlayTime` so there is ZERO gap between chunks. Previous design
+    // combined chunks then waited for source.onended to fire before starting
+    // the next batch — that ~10-30ms gap each cycle is what made Aria sound
+    // like she was clipping/slurring across her own words.
+    this.scheduleAudioChunk(float32);
   }
 
-  async playNextAudio() {
-    if (this.isPlaying || this.audioQueue.length === 0) return;
-
-    // Resume audio context if suspended (required for mobile browsers)
+  async scheduleAudioChunk(float32) {
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
 
-    this.isPlaying = true;
-
-    // Combine queued audio chunks
-    const chunks = this.audioQueue.splice(0, this.audioQueue.length);
-    const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
-    const combined = new Float32Array(totalLength);
-    let offset = 0;
-    for (const chunk of chunks) {
-      combined.set(chunk, offset);
-      offset += chunk.length;
-    }
-
-    // Create and play audio buffer
-    const audioBuffer = this.audioContext.createBuffer(1, combined.length, 24000);
-    audioBuffer.getChannelData(0).set(combined);
+    const audioBuffer = this.audioContext.createBuffer(1, float32.length, 24000);
+    audioBuffer.getChannelData(0).set(float32);
 
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this.audioContext.destination);
+    this._activeSources = this._activeSources || new Set();
+    this._activeSources.add(source);
+    source.onended = () => this._activeSources.delete(source);
 
-    source.onended = () => {
-      this.isPlaying = false;
-      if (this.audioQueue.length > 0) {
-        this.playNextAudio();
-      }
-    };
-
-    source.start();
+    const now = this.audioContext.currentTime;
+    // 60ms scheduling lead so first chunk after silence has time to settle
+    // without late-start glitches. Subsequent chunks land on _nextPlayTime.
+    if (!this._nextPlayTime || this._nextPlayTime < now + 0.02) {
+      this._nextPlayTime = now + 0.06;
+    }
+    source.start(this._nextPlayTime);
+    this._nextPlayTime += audioBuffer.duration;
+    this.isPlaying = true;
   }
+
+  // Stop any currently-scheduled playback (used on barge-in / interruption)
+  stopScheduledPlayback() {
+    if (this._activeSources) {
+      for (const s of this._activeSources) {
+        try { s.stop(); } catch (_) {}
+      }
+      this._activeSources.clear();
+    }
+    this._nextPlayTime = 0;
+    this.isPlaying = false;
+  }
+
+  // Legacy method retained for any external callers — now a no-op since the
+  // scheduling model is push-driven via scheduleAudioChunk.
+  async playNextAudio() { /* no-op — replaced by scheduleAudioChunk */ }
 
   sendText(text) {
     if (this.ws?.readyState === WebSocket.OPEN) {
