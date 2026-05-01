@@ -16,22 +16,21 @@ services:
       - path: /*
         name: Referrer-Policy
         value: origin-when-cross-origin
-      # NEVER cache HTML responses. Catch-all rule with no-store; static
-      # assets below override (more-specific path wins per Render's spec).
-      # Earlier attempt with explicit `path: /` was silently ignored by
-      # Render's matcher — caused mobile to keep showing yesterday's deploy
-      # because Cloudflare cached homepage HTML at edge for 5 min.
-      - path: /*
+      # NEVER cache HTML responses. Render uses Express-style globs where
+      # `/*` only matches a single segment (so /, /tools/, /tools/foo all
+      # missed). `/**` is the multi-segment catch-all that includes root.
+      # Static assets below override via more-specific paths.
+      - path: /**
         name: Cache-Control
         value: no-store, no-cache, must-revalidate, max-age=0
       # Versioned static assets are fingerprinted via ?v=N — safe to cache hard.
-      - path: /css/*
+      - path: /css/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
-      - path: /js/*
+      - path: /js/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
-      - path: /images/*
+      - path: /images/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
     routes:
