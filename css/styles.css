@@ -23770,3 +23770,41 @@ nav,
      are the visual anchor, not a faded glow that fights the text. */
   .tiers-section { background: transparent !important; }
 }
+
+/* ====================================================================
+   ALL OVERLAYS — fully-opaque on mobile so iOS Safari can't bleed
+   page content through backdrop-filter (which is unreliable on
+   absolutely-positioned overlays on iOS). Same fix pattern as the
+   mobile menu: solid dimensional gradient backdrop, never alpha < 1
+   on the content card itself.
+   ==================================================================== */
+@media (max-width: 768px) {
+  /* GENERIC dark modal backdrop — used for confirms, alerts, etc. */
+  .modal-backdrop,
+  .modal-overlay,
+  .exit-intent-overlay,
+  .aria-chat-overlay {
+    background:
+      radial-gradient(ellipse 70% 40% at 50% 0%, rgba(249, 115, 22, 0.06), transparent 60%),
+      linear-gradient(180deg, #050a14 0%, rgba(5, 10, 20, 0.96) 100%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Content cards inside those backdrops must be SOLID — content cards
+     should never be translucent over an already-solid backdrop. */
+  .modal { background: #1e293b !important; }
+  .modal-content { background: #ffffff !important; }
+  .exit-intent-modal { background: #ffffff !important; }
+  .aria-chat-modal { background: #0f172a !important; }
+  /* Toasts — bump alpha from default 0.95 to 1 for clarity */
+  .toast { background: #0f172a !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; }
+  /* Voice menu dropdown (top-right hamburger trigger) — opaque
+     dropdown panel so menu items don't blend with hero behind */
+  #voice-menu-dropdown,
+  .menu-dropdown { background: #0a0f1a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  /* Navbar at top — solid on mobile (was rgba 0.85 + blur) */
+  .navbar { background: #0a0f1a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  /* Mobile form card (the bottom grader pill on mobile) — its content
+     should be readable; ensure card itself is solid */
+  .mobile-form-card { background: #ffffff !important; }
+}
