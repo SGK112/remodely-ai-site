@@ -16,20 +16,12 @@ services:
       - path: /*
         name: Referrer-Policy
         value: origin-when-cross-origin
-      # HTML responses must NEVER be cached. The previous `/*.html` rule did
-      # not catch the root path `/` (no extension) so Cloudflare cached the
-      # homepage at edge for 5 min — phones got the old version after deploys.
-      # Adding explicit rules for `/`, `/tools`, `/tools/*`, and any *.html.
-      - path: /
-        name: Cache-Control
-        value: no-store, no-cache, must-revalidate, max-age=0
-      - path: /*.html
-        name: Cache-Control
-        value: no-store, no-cache, must-revalidate, max-age=0
-      - path: /tools
-        name: Cache-Control
-        value: no-store, no-cache, must-revalidate, max-age=0
-      - path: /tools/*
+      # NEVER cache HTML responses. Catch-all rule with no-store; static
+      # assets below override (more-specific path wins per Render's spec).
+      # Earlier attempt with explicit `path: /` was silently ignored by
+      # Render's matcher — caused mobile to keep showing yesterday's deploy
+      # because Cloudflare cached homepage HTML at edge for 5 min.
+      - path: /*
         name: Cache-Control
         value: no-store, no-cache, must-revalidate, max-age=0
       # Versioned static assets are fingerprinted via ?v=N — safe to cache hard.
