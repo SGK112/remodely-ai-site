@@ -85,6 +85,31 @@
     gtag('js', new Date());
     gtag('config', 'G-S48B4F5999');
   </script>
+  <!-- Service Worker registration — network-first HTML to defeat Render's
+       silently-ignored catch-all cache-control globs. -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then((reg) => {
+            // If a new SW is waiting, tell it to take over now.
+            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            reg.addEventListener('updatefound', () => {
+              const installing = reg.installing;
+              if (!installing) return;
+              installing.addEventListener('statechange', () => {
+                // When a new version finishes installing, force-reload once
+                // so the user sees fresh content immediately on this visit.
+                if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                  window.location.reload();
+                }
+              });
+            });
+          })
+          .catch(() => { /* fail silent — site still works without SW */ });
+      });
+    }
+  </script>
 </head>
 
 <body>
