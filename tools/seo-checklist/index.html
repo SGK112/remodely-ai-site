@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO &amp; Marketing Setup Checklist — Free Tool · Remodely AI</title>
+  <meta name="description" content="Scan any contractor site for the 20+ free tools and signals that drive traffic — GSC, GBP, GA4, Bing, schema, social citations, and more. Free, instant.">
+  <link rel="canonical" href="https://www.remodely.ai/tools/seo-checklist/">
+
+  <meta property="og:title" content="SEO Setup Checklist — Remodely AI">
+  <meta property="og:description" content="See which of the 20+ free tools and signals every contractor site needs are wired up. Critical · Important · Nice-to-have.">
+  <meta property="og:url" content="https://www.remodely.ai/tools/seo-checklist/">
+  <meta property="og:image" content="https://www.remodely.ai/images/og-image.png">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="/css/styles.min.css?v=134">
+  <link rel="stylesheet" href="/tools/_shared.css?v=1">
+  <link rel="icon" href="/images/favicon-32.png" sizes="32x32">
+
+  <style>
+    .seo-tier { margin-top: 1.75rem; }
+    .seo-tier__head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 1rem; padding: 0 0 0.5rem 0; border-bottom: 1px dashed rgba(255,255,255,0.12);
+      margin-bottom: 0.75rem;
+    }
+    .seo-tier__title {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: #f97316; margin: 0;
+    }
+    .seo-tier__count { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+    .seo-row {
+      display: grid; grid-template-columns: 24px 1fr; gap: 12px;
+      padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .seo-row:last-child { border-bottom: 0; }
+    .seo-row__icon {
+      width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+    }
+    .seo-row.pass .seo-row__icon { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+    .seo-row.fail .seo-row__icon { background: rgba(249, 115, 22, 0.18); color: #f97316; }
+    .seo-row__label { color: #fff; font-weight: 600; font-size: 0.96rem; margin: 0 0 0.25rem 0; }
+    .seo-row.pass .seo-row__label::after { content: ' ✓'; color: #4ade80; font-size: 0.85em; }
+    .seo-row__detail { color: rgba(255,255,255,0.65); font-size: 0.88rem; line-height: 1.5; margin: 0; }
+    .seo-row__fix {
+      display: inline-block; margin-top: 6px; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem; color: #f97316; text-decoration: none; padding: 3px 9px;
+      border: 1px solid rgba(249, 115, 22, 0.4); border-radius: 6px;
+    }
+    .seo-row__fix:hover { background: rgba(249,115,22,0.1); }
+
+    .seo-tier-summary {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+      margin: 1rem 0 0.5rem;
+    }
+    .seo-tier-card {
+      padding: 0.75rem; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; background: rgba(255,255,255,0.02);
+    }
+    .seo-tier-card__label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+    }
+    .seo-tier-card__num { font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 4px; }
+    .seo-tier-card__num .pass { color: #4ade80; }
+    .seo-tier-card__num .total { color: rgba(255,255,255,0.4); font-weight: 400; }
+
+    @media (max-width: 480px) {
+      .seo-tier-summary { grid-template-columns: 1fr; gap: 0.5rem; }
+      .seo-row { grid-template-columns: 22px 1fr; gap: 10px; }
+      .seo-row__label { font-size: 0.92rem; }
+      .seo-row__detail { font-size: 0.84rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="starfield-mid" aria-hidden="true"></div>
+  <div class="starfield-near" aria-hidden="true"></div>
+
+  <main class="tool-page">
+    <p class="tool-eyebrow">
+      <a href="/grader.html">← Free Grader</a>
+      <span style="color:rgba(255,255,255,0.3);">/</span>
+      <span class="accent">/tools/seo-checklist</span>
+    </p>
+
+    <h1 class="tool-title">Are the <span class="hl">free tools</span><br>actually wired up?</h1>
+    <p class="tool-lede">Google, Bing, and ChatGPT all distribute traffic through tools that cost nothing. Most contractors have 2 or 3 of them set up. We scan for 24 — Critical, Important, Nice-to-have — and tell you exactly which ones are missing.</p>
+
+    <form class="x-form" id="seoForm">
+      <div class="x-input">
+        <label for="seoUrl">Your website</label>
+        <input type="url" id="seoUrl" name="url" placeholder="https://yourcompany.com" required>
+      </div>
+      <button type="submit" class="x-submit" id="seoSubmit">Run the checklist &nbsp;&rarr;</button>
+      <div class="x-error" id="seoError"></div>
+    </form>
+
+    <div class="x-loading" id="seoLoading">
+      <div>Fetching → parsing meta → probing /sitemap.xml /robots.txt → counting citations</div>
+    </div>
+
+    <div class="x-result" id="seoResult"></div>
+  </main>
+
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="Quick actions" hidden>
+    <a href="/grader.html" class="sticky-cta__btn sticky-cta__btn--primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>Full Grader</span>
+    </a>
+    <a href="/tools/" class="sticky-cta__btn sticky-cta__btn--secondary"><span>All Tools</span></a>
+  </div>
+
+  <script>
+    const API = 'https://remodely-backend.onrender.com/api/grader/seo-checklist';
+
+    const form    = document.getElementById('seoForm');
+    const submit  = document.getElementById('seoSubmit');
+    const loading = document.getElementById('seoLoading');
+    const result  = document.getElementById('seoResult');
+    const errorEl = document.getElementById('seoError');
+    const sticky  = document.getElementById('stickyCta');
+
+    let stickyShown = false;
+    window.addEventListener('scroll', () => {
+      if (!stickyShown && window.scrollY > 220) {
+        sticky.hidden = false;
+        requestAnimationFrame(() => sticky.classList.add('sticky-cta--visible'));
+        stickyShown = true;
+      }
+    }, { passive: true });
+
+    const escape = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const scoreClass = (s) => s >= 80 ? 'strong' : s >= 50 ? 'mid' : 'weak';
+
+    function renderTier(title, weight, items, stats) {
+      const rows = items.map((c) => `
+        <div class="seo-row ${c.pass ? 'pass' : 'fail'}">
+          <div class="seo-row__icon">${c.pass ? '✓' : '!'}</div>
+          <div>
+            <p class="seo-row__label">${escape(c.label)}</p>
+            <p class="seo-row__detail">${escape(c.detail)}</p>
+            ${c.fixUrl && !c.pass ? `<a class="seo-row__fix" href="${escape(c.fixUrl)}" target="_blank" rel="noopener">Set up →</a>` : ''}
+          </div>
+        </div>
+      `).join('');
+      return `
+        <div class="seo-tier">
+          <div class="seo-tier__head">
+            <h3 class="seo-tier__title">${escape(title)} <span style="color:rgba(255,255,255,0.4); margin-left:6px;">· ${weight}</span></h3>
+            <span class="seo-tier__count">${stats.passed}/${stats.total}</span>
+          </div>
+          ${rows}
+        </div>
+      `;
+    }
+
+    function renderResult(data) {
+      const checks = data.checks || [];
+      const tiers = data.tiers || {};
+      const critical = checks.filter(c => c.tier === 'critical');
+      const important = checks.filter(c => c.tier === 'important');
+      const nice = checks.filter(c => c.tier === 'nice');
+
+      let html = `
+        <div class="x-score">
+          <div class="x-score__num ${scoreClass(data.score)}">${data.score}</div>
+          <div>
+            <div class="x-score__label">SETUP SCORE · ${escape(data.domain || data.url || '')}</div>
+            <div class="x-score__verdict">${escape(data.verdict || '')}</div>
+          </div>
+        </div>
+
+        <div class="seo-tier-summary">
+          <div class="seo-tier-card">
+            <div class="seo-tier-card__label">Critical</div>
+            <div class="seo-tier-card__num"><span class="pass">${tiers.critical?.passed ?? 0}</span><span class="total"> / ${tiers.critical?.total ?? 0}</span></div>
+          </div>
+          <div class="seo-tier-card">
+            <div class="seo-tier-card__label">Important</div>
+            <div class="seo-tier-card__num"><span class="pass">${tiers.important?.passed ?? 0}</span><span class="total"> / ${tiers.important?.total ?? 0}</span></div>
+          </div>
+          <div class="seo-tier-card">
+            <div class="seo-tier-card__label">Nice-to-have</div>
+            <div class="seo-tier-card__num"><span class="pass">${tiers.nice?.passed ?? 0}</span><span class="total"> / ${tiers.nice?.total ?? 0}</span></div>
+          </div>
+        </div>
+      `;
+
+      html += renderTier('Critical', '50% of score', critical, tiers.critical || {});
+      html += renderTier('Important', '30% of score', important, tiers.important || {});
+      html += renderTier('Nice-to-have', '20% of score', nice, tiers.nice || {});
+
+      html += `
+        <div class="x-cta">
+          <p>Found gaps? We wire all of these up — GSC, GBP, GA4, Bing, schema, social citations — as part of every "Getting Found" engagement. Talk to Aria, free.</p>
+          <button type="button" class="x-cta__btn" onclick="window.openAriaVoiceChat && window.openAriaVoiceChat()">
+            🎤 Talk to Aria
+          </button>
+        </div>
+      `;
+      result.innerHTML = html;
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('seoUrl').value.trim();
+      if (!url) return;
+      errorEl.textContent = '';
+      result.innerHTML = '';
+      submit.disabled = true;
+      submit.textContent = 'Scanning…';
+      loading.style.display = 'block';
+
+      try {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+        const data = await r.json();
+        if (!data.success) throw new Error(data.error || 'Scan failed');
+        loading.style.display = 'none';
+        renderResult(data);
+      } catch (err) {
+        loading.style.display = 'none';
+        errorEl.textContent = err.message;
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Run again →';
+      }
+    });
+  </script>
+
+  <script src="/js/effects.js?v=4" defer></script>
+</body>
+</html>

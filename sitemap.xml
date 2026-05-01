@@ -73,6 +73,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.remodely.ai/tools/seo-checklist</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.remodely.ai/smart-scheduler.html</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>monthly</changefreq>
