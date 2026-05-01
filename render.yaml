@@ -16,9 +16,23 @@ services:
       - path: /*
         name: Referrer-Policy
         value: origin-when-cross-origin
+      # HTML responses must NEVER be cached. The previous `/*.html` rule did
+      # not catch the root path `/` (no extension) so Cloudflare cached the
+      # homepage at edge for 5 min — phones got the old version after deploys.
+      # Adding explicit rules for `/`, `/tools`, `/tools/*`, and any *.html.
+      - path: /
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
       - path: /*.html
         name: Cache-Control
-        value: no-cache, no-store, must-revalidate
+        value: no-store, no-cache, must-revalidate, max-age=0
+      - path: /tools
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
+      - path: /tools/*
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
+      # Versioned static assets are fingerprinted via ?v=N — safe to cache hard.
       - path: /css/*
         name: Cache-Control
         value: public, max-age=31536000, immutable
@@ -71,6 +85,9 @@ services:
       - type: rewrite
         source: /tools/https
         destination: /tools/https/index.html
+      - type: rewrite
+        source: /tools/seo-checklist
+        destination: /tools/seo-checklist/index.html
       - type: rewrite
         source: /tools
         destination: /tools/index.html
