@@ -23796,10 +23796,13 @@ nav,
     -webkit-backdrop-filter: none !important;
   }
   /* Content cards inside those backdrops must be SOLID — content cards
-     should never be translucent over an already-solid backdrop. */
+     should never be translucent over an already-solid backdrop. The
+     exit-intent-modal is designed with WHITE text on a dark gradient,
+     so do NOT force it to white BG (that blanks all the copy). Its
+     default `background: linear-gradient(...#0f1525...#0a0f1a)` is
+     already fully opaque — leave it alone on mobile. */
   .modal { background: #1e293b !important; }
   .modal-content { background: #ffffff !important; }
-  .exit-intent-modal { background: #ffffff !important; }
   .aria-chat-modal { background: #0f172a !important; }
   /* Toasts — bump alpha from default 0.95 to 1 for clarity */
   .toast { background: #0f172a !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; }
