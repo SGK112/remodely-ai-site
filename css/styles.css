@@ -23815,4 +23815,40 @@ nav,
   /* (Earlier rule that forced .mobile-form-card to solid white was
      blanking the form contents — form labels were already white text.
      Removed; let the form's own design rules handle it.) */
+
+  /* ============================================================
+     SCROLL-PERF FIXES (added when user reported "clippy" load+scroll)
+     ============================================================ */
+
+  /* Kill the parallax starfield on mobile. THREE fixed-position
+     fullscreen layers (body::before "deep", .starfield-mid,
+     .starfield-near), all with will-change:background-position,
+     were each repainting their full-viewport background image
+     every scroll frame via the JS scroll handler. iOS Safari
+     handles fixed-bg layers poorly — guaranteed jank on long
+     pages. The JS init also early-returns on mobile (effects.js:52). */
+  .starfield-mid,
+  .starfield-near {
+    display: none !important;
+  }
+  body::before {
+    display: none !important;
+    will-change: auto !important;
+  }
+
+  /* Stop iOS rubber-band bounce from making the page feel "loose".
+     overscroll-behavior:contain prevents pull-to-refresh AND
+     prevents the body from over-scrolling past its bounds. */
+  html, body {
+    overscroll-behavior-y: contain;
+  }
+
+  /* Cheaper paints below the fold. Sections that are off-screen
+     skip layout/paint until they're scrolled near. Browsers that
+     don't support content-visibility (Safari <16) ignore this. */
+  .section, .tiers-section, footer.footer {
+    content-visibility: auto;
+    /* Estimate so scrollbar doesn't jump as sections paint in. */
+    contain-intrinsic-size: 0 800px;
+  }
 }

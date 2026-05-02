@@ -50,6 +50,12 @@
      --------------------------------------------------------------- */
   function initParallaxStars() {
     if (prefersReducedMotion) return;
+    // Mobile: skip parallax entirely. iOS Safari repaints fixed-position
+    // background-image layers poorly, and updating bg-position on every
+    // scroll frame for two full-viewport divs causes scroll jank on
+    // phones. The starfield divs are also display:none on <=768px via
+    // CSS, so this is just belt-and-suspenders.
+    if (window.matchMedia('(max-width: 768px)').matches) return;
 
     const layerMid  = document.querySelector('.starfield-mid');
     const layerNear = document.querySelector('.starfield-near');

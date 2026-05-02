@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=147">
-  <link rel="stylesheet" href="/css/styles.min.css?v=147" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=148">
+  <link rel="stylesheet" href="/css/styles.min.css?v=148" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.remodely.ai/">
@@ -347,22 +347,11 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then((reg) => {
-            // If a new SW is waiting, tell it to take over now.
-            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-            reg.addEventListener('updatefound', () => {
-              const installing = reg.installing;
-              if (!installing) return;
-              installing.addEventListener('statechange', () => {
-                // When a new version finishes installing, force-reload once
-                // so the user sees fresh content immediately on this visit.
-                if (installing.state === 'installed' && navigator.serviceWorker.controller) {
-                  window.location.reload();
-                }
-              });
-            });
-          })
           .catch(() => { /* fail silent — site still works without SW */ });
+        // NOTE: deliberately do NOT auto-reload when a new SW installs.
+        // Auto-reload mid-scroll on a return visit feels like the page
+        // "jumps" — reads as broken/clippy. The new SW takes effect on
+        // the next normal navigation, which is the correct moment.
       });
     }
   </script>
@@ -2705,7 +2694,7 @@
   <!-- Scripts (deferred — non-critical for first paint) -->
   <script src="/js/aria-voice-chat.js?v=9" defer></script>
   <script src="/js/main.js?v=15" defer></script>
-  <script src="/js/effects.js?v=4" defer></script>
+  <script src="/js/effects.js?v=5" defer></script>
 
   <!-- ARIA Voice Chat Init -->
   <script>
