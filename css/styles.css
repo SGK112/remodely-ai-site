@@ -23809,7 +23809,7 @@ nav,
   .menu-dropdown { background: #0a0f1a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
   /* Navbar at top — solid on mobile (was rgba 0.85 + blur) */
   .navbar { background: #0a0f1a !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-  /* Mobile form card (the bottom grader pill on mobile) — its content
-     should be readable; ensure card itself is solid */
-  .mobile-form-card { background: #ffffff !important; }
+  /* (Earlier rule that forced .mobile-form-card to solid white was
+     blanking the form contents — form labels were already white text.
+     Removed; let the form's own design rules handle it.) */
 }

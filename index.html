@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=145">
-  <link rel="stylesheet" href="/css/styles.min.css?v=145" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=146">
+  <link rel="stylesheet" href="/css/styles.min.css?v=146" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.remodely.ai/">
@@ -2871,6 +2871,14 @@
     if (!menuBtn || !menuOverlay) {
       console.error('Mobile menu elements not found');
       return;
+    }
+
+    // Reparent the overlay to <body> so any ancestor with transform/filter/
+    // will-change cannot create a containing block that scopes our
+    // position:fixed (which would cap the overlay at half-viewport — exactly
+    // the bleed-through pattern we kept seeing in screenshots).
+    if (menuOverlay.parentElement !== document.body) {
+      document.body.appendChild(menuOverlay);
     }
 
     function openMenu() {
