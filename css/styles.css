@@ -19215,21 +19215,26 @@ button svg,
    ==================================================================== */
 .mobile-menu-overlay {
   display: none;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
   /* Dimensional but SOLID. Layered radial glows on top of opaque base
-     give cosmic depth without letting page content show through. */
+     give cosmic depth without letting page content show through.
+     !important forces the win against any later cascade rules that
+     used to set a translucent rgba background. */
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(249, 115, 22, 0.10), transparent 60%),
     radial-gradient(ellipse 60% 40% at 50% 100%, rgba(99, 102, 241, 0.06), transparent 60%),
-    linear-gradient(180deg, #050a14 0%, #0a0f1a 50%, #050a14 100%);
-  z-index: 10000;
+    linear-gradient(180deg, #050a14 0%, #0a0f1a 50%, #050a14 100%) !important;
+  background-color: #050a14 !important;
+  z-index: 10000 !important;
   opacity: 0;
   transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: auto;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 .mobile-menu-overlay.active {
