@@ -520,16 +520,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return url;
   }
 
-  const heroGraderForm = document.getElementById('hero-grader-form');
-  if (heroGraderForm) {
-    heroGraderForm.addEventListener('submit', function(e) {
+  // Wire up every hero grader form (desktop + mobile share the same UX,
+  // each with its own URL input — find the input relative to the form so
+  // we don't depend on a single hard-coded ID).
+  document.querySelectorAll('.js-hero-grader').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const urlInput = document.getElementById('hero-url');
+      const urlInput = form.querySelector('input[type="url"]');
       if (urlInput && urlInput.value) {
         window.location.href = '/grader.html?url=' + encodeURIComponent(normalizeUrl(urlInput.value));
       }
     });
-  }
+  });
 
   const mobileGraderForm = document.getElementById('mobileGraderForm');
   const mobileFormCard = document.getElementById('mobileFormCard');
