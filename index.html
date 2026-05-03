@@ -3030,7 +3030,7 @@
       </div>
       <h3 class="exit-intent-title">Before you go...</h3>
       <p class="exit-intent-text">Get your free AI visibility score. See exactly how ChatGPT, Google, and other AI tools find (or miss) your business.</p>
-      <a href="#" class="exit-intent-cta" id="exitIntentCta">Get My Free Score</a>
+      <a href="/grader.html" class="exit-intent-cta" id="exitIntentCta">Get My Free Score</a>
       <button class="exit-intent-dismiss" id="exitIntentDismiss">Maybe later</button>
     </div>
   </div>
@@ -3110,11 +3110,16 @@
     if (exitIntentDismiss) exitIntentDismiss.addEventListener('click', hideExitIntent);
     if (exitIntentCta) {
       exitIntentCta.addEventListener('click', function(e) {
-        e.preventDefault();
-        hideExitIntent();
-        if (mobileFormCard) {
+        // On mobile, expand the inline grader card instead of navigating away.
+        // On desktop the card is display:none, so let the link go to /grader.html.
+        if (mobileFormCard && mobileFormCard.offsetParent !== null) {
+          e.preventDefault();
+          hideExitIntent();
           mobileFormCard.classList.add('expanded');
           document.body.style.overflow = 'hidden';
+        } else {
+          hideExitIntent();
+          // allow default navigation to /grader.html
         }
       });
     }
