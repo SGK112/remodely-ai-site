@@ -2,27 +2,38 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Leads collection - allow anyone to create (for grader/contact forms)
-    // Only authenticated admins can read/update/delete
+    // Admins authorized to read/manage CRM data. Edit this list to grant access.
+    // (Removed luckysitara@gmail.com — a contractor's personal Gmail that was
+    //  hardcoded here since the file's creation; it should never have had access.)
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email in ['help.remodely@gmail.com', 'joshb@surprisegranite.com'];
+    }
+
+    // Leads — anyone can submit (grader/contact forms); only admins read/manage.
     match /leads/{leadId} {
-      allow create: if true;  // Allow unauthenticated users to submit leads
-      allow read, update, delete: if request.auth != null &&
-        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
     }
 
-    // Clients collection - only authenticated admins
+    // Clients — admins only.
     match /clients/{clientId} {
-      allow read, write: if request.auth != null &&
-        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+      allow read, write: if isAdmin();
     }
 
-    // Admin list - only authenticated admins
+    // Admin list collection — admins only.
     match /admins/{adminId} {
-      allow read, write: if request.auth != null &&
-        request.auth.token.email in ['luckysitara@gmail.com', 'admin@remodelyai.com'];
+      allow read, write: if isAdmin();
     }
 
-    // Grader results - allow anyone to read/write their own reports
+    // Settings (includes the settings/admins doc the admin page reads to gate
+    // access). This rule was MISSING before — its absence made the page's
+    // settings read fail, which silently denied everyone the dashboard.
+    match /settings/{doc} {
+      allow read, write: if isAdmin();
+    }
+
+    // Grader results — public create/read (anonymous report flow).
     match /graderReports/{reportId} {
       allow create: if true;
       allow read: if true;
