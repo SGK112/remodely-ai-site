@@ -504,6 +504,18 @@
         Sign in with Google
       </button>
 
+      <!-- Email/password sign-in — works without the Google popup, which fails on
+           this cross-origin setup because browsers now block third-party cookies. -->
+      <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px; text-align:left;">
+        <div style="font-size:12px; color:#6b7280; text-align:center;">— or sign in with email —</div>
+        <input type="email" id="email-input" placeholder="Admin email" autocomplete="username"
+          style="padding:12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px;">
+        <input type="password" id="password-input" placeholder="Password" autocomplete="current-password"
+          style="padding:12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px;">
+        <button class="auth-btn" id="email-sign-in" style="justify-content:center;">Sign in with email</button>
+        <a href="#" id="forgot-pw" style="font-size:12px; color:#6B5B95; text-align:center;">Forgot / set password</a>
+      </div>
+
       <div class="access-denied" id="access-denied">
         <h2>Access Denied</h2>
         <p>Your account (<span id="denied-email"></span>) is not authorized for admin access.</p>
@@ -730,6 +742,40 @@
         authMessage.innerHTML = `<div class="auth-message error">${error.message}</div>`;
       }
     });
+
+    // Email/password sign-in — the reliable path. signInWithEmailAndPassword is a
+    // direct API call (no popup, no cross-site cookies), so it works even when the
+    // Google popup silently fails on browsers that block third-party cookies.
+    const emailInput = document.getElementById('email-input');
+    const passwordInput = document.getElementById('password-input');
+    const emailSignInBtn = document.getElementById('email-sign-in');
+    const forgotPw = document.getElementById('forgot-pw');
+    if (emailSignInBtn) {
+      emailSignInBtn.addEventListener('click', async () => {
+        const em = (emailInput.value || '').trim();
+        const pw = passwordInput.value || '';
+        if (!em || !pw) { authMessage.innerHTML = '<div class="auth-message error">Enter email and password.</div>'; return; }
+        try {
+          await auth.signInWithEmailAndPassword(em, pw);
+        } catch (error) {
+          authMessage.innerHTML = `<div class="auth-message error">${error.message}</div>`;
+        }
+      });
+      passwordInput.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') emailSignInBtn.click(); });
+    }
+    if (forgotPw) {
+      forgotPw.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        const em = (emailInput.value || '').trim();
+        if (!em) { authMessage.innerHTML = '<div class="auth-message error">Enter your email above first, then click again.</div>'; return; }
+        try {
+          await auth.sendPasswordResetEmail(em);
+          authMessage.innerHTML = '<div class="auth-message">Password reset sent — check your inbox, set a password, then sign in with email.</div>';
+        } catch (error) {
+          authMessage.innerHTML = `<div class="auth-message error">${error.message}</div>`;
+        }
+      });
+    }
 
     // Try again (sign out and try different account)
     tryAgainBtn.addEventListener('click', async () => {
