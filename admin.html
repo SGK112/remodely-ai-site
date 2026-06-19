@@ -910,6 +910,7 @@
               <th>Email</th>
               <th>Phone</th>
               <th>Preferred Time</th>
+              <th>Message</th>
               <th>Website</th>
               <th>Score</th>
               <th>Source</th>
@@ -917,18 +918,25 @@
             </tr>
           </thead>
           <tbody>
-            ${leads.map(lead => `
+            ${leads.map(lead => {
+              // The message lands under different keys depending on which form
+              // submitted it (contact = message, grader/scheduler = details/notes).
+              const _m = lead.message || lead.details || lead.notes || lead.projectNotes || lead.comments || lead.projectDetails || '';
+              const _mt = typeof _m === 'string' ? _m : (_m ? JSON.stringify(_m) : '');
+              const _mEsc = _mt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+              return `
               <tr>
                 <td>${lead.name || '-'}</td>
                 <td><a href="mailto:${lead.email}" style="color: #818cf8;">${lead.email || '-'}</a></td>
                 <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color: #818cf8;">${lead.phone}</a>` : '-'}</td>
                 <td>${lead.preferredTime ? `<span style="color: #10b981; text-transform: capitalize;">${lead.preferredTime}</span>` : '-'}</td>
+                <td style="max-width:280px; white-space:normal;">${_mt ? `<span title="${_mEsc}">${_mEsc.length > 120 ? _mEsc.slice(0, 120) + '…' : _mEsc}</span>` : '-'}</td>
                 <td>${lead.website || lead.url ? `<a href="${lead.website || lead.url}" target="_blank" style="color: #818cf8;">${(lead.website || lead.url).replace('https://', '').replace('http://', '').substring(0, 25)}</a>` : '-'}</td>
                 <td>${lead.score ? `<span style="color: ${lead.score >= 70 ? '#10b981' : lead.score >= 50 ? '#f59e0b' : '#ef4444'}; font-weight: 600;">${lead.score}</span>` : '-'}</td>
                 <td><span class="client-status ${lead.formType?.includes('grader') ? 'active' : 'pending'}">${lead.formType || lead.source || '-'}</span></td>
                 <td>${lead.createdAt ? formatDate(lead.createdAt.toDate()) : '-'}</td>
               </tr>
-            `).join('')}
+            `; }).join('')}
           </tbody>
         </table>
       `;
