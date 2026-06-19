@@ -901,45 +901,55 @@
     }
 
     // Render leads table
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Card layout — shows the FULL message (the table truncated it) and reads
+    // cleanly on any width. Each card has a Delete button to clear spam/junk.
     function renderLeads(leads) {
-      leadsList.innerHTML = `
-        <table class="clients-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Preferred Time</th>
-              <th>Message</th>
-              <th>Website</th>
-              <th>Score</th>
-              <th>Source</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${leads.map(lead => {
-              // The message lands under different keys depending on which form
-              // submitted it (contact = message, grader/scheduler = details/notes).
-              const _m = lead.message || lead.details || lead.notes || lead.projectNotes || lead.comments || lead.projectDetails || '';
-              const _mt = typeof _m === 'string' ? _m : (_m ? JSON.stringify(_m) : '');
-              const _mEsc = _mt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-              return `
-              <tr>
-                <td>${lead.name || '-'}</td>
-                <td><a href="mailto:${lead.email}" style="color: #818cf8;">${lead.email || '-'}</a></td>
-                <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color: #818cf8;">${lead.phone}</a>` : '-'}</td>
-                <td>${lead.preferredTime ? `<span style="color: #10b981; text-transform: capitalize;">${lead.preferredTime}</span>` : '-'}</td>
-                <td style="max-width:280px; white-space:normal;">${_mt ? `<span title="${_mEsc}">${_mEsc.length > 120 ? _mEsc.slice(0, 120) + '…' : _mEsc}</span>` : '-'}</td>
-                <td>${lead.website || lead.url ? `<a href="${lead.website || lead.url}" target="_blank" style="color: #818cf8;">${(lead.website || lead.url).replace('https://', '').replace('http://', '').substring(0, 25)}</a>` : '-'}</td>
-                <td>${lead.score ? `<span style="color: ${lead.score >= 70 ? '#10b981' : lead.score >= 50 ? '#f59e0b' : '#ef4444'}; font-weight: 600;">${lead.score}</span>` : '-'}</td>
-                <td><span class="client-status ${lead.formType?.includes('grader') ? 'active' : 'pending'}">${lead.formType || lead.source || '-'}</span></td>
-                <td>${lead.createdAt ? formatDate(lead.createdAt.toDate()) : '-'}</td>
-              </tr>
-            `; }).join('')}
-          </tbody>
-        </table>
-      `;
+      if (!leads.length) { leadsList.innerHTML = '<div class="no-clients">No leads yet.</div>'; return; }
+      leadsList.innerHTML = leads.map(lead => {
+        const _m = lead.message || lead.details || lead.notes || lead.projectNotes || lead.comments || lead.projectDetails || '';
+        const msg = typeof _m === 'string' ? _m : (_m ? JSON.stringify(_m) : '');
+        const date = lead.createdAt && lead.createdAt.toDate ? formatDate(lead.createdAt.toDate()) : '';
+        const src = lead.formType || lead.source || '';
+        const web = lead.website || lead.url || '';
+        return `
+          <div class="lead-card" style="background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,.05);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+              <div style="font-weight:600; font-size:16px; color:#111827;">${esc(lead.name) || 'Unknown'}</div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                ${src ? `<span style="font-size:11px; background:#eef2ff; color:#4338ca; padding:3px 9px; border-radius:999px;">${esc(src)}</span>` : ''}
+                ${lead.score ? `<span style="font-size:11px; color:#6b7280;">Score ${esc(lead.score)}</span>` : ''}
+                ${date ? `<span style="font-size:12px; color:#9ca3af;">${esc(date)}</span>` : ''}
+                <button onclick="deleteLead('${lead.id}', this)" title="Delete (spam/junk)" style="border:none; background:#fee2e2; color:#b91c1c; border-radius:6px; padding:4px 9px; cursor:pointer; font-size:12px;">Delete</button>
+              </div>
+            </div>
+            <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:6px; font-size:13px; color:#374151;">
+              ${lead.email ? `<a href="mailto:${esc(lead.email)}" style="color:#4f46e5; text-decoration:none;">${esc(lead.email)}</a>` : ''}
+              ${lead.phone ? `<a href="tel:${esc(lead.phone)}" style="color:#4f46e5; text-decoration:none;">${esc(lead.phone)}</a>` : ''}
+              ${lead.preferredTime ? `<span style="text-transform:capitalize;">⏰ ${esc(lead.preferredTime)}</span>` : ''}
+              ${web ? `<a href="${esc(web)}" target="_blank" style="color:#4f46e5; text-decoration:none;">${esc(web.replace(/^https?:\/\//, '').slice(0, 40))}</a>` : ''}
+            </div>
+            ${msg ? `<div style="margin-top:10px; padding:10px 12px; background:#f9fafb; border:1px solid #f1f1f4; border-radius:8px; white-space:pre-wrap; word-break:break-word; font-size:14px; line-height:1.5; color:#111827;">${esc(msg)}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Delete a lead (admin only — Firestore rules enforce it). Used to clear spam.
+    async function deleteLead(id, btn) {
+      if (!confirm('Delete this lead? This cannot be undone.')) return;
+      try {
+        if (btn) { btn.disabled = true; btn.textContent = 'Deleting…'; }
+        await db.collection('leads').doc(id).delete();
+        const card = btn && btn.closest('.lead-card');
+        if (card) card.remove();
+      } catch (e) {
+        alert('Could not delete: ' + e.message);
+        if (btn) { btn.disabled = false; btn.textContent = 'Delete'; }
+      }
     }
 
     // Load all clients
