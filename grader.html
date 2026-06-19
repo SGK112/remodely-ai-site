@@ -2225,6 +2225,7 @@
           <h3>Get Your Full Report</h3>
           <p>Enter your email to unlock detailed recommendations and fixes.</p>
           <form class="lead-form" id="emailForm">
+            <input type="text" class="hp-field" name="company_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
             <input type="email" id="leadEmail" placeholder="Enter your email" required aria-label="Email address" style="width: 100%; margin-bottom: 12px;">
             <button type="submit" id="emailSubmitBtn">
               <span class="btn-text">Send My Report</span>
@@ -2245,6 +2246,7 @@
           <h3>Get Your Personalized Action Plan</h3>
           <p>Aria will call you to walk through exactly what to fix and how. 2-minute call, no sales pitch.</p>
           <form class="lead-form" id="detailsForm">
+            <input type="text" class="hp-field" name="company_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
             <input type="text" id="leadName" placeholder="Your name" required aria-label="Your name" style="width: 100%; margin-bottom: 12px;">
             <input type="tel" id="leadPhone" placeholder="Phone number" required aria-label="Phone number" style="width: 100%; margin-bottom: 12px;">
             <select id="leadTime" aria-label="Preferred call time" style="width: 100%; margin-bottom: 12px; padding: 16px 20px; font-size: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.4); color: #fff; cursor: pointer;">
@@ -2914,6 +2916,9 @@
         e.preventDefault();
         console.log('Email form submitted');
 
+        // Honeypot: bots fill the hidden field — silently drop, no save.
+        if ([...document.querySelectorAll('.hp-field')].some(el => el.value.trim())) return;
+
         const email = document.getElementById('leadEmail').value.trim();
         const btn = document.getElementById('emailSubmitBtn');
         currentEmail = email;
@@ -3039,6 +3044,9 @@
       detailsForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         console.log('Step 2 form submitted');
+
+        // Honeypot: bots fill the hidden field — silently drop, no save.
+        if ([...document.querySelectorAll('.hp-field')].some(el => el.value.trim())) return;
 
         const name = document.getElementById('leadName').value.trim();
         const phone = document.getElementById('leadPhone').value.trim();

@@ -392,6 +392,13 @@ document.addEventListener('DOMContentLoaded', function() {
       submitBtn.innerHTML = 'Sending...';
 
       const formData = new FormData(this);
+      // Honeypot: bots fill the hidden field; humans never see it. Fake success, no write.
+      if ([...this.querySelectorAll('.hp-field')].some(el => el.value.trim())) {
+        submitBtn.innerHTML = 'Sent!';
+        submitBtn.disabled = true;
+        this.reset();
+        return;
+      }
       const data = {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -453,6 +460,13 @@ document.addEventListener('DOMContentLoaded', function() {
       submitBtn.disabled = true;
 
       const formData = new FormData(this);
+      // Honeypot: bots fill the hidden field; humans never see it. Fake success, no write.
+      if ([...this.querySelectorAll('.hp-field')].some(el => el.value.trim())) {
+        submitBtn.innerHTML = 'Sent!';
+        submitBtn.disabled = true;
+        this.reset();
+        return;
+      }
       const data = {
         name: formData.get('name'),
         email: formData.get('email'),
