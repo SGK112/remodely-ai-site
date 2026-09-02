@@ -566,6 +566,10 @@ function applyShop(name){
  const h1=document.querySelector('h1');
  if(h1) h1.innerHTML='Design your <em>edge profile</em> in 3D';
  const eb=document.querySelector('.eyebrow'); if(eb) eb.textContent='Countertop edges · 3D';
+ // The hero blurb pitches the embed to shop owners — it must not run on their site.
+ const hero=document.querySelector('.sub');
+ if(hero) hero.innerHTML='Spin any profile on real stone — face, top, cut ends &amp; underside. '
+   +'<b>2cm</b> gets a build-up lip over underlayment; <b>3cm</b> is solid stone.';
  window.__CTA_LABEL='Get a quote on this edge →';
  window.__SHOP=name;
  if(typeof sync==='function') sync();   // CTA label may already have been painted
