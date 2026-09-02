@@ -1,0 +1,7 @@
+{
+  "slug": "inactive-demo",
+  "name": "Lapsed Stone Co.",
+  "accent": "#c2410c",
+  "active": false,
+  "note": "Fixture: proves an inactive subscription blocks the tool instead of serving it free."
+}

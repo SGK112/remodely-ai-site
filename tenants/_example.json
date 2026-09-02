@@ -1,0 +1,8 @@
+{
+  "slug": "_example",
+  "name": "Example Stone Co.",
+  "accent": "#c2410c",
+  "active": true,
+  "site": "https://example.com",
+  "note": "Copy this file to tenants/<slug>.json to onboard a shop. Public — no lead-delivery addresses or keys here."
+}

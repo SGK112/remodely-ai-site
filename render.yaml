@@ -33,6 +33,15 @@ services:
       - path: /images/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
+      # The embeddable build is MEANT to be framed by our customers' sites, so the
+      # site-wide SAMEORIGIN must not apply here. frame-ancestors takes precedence
+      # over X-Frame-Options in every browser that supports CSP2.
+      - path: /embed/**
+        name: Content-Security-Policy
+        value: frame-ancestors *
+      - path: /embed/**
+        name: X-Frame-Options
+        value: ALLOWALL
       - path: /tools/edge-visualizer/stones/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
@@ -82,6 +91,9 @@ services:
       - type: rewrite
         source: /tools/seo-checklist
         destination: /tools/seo-checklist/index.html
+      - type: rewrite
+        source: /embed/edge-visualizer
+        destination: /tools/edge-visualizer/index.html
       - type: rewrite
         source: /lead-tools
         destination: /lead-tools/index.html
