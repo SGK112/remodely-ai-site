@@ -503,10 +503,85 @@ function sync(){
  const p=P.find(x=>x.k===curP),s=STONES.find(x=>x.k===curS),two=curT==='2';
  $('pname').textContent=p.n;$('sname').textContent=s.name;$('pdesc').textContent=p.d;$('pcost').textContent=p.cost;$('puse').textContent=p.use;
  const le=$('leadEdge');if(le)le.textContent=p.n;
- $('qbtn').textContent='Put this on my site →';
+ $('qbtn').textContent=window.__CTA_LABEL||'Put this on my site →';
  $('pbuild').textContent = curP==='mitered' ? '45° mitered corner — hidden seam' : (two?'2cm + build-up lip = 4cm-look edge':'3cm solid — no underlayment');
  $('hinttxt').innerHTML=curP==='mitered'?'<b>Mitered / waterfall</b> folds the slab down the side with a 45° corner joint, so the vein turns the corner as one solid piece — no build-up strip. The thin top rides on a ¾″ plywood sub-deck. Rotate to the <b>Side</b> to see the diagonal miter.':two?'<b>2cm</b> is two pieces of the same slab: the top, plus a build-up strip laminated under the <em>front edge only</em> to make a ~4cm-look lip that hides the ¾″ plywood. The two pieces are glued, clamped and fused, then the face is polished so the joint nearly vanishes — only a hairline remains, clearest on the sawn ends. Switch to <b>3cm</b> for one solid piece.':'<b>3cm</b> is a single solid piece — profile ground straight into the stone, no build-up, no plywood, no seam. Rotate to the <b>Side</b> to see the solid cut.';
 }
+/* ---------- tenant branding ----------
+   The seed of the white-label build. A shop is identified by URL params today;
+   they'll come from a server lookup keyed on ?shop= once tenants are stored.
+     ?shop=Granite%20Guys   brand name shown to that shop's visitors
+     ?accent=%23c2410c      accent colour (hex, URL-encoded #)
+     ?embed=1               embed mode: drop Remodely chrome, homeowner-facing copy
+   Absent params leave the Remodely-branded demo exactly as it was.            */
+(function(){
+ const q=new URLSearchParams(location.search);
+ const shop=(q.get('shop')||'').trim().slice(0,60);
+ const accent=q.get('accent');
+ const embed=q.get('embed')==='1';
+
+ if(accent&&/^#?[0-9a-f]{6}$/i.test(accent)){
+  const hex=accent.startsWith('#')?accent:'#'+accent;
+  const shift=(h,p)=>{const n=parseInt(h.slice(1),16);
+   const c=[n>>16,(n>>8)&255,n&255].map(v=>Math.max(0,Math.min(255,Math.round(v+(p>0?(255-v)*p:v*p)))));
+   return '#'+c.map(v=>v.toString(16).padStart(2,'0')).join('');};
+  const r=document.documentElement.style;
+  r.setProperty('--gold',hex);
+  r.setProperty('--gold-deep',shift(hex,-0.22));
+  r.setProperty('--gold-lite',shift(hex,0.24));
+ }
+
+ if(shop){
+  document.title=`Countertop Edge Visualizer | ${shop}`;
+  const b=document.querySelector('.rnav-brand span');
+  if(b) b.textContent=shop;
+  const h=document.querySelector('.lead-copy h2');
+  const eyebrow=document.querySelector('.lead-copy .eyebrow');
+  const sub=document.querySelector('.lead-copy p');
+  // In shop mode the form talks to the homeowner, not to the shop owner.
+  if(eyebrow) eyebrow.textContent='Free quote · no obligation';
+  if(h) h.innerHTML=`Get your <span id="leadEdge">${$('pname').textContent}</span> edge from ${shop}`;
+  if(sub) sub.textContent=`Tell us about your project and ${shop} will follow up with a quote for the edge you picked.`;
+  document.querySelectorAll('.lead-copy li span').forEach((el,i)=>{
+   el.textContent=['Priced against your actual slab and square footage',
+                   'Free measure and templating',
+                   'No obligation — a real person follows up'][i]||el.textContent;});
+  const sb=$('sbrowse'); if(sb) sb.textContent='See more colors →';
+  const cta=document.querySelector('.rnav-cta'); if(cta) cta.textContent='Get a quote';
+  // The form is the shop's quote request now, not our sales enquiry — relabel the
+  // fields to match, or it asks a homeowner for their company website.
+  const f=document.getElementById('leadForm');
+  if(f){
+   f.contact_email.placeholder='Email address';
+   f.company.placeholder='ZIP code';
+   f.company.setAttribute('inputmode','numeric');
+   f.company.setAttribute('autocomplete','postal-code');
+   f.website.style.display='none'; f.website.value='';
+   const sb2=document.getElementById('leadSubmit'); if(sb2) sb2.textContent='Get my quote →';
+   const fp=f.querySelector('.fineprint');
+   if(fp) fp.textContent='No obligation · we never share your info.';
+  }
+  // Ghost CTA points at Remodely's contact page — wrong destination on a shop's site.
+  const ghost=document.querySelector('.cta .btn.ghost');
+  if(ghost){ ghost.textContent='Compare edges'; ghost.setAttribute('href','#opts'); }
+  const sub2=document.querySelector('.sub');
+  if(sub2) sub2.innerHTML='Spin any profile on real stone — face, top, cut ends &amp; underside. <b>2cm</b> gets a build-up lip over \u00be\u2033 ply; <b>3cm</b> is solid stone.';
+  const h1=document.querySelector('h1');
+  if(h1) h1.innerHTML='Design your <em>edge profile</em> in 3D';
+  const eb=document.querySelector('.eyebrow'); if(eb) eb.textContent='Countertop edges \u00b7 3D';
+ }
+
+ if(embed){
+  document.querySelector('nav.rnav')?.remove();
+  document.querySelector('.foot')?.remove();
+  document.querySelectorAll('section.section-lg > p').forEach(el=>el.remove());
+  document.body.dataset.embed='1';
+ }
+ // The stage CTA is a quote request for a shop, a sales ask for us.
+ window.__CTA_LABEL = shop ? 'Get a quote on this edge \u2192' : 'Put this on my site \u2192';
+ window.__SHOP = shop || null;
+})();
+
 // boot
 if(initGL()){ loadTexture(); rebuild(); sync(); requestAnimationFrame(frame); }
 else { sync(); }
@@ -522,7 +597,7 @@ $('leadForm').addEventListener('submit',async e=>{
  if(!nm||!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||!co){f.reportValidity&&f.reportValidity();return;}
  const p=P.find(x=>x.k===curP),s=STONES.find(x=>x.k===curS);
  const lead={name:nm,email:em,company:co,phone:f.contact_phone.value.trim(),website:f.website.value.trim(),
-  source:'edge-visualizer',product:'Countertop Edge Visualizer',
+  source:'edge-visualizer',product:'Countertop Edge Visualizer',shop:window.__SHOP||null,
   context:`Viewing: ${p.n} · ${curT}cm · ${s.name}`,timestamp:new Date().toISOString()};
  const btn=$('leadSubmit');btn.disabled=true;btn.textContent='Sending…';
  const ok=$('leadOk');
@@ -538,7 +613,9 @@ $('leadForm').addEventListener('submit',async e=>{
  }
  f.querySelectorAll('input,.fineprint').forEach(el=>el.style.display='none');btn.style.display='none';
  ok.classList.add('show');
- ok.innerHTML=`✓ Thanks, ${nm.split(' ')[0]}. We'll email <b>${em}</b> to get the visualizer onto ${co}'s site — usually same day.`;
+ ok.innerHTML=window.__SHOP
+  ? `✓ Thanks, ${nm.split(' ')[0]}. ${window.__SHOP} will email <b>${em}</b> with a price on your <b>${p.n} (${curT}cm)</b> edge in ${s.name}.`
+  : `✓ Thanks, ${nm.split(' ')[0]}. We'll email <b>${em}</b> to get the visualizer onto ${co}'s site — usually same day.`;
 });
 async function saveLead(lead){
  if(!window.firebase){
@@ -552,7 +629,8 @@ async function saveLead(lead){
  await firebase.firestore().collection('leads').add(lead);
 }
 function loadScript(src){return new Promise((res,rej)=>{const t=document.createElement('script');t.src=src;t.onload=res;t.onerror=rej;document.head.appendChild(t);});}
-document.getElementById('yr').textContent=new Date().getFullYear();
+// #yr lives in .foot, which embed mode removes.
+const yrEl=document.getElementById('yr'); if(yrEl) yrEl.textContent=new Date().getFullYear();
 </script>
 <script>
 /* Report content height to the parent so it can size the iframe (no reserved white gap). */
