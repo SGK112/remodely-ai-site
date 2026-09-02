@@ -33,6 +33,9 @@ services:
       - path: /images/**
         name: Cache-Control
         value: public, max-age=31536000, immutable
+      - path: /tools/edge-visualizer/stones/**
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
     routes:
       - type: rewrite
         source: /privacy
@@ -79,6 +82,9 @@ services:
       - type: rewrite
         source: /tools/seo-checklist
         destination: /tools/seo-checklist/index.html
+      - type: rewrite
+        source: /tools/edge-visualizer
+        destination: /tools/edge-visualizer/index.html
       - type: rewrite
         source: /tools
         destination: /tools/index.html
