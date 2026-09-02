@@ -20259,6 +20259,13 @@ body:has(.mobile-menu-overlay.active) {
   gap: 0 18px;
 }
 
+/* Separates our own hosted tools from links out to client builds. */
+.pillar__links-note {
+  color: rgba(255, 255, 255, 0.35) !important;
+  flex-basis: 100%;
+  margin-top: 4px;
+}
+
 .pillar__links a {
   color: #fb923c !important;
   text-decoration: none !important;
