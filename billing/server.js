@@ -113,8 +113,12 @@ async function handleEvent(evt) {
       break;
     }
     case 'invoice.paid': {
+      // Deliberately does NOT set `status`. This and customer.subscription.updated
+      // arrive in either order, so writing status here made whichever landed last
+      // win — a trialing shop showed up as "active". The subscription events own
+      // status; this one only confirms they're paid up.
       const slug = await tenantByCustomer(o.customer);
-      await syncTenant(slug, { active: true, status: 'active', last_paid_at: new Date().toISOString() });
+      await syncTenant(slug, { active: true, last_paid_at: new Date().toISOString() });
       break;
     }
     default:
