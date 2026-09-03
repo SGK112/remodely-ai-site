@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=152">
-  <link rel="stylesheet" href="/css/styles.min.css?v=152" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=154">
+  <link rel="stylesheet" href="/css/styles.min.css?v=154" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.remodely.ai/">
@@ -424,7 +424,7 @@
 
       <div class="mobile-hero-actions" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:18px 0 8px">
         <a href="/pricing/" class="btn btn-primary">See pricing &rarr;</a>
-        <a href="/lead-tools/" class="btn" style="border:1px solid rgba(255,255,255,.22);color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600">See it first</a>
+        <a href="/lead-tools/" class="btn btn-outline">See it first</a>
       </div>
       <p class="hero-microcopy mobile-hero-microcopy">Set up in a minute · your branding · cancel anytime</p>
 
@@ -696,7 +696,7 @@
 
       <div class="hero-actions hero-actions--primary" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:26px 0 6px">
         <a href="/pricing/" class="btn btn-primary">See pricing &rarr;</a>
-        <a href="/lead-tools/" class="btn">See it with your name on it</a>
+        <a href="/lead-tools/" class="btn btn-outline">See it with your name on it</a>
       </div>
       <p class="hero-microcopy">Set up in a minute &middot; your branding &middot; cancel anytime</p>
 
@@ -738,6 +738,64 @@
 
     </div>
   </section>
+
+  <!-- The product. Six embeddable tools, immediately after the hero so the first
+       scroll lands on something the visitor can actually click into. -->
+  <section class="section section-dark" id="tools-showcase">
+    <div class="container">
+      <div class="section-header" style="text-align:center;max-width:780px;margin:0 auto 34px;">
+        <span class="section-badge">Six tools · your branding · $49/mo</span>
+        <h2 class="heading-cursor">These go on your website. Try any of them now.</h2>
+        <p class="section-subtitle">Every one is live on this page — click in and use it exactly as your visitor would. On your site it carries <b>your</b> name and colours, and every lead comes to <b>you</b>.</p>
+      </div>
+
+      <div class="hp-tools-grid">
+        <a href="/tools/edge-visualizer/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Countertop Edge Visualizer</h3>
+          <p>Twelve edge profiles spinning in real 3D on actual stone. The one visitors play with instead of leaving.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+        <a href="/tools/countertop-calculator/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Countertop Calculator</h3>
+          <p>Square footage, edge and backsplash allowances, and an installed price range.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+        <a href="/tools/flooring-calculator/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Flooring Calculator</h3>
+          <p>Area, boxes to order with waste factored in, and installed cost across three tiers.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+        <a href="/tools/tile-calculator/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Tile Calculator</h3>
+          <p>Tile count with waste and an installed price band for backsplash, floor or shower.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+        <a href="/tools/remodel-calculator/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Bath Remodel Calculator</h3>
+          <p>Scope-based bathroom pricing — the range a homeowner wants before they call anyone.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+        <a href="/tools/design-gallery/" class="hp-tool">
+          <span class="hp-tool__chip">embeddable</span>
+          <h3>Design Gallery</h3>
+          <p>113 kitchens and baths browsable by the stone in them. A slab on a rack sells nothing.</p>
+          <span class="hp-tool__cta">Open it &rarr;</span>
+        </a>
+      </div>
+
+      <div style="text-align:center;margin:44px auto 0">
+        <a href="/pricing/" class="btn btn-primary" style="margin-right:10px">See pricing &rarr;</a>
+        <a href="/lead-tools/" class="btn btn-outline">See one with your name on it</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Free site audits — the lead magnet, not the product. Kept, demoted. -->
 
   <!-- HIDDEN 2026-04-29: Social proof bar — generic stats, replaced by the live tool count below.
   <section class="social-proof-bar">
@@ -880,28 +938,13 @@
       </div>
     </div>
   </section>
-  <!-- =================================================================
-       NEW HOMEPAGE REPORTS SHOWCASE — 9 free SEO reports & graders.
-       Lead-gen for clients, not toy "free tools" for tinkerers. Comes
-       immediately after the hero so the visitor's first scroll lands
-       on what they can use right now, not slogans.
-       ================================================================= -->
-  <section class="section section-dark" id="tools-showcase">
+  <!-- The free site audits. A lead magnet, not the product — kept, but below it. -->
+  <section class="section section-dark" id="free-reports">
     <div class="container">
-      <div class="section-header" style="text-align:center;max-width:760px;margin:0 auto 26px;">
-        <span class="section-badge">For your customers · embeddable</span>
-        <h2 class="heading-cursor">Tools that turn your visitors into leads.</h2>
-        <p class="section-subtitle">Five tools your customers use on <b>your</b> website — a 3D edge visualizer and four pricing calculators. Your name, your colours, and every lead lands in your inbox. One line of code to install.</p>
-      </div>
-      <div style="text-align:center;margin:0 auto 64px">
-        <a href="/lead-tools/" class="btn btn-primary" style="margin-right:10px">See how it works →</a>
-        <a href="/tools/" class="btn">Try them all</a>
-      </div>
-
       <div class="section-header" style="text-align:center;max-width:760px;margin:0 auto 36px;">
         <span class="section-badge">11 free reports · live · no signup</span>
-        <h2 class="heading-cursor">See your score before you spend a dollar.</h2>
-        <p class="section-subtitle">These audit <b>your own site</b>. Every report runs in under a minute, free, no signup — real numbers, real fixes. Built on the same stack we'd ship for you. Run one. See the output. Decide.</p>
+        <h2 class="heading-cursor">Or audit your own site, free.</h2>
+        <p class="section-subtitle">Different thing entirely — these grade <b>your</b> website rather than going on it. Each runs in under a minute, no signup.</p>
       </div>
 
       <div class="hp-tools-grid">
