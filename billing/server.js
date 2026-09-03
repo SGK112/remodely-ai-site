@@ -225,6 +225,26 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    // Live pricing, straight from Stripe. The site must never state a price the
+    // checkout won't charge, so the page renders this rather than hardcoding it —
+    // change the price in Stripe and the site follows.
+    if (url.pathname === '/plans') {
+      const out = {};
+      for (const [key, id] of Object.entries(PRICES)) {
+        if (!id) continue;
+        try {
+          const price = await stripe(`prices/${id}`, null, 'GET');
+          out[key] = {
+            id,
+            amount: price.unit_amount / 100,
+            currency: price.currency,
+            interval: price.recurring?.interval || null,
+          };
+        } catch (e) { console.error('[billing] price lookup failed', id, e.message); }
+      }
+      return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
+    }
+
     // Self-serve signup: create the shop, then send them straight to Checkout.
     // The tenant is created INACTIVE — only the webhook turns an embed on, so
     // abandoning the payment page leaves nothing serving.
