@@ -265,7 +265,9 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/welcome') {
       const sid = url.searchParams.get('session_id') || '';
       if (!/^cs_[A-Za-z0-9_]+$/.test(sid)) return json(res, 400, { error: 'missing session' });
-      const session = await stripe(`checkout/sessions/${sid}`, null, 'GET');
+      let session;
+      try { session = await stripe(`checkout/sessions/${sid}`, null, 'GET'); }
+      catch { return json(res, 404, { error: 'That checkout session no longer exists' }); }
       const slug = session.metadata?.slug || session.client_reference_id;
       if (!slug) return json(res, 404, { error: 'unknown session' });
       const t = await db.getDoc('tenants', slug);
