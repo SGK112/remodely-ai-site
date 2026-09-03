@@ -21541,13 +21541,13 @@ body::after {
 }
 
 .hero--centered .hero-display {
-  font-size: clamp(2.6rem, 7.5vw, 6rem) !important;
+  font-size: clamp(1.9rem, 4.6vw, 3.5rem) !important;
   font-weight: 700 !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.04em !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.03em !important;
   color: #ffffff !important;
   margin: 0 !important;
-  max-width: 14ch;
+  max-width: 20ch;
   text-wrap: balance;
 }
 
