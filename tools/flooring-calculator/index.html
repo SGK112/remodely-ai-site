@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Flooring Calculator | Square Footage & Installed Cost | Remodely AI</title>
+<link rel="canonical" href="https://www.remodely.ai/tools/flooring-calculator/">
+<meta name="description" content="Free flooring calculator — get square footage (with waste), boxes to order, and an installed cost estimate for hardwood, laminate, vinyl/LVP, or tile floors. Then get an exact quote from Remodely AI."/>
+<meta property="og:title" content="Flooring Calculator | Remodely AI"/>
+<meta property="og:description" content="Square footage, boxes to order, and installed cost for your flooring project."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<link rel="stylesheet" href="/css/unified-nav.css?v=20260718o"/>
+<script defer src="/js/unified-nav.js?v=20260713c"></script>
+<link rel="stylesheet" href="/css/footer-enhanced.css?v=20260426a"/>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;--bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(30,26,15,.35);--stage-a:#131c2e;--stage-b:#0a0f1a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .display{letter-spacing:-.02em;font-weight:800}
+  .wrap{max-width:1140px;margin:0 auto;padding:28px 20px 56px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,36px);line-height:1.06;margin:2px 0 8px}
+  .sub{color:var(--mut);max-width:62ch;font-size:15px;margin-bottom:22px}
+  .grid{display:grid;grid-template-columns:1fr .92fr;gap:24px;align-items:start}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+  .panel h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:2px 2px 12px}
+  .types{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .type{border:1.5px solid var(--line);border-radius:13px;padding:12px;cursor:pointer;transition:border-color .15s,transform .12s,background .15s;background:transparent;color:inherit;font:inherit;text-align:left}
+  .type:hover{transform:translateY(-2px)}.type.on{border-color:var(--gold);background:linear-gradient(180deg,rgba(249,115,22,.10),transparent)}
+  .type b{display:block;font-size:14.5px;font-weight:700}.type small{color:var(--mut);font-size:12px}
+  .room{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end;margin-bottom:9px}
+  .fld label{display:block;font-size:11px;color:var(--mut);font-weight:600;margin:0 0 4px 2px}
+  .fld input{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink)}
+  .fld input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(249,115,22,.22)}
+  .rm{border:1px solid var(--line);background:var(--bg);color:var(--mut);border-radius:11px;width:44px;height:44px;font-size:20px;cursor:pointer}
+  .rm:hover{border-color:#e0574e;color:#e0574e}
+  .addroom{margin-top:2px;background:transparent;border:1.5px dashed var(--line);color:var(--mut);font:inherit;font-weight:700;font-size:13px;padding:10px;border-radius:11px;width:100%;cursor:pointer}
+  .addroom:hover{border-color:var(--gold);color:var(--gold-deep)}
+  .waste{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+  .w{border:1.5px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;background:transparent;color:inherit;font:inherit}
+  .w:hover{transform:translateY(-2px)}.w.on{border-color:var(--gold);background:linear-gradient(180deg,rgba(249,115,22,.10),transparent)}
+  .w b{display:block;font-size:16px;font-weight:800}.w small{color:var(--mut);font-size:11px}
+  .stage{background:linear-gradient(160deg,var(--stage-a),var(--stage-b));border-radius:20px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.05);position:sticky;top:96px}
+  .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 85% 6%,rgba(249,115,22,.13),transparent 55%);pointer-events:none}
+  .stage .k{position:relative;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700}
+  .big{position:relative;display:flex;gap:26px;margin:10px 0 4px;flex-wrap:wrap}
+  .big .n{font-size:34px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.02em}
+  .big .n span{font-size:13px;color:var(--gold-lite);font-weight:700;display:block;margin-top:5px;letter-spacing:.02em}
+  .chips{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+  .chip{font-size:11.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:6px 11px;border-radius:999px}.chip b{color:var(--gold-lite)}
+  .tiers{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin:16px 0 0}
+  .tier{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:12px 10px;text-align:center}
+  .tier.pop{border-color:rgba(249,115,22,.5);background:rgba(249,115,22,.08)}
+  .tier .lab{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.04em}
+  .tier .amt{font-size:16px;font-weight:800;color:#fff;margin:5px 0 2px}
+  .tier .rate{font-size:11px;color:rgba(255,255,255,.55)}
+  .cta{position:relative;display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .btn{font:inherit;font-weight:700;font-size:14px;border:none;border-radius:11px;padding:13px 18px;cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center;justify-content:center;transition:transform .12s;flex:1;min-width:150px}
+  .btn.prime{background:linear-gradient(135deg,var(--gold-lite),var(--gold),var(--gold-deep));color:#fff;box-shadow:0 10px 22px -8px rgba(249,115,22,.6)}
+  .btn.ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.18)}.btn:hover{transform:translateY(-2px)}
+  .note{position:relative;color:rgba(255,255,255,.55);font-size:11.5px;margin-top:12px;line-height:1.5}
+  .foot{margin-top:18px;font-size:12px;color:var(--mut);text-align:center}
+  .foot a{color:var(--gold-deep)}
+</style>
+<!--tool-seo-->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Flooring Calculator","url":"/tools/","applicationCategory":"UtilityApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free flooring calculator for square footage, boxes, and installed cost of tile, wood-look, LVP, and stone flooring.","provider":{"@type":"HomeAndConstructionBusiness","name":"Remodely AI","telephone":"+1-","url":"/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"/"},{"@type":"ListItem","position":2,"name":"Tools","item":"/"},{"@type":"ListItem","position":3,"name":"Flooring Calculator","item":"/tools/"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much flooring do I need for a room?","acceptedAnswer":{"@type":"Answer","text":"Multiply room length × width in feet for square footage, then add 7–10% for waste and cuts (more for diagonal or plank layouts). This calculator handles the waste factor for you."}},{"@type":"Question","name":"How much does flooring installation cost in Phoenix?","acceptedAnswer":{"@type":"Answer","text":"Installed flooring in the Phoenix area runs roughly $5–$15 per square foot depending on material and subfloor prep — tile and stone at the higher end, LVP at the lower end."}}]}</script>
+
+<script src="/tools/_tenant.js?v=1"></script>
+<script src="/tools/_leadform.js?v=1"></script>
+</head>
+<body class="unified-nav-active">
+
+<div class="wrap">
+  <div class="eyebrow">Design tools · flooring</div>
+  <h1 class="display">Flooring Calculator</h1>
+  <p class="sub">Get square footage, boxes to order (with waste), and an installed cost estimate for hardwood, laminate, vinyl/LVP, or tile floors — then get an exact quote from us.</p>
+  <div class="grid">
+    <section>
+      <div class="panel">
+        <h2>1 · Flooring type</h2>
+        <div class="types" id="types"></div>
+      </div>
+      <div class="panel">
+        <h2>2 · Area — add each room / wall</h2>
+        <div id="rooms"></div>
+        <button class="addroom" id="addroom">+ Add another area</button>
+      </div>
+      <div class="panel">
+        <h2>3 · Waste factor</h2>
+        <div class="waste" id="waste"></div>
+      </div>
+    </section>
+    <section class="stage" aria-live="polite">
+      <div class="k">Your estimate</div>
+      <div class="big">
+        <div class="n" id="sqft">0<span>sq ft to order</span></div>
+        <div class="n" id="boxes">0<span>boxes (≈20 sf)</span></div>
+      </div>
+      <div class="chips">
+        <span class="chip">Area <b id="area">0</b> sq ft</span>
+        <span class="chip">+<b id="wpct">10%</b> waste (<b id="wadd">0</b> sq ft)</span>
+        <span class="chip" id="typechip">Hardwood</span>
+      </div>
+      <div class="k" style="margin-top:18px">Estimated installed price — <span id="tierType">Hardwood</span></div>
+      <div class="tiers">
+        <div class="tier"><div class="lab">Budget</div><div class="amt" id="tBudget">$0</div><div class="rate" id="rBudget"></div></div>
+        <div class="tier pop"><div class="lab">Mid-range</div><div class="amt" id="tPop">$0</div><div class="rate" id="rPop"></div></div>
+        <div class="tier"><div class="lab">Premium</div><div class="amt" id="tPrem">$0</div><div class="rate" id="rPrem"></div></div>
+      </div>
+      <div class="cta">
+        <a class="btn prime" id="qbtn" href="#leadForm">Get my exact quote →</a>
+        <a class="btn ghost" href="#leadForm" data-lead-jump>Get my quote</a>
+      </div>
+      <p class="note">Installed estimate (tile + installation), based on current price ranges. Your exact number — tile size, layout, prep — is confirmed on a free in-home measure.</p>
+    </section>
+  </div>
+  <p class="foot">Estimates include installation </p>
+</div>
+
+<script>
+const TYPES=[
+  {k:'hardwood',n:'Hardwood',d:'Solid & engineered wood',t:{budget:[8,12],popular:[12,18],premium:[18,25]}},
+  {k:'laminate',n:'Laminate',d:'Wood look, budget-friendly',t:{budget:[3,5],popular:[5,8],premium:[8,12]}},
+  {k:'vinyl',n:'Vinyl / LVP',d:'Waterproof, durable',t:{budget:[4,6],popular:[6,10],premium:[10,15]}},
+  {k:'tile',n:'Tile',d:'Porcelain & ceramic floors',t:{budget:[6,10],popular:[10,15],premium:[15,25]}},
+];
+let curType='hardwood', curWaste=10;
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Math.round(n).toLocaleString();
+const dec=n=>n.toFixed(n%1?1:0);
+
+TYPES.forEach((t,i)=>{const b=document.createElement('button');b.className='type'+(i?'':' on');b.dataset.k=t.k;
+ const lo=t.t.budget[0],hi=t.t.premium[1];
+ b.innerHTML=`<b>${t.n}</b><small>$${lo}–${hi}/sq ft installed · ${t.d}</small>`;
+ b.onclick=()=>{curType=t.k;document.querySelectorAll('.type').forEach(o=>o.classList.toggle('on',o.dataset.k===t.k));calc();};$('types').appendChild(b);});
+[[5,'Simple rooms'],[10,'Standard'],[15,'Complex / diagonal']].forEach((w,i)=>{const b=document.createElement('button');b.className='w'+(i===1?' on':'');b.dataset.w=w[0];
+ b.innerHTML=`<b>${w[0]}%</b><small>${w[1]}</small>`;b.onclick=()=>{curWaste=w[0];document.querySelectorAll('.w').forEach(o=>o.classList.toggle('on',+o.dataset.w===w[0]));calc();};$('waste').appendChild(b);});
+function addRoom(){const d=document.createElement('div');d.className='room';
+ d.innerHTML=`<div class="fld"><label>Length (ft)</label><input type="number" min="0" step="0.5" class="len" inputmode="decimal" placeholder="0"></div>
+  <div class="fld"><label>Width (ft)</label><input type="number" min="0" step="0.5" class="wid" inputmode="decimal" placeholder="0"></div>
+  <button class="rm" title="Remove" aria-label="Remove area">×</button>`;
+ d.querySelector('.rm').onclick=()=>{if(document.querySelectorAll('.room').length>1){d.remove();calc();}};
+ d.querySelectorAll('input').forEach(i=>i.addEventListener('input',calc));
+ $('rooms').appendChild(d);}
+$('addroom').onclick=()=>addRoom();
+addRoom();
+
+function calc(){
+ let area=0;
+ document.querySelectorAll('.room').forEach(r=>{const l=parseFloat(r.querySelector('.len').value)||0,w=parseFloat(r.querySelector('.wid').value)||0;area+=l*w;});
+ const wadd=area*curWaste/100, order=area+wadd, boxes=Math.ceil(order/20);
+ $('area').textContent=dec(area); $('wadd').textContent=dec(wadd); $('wpct').textContent=curWaste+'%';
+ $('sqft').innerHTML=dec(order)+'<span>sq ft to order</span>';
+ $('boxes').innerHTML=boxes.toLocaleString()+'<span>boxes (≈20 sf)</span>';
+ const t=TYPES.find(x=>x.k===curType); $('typechip').textContent=t.n; $('tierType').textContent=t.n;
+ [['tBudget','rBudget','budget'],['tPop','rPop','popular'],['tPrem','rPrem','premium']].forEach(ids=>{const[lo,hi]=t.t[ids[2]];
+  $(ids[0]).textContent = order>0 ? money(order*lo)+'–'+money(order*hi) : money(0);
+  $(ids[1]).textContent = '$'+lo+'–'+hi+'/sf';});
+ $('qbtn').textContent = order>0 ? `Get my quote — ${dec(order)} sq ft ${t.n} →` : 'Get my exact quote →';
+ $('qbtn').href = '/get-a-free-estimate/?source=flooring-calculator&type='+encodeURIComponent(t.n)+'&sqft='+encodeURIComponent(dec(order));
+}
+calc();
+</script>
+
+
+
+
+
+
+<script defer src="/js/remodely-hub.js?v=20260713c"></script>
+<script>
+Remodely.ready(() => Remodely.mountLeadForm({
+  after: '.stage',
+  heading: 'Get your exact flooring price',
+  context: ()=>{const t=document.querySelector('.chip')?.textContent||'';const sf=document.getElementById('sf')?.textContent||'';return [document.querySelector('.tier.pop .k')?.textContent,sf&&sf+' sq ft'].filter(Boolean).join(' · ')||t;},
+}));
+Remodely.toolSource = 'flooring-calculator';
+Remodely.toolName = document.title.split('|')[0].trim();
+</script>
+</body>
+</html>
