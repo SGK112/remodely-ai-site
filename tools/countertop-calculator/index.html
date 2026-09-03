@@ -12,16 +12,16 @@
     <meta property="og:type" content="website"/>
     <meta content="summary_large_image" name="twitter:card"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <link href="/migrated/6456ce4476abb25581fbad0c/css/remodely.webflow.shared.06fa25eb8.min.css" rel="stylesheet" type="text/css"/>
+    
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
     
-    <link rel="stylesheet" href="/css/mobile-optimizations.css">
+    
 <!-- Unified Navigation -->
-<link rel="stylesheet" href="/css/unified-nav.css?v=20260718o">
-<script defer src="/js/unified-nav.js?v=20260713c"></script>
+
+
 
 
     <style>
@@ -1511,9 +1511,9 @@
             scroll-behavior: smooth;
         }
     </style>
-  <link rel="stylesheet" href="/css/marketplace-mobile-fix.css?v=20260502a"/>
-  <link rel="stylesheet" href="/css/footer-enhanced.css?v=20260426a"/>
-  <script defer src="/js/image-fallback.js?v=20260502a"></script>
+  
+  
+  
   <style>
     /* ---- edge-visualizer look: light page + dark results "stage" ---- */
     body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -1557,7 +1557,6 @@
         <nav class="breadcrumb">
             <a href="/">Home</a>
             <span>/</span>
-            <a href="/tools/virtual-kitchen-design-tool/">Tools</a>
             <span>/</span>
             <span class="current">Countertop Calculator</span>
         </nav>
@@ -1916,31 +1915,13 @@
         <div class="other-tools">
             <h3>Explore More Design Tools</h3>
             <div class="tools-grid">
-                <a href="/tools/virtual-kitchen-design-tool/" class="tool-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                    </svg>
-                    Virtual Kitchen Designer
-                </a>
-                <a href="/tools/virtual-bathroom-design-tool/" class="tool-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-                    </svg>
-                    Virtual Bathroom Designer
-                </a>
-                <a href="/tools/countertop-edge-visualizer/" class="tool-link">
+                <a href="/tools/edge-visualizer/" class="tool-link">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     Countertop Edge Visualizer
                 </a>
-                <a href="/tools/multi-surface-room-visualizer/" class="tool-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-                    </svg>
-                    Room Visualizer
-                </a>
-            </div>
+                </div>
         </div>
     </div>
 
@@ -2661,56 +2642,31 @@
                 date: new Date().toISOString()
             };
 
-            const apiBase = window.SG_CONFIG?.API_BASE || 'https://Remodely AI-email-api.onrender.com';
-
-            // Send estimate via email API
-            fetch(`${apiBase}/api/send-estimate`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(estimateData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Estimate sent to ' + email + '! Check your inbox.');
-                } else {
-                    alert('There was an issue sending the email. Please try again.');
-                }
-                document.getElementById('quoteEmailForm').classList.remove('active');
-                document.getElementById('quoteEmailInput').value = '';
-            })
-            .catch(error => {
-                console.error('Email error:', error);
-                alert('There was an issue sending the email. Please try again or call us at .');
-                document.getElementById('quoteEmailForm').classList.remove('active');
-            });
-
-            // Also capture as a lead so we don't lose the contact
-            fetch(`${apiBase}/api/leads`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    homeowner_name: 'Calculator Estimate',
-                    homeowner_email: email,
-                    project_type: 'kitchen_countertops',
-                    project_zip: '00000',
-                    project_details: `Estimate from calculator: ${estimateData.totalSqft}, Edge: ${estimateData.edgeProfile} (${estimateData.edgeLF}), Material: ${estimateData.material}, Fab/Install: ${estimateData.labor}, Estimated total: ${estimateData.total}`,
-                    source: '/tools/countertop-calculator/'
-                })
-            }).catch(() => {}); // Silent - don't block the email flow
-
-            // Turn this calculator lead into a managed USER — provision a
-            // passwordless Supabase account + magic link, same as the estimate
-            // forms. Reuses ScheduleCTA.provisionUser; best-effort, never blocks.
-            try {
-                if (window.ScheduleCTA && typeof window.ScheduleCTA.provisionUser === 'function') {
-                    window.ScheduleCTA.provisionUser({
-                        email: email,
-                        source: '/tools/countertop-calculator/',
-                        lead_project: 'kitchen_countertops'
+            // Goes to the shop's own lead pipeline. This used to post to Surprise
+            // Granite's email API (origin-locked, 403s from here) and to
+            // ScheduleCTA.provisionUser, a script that only exists on that site —
+            // so neither ever ran, both failed quietly.
+            (async () => {
+                const form = document.getElementById('quoteEmailForm');
+                const input = document.getElementById('quoteEmailInput');
+                try {
+                    await Remodely.submitLead({
+                        email,
+                        context: `Countertop calculator: ${estimateData.totalSqft}, ${estimateData.edgeProfile} edge, ${estimateData.material} — ${estimateData.total}`,
+                        estimate_total: estimateData.total,
+                        square_feet: estimateData.totalSqft,
+                        edge_profile: estimateData.edgeProfile,
+                        material: estimateData.material,
                     });
+                } catch (err) {
+                    console.error('[remodely] estimate capture failed', err);
+                    alert("That didn't send. Check your connection and try again.");
+                    return;
                 }
-            } catch (e) { /* provisioning is best-effort */ }
+                alert('Sent to ' + email + ' — check your inbox shortly.');
+                if (form) form.classList.remove('active');
+                if (input) input.value = '';
+            })();
         }
 
         // Close modal on overlay click
@@ -2736,19 +2692,19 @@
     }
     </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/js/auth-state.js?v=2.0.1"></script>
-<script src="/js/config.js"></script>
-<script src="/js/user-tracking.js"></script>
-<script src="/js/site-search.js?v=5"></script>
+
+
+
+
 
 <!-- Rate Limiter -->
-<script src="/js/rate-limiter.js"></script>
+
 
 <!-- Remodely Tools Hub -->
-<script defer src="/js/remodely-hub.js?v=20260713c"></script>
+
 
 <!-- Universal Scheduling Widget -->
-<script src="/js/schedule-cta.js?v=20260713a"></script>
+
 <script>
 Remodely.ready(() => Remodely.mountLeadForm({
   after: '.stage',

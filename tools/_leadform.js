@@ -42,7 +42,10 @@
     document.head.appendChild(style);
 
     const shop = (global.Remodely && global.Remodely.tenant) || null;
-    const who = shop && shop.name ? shop.name : 'us';
+    // Without a tenant the sentence has to read "we will", not "us will".
+    const who = shop && shop.name ? shop.name : null;
+    const subject = who || 'we';
+    const object = who || 'us';
 
     const wrap = document.createElement('form');
     wrap.className = 'rl-form';
@@ -50,7 +53,7 @@
     wrap.noValidate = true;
     wrap.innerHTML = `
       <h3>${opts.heading || 'Get your exact price'}</h3>
-      <p class="rl-sub">Send this over and ${escapeHtml(who)} will follow up with a real number for your project — measured, not estimated.</p>
+      <p class="rl-sub">Send this over and ${escapeHtml(subject)} will follow up with a real number for your project — measured, not estimated.</p>
       <p class="rl-ctx" id="rlCtx"></p>
       <div class="rl-fields">
         <input name="name" placeholder="Your name" autocomplete="name" required>
@@ -59,7 +62,7 @@
         <input name="zip" placeholder="ZIP code" inputmode="numeric" autocomplete="postal-code" required>
       </div>
       <button type="submit">Send my details →</button>
-      <p class="rl-fine">No obligation · your details go straight to ${escapeHtml(who)}.</p>
+      <p class="rl-fine">No obligation · your details go straight to ${escapeHtml(object)}.</p>
       <div class="rl-note" id="rlNote"></div>`;
 
     const anchor = opts.after && document.querySelector(opts.after);
@@ -98,7 +101,7 @@
       }
       wrap.querySelectorAll('.rl-fields,.rl-fine,button').forEach(el => el.style.display = 'none');
       note.className = 'rl-note ok show';
-      note.innerHTML = `✓ Thanks, ${escapeHtml(name.split(' ')[0])}. ${escapeHtml(who)} will be in touch at <b>${escapeHtml(email)}</b>.`;
+      note.innerHTML = `✓ Thanks, ${escapeHtml(name.split(' ')[0])}. ${escapeHtml(subject[0].toUpperCase()+subject.slice(1))} will be in touch at <b>${escapeHtml(email)}</b>.`;
     });
 
     // Any CTA marked data-lead-jump scrolls here instead of a dead link.
