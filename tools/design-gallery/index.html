@@ -94,7 +94,7 @@ function paint() {
     </figure>`).join('');
 }
 
-let lastFocus = null;
+let lastFocus = null, lastViewed = null;
 
 /** The overlay covers the page, so focus must not wander onto what's behind it. */
 function trapFocus(e) {
@@ -116,6 +116,7 @@ function openLb(i) {
 }
 function paintLb() {
   const l = view[idx]; if (!l) return;
+  lastViewed = l;
   $('lbImg').src = l.img; $('lbImg').alt = l.name;
   $('lbInfo').innerHTML = `<b>${esc(l.name)}</b> · ${esc(l.material)}`;
 }
@@ -175,7 +176,11 @@ Remodely.toolName = 'Design Gallery';
 Remodely.ready(() => Remodely.mountLeadForm({
   after: '.grid',
   heading: 'Like one of these?',
-  context: () => (view[idx] && $('lb').classList.contains('on')) ? `${view[idx].name} (${view[idx].material})` : (room === 'All' ? '' : room),
+  // Remember the last image they opened — they'll have closed it before scrolling
+  // down to the form, and "which stone did they like" is the whole point of the lead.
+  context: () => lastViewed
+    ? `Liked ${lastViewed.name} (${lastViewed.material}${lastViewed.room ? ', ' + lastViewed.room.toLowerCase() : ''})`
+    : (room === 'All' ? 'Browsing the gallery' : `Browsing ${room.toLowerCase()}`),
 }));
 </script>
 </body>

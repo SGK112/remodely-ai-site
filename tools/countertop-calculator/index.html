@@ -2709,7 +2709,13 @@
 Remodely.ready(() => Remodely.mountLeadForm({
   after: '.stage',
   heading: 'Get your exact countertop price',
-  context: ()=>document.querySelector('.big')?.textContent?.trim()||'',
+  context: () => {
+    const t = id => { const e = document.getElementById(id); if (!e) return ''; 
+      // The number and its unit sit in adjacent elements with no whitespace between.
+      const v = e.textContent.replace(/\s+/g,' ').trim().replace(/(\d)([A-Za-z])/g,'$1 $2');
+      return /^[$\s0.,–-]*$/.test(v) ? '' : v; };
+    return t('estTotal') ? 'Estimated '+t('estTotal') : '';
+  },
 }));
 Remodely.toolSource = 'countertop-calculator';
 Remodely.toolName = document.title.split('|')[0].trim();
