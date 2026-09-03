@@ -16,6 +16,20 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Tenant config for the embeddable tools. Public read is required: the embed
+    // runs on a customer's own domain with no credentials and must resolve its own
+    // branding and subscription state. Nothing secret goes in these documents —
+    // notify addresses live in tenant_private, which no client can read.
+    match /tenants/{slug} {
+      allow read: if true;
+      allow write: if false;          // service account bypasses rules
+    }
+
+    // Delivery config: shop inboxes. Service account only.
+    match /tenant_private/{slug} {
+      allow read, write: if false;
+    }
+
     // Clients — admins only.
     match /clients/{clientId} {
       allow read, write: if isAdmin();

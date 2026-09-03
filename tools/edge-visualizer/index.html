@@ -611,8 +611,15 @@ function showInactive(msg){
   return;
  }
  window.__SLUG=shopParam;
- fetch(`/tenants/${shopParam}.json`)
-  .then(r=>r.ok?r.json():Promise.reject(new Error('unknown shop')))
+ // Firestore is the live source: a Stripe webhook flips `active` there the moment a
+ // subscription lapses. The static /tenants/*.json is the fallback if that read fails,
+ // so a Firestore blip degrades to stale branding rather than a dead tool.
+ const FS='https://firestore.googleapis.com/v1/projects/remodelyai-app/databases/(default)/documents/tenants/';
+ const unwrap=f=>Object.fromEntries(Object.entries(f||{}).map(([k,v])=>[k,
+   'booleanValue' in v?v.booleanValue:'integerValue' in v?Number(v.integerValue):v.stringValue]));
+ fetch(FS+encodeURIComponent(shopParam))
+  .then(r=>r.ok?r.json().then(d=>unwrap(d.fields)):Promise.reject(new Error('not in firestore')))
+  .catch(()=>fetch(`/tenants/${shopParam}.json`).then(r=>r.ok?r.json():Promise.reject(new Error('unknown shop'))))
   .then(t=>{
    if(t.active===false){
     showInactive('This shop\'s subscription is inactive. If it\'s your tool, contact Remodely AI to switch it back on.');

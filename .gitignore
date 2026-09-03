@@ -33,3 +33,4 @@ __pycache__/
 # Service-account key lives outside the repo; never commit one
 *firebase*.json
 *service-account*.json
+*stripe*key*
