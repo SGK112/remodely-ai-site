@@ -1,0 +1,684 @@
+{
+ "generated": "2026-09-03T06:43:57.463Z",
+ "note": "Vendor room photography illustrating each stone. Not any shop's completed work.",
+ "looks": [
+  {
+   "img": "rooms/arabescato-corchia.jpg",
+   "name": "Arabescato Corchia",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/arancio-onyx.jpg",
+   "name": "Arancio Onyx",
+   "material": "Onyx",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/avocatus.jpg",
+   "name": "Avocatus",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/bardiglio-nuvolato.jpg",
+   "name": "Bardiglio Nuvolato",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/bianco-dolomiti.jpg",
+   "name": "Bianco Dolomiti",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/black-taurus.jpg",
+   "name": "Black Taurus",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/blue-dunes-thunder-mountain.jpg",
+   "name": "Blue Dunes/Thunder Mountain",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/blue-tempest.jpg",
+   "name": "Blue Tempest",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/breccia-capraia.jpg",
+   "name": "Breccia Capraia",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/calacatta-borghini.jpg",
+   "name": "Calacatta Borghini",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/calacatta-classico.jpg",
+   "name": "Calacatta Classico",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/calacatta-oro.jpg",
+   "name": "Calacatta Oro",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/calacatta-paonazzo.jpg",
+   "name": "Calacatta Paonazzo",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/cipollino-ondulato.jpg",
+   "name": "Cipollino Ondulato",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/crema-marfil.jpg",
+   "name": "Crema Marfil",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/emerald-green.jpg",
+   "name": "Emerald Green",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/fior-di-bosco.jpg",
+   "name": "Fior di Bosco",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/fusion-blue.jpg",
+   "name": "Fusion Blue",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/giallo-ornamental.jpg",
+   "name": "Giallo Ornamental",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/glacier-white.jpg",
+   "name": "Glacier White",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/ijen-blue.jpg",
+   "name": "Ijen Blue",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/ivory-onyx.jpg",
+   "name": "Ivory Onyx",
+   "material": "Onyx",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/olympian-white-danby.jpg",
+   "name": "Olympian White Danby",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/onyx-velluto.jpg",
+   "name": "Onyx Velluto",
+   "material": "Onyx",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/panda-white.jpg",
+   "name": "Panda White",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/roman-travertine.jpg",
+   "name": "Roman Travertine",
+   "material": "Travertine",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/taj-mahal.jpg",
+   "name": "Taj Mahal",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/thassos-white.jpg",
+   "name": "Thassos White",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/titanium-gold.jpg",
+   "name": "Titanium Gold",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/titanium-travertine.jpg",
+   "name": "Titanium Travertine",
+   "material": "Travertine",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/typhoon-bordeaux.jpg",
+   "name": "Typhoon Bordeaux",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/verde-alpi.jpg",
+   "name": "Verde Alpi",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/virginia-mist.jpg",
+   "name": "Virginia Mist",
+   "material": "Granite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/volakas.jpg",
+   "name": "Volakas",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/white-macaubas.jpg",
+   "name": "White Macaubas",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/white-onyx.jpg",
+   "name": "White Onyx",
+   "material": "Onyx",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/aerial.jpg",
+   "name": "Aerial",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/arabescato.jpg",
+   "name": "Arabescato",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/arabescato-como.jpg",
+   "name": "Arabescato Como",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/arabescato-viola-polished.jpg",
+   "name": "Arabescato Viola Polished",
+   "material": "Porcelain",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/bertoli.jpg",
+   "name": "Bertoli",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/black-mist-honed.jpg",
+   "name": "Black Mist Honed",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/blue-galaxy.jpg",
+   "name": "Blue Galaxy",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/blue-tahoe-satin.jpg",
+   "name": "Blue Tahoe Satin",
+   "material": "Quartzite",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/calacatta-capella.jpg",
+   "name": "Calacatta Capella",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/calacatta-divine.jpg",
+   "name": "Calacatta Divine",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/calacatta-doria.jpg",
+   "name": "Calacatta Doria",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/calacatta-jubilee.jpg",
+   "name": "Calacatta Jubilee",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/calacatta-lincoln-satin.jpg",
+   "name": "Calacatta Lincoln Satin",
+   "material": "Marble",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/calacatta-umber.jpg",
+   "name": "Calacatta Umber",
+   "material": "Marble",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/concrete-grey.jpg",
+   "name": "Concrete Grey",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/crema-vosscione.jpg",
+   "name": "Crema Vosscione",
+   "material": "Limestone",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/crest.jpg",
+   "name": "Crest",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/dakar.jpg",
+   "name": "Dakar",
+   "material": "Quartzite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/denali-n.jpg",
+   "name": "Denali N",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/desert-canyon.jpg",
+   "name": "Desert Canyon",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/fantasy-black.jpg",
+   "name": "Fantasy Black",
+   "material": "Marble",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/fantasy-brown-satin.jpg",
+   "name": "Fantasy Brown Satin",
+   "material": "Marble",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/frost-n.jpg",
+   "name": "Frost N",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/grigio-elegante-honed.jpg",
+   "name": "Grigio Elegante Honed",
+   "material": "Quartz",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/iceberg.jpg",
+   "name": "Iceberg",
+   "material": "Agglomerate Marble",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/macchia-vecchia-polished.jpg",
+   "name": "Macchia Vecchia Polished",
+   "material": "Porcelain",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/macchia-vecchia-soft.jpg",
+   "name": "Macchia Vecchia Soft",
+   "material": "Porcelain",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/marvel-calacatta-apuano-polished.jpg",
+   "name": "Marvel Calacatta Apuano Polished",
+   "material": "Porcelain",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/marvel-calacatta-extra-polished.jpg",
+   "name": "Marvel Calacatta Extra Polished",
+   "material": "Porcelain",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/marvel-calacatta-extra-soft.jpg",
+   "name": "Marvel Calacatta Extra Soft",
+   "material": "Porcelain",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/marvel-fior-di-bosco-polished.jpg",
+   "name": "Marvel Fior Di Bosco Polished",
+   "material": "Porcelain",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/nuage.jpg",
+   "name": "Nuage",
+   "material": "Quartzite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/opal-white.jpg",
+   "name": "Opal White",
+   "material": "Marble",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/oxide-honed.jpg",
+   "name": "Oxide Honed",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/portofino-classico.jpg",
+   "name": "Portofino Classico",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/river-white.jpg",
+   "name": "River White",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/silver-falls.jpg",
+   "name": "Silver Falls",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/soapstone-dark-matte.jpg",
+   "name": "Soapstone Dark Matte",
+   "material": "Porcelain",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/torreon-stone.jpg",
+   "name": "Torreon Stone",
+   "material": "Travertine",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/travertino-white-matte.jpg",
+   "name": "Travertino White Matte",
+   "material": "Porcelain",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/vallejo-gold.jpg",
+   "name": "Vallejo Gold",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/whisper-white.jpg",
+   "name": "Whisper White",
+   "material": "Granite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/white-lux.jpg",
+   "name": "White Lux",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/white-sand-n.jpg",
+   "name": "White Sand N",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/alabaster.jpg",
+   "name": "Alabaster",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/alaskan-blizzard.jpg",
+   "name": "Alaskan Blizzard",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/arctic-ice.jpg",
+   "name": "Arctic Ice",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/arctic-panda.jpg",
+   "name": "Arctic Panda",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/black-jasper.jpg",
+   "name": "Black Jasper",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/brunatta.jpg",
+   "name": "Brunatta",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/brunero.jpg",
+   "name": "Brunero",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/carrara-glory.jpg",
+   "name": "Carrara Glory",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/carrara-luxor.jpg",
+   "name": "Carrara Luxor",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/cemento.jpg",
+   "name": "Cemento",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/colorado-gold.jpg",
+   "name": "Colorado Gold",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/crystallo-divine.jpg",
+   "name": "Crystallo Divine",
+   "material": "Quartzite",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/diamond-white.jpg",
+   "name": "Diamond White",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/dry-concrete.jpg",
+   "name": "Dry Concrete",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/emerald.jpg",
+   "name": "Emerald",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/fantastic-venatino.jpg",
+   "name": "Fantastic Venatino",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/frozen-lava.jpg",
+   "name": "Frozen Lava",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/galaxy.jpg",
+   "name": "Galaxy",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/gold-patagonia.jpg",
+   "name": "Gold Patagonia",
+   "material": "Quartzite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/infinity.jpg",
+   "name": "Infinity",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/ivory.jpg",
+   "name": "Ivory",
+   "material": "Semi-Precious",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/macaubas-fantasy.jpg",
+   "name": "Macaubas Fantasy",
+   "material": "Quartzite",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/macchia-vecchia.jpg",
+   "name": "Macchia Vecchia",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/magnificent.jpg",
+   "name": "Magnificent",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/maharaja-gold.jpg",
+   "name": "Maharaja Gold",
+   "material": "Quartzite",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/mamba-black.jpg",
+   "name": "Mamba Black",
+   "material": "Quartzite",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/melso.jpg",
+   "name": "Melso",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/moda.jpg",
+   "name": "Moda",
+   "material": "Quartz",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/mysterio-carrara.jpg",
+   "name": "Mysterio Carrara",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/nero-marquina.jpg",
+   "name": "Nero Marquina",
+   "material": "Quartz",
+   "room": "Bath"
+  },
+  {
+   "img": "rooms/pandora.jpg",
+   "name": "Pandora",
+   "material": "Quartz",
+   "room": "Interior"
+  },
+  {
+   "img": "rooms/polar-land.jpg",
+   "name": "Polar Land",
+   "material": "Quartz",
+   "room": "Kitchen"
+  },
+  {
+   "img": "rooms/primo.jpg",
+   "name": "Primo",
+   "material": "Quartz",
+   "room": "Kitchen"
+  }
+ ]
+}

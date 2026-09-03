@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Design Gallery</title>
+<meta name="description" content="Browse kitchens and baths by the stone in them — see how granite, quartz, marble and quartzite actually look installed, then ask for a price.">
+<link rel="canonical" href="https://www.remodely.ai/tools/design-gallery/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=1"></script>
+<script src="/tools/_leadform.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1140px;margin:0 auto;padding:22px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,36px);line-height:1.06;margin:2px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);max-width:62ch;font-size:15px;margin-bottom:20px}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .filters button{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;padding:8px 15px;
+    border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--mut)}
+  .filters button.on{border-color:var(--gold);background:var(--gold);color:#fff}
+  .filters button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+  .look{border:0;padding:0;background:none;cursor:pointer;border-radius:14px;overflow:hidden;
+        position:relative;aspect-ratio:4/3;box-shadow:var(--shadow);display:block;width:100%}
+  .look img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+  .look:hover img{transform:scale(1.045)}
+  .look:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .look figcaption{position:absolute;inset:auto 0 0 0;text-align:left;padding:26px 12px 10px;color:#fff;
+    background:linear-gradient(transparent,rgba(0,0,0,.78));font-size:13px;font-weight:600}
+  .look figcaption span{display:block;font-weight:500;font-size:11.5px;opacity:.82}
+  .empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 0;font-size:14.5px}
+
+  .lb{position:fixed;inset:0;background:rgba(3,7,18,.92);display:none;align-items:center;
+      justify-content:center;z-index:50;padding:20px}
+  .lb.on{display:flex}
+  .lb img{max-width:min(1100px,94vw);max-height:82vh;border-radius:10px;display:block}
+  .lb-info{position:absolute;left:0;right:0;bottom:22px;text-align:center;color:#fff;font-size:14px}
+  .lb-info b{font-size:15px}
+  .lb button{position:absolute;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    color:#fff;font-size:20px;width:44px;height:44px;border-radius:50%;cursor:pointer;line-height:1}
+  .lb .x{top:18px;right:18px}.lb .prev{left:18px;top:50%;margin-top:-22px}.lb .next{right:18px;top:50%;margin-top:-22px}
+  .lb button:hover{background:rgba(255,255,255,.22)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:28px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){.look img{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Design gallery</p>
+  <h1>See the stone <em>in a real room</em>.</h1>
+  <p class="sub">A slab on a rack tells you almost nothing. Browse kitchens, baths and living spaces by
+    the material in them — then send over the ones you like.</p>
+
+  <div class="filters" id="filters" role="group" aria-label="Filter by room"></div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+
+  <p class="foot" id="credit"></p>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Larger view">
+  <button class="x" id="lbX" aria-label="Close">×</button>
+  <button class="prev" id="lbPrev" aria-label="Previous">‹</button>
+  <button class="next" id="lbNext" aria-label="Next">›</button>
+  <img id="lbImg" alt="">
+  <p class="lb-info" id="lbInfo"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ALL = [], view = [], room = 'All', idx = 0;
+
+function paint() {
+  view = room === 'All' ? ALL : ALL.filter(l => l.room === room);
+  const g = $('grid');
+  if (!view.length) { g.innerHTML = '<p class="empty">Nothing in that room yet — try another.</p>'; return; }
+  g.innerHTML = view.map((l, i) => `
+    <figure class="look" role="button" tabindex="0" data-i="${i}">
+      <img src="${esc(l.img)}" alt="${esc(l.name)} — ${esc(l.room.toLowerCase())}" loading="lazy" decoding="async">
+      <figcaption>${esc(l.name)}<span>${esc(l.material)}</span></figcaption>
+    </figure>`).join('');
+}
+
+function openLb(i) {
+  idx = i; paintLb();
+  $('lb').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  $('lbX').focus();
+}
+function paintLb() {
+  const l = view[idx]; if (!l) return;
+  $('lbImg').src = l.img; $('lbImg').alt = l.name;
+  $('lbInfo').innerHTML = `<b>${esc(l.name)}</b> · ${esc(l.material)}`;
+}
+function closeLb() { $('lb').classList.remove('on'); document.body.style.overflow = ''; }
+function step(d) { idx = (idx + d + view.length) % view.length; paintLb(); }
+
+$('grid').addEventListener('click', e => {
+  const f = e.target.closest('.look'); if (f) openLb(Number(f.dataset.i));
+});
+$('grid').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const f = e.target.closest('.look'); if (f) { e.preventDefault(); openLb(Number(f.dataset.i)); }
+});
+$('lbX').onclick = closeLb;
+$('lbPrev').onclick = e => { e.stopPropagation(); step(-1); };
+$('lbNext').onclick = e => { e.stopPropagation(); step(1); };
+$('lb').addEventListener('click', e => { if (e.target === $('lb')) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!$('lb').classList.contains('on')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') step(-1);
+  if (e.key === 'ArrowRight') step(1);
+});
+
+// Images ship with the tool rather than being fetched from another site's API —
+// that API is origin-locked, and a gallery whose pictures depend on someone
+// else's uptime is a gallery that will one day be empty on a customer's page.
+fetch('/tools/design-gallery/gallery.json')
+  .then(r => r.json())
+  .then(m => {
+    ALL = (m.looks || []).map(l => ({ ...l, img: '/tools/design-gallery/' + l.img }));
+    const rooms = ['All', ...[...new Set(ALL.map(l => l.room))].sort()];
+    $('filters').innerHTML = rooms.map(r =>
+      `<button data-room="${esc(r)}"${r === 'All' ? ' class="on"' : ''}>${esc(r)}</button>`).join('');
+    $('filters').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      room = b.dataset.room;
+      $('filters').querySelectorAll('button').forEach(o => o.classList.toggle('on', o === b));
+      paint();
+    });
+    $('credit').textContent = `${ALL.length} looks · manufacturer photography showing each stone installed — not any one shop's completed work.`;
+    paint();
+  })
+  .catch(() => {
+    $('grid').innerHTML = '<p class="empty">The gallery could not load. Refresh, or contact us and we\'ll sort it.</p>';
+  });
+
+Remodely.toolSource = 'design-gallery';
+Remodely.toolName = 'Design Gallery';
+Remodely.ready(() => Remodely.mountLeadForm({
+  after: '.grid',
+  heading: 'Like one of these?',
+  context: () => (view[idx] && $('lb').classList.contains('on')) ? `${view[idx].name} (${view[idx].material})` : (room === 'All' ? '' : room),
+}));
+</script>
+</body>
+</html>
