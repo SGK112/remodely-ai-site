@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Visualizer Is Live</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1f5; --sheet:#ffffff; --ink:#0e141c; --ink-2:#3d4b59;
+    --steel:#5a6b7a; --rule:#cdd6de; --rule-soft:#e2e8ee;
+    --accent:#f97316; --accent-deep:#c2410c; --accent-wash:rgba(249,115,22,.09);
+    --ok:#15803d; --ok-wash:rgba(21,128,61,.10);
+    --display:"Archivo",system-ui,sans-serif;
+    --body:"IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sheet-shadow:0 1px 2px rgba(14,20,28,.05),0 12px 32px -18px rgba(14,20,28,.28);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#0a0f1a; --sheet:#121a26; --ink:#e9eef4; --ink-2:#a7b4c2;
+    --steel:#8497a8; --rule:#26313f; --rule-soft:#1b2532;
+    --accent:#fb923c; --accent-deep:#fdba74; --accent-wash:rgba(251,146,60,.12);
+    --ok:#4ade80; --ok-wash:rgba(74,222,128,.12);
+    --sheet-shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.7);}}
+  :root[data-theme="dark"]{
+    --paper:#0a0f1a; --sheet:#121a26; --ink:#e9eef4; --ink-2:#a7b4c2;
+    --steel:#8497a8; --rule:#26313f; --rule-soft:#1b2532;
+    --accent:#fb923c; --accent-deep:#fdba74; --accent-wash:rgba(251,146,60,.12);
+    --ok:#4ade80; --ok-wash:rgba(74,222,128,.12);
+    --sheet-shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.7);}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62}
+  a{color:var(--accent-deep)}
+  h1,h2{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.017em}
+  p{margin:0}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  .top{border-bottom:1px solid var(--rule);background:var(--sheet)}
+  .top .wrap{display:flex;align-items:center;gap:10px;padding-block:14px}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);
+        font-family:var(--display);font-weight:700;font-size:15px}
+  .logo b{color:var(--accent-deep)}
+  main{padding-block:56px}
+  .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+       color:var(--ok);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .tag::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h1{font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.06;font-weight:700}
+  .lede{color:var(--ink-2);margin-top:14px;max-width:56ch}
+  .card{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;
+        box-shadow:var(--sheet-shadow);margin-top:30px;overflow:hidden}
+  .card h2{font-size:1.05rem;font-weight:600;padding:18px 20px 0}
+  .card p.sub{color:var(--ink-2);font-size:15px;padding:6px 20px 0;max-width:52ch}
+  .snippet{font-family:var(--mono);font-size:13px;line-height:1.75;white-space:pre;overflow-x:auto;
+           background:var(--paper);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);
+           border-left:3px solid var(--accent);padding:16px 20px;margin:16px 0 0;color:var(--ink)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;padding:16px 20px}
+  .btn{font:inherit;font-family:var(--display);font-weight:600;font-size:15px;cursor:pointer;
+       padding:11px 16px;border-radius:3px;border:1px solid var(--rule);background:var(--paper);
+       color:var(--ink);text-decoration:none;display:inline-block}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:hover{filter:brightness(1.05)}
+  .steps{margin:28px 0 0;padding:0;list-style:none;counter-reset:s}
+  .steps li{counter-increment:s;position:relative;padding:12px 0 12px 40px;border-bottom:1px solid var(--rule-soft);color:var(--ink-2)}
+  .steps li:last-child{border-bottom:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:12px;width:24px;height:24px;
+    border-radius:50%;background:var(--accent-wash);color:var(--accent-deep);font-family:var(--mono);
+    font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .steps b{color:var(--ink)}
+  .meta{font-family:var(--mono);font-size:12.5px;color:var(--steel);margin-top:26px}
+  .pending{background:var(--accent-wash);border:1px solid var(--accent);border-radius:3px;
+           padding:13px 16px;font-size:15px;margin-top:22px}
+  .err{background:var(--accent-wash);border:1px solid var(--accent);border-radius:3px;padding:16px;margin-top:24px}
+  footer{border-top:1px solid var(--rule);padding-block:24px;font-family:var(--mono);font-size:12px;color:var(--steel)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/">
+    <svg viewBox="0 0 24 24" width="27" height="27" fill="none" aria-hidden="true">
+      <defs><linearGradient id="rh" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4285F4"/><stop offset="33%" stop-color="#EA4335"/>
+        <stop offset="66%" stop-color="#FBBC05"/><stop offset="100%" stop-color="#34A853"/></linearGradient></defs>
+      <path d="M3 21V10l9-7 9 7v11" stroke="url(#rh)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/></svg>
+    REMODELY<b>.AI</b>
+  </a>
+</div></header>
+
+<main><div class="wrap" id="root">
+  <p class="tag">Setting up…</p>
+  <h1>One moment.</h1>
+  <p class="lede">Confirming your payment with Stripe.</p>
+</div></main>
+
+<footer><div class="wrap">Remodely AI · <a href="/lead-tools/">Lead tools</a> · <a href="mailto:support@remodely.ai">support@remodely.ai</a></div></footer>
+
+<script>
+const BILLING = 'https://remodely-billing.onrender.com';
+const root = document.getElementById('root');
+const esc = s => String(s ?? '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function render(d) {
+  root.innerHTML = `
+    <p class="tag">You're live</p>
+    <h1>${esc(d.name)} is set up.</h1>
+    <p class="lede">Here's the line to paste. We've emailed it to
+      <b>${esc(d.notify || 'you')}</b> as well, so you don't have to keep this page.</p>
+
+    ${d.active ? '' : `<div class="pending">Payment confirmed. Your tool switches on within a few seconds —
+      if the preview below says it isn't available yet, refresh once.</div>`}
+
+    <div class="card">
+      <h2>Paste this into your website</h2>
+      <p class="sub">Anywhere you want the tool to appear — a Countertops page is the usual spot. Works on
+        WordPress, Wix, Squarespace, GoDaddy, anything that takes an embed.</p>
+      <pre class="snippet" id="snippet">${esc(d.embed)}</pre>
+      <div class="row">
+        <button class="btn primary" id="copy">Copy the line</button>
+        <a class="btn" href="${esc(d.preview)}" target="_blank" rel="noopener">Preview it →</a>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li>Paste that line into your site. If someone else runs your website, <b>forward them this page</b> — it's all they need.</li>
+      <li>Your visitors design their edge. Every one that asks for a price becomes a lead.</li>
+      <li>Leads email to <b>${esc(d.notify || 'your address')}</b> within a few minutes, with the profile, thickness and stone they picked.</li>
+    </ol>
+
+    <p class="meta">Shop code <b>${esc(d.slug)}</b> ·
+      <a href="${BILLING}/portal?slug=${encodeURIComponent(d.slug)}">Manage billing or cancel</a> ·
+      Need a change? <a href="mailto:support@remodely.ai?subject=${encodeURIComponent(d.slug)}">Email us</a></p>`;
+
+  document.getElementById('copy').addEventListener('click', async e => {
+    try {
+      await navigator.clipboard.writeText(d.embed);
+      e.target.textContent = 'Copied';
+    } catch {
+      // Clipboard is blocked in some embedded browsers — select it instead so
+      // they can still copy by hand rather than hitting a button that does nothing.
+      const r = document.createRange();
+      r.selectNodeContents(document.getElementById('snippet'));
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      e.target.textContent = 'Selected — press ⌘C';
+    }
+    setTimeout(() => { e.target.textContent = 'Copy the line'; }, 2600);
+  });
+}
+
+(async () => {
+  const sid = new URLSearchParams(location.search).get('session_id');
+  if (!sid) {
+    root.innerHTML = `<p class="tag">Nothing to show</p><h1>No checkout to confirm.</h1>
+      <p class="lede">This page appears right after payment. If you've already signed up, check your email
+      for the line to paste — or <a href="mailto:support@remodely.ai">ask us</a>.</p>`;
+    return;
+  }
+  try {
+    const r = await fetch(`${BILLING}/welcome?session_id=${encodeURIComponent(sid)}`);
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not confirm');
+    render(d);
+  } catch (e) {
+    // Their money is taken; never imply otherwise on an error here.
+    root.innerHTML = `<p class="tag">Almost there</p><h1>Your payment went through.</h1>
+      <div class="err">We couldn't load your embed code on this page (${esc(e.message)}).
+      It's in your email — and if it isn't, reply to
+      <a href="mailto:support@remodely.ai">support@remodely.ai</a> and we'll send it straight away.
+      Nothing is lost.</div>`;
+  }
+})();
+</script>
+</body>
+</html>

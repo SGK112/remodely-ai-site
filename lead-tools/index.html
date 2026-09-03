@@ -165,6 +165,14 @@
   .result.ok{background:var(--ok-wash);border:1px solid var(--ok);color:var(--ink)}
   .result.err{background:var(--accent-wash);border:1px solid var(--accent);color:var(--ink)}
 
+  .field-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:2px 0}
+  .field-label{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--steel)}
+  .plan-toggle{display:flex;gap:8px;flex-wrap:wrap}
+  .plan{font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:9px 14px;border-radius:3px;
+        border:1px solid var(--rule);background:var(--paper);color:var(--ink-2)}
+  .plan em{font-style:normal;font-size:11.5px;color:var(--ok);font-weight:700;margin-left:5px}
+  .plan.on{border-color:var(--accent);background:var(--accent-wash);color:var(--ink)}
+  .plan:focus-visible,.sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   footer.foot{border-top:1px solid var(--rule);padding-block:26px;
               font-family:var(--mono);font-size:12px;color:var(--steel)}
   footer.foot .wrap{display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between}
@@ -313,21 +321,34 @@
   <div class="wrap close-grid">
     <div>
       <p class="sheet-tag">Next step</p>
-      <h2>Want it running on your site this week?</h2>
-      <p>Tell us where it's going and we'll set it up with your name and colors, send you the line to paste, and you can watch the first lead come in before deciding anything.</p>
+      <h2>Get it running on your site in a minute.</h2>
+      <p>Enter your shop name, pick a color, pay, and the next screen gives you the line to paste. We also email it to you. Cancel any time from your own billing page.</p>
       <p style="font-family:var(--mono);font-size:13px;margin-top:20px">Josh · Remodely AI<br>
         <a href="mailto:support@remodely.ai">support@remodely.ai</a></p>
     </div>
     <form id="shopForm" novalidate>
-      <input name="contact_name" placeholder="Your name" autocomplete="name" required>
-      <input name="company" placeholder="Shop name" autocomplete="organization" required>
-      <div class="row2">
-        <input name="contact_email" type="email" placeholder="Email" autocomplete="email" required>
-        <input name="contact_phone" placeholder="Phone (optional)" autocomplete="tel">
-      </div>
+      <input name="shop_name" placeholder="Shop name (this is what customers see)" autocomplete="organization" required>
+      <input name="contact_email" type="email" placeholder="Email — where your leads go" autocomplete="email" required>
       <input name="website" placeholder="Your website (optional)" autocomplete="url">
-      <button class="send" type="submit" id="sendBtn">Set it up for my shop →</button>
-      <p class="fineprint">A real reply from a real person. No drip sequence.</p>
+      <div class="field-row">
+        <span class="field-label">Your color</span>
+        <div class="swatches" role="group" aria-label="Accent color">
+          <button type="button" class="sw" data-c="c2410c" style="background:#c2410c" aria-pressed="true" aria-label="Rust"></button>
+          <button type="button" class="sw" data-c="1d4ed8" style="background:#1d4ed8" aria-pressed="false" aria-label="Blue"></button>
+          <button type="button" class="sw" data-c="15803d" style="background:#15803d" aria-pressed="false" aria-label="Green"></button>
+          <button type="button" class="sw" data-c="0f172a" style="background:#0f172a" aria-pressed="false" aria-label="Charcoal"></button>
+          <button type="button" class="sw" data-c="9d174d" style="background:#9d174d" aria-pressed="false" aria-label="Wine"></button>
+        </div>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Billing</span>
+        <div class="plan-toggle" role="group" aria-label="Billing interval">
+          <button type="button" class="plan on" data-interval="month">$49 / month</button>
+          <button type="button" class="plan" data-interval="year">$490 / year <em>2 months free</em></button>
+        </div>
+      </div>
+      <button class="send" type="submit" id="sendBtn">Continue to payment →</button>
+      <p class="fineprint">Secure checkout by Stripe · cancel anytime · no contract</p>
       <div class="result" id="result"></div>
     </form>
   </div>
@@ -363,44 +384,50 @@ addEventListener('message',e=>{
   if(typeof h==='number'&&h>400&&h<6000) frame.style.height=h+'px';
 });
 
-/* ---- shop enquiry → Firestore `leads`, same collection as the rest of the site ---- */
-function loadScript(src){return new Promise((res,rej)=>{
-  const t=document.createElement('script');t.src=src;t.onload=res;t.onerror=rej;document.head.appendChild(t);});}
-async function saveLead(lead){
-  if(!window.firebase){
-    await loadScript('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-    await loadScript('https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js');
-    firebase.initializeApp({apiKey:"AIzaSyDJJMyA-sRoh1IYTDf84nmzt48L5RxhJec",
-      authDomain:"remodelyai-app.firebaseapp.com",projectId:"remodelyai-app",
-      storageBucket:"remodelyai-app.firebasestorage.app",messagingSenderId:"254256003480",
-      appId:"1:254256003480:web:0b5f62324a7fb09a7b13ed"});
-  }
-  await firebase.firestore().collection('leads').add(lead);
-}
-$('shopForm').addEventListener('submit',async e=>{
+/* ---- signup → Stripe Checkout ---------------------------------------------
+   No lead capture here on purpose: this form takes payment. Anything that just
+   collected a name would put a human back in the loop.                        */
+const BILLING = 'https://remodely-billing.onrender.com';
+let signupAccent = 'c2410c', interval = 'month';
+
+document.querySelectorAll('#shopForm .sw').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#shopForm .sw').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+  signupAccent = b.dataset.c;
+}));
+document.querySelectorAll('.plan').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.plan').forEach(o => o.classList.toggle('on', o === b));
+  interval = b.dataset.interval;
+  $('sendBtn').textContent = 'Continue to payment →';
+}));
+
+$('shopForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const f=e.target, out=$('result'), btn=$('sendBtn');
-  const nm=f.contact_name.value.trim(), co=f.company.value.trim(), em=f.contact_email.value.trim();
-  if(!nm||!co||!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){f.reportValidity&&f.reportValidity();return;}
-  btn.disabled=true; btn.textContent='Sending…';
-  try{
-    await saveLead({name:nm,company:co,email:em,phone:f.contact_phone.value.trim(),
-      website:f.website.value.trim(),source:'lead-tools-page',
-      product:'Countertop Edge Visualizer — shop enquiry',
-      timestamp:new Date().toISOString()});
-  }catch(err){
-    // Never confirm a lead we couldn't actually save.
-    console.error('[lead-tools] save failed',err);
-    btn.disabled=false; btn.textContent='Try again →';
-    out.className='result err show';
-    out.innerHTML=`That didn't send. Email <a href="mailto:support@remodely.ai?subject=Edge%20visualizer%20for%20${encodeURIComponent(co)}">support@remodely.ai</a> and we'll pick it up from there.`;
-    return;
+  const f = e.target, out = $('result'), btn = $('sendBtn');
+  const name = f.shop_name.value.trim(), email = f.contact_email.value.trim();
+  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { f.reportValidity && f.reportValidity(); return; }
+  btn.disabled = true; btn.textContent = 'Opening checkout…';
+  out.className = 'result';
+  try {
+    const r = await fetch(BILLING + '/signup', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, website: f.website.value.trim(), accent: signupAccent, interval }),
+    });
+    const d = await r.json();
+    if (!r.ok || !d.url) throw new Error(d.error || 'Could not start checkout');
+    location.href = d.url;
+  } catch (err) {
+    // Never leave them stranded on a dead button — give them a way through.
+    btn.disabled = false; btn.textContent = 'Try again →';
+    out.className = 'result err show';
+    out.innerHTML = `${err.message}. Email <a href="mailto:support@remodely.ai?subject=Edge%20visualizer%20signup">support@remodely.ai</a> and we'll sort it.`;
   }
-  f.querySelectorAll('input,.fineprint').forEach(el=>el.style.display='none');
-  btn.style.display='none';
-  out.className='result ok show';
-  out.innerHTML=`Got it, ${nm.split(' ')[0]}. We'll email <b>${em}</b> with ${co}'s version ready to paste — usually same day.`;
 });
+
+if (new URLSearchParams(location.search).get('cancelled')) {
+  const out = $('result');
+  out.className = 'result err show';
+  out.textContent = 'Checkout cancelled — nothing was charged. Change anything above and try again.';
+}
 </script>
 </body>
 </html>
