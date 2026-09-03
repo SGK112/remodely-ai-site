@@ -94,7 +94,21 @@ function paint() {
     </figure>`).join('');
 }
 
+let lastFocus = null;
+
+/** The overlay covers the page, so focus must not wander onto what's behind it. */
+function trapFocus(e) {
+  if (e.key !== 'Tab' || !$('lb').classList.contains('on')) return;
+  const f = [...$('lb').querySelectorAll('button')].filter(b => b.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  else if (!$('lb').contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+}
+
 function openLb(i) {
+  lastFocus = document.activeElement;
   idx = i; paintLb();
   $('lb').classList.add('on');
   document.body.style.overflow = 'hidden';
@@ -105,7 +119,13 @@ function paintLb() {
   $('lbImg').src = l.img; $('lbImg').alt = l.name;
   $('lbInfo').innerHTML = `<b>${esc(l.name)}</b> · ${esc(l.material)}`;
 }
-function closeLb() { $('lb').classList.remove('on'); document.body.style.overflow = ''; }
+function closeLb() {
+  $('lb').classList.remove('on');
+  document.body.style.overflow = '';
+  // Send them back to the image they opened, not the top of the page.
+  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  lastFocus = null;
+}
 function step(d) { idx = (idx + d + view.length) % view.length; paintLb(); }
 
 $('grid').addEventListener('click', e => {
@@ -119,6 +139,7 @@ $('lbX').onclick = closeLb;
 $('lbPrev').onclick = e => { e.stopPropagation(); step(-1); };
 $('lbNext').onclick = e => { e.stopPropagation(); step(1); };
 $('lb').addEventListener('click', e => { if (e.target === $('lb')) closeLb(); });
+document.addEventListener('keydown', trapFocus);
 document.addEventListener('keydown', e => {
   if (!$('lb').classList.contains('on')) return;
   if (e.key === 'Escape') closeLb();

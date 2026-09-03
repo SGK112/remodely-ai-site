@@ -162,7 +162,7 @@ function calc(){
   $(ids[0]).textContent = order>0 ? money(order*lo)+'–'+money(order*hi) : money(0);
   $(ids[1]).textContent = '$'+lo+'–'+hi+'/sf';});
  $('qbtn').textContent = order>0 ? `Get my quote — ${dec(order)} sq ft ${t.n} →` : 'Get my exact quote →';
- $('qbtn').href = '/get-a-free-estimate/?source=tile-calculator&type='+encodeURIComponent(t.n)+'&sqft='+encodeURIComponent(dec(order));
+ $('qbtn').href = '#leadForm'+encodeURIComponent(t.n)+'&sqft='+encodeURIComponent(dec(order));
 }
 calc();
 </script>

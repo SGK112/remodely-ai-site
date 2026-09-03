@@ -49,6 +49,23 @@
   function stripChrome() {
     document.querySelectorAll('[data-remodely-chrome]').forEach(el => el.remove());
     document.body.dataset.embed = '1';
+    // Backstop. The tool runs inside a customer's page, so any same-origin link
+    // that isn't an in-page anchor would navigate their visitor out of the shop's
+    // branded frame and onto remodely.ai. Catching it here means a future tool
+    // can't reintroduce the leak by adding a stray link.
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (href.startsWith('#') || /^(mailto|tel):/i.test(href)) return;
+      let url;
+      try { url = new URL(a.href, location.href); } catch { return; }
+      if (url.origin !== location.origin) return;          // vendor links are fine
+      e.preventDefault();
+      const form = document.getElementById('leadForm');
+      if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      console.warn('[remodely] blocked in-embed navigation to', href);
+    }, true);
   }
 
   function block(msg) {
