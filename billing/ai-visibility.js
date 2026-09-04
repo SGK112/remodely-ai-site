@@ -101,7 +101,7 @@ async function places(path, key, fieldMask, body) {
  */
 const WEIGHTS = { entity: 25, footprint: 15, structured: 20, authority: 30, freshness: 10 };
 
-async function audit({ url, name, key }) {
+async function audit({ url, name, key, placeId }) {
   const findings = [];
   const unchecked = [];
   const add = (area, ok, weight, title, detail, fix) =>
@@ -126,16 +126,32 @@ async function audit({ url, name, key }) {
   const siteName = biz?.name || (html.match(/<title>([^<]{3,80})/i) || [])[1] || name || host;
 
   // ---- entity recognition: can a model find and verify you at all? ---------
-  let place = null;
+  const PLACE_FIELDS = 'id,displayName,formattedAddress,rating,userRatingCount,websiteUri,nationalPhoneNumber,primaryTypeDisplayName';
+  let place = null, pinned = false;
+
+  // A site tracked over time must resolve to the SAME listing every run.
+  // Text search does not guarantee that — it returned a different company for
+  // the same query minutes apart — so once a listing is confirmed we pin its id
+  // and fetch that listing directly on every later run. Without this, a score
+  // moves on its own and "change since last report" is noise.
+  if (placeId) {
+    try {
+      place = await places(`places/${encodeURIComponent(placeId)}`, key, PLACE_FIELDS);
+      pinned = !!place?.id;
+    } catch { place = null; }
+  }
+
   try {
+    if (!place) {
     const q = `${name || siteName} ${biz?.address?.addressLocality || ''} ${biz?.address?.addressRegion || ''}`.trim();
     const found = await places('places:searchText', key,
-      'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri,places.nationalPhoneNumber,places.primaryTypeDisplayName',
+      PLACE_FIELDS.split(',').map(f => 'places.' + f).join(','),
       { textQuery: q, maxResultCount: 3 });
     place = (found.places || []).find(p => {
       const w = p.websiteUri ? new URL(p.websiteUri).hostname.replace(/^www\./, '') : '';
       return w === host || clean(p.displayName?.text).includes(clean(name || siteName).slice(0, 14));
     }) || (found.places || [])[0] || null;
+    }
   } catch (e) { /* handled as a not-found finding below */ }
 
   // Grading the wrong company is this tool's worst failure, and a bare name
@@ -145,6 +161,7 @@ async function audit({ url, name, key }) {
   const placeHost = place?.websiteUri ? new URL(place.websiteUri).hostname.replace(/^www\./, '') : '';
   const ldCity = clean(biz?.address?.addressLocality);
   const confident = !!place && (
+    pinned ||
     placeHost === host ||
     (!!ldCity && clean(place.formattedAddress).includes(ldCity))
   );
@@ -323,6 +340,8 @@ async function audit({ url, name, key }) {
 
   return {
     site: site.url,
+    // Handed back so the next run measures the same listing, not a namesake.
+    place_id: confident ? (place?.id || null) : null,
     business: place?.displayName?.text || siteName,
     rating, reviews,
     score: Math.round(score),

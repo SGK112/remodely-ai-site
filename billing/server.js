@@ -573,7 +573,19 @@ const server = http.createServer(async (req, res) => {
         }
       }
       try {
-        const report = await audit({ url: String(target).trim(), name: String(name || '').trim(), key });
+        // Same site, same account, same Google listing — otherwise the score
+        // drifts between runs and the tracked change is meaningless.
+        let placeId = null;
+        if (slug) {
+          const hist = await db.getDoc('audit_history', slug).catch(() => null);
+          let items = [];
+          try { items = JSON.parse(hist?.items || '[]'); } catch { items = []; }
+          const host = String(target).trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '')
+            .replace(/^www\./, '');
+          const prior = items.find(it => String(it.site || '').includes(host) && it.place_id);
+          placeId = prior ? prior.place_id : null;
+        }
+        const report = await audit({ url: String(target).trim(), name: String(name || '').trim(), key, placeId });
 
         // A report that only exists in one browser tab cannot be shared. Store
         // it under a short id so the link a contractor texts resolves to the
@@ -595,7 +607,7 @@ const server = http.createServer(async (req, res) => {
           if (slug) {
             const used = await bumpUsage(slug);
             await pushHistory(slug, {
-              id, site: report.site, business: report.business,
+              id, site: report.site, business: report.business, place_id: report.place_id || null,
               score: report.score, areas: report.areas, at: new Date().toISOString(),
             });
             report.usage = { used, quota: Number(tenant.audit_quota || DEFAULT_QUOTA) };
