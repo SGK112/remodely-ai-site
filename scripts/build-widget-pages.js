@@ -25,17 +25,19 @@ const WIDGETS = [
   {
     slug: 'ai-audit',
     tool: 'ai-visibility',
-    name: 'AI Visibility Audit',
-    intent: 'White-Label AI Visibility Audit Tool for Marketing Agencies',
-    hook: 'Give prospects a reason to hand you their website.',
-    lede: 'A free audit on your own site, under your own name. A local business types in their address and gets a scored report on whether AI assistants can verify them — Google listing, directory presence, licence, review standing — and <em>you</em> get the lead and the branded report to follow up with.',
-    who: 'Marketing agencies, web designers and SEO consultants selling to contractors and local trades.',
+    name: 'AI Visibility Reporting',
+    intent: 'Monthly AI Visibility Reporting for Contractors and Agencies',
+    hook: "Know where you stand, and whether it's moving.",
+    lede: 'A monthly subscription to the reporting itself. Run an audit on any site and get a scored, branded report on whether AI assistants can verify that business — Google listing, directory presence, licence, review standing — with the specific fixes ranked by what actually moves the number. Run it again next month and see what changed.',
+    who: 'Contractors watching their own standing, and the agencies, web designers and SEO consultants who watch it for a roster of clients.',
     points: [
-      ['The report carries your brand', 'Your name, your logo, your colour, your contact details. Send it to a prospect and nothing on it says Remodely.'],
-      ['It finds real problems, not meta tags', 'Unclaimed directory listings, a phone that disagrees with Google, no licence on the page, review counts behind every competitor nearby.'],
-      ['Every run is a lead', 'The business, their site, their score and exactly what they failed — in your inbox, with a report link you can send straight back.'],
+      ['A set number of reports every month', 'Run them on whatever you like — your own site, a prospect you are pitching, a client you are managing. Your dashboard shows how many you have used.'],
+      ['Standing over time, not a one-off score', 'Every run is kept. The dashboard lists each site worst-first with the change since the last report, so progress is measured rather than claimed.'],
+      ['Reports carry your brand', 'Your name, logo, colour and phone on every report. Agencies send them to clients with nothing on them saying Remodely.'],
+      ['It finds what other graders miss', 'Unclaimed directory listings, a phone that disagrees with Google, no licence on the page, review counts behind every competitor nearby — not another note about meta descriptions.'],
     ],
     height: 1250,
+    noEmbed: true,
   },
   {
     slug: 'quote-calculator',
@@ -296,7 +298,17 @@ const page = w => `<!DOCTYPE html>
   </div>
 </div></section>
 
-<section><div class="wrap">
+${w.noEmbed ? `<section><div class="wrap">
+  <p class="tag">How it works</p>
+  <h2 style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:600;max-width:24ch">Nothing to install. You log in and run them.</h2>
+  <ol class="steps">
+    <li><b>Subscribe</b> and set your name, logo and colour. About a minute.</li>
+    <li><b>Add a site</b> &mdash; yours, a client's, or a prospect you want to open a conversation with.</li>
+    <li><b>Read the report.</b> Scored, ranked worst-first, with the specific fix under each finding.</li>
+    <li><b>Send it.</b> Every report has its own link, carries your brand, and saves as a PDF.</li>
+    <li><b>Run it again next month</b> and the dashboard shows the change.</li>
+  </ol>
+</div></section>` : `<section><div class="wrap">
   <p class="tag">Putting it on your site</p>
   <h2 style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:600;max-width:22ch">Nothing to download. One line to paste.</h2>
   <ol class="steps">
@@ -307,7 +319,7 @@ const page = w => `<!DOCTYPE html>
   </ol>
   <code class="embed">&lt;iframe src="${SITE}/embed/${toolPath(w)}?shop=<span style="color:var(--accent-deep)">your-shop</span>"
         width="100%" height="${w.height}" style="border:0"&gt;&lt;/iframe&gt;</code>
-</div></section>
+</div></section>`}
 
 <section><div class="wrap">
   <p class="tag">The other widgets</p>

@@ -85,6 +85,19 @@
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .btn:hover{filter:brightness(1.05)}
 
+  .quota{font-size:12px;font-weight:600;color:var(--steel);letter-spacing:0;text-transform:none;margin-left:8px}
+  .site{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;
+        padding:13px 0;border-bottom:1px solid var(--rule)}
+  .site:last-child{border-bottom:0}
+  .site .sc{font-size:22px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;
+            border-radius:4px;padding:7px 0;color:#fff}
+  .site .nm{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .site .u{font-size:12.5px;color:var(--steel);margin-top:2px}
+  .site .d{font-size:12.5px;font-weight:700}
+  .site .d.up{color:var(--ok)} .site .d.dn{color:#dc2626} .site .d.fl{color:var(--steel)}
+  .spark{display:flex;align-items:flex-end;gap:2px;height:26px;margin-top:5px}
+  .spark i{width:4px;background:var(--rule);border-radius:1px;display:block}
+
   /* save bar — a settings screen must never leave you guessing if it saved */
   .savebar{position:fixed;left:0;right:0;bottom:0;background:var(--sheet);border-top:1px solid var(--rule);
            padding:12px 22px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;
@@ -136,6 +149,7 @@ const BILLING = 'https://remodely-billing.onrender.com';
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const token = new URLSearchParams(location.search).get('token');
+let SLUG = '';
 let DATA = null, dirty = false;
 
 /* ---------------- signed out ---------------- */
@@ -223,6 +237,17 @@ function render(d) {
 
     ${d.active ? '' : `<div class="note warn"><b>Your subscription isn't active</b>, so your widgets
       aren't serving right now. <a href="${BILLING}/portal?slug=${encodeURIComponent(d.slug)}">Fix billing &rarr;</a></div>`}
+
+    <div class="card" id="auditcard" hidden>
+      <h2>Your reports <span class="quota" id="quota"></span></h2>
+      <p class="hint">Where each site stands, and whether it moved since the last run.</p>
+      <div id="sites"></div>
+      <div class="row" style="margin-top:14px">
+        <input id="newsite" type="text" placeholder="clientsite.com" style="flex:1;min-width:180px">
+        <button class="btn primary" id="runsite" type="button">Run a report</button>
+      </div>
+      <p class="hint" id="runmsg"></p>
+    </div>
 
     <div class="card">
       <h2>Your business</h2>
@@ -322,6 +347,9 @@ function render(d) {
       <button class="btn primary" id="save" type="button">Save changes</button>
     </div>`;
 
+  SLUG = d.slug;
+  loadAudits();
+
   const tbody = document.querySelector('#rates tbody');
   (d.rates.length ? d.rates : [{}]).forEach(r => tbody.appendChild(rateRow(r)));
   $('addrate').addEventListener('click', () => { tbody.appendChild(rateRow()); markDirty(); });
@@ -390,6 +418,63 @@ async function save() {
     signIn("We couldn't load your settings. Enter your email for a fresh link.");
   }
 })();
+const bandColor = n => n >= 85 ? '#15803d' : n >= 70 ? '#65a30d' : n >= 50 ? '#ea580c' : '#b91c1c';
+
+/** Standing per site. No history is normal on a new account — say so rather
+ *  than rendering an empty box. */
+async function loadAudits() {
+  let d;
+  try {
+    const r = await fetch(`${BILLING}/audits?token=${encodeURIComponent(token)}`);
+    if (!r.ok) return;
+    d = await r.json();
+  } catch { return; }
+
+  $('auditcard').hidden = false;
+  $('quota').textContent = `${d.usage.used} of ${d.usage.quota} used this month`;
+
+  $('sites').innerHTML = d.sites.length ? d.sites.map(s => {
+    const runs = [...s.runs].reverse();
+    const delta = s.change === null ? '<span class="d fl">first run</span>'
+      : s.change > 0 ? `<span class="d up">+${s.change}</span>`
+      : s.change < 0 ? `<span class="d dn">${s.change}</span>`
+      : '<span class="d fl">no change</span>';
+    return `<div class="site">
+      <div class="sc" style="background:${bandColor(s.score)}">${s.score}</div>
+      <div>
+        <div class="nm">${esc(s.business || s.site)}</div>
+        <div class="u">${esc(String(s.site).replace(/^https?:\/\//, ''))} · ${new Date(s.at).toLocaleDateString()}</div>
+        ${runs.length > 1 ? `<div class="spark">${runs.map(x =>
+          `<i style="height:${Math.max(3, Math.round(x.score * 0.26))}px" title="${x.score}"></i>`).join('')}</div>` : ''}
+      </div>
+      <div style="text-align:right">${delta}
+        <div><a class="btn" style="margin-top:6px" href="/r/?id=${encodeURIComponent(s.report_id)}&shop=${encodeURIComponent(SLUG)}" target="_blank" rel="noopener">Report</a></div>
+      </div>
+    </div>`;
+  }).join('') : '<p class="hint">No reports yet. Add a site below and run the first one.</p>';
+}
+
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'runsite') return;
+  const site = $('newsite').value.trim();
+  if (!site) return;
+  e.target.disabled = true;
+  $('runmsg').textContent = 'Running — about fifteen seconds…';
+  try {
+    const r = await fetch(`${BILLING}/ai-visibility`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: site, shop: SLUG }),
+    });
+    const out = await r.json();
+    if (!r.ok || out.error) throw new Error(out.error || 'that site could not be read');
+    $('newsite').value = '';
+    $('runmsg').textContent = `${out.business || site} scored ${out.score}/100.`;
+    loadAudits();
+  } catch (err) {
+    $('runmsg').textContent = err.message;
+  } finally { e.target.disabled = false; }
+});
+
 </script>
 </body>
 </html>
