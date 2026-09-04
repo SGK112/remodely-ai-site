@@ -28,10 +28,10 @@ const WIDGETS = [
     name: 'AI Visibility Reporting',
     intent: 'Monthly AI Visibility Reporting for Contractors and Agencies',
     hook: "Know where you stand, and whether it's moving.",
-    lede: 'A monthly subscription to the reporting itself. Run an audit on any site and get a scored, branded report on whether AI assistants can verify that business — Google listing, directory presence, licence, review standing — with the specific fixes ranked by what actually moves the number. Run it again next month and see what changed.',
+    lede: 'One plan, no tiers. Run an audit on any site and get a scored, branded report on whether AI assistants can verify that business — Google listing, directory presence, licence, review standing — with the specific fixes ranked by what actually moves the number. Run it again next month and see what changed.',
     who: 'Contractors watching their own standing, and the agencies, web designers and SEO consultants who watch it for a roster of clients.',
     points: [
-      ['A set number of reports every month', 'Run them on whatever you like — your own site, a prospect you are pitching, a client you are managing. Your dashboard shows how many you have used.'],
+      ['Run them when you need them', 'No tiers to pick between. One plan, with fair-use limits of ten reports an hour and sixty a day — and if a busy week needs more, you add a pack without changing plan.'],
       ['Standing over time, not a one-off score', 'Every run is kept. The dashboard lists each site worst-first with the change since the last report, so progress is measured rather than claimed.'],
       ['Reports carry your brand', 'Your name, logo, colour and phone on every report. Agencies send them to clients with nothing on them saying Remodely.'],
       ['It finds what other graders miss', 'Unclaimed directory listings, a phone that disagrees with Google, no licence on the page, review counts behind every competitor nearby — not another note about meta descriptions.'],
@@ -302,7 +302,7 @@ ${w.noEmbed ? `<section><div class="wrap">
   <p class="tag">How it works</p>
   <h2 style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:600;max-width:24ch">Nothing to install. You log in and run them.</h2>
   <ol class="steps">
-    <li><b>Subscribe</b> and set your name, logo and colour. About a minute.</li>
+    <li><b>Subscribe</b> to the one plan and set your name, logo and colour. About a minute.</li>
     <li><b>Add a site</b> &mdash; yours, a client's, or a prospect you want to open a conversation with.</li>
     <li><b>Read the report.</b> Scored, ranked worst-first, with the specific fix under each finding.</li>
     <li><b>Send it.</b> Every report has its own link, carries your brand, and saves as a PDF.</li>

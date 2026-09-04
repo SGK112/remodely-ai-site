@@ -245,6 +245,7 @@ function render(d) {
       <div class="row" style="margin-top:14px">
         <input id="newsite" type="text" placeholder="clientsite.com" style="flex:1;min-width:180px">
         <button class="btn primary" id="runsite" type="button">Run a report</button>
+        <button class="btn" id="topup" type="button" hidden>Get more reports</button>
       </div>
       <p class="hint" id="runmsg"></p>
     </div>
@@ -431,7 +432,12 @@ async function loadAudits() {
   } catch { return; }
 
   $('auditcard').hidden = false;
-  $('quota').textContent = `${d.usage.used} of ${d.usage.quota} used this month`;
+  const r = d.rate;
+  const left = Math.max(0, Math.min(r.hourLimit - r.hour, r.dayLimit - r.day));
+  $('quota').innerHTML = left > 0
+    ? `${left} more right now · ${r.day} of ${r.dayLimit} today`
+    : `Limit reached · ${r.day} of ${r.dayLimit} today`;
+  if (d.credits) $('quota').innerHTML += ` · <b>${d.credits} extra</b>`;
 
   $('sites').innerHTML = d.sites.length ? d.sites.map(s => {
     const runs = [...s.runs].reverse();
@@ -466,6 +472,11 @@ document.addEventListener('click', async e => {
       body: JSON.stringify({ url: site, shop: SLUG }),
     });
     const out = await r.json();
+    if (out.limited) {
+      $('topup').hidden = false;
+      $('topup').textContent = `Get ${out.topup} more reports`;
+      throw new Error(out.error + ' You can add more reports below.');
+    }
     if (!r.ok || out.error) throw new Error(out.error || 'that site could not be read');
     $('newsite').value = '';
     $('runmsg').textContent = `${out.business || site} scored ${out.score}/100.`;
@@ -474,6 +485,29 @@ document.addEventListener('click', async e => {
     $('runmsg').textContent = err.message;
   } finally { e.target.disabled = false; }
 });
+
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'topup') return;
+  e.target.disabled = true;
+  try {
+    const r = await fetch(`${BILLING}/topup`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: SLUG }),
+    });
+    const out = await r.json();
+    if (!r.ok || !out.url) throw new Error(out.error || 'could not start checkout');
+    location.href = out.url;
+  } catch (err) {
+    $('runmsg').textContent = err.message;
+    e.target.disabled = false;
+  }
+});
+
+// Coming back from a successful top-up: show the new balance rather than
+// leaving them on a stale "limit reached".
+if (new URLSearchParams(location.search).get('topup') === 'ok') {
+  addEventListener('load', () => setTimeout(loadAudits, 1200));
+}
 
 </script>
 </body>
