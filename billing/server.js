@@ -399,6 +399,42 @@ ${phone ? `<p>Need them sooner? <a href="tel:${esc(String(phone).replace(/[^0-9+
   };
 }
 
+/**
+ * Audit subscriptions are sold by the month: a plan buys a number of reports
+ * and a record of where each site stands over time.
+ *
+ * Usage is a per-tenant, per-month counter rather than a query, because the
+ * Firestore helper here has no filtering — and history is one compact document
+ * per tenant so a dashboard costs a single read.
+ */
+const DEFAULT_QUOTA = 25;
+const HISTORY_CAP = 400;
+const monthKey = (d = new Date()) => d.toISOString().slice(0, 7);
+
+async function auditUsage(slug) {
+  const doc = await db.getDoc('audit_usage', `${slug}__${monthKey()}`).catch(() => null);
+  return Number(doc?.count || 0);
+}
+
+async function bumpUsage(slug) {
+  const id = `${slug}__${monthKey()}`;
+  const used = await auditUsage(slug);
+  await db.setDoc('audit_usage', id, { slug, month: monthKey(), count: used + 1 });
+  return used + 1;
+}
+
+/** Compact per-site trail so movement is visible, not claimed. */
+async function pushHistory(slug, entry) {
+  const doc = await db.getDoc('audit_history', slug).catch(() => null);
+  let items = [];
+  try { items = JSON.parse(doc?.items || '[]'); } catch { items = []; }
+  items.unshift(entry);
+  await db.setDoc('audit_history', slug, {
+    items: JSON.stringify(items.slice(0, HISTORY_CAP)),
+    updated: new Date().toISOString(),
+  });
+}
+
 const json = (res, code, obj, extra = {}) => {
   res.writeHead(code, {
     'Content-Type': 'application/json',
@@ -454,6 +490,39 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
     }
 
+    // A subscriber's own reporting: where each site stands, and the movement.
+    if (url.pathname === '/audits' && req.method === 'GET') {
+      const slug = verifyToken(url.searchParams.get('token'));
+      if (!slug) return json(res, 401, { error: 'That link has expired. Request a new one.' });
+
+      const [tenant, hist] = await Promise.all([
+        db.getDoc('tenants', slug).catch(() => null),
+        db.getDoc('audit_history', slug).catch(() => null),
+      ]);
+      let items = [];
+      try { items = JSON.parse(hist?.items || '[]'); } catch { items = []; }
+
+      // Group by site so a dashboard shows standing, not a flat log. Newest
+      // first in, so the first entry per site is the current one.
+      const bySite = new Map();
+      for (const it of items) {
+        const k = (it.site || '').replace(/\/+$/, '');
+        if (!bySite.has(k)) bySite.set(k, { site: k, business: it.business, runs: [] });
+        bySite.get(k).runs.push({ id: it.id, score: it.score, at: it.at, areas: it.areas });
+      }
+      const sites = [...bySite.values()].map(s => {
+        const latest = s.runs[0], prev = s.runs[1];
+        return { ...s, score: latest.score, at: latest.at, report_id: latest.id,
+          change: prev ? latest.score - prev.score : null, runs: s.runs.slice(0, 24) };
+      }).sort((a, b) => a.score - b.score);   // worst first: that is the work
+
+      return json(res, 200, {
+        sites,
+        usage: { used: await auditUsage(slug), quota: Number(tenant?.audit_quota || DEFAULT_QUOTA),
+                 month: monthKey() },
+      });
+    }
+
     // A shared report link resolves here.
     if (url.pathname === '/report' && req.method === 'GET') {
       const id = (url.searchParams.get('id') || '').replace(/[^a-z0-9]/gi, '').slice(0, 24);
@@ -484,6 +553,25 @@ const server = http.createServer(async (req, res) => {
       }
       const key = process.env.GOOGLE_PLACES_KEY || process.env.GOOGLE_AI_API_KEY;
       if (!key) return json(res, 503, { error: 'Audit is unavailable right now' });
+
+      // A subscriber's reports are metered; the free public tool is not.
+      const slug = String(shop || '').trim().slice(0, 60);
+      let tenant = null;
+      if (slug) {
+        tenant = await db.getDoc('tenants', slug).catch(() => null);
+        if (!tenant) return json(res, 404, { error: 'Unknown account' });
+        if (tenant.active === false) {
+          return json(res, 402, { error: 'This subscription is inactive.', inactive: true });
+        }
+        const quota = Number(tenant.audit_quota || DEFAULT_QUOTA);
+        const used = await auditUsage(slug);
+        if (used >= quota) {
+          return json(res, 402, {
+            error: `You've used all ${quota} reports on your plan this month.`,
+            quota, used, exhausted: true,
+          });
+        }
+      }
       try {
         const report = await audit({ url: String(target).trim(), name: String(name || '').trim(), key });
 
@@ -498,12 +586,20 @@ const server = http.createServer(async (req, res) => {
           await db.setDoc('reports', id, {
             data: JSON.stringify(report),
             score: report.score, business: report.business || '', site: report.site || '',
-            shop_slug: String(shop || '').slice(0, 60),
+            shop_slug: slug,
             created: new Date().toISOString(),
             query_url: String(target).trim(), query_name: String(name || '').trim(),
           });
           report.id = id;
           report.share_url = `${SITE}/r/?id=${id}` + (shop ? `&shop=${encodeURIComponent(shop)}` : '');
+          if (slug) {
+            const used = await bumpUsage(slug);
+            await pushHistory(slug, {
+              id, site: report.site, business: report.business,
+              score: report.score, areas: report.areas, at: new Date().toISOString(),
+            });
+            report.usage = { used, quota: Number(tenant.audit_quota || DEFAULT_QUOTA) };
+          }
         } catch (e) {
           // Sharing is a bonus; never lose the report the visitor is waiting on.
           console.error('[billing] report save:', e.message);
