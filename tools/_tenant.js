@@ -167,6 +167,9 @@
           showcase: Array.isArray(showcase) ? showcase : [],
           serviceZips: (t.service_zips || '').split(/[^0-9A-Za-z]+/).filter(Boolean),
           phone: t.phone || '', website: t.website || '',
+          hours: t.hours || '', callbackPromise: t.callback_promise || '',
+          financeApr: parseFloat(t.finance_apr) || 0,
+          financeTerms: (t.finance_terms || '').split(/[^0-9]+/).map(Number).filter(n => n > 0),
           serviceArea: t.service_area || '', logo: t.logo_url || '',
         });
       })

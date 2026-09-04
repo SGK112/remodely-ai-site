@@ -264,6 +264,22 @@ function render(d) {
     </div>
 
     <div class="card">
+      <h2>Calls &amp; financing</h2>
+      <p class="hint">Only fill in what you actually offer. Leave financing blank and that widget
+        says so rather than quoting a rate you never agreed to.</p>
+      <div class="grid2">
+        <div class="field"><label for="f-hours">Opening hours</label>
+          <input id="f-hours" value="${esc(c.hours)}" placeholder="Mon-Fri 8-5, Sat 9-2"></div>
+        <div class="field"><label for="f-promise">Callback promise</label>
+          <input id="f-promise" value="${esc(c.callback_promise)}" placeholder="within an hour"></div>
+        <div class="field"><label for="f-apr">Financing APR (%)</label>
+          <input id="f-apr" value="${esc(c.finance_apr)}" placeholder="9.99" inputmode="decimal"></div>
+        <div class="field"><label for="f-terms">Terms offered (months)</label>
+          <input id="f-terms" value="${esc(c.finance_terms)}" placeholder="12, 24, 36, 60"></div>
+      </div>
+    </div>
+
+    <div class="card">
       <h2>Before &amp; after photos</h2>
       <p class="hint">Paste image URLs from your own site. Both must be https. They appear in the
         before/after slider in the order listed.</p>
@@ -324,6 +340,8 @@ async function save() {
       name: $('f-name').value, phone: $('f-phone').value, website: $('f-website').value,
       service_area: $('f-area').value, logo_url: $('f-logo').value, accent: $('f-accent').value,
       service_zips: $('f-zips').value,
+      hours: $('f-hours').value, callback_promise: $('f-promise').value,
+      finance_apr: $('f-apr').value, finance_terms: $('f-terms').value,
     },
     notify: $('f-notify').value.trim(),
     rates: readRates(),

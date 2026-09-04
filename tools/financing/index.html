@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monthly Payment Calculator</title>
+<meta name="description" content="Show a visitor what a job costs per month on your own financing terms, so a big number stops being the reason they walk away.">
+<link rel="canonical" href="https://www.remodely.ai/tools/financing/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=4"></script>
+<script src="/tools/_leadform.js?v=2"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --stage-a:#131c2e;--stage-b:#0a0f1a}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,33px);line-height:1.06;margin:4px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:15.5px;margin-bottom:22px;max-width:58ch}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  @media (max-width:800px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .panel h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:14px}
+
+  label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:7px}
+  .amt-in{display:flex;align-items:center;gap:8px}
+  .amt-in span{font-size:24px;font-weight:700;color:var(--mut)}
+  input[type=number]{font:inherit;font-size:24px;font-weight:700;padding:11px 14px;border:1px solid var(--line);
+    border-radius:12px;background:transparent;color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+  input[type=number]:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  input[type=range]{width:100%;margin-top:14px;accent-color:var(--gold)}
+
+  .terms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .terms button{font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:10px 16px;border-radius:11px;
+    border:1.5px solid var(--line);background:transparent;color:var(--mut)}
+  .terms button.on{border-color:var(--gold);background:var(--gold);color:#fff}
+  .terms button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .stage{background:linear-gradient(160deg,var(--stage-a),var(--stage-b));border-radius:20px;padding:26px;
+         box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.05);position:sticky;top:20px}
+  .stage .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700}
+  .pay{font-size:clamp(38px,8vw,56px);font-weight:800;color:#fff;line-height:1;margin:10px 0 2px;
+       letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .pay small{font-size:16px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:0}
+  .rows{margin-top:18px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+  .r{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:rgba(255,255,255,.75);padding:5px 0}
+  .r b{color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+  .note{font-size:12px;color:rgba(255,255,255,.5);margin-top:15px;line-height:1.6}
+  .cta{display:block;width:100%;margin-top:16px;text-align:center;font:inherit;font-weight:700;font-size:15px;
+    padding:13px 16px;border-radius:12px;color:#fff;text-decoration:none;
+    background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:24px;
+         color:var(--mut);font-size:15px;line-height:1.6}
+  .empty b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Monthly payment</p>
+  <h1 id="head">What would this cost <em>per month</em>?</h1>
+  <p class="sub" id="sub">A big number is why most people stall. Here's the monthly version.</p>
+  <div id="mount"></div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money = n => '$' + Math.round(n).toLocaleString();
+let APR = 0, TERMS = [], term = 0, amount = 12000, shopName = null;
+
+/** Standard amortised payment. A 0% APR is a real offer, so handle it exactly
+ *  rather than dividing by zero. */
+function monthly(principal, apr, months) {
+  if (!principal || !months) return 0;
+  const r = (apr / 100) / 12;
+  if (r === 0) return principal / months;
+  return principal * r / (1 - Math.pow(1 + r, -months));
+}
+
+function calc() {
+  const m = monthly(amount, APR, term);
+  const total = m * term;
+  $('pay').innerHTML = m ? money(m) + ' <small>/mo</small>' : '—';
+  $('rows').innerHTML = `
+    <div class="r"><span>Project total</span><b>${money(amount)}</b></div>
+    <div class="r"><span>Term</span><b>${term} months</b></div>
+    <div class="r"><span>Rate</span><b>${APR ? APR.toFixed(2) + '% APR' : '0% APR'}</b></div>
+    <div class="r"><span>Paid over the term</span><b>${money(total)}</b></div>
+    ${APR ? `<div class="r"><span>Finance charge</span><b>${money(total - amount)}</b></div>` : ''}`;
+}
+
+function build() {
+  $('mount').innerHTML = `
+    <div class="grid">
+      <div class="panel">
+        <h2>Your project</h2>
+        <label for="amt">Estimated total</label>
+        <div class="amt-in"><span>$</span>
+          <input id="amt" type="number" min="500" step="100" value="${amount}" inputmode="numeric"></div>
+        <input id="slider" type="range" min="1000" max="60000" step="500" value="${amount}"
+               aria-label="Project total">
+        <h2 style="margin-top:22px">Term</h2>
+        <div class="terms" id="terms" role="group" aria-label="Payment term"></div>
+      </div>
+      <div class="stage">
+        <p class="lbl">Estimated payment</p>
+        <p class="pay" id="pay">—</p>
+        <div class="rows" id="rows"></div>
+        <p class="note" id="note"></p>
+        <a class="cta" href="#leadForm">See what I qualify for &rarr;</a>
+      </div>
+    </div>`;
+
+  $('terms').innerHTML = TERMS.map(t =>
+    `<button type="button" data-t="${t}" class="${t === term ? 'on' : ''}">${t} mo</button>`).join('');
+  $('terms').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    term = Number(b.dataset.t);
+    $('terms').querySelectorAll('button').forEach(o => o.classList.toggle('on', o === b));
+    calc();
+  }));
+
+  const sync = v => {
+    amount = Math.max(0, Number(v) || 0);
+    if ($('amt').value != amount) $('amt').value = amount;
+    if ($('slider').value != amount && amount <= 60000) $('slider').value = amount;
+    calc();
+  };
+  $('amt').addEventListener('input', e => sync(e.target.value));
+  $('slider').addEventListener('input', e => sync(e.target.value));
+
+  $('note').textContent = shopName
+    ? `${shopName}'s own terms. Estimate only — your rate depends on approval.`
+    : 'Estimate only — your rate depends on approval.';
+  calc();
+}
+
+Remodely.toolSource = 'financing';
+Remodely.toolName = 'Monthly Payment Calculator';
+
+Remodely.ready(t => {
+  shopName = t && t.name ? t.name : null;
+  APR = (t && t.financeApr) || 0;
+  TERMS = (t && Array.isArray(t.financeTerms) && t.financeTerms.length) ? t.financeTerms.slice(0, 6) : [];
+
+  const isDemo = !t;
+  if (isDemo) { APR = 9.99; TERMS = [12, 24, 36, 60]; }
+
+  if (shopName) $('eyebrow').textContent = shopName;
+
+  // A shop that hasn't set financing terms must not have terms invented for it —
+  // quoting a rate they never agreed to is worse than showing no calculator.
+  if (!TERMS.length) {
+    $('mount').innerHTML = `<div class="empty"><b>Financing isn't set up yet.</b><br>
+      Add your APR and the terms you offer in your dashboard and this turns into a live
+      monthly-payment calculator for your visitors.</div>`;
+    $('sub').textContent = '';
+    $('foot').textContent = '';
+    return;
+  }
+
+  term = TERMS[Math.min(1, TERMS.length - 1)];
+  build();
+  $('foot').textContent = isDemo
+    ? 'Example terms at 9.99% APR — every shop sets their own.'
+    : 'Payments are estimates. Final terms come from the lender on approval.';
+
+  Remodely.mountLeadForm({
+    after: '.grid',
+    heading: 'See what you qualify for',
+    context: () => `${money(amount)} project · ${term} months · about ${money(monthly(amount, APR, term))}/mo`,
+  });
+});
+</script>
+</body>
+</html>

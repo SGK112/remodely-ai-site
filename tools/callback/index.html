@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Request a Callback</title>
+<meta name="description" content="Let a visitor ask for a call back at a time that suits them, instead of losing them because nobody answered.">
+<link rel="canonical" href="https://www.remodely.ai/tools/callback/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=4"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --ok:#15803d;--ok-bg:rgba(21,128,61,.10)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --ok:#4ade80;--ok-bg:rgba(74,222,128,.12);--shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:600px;margin:0 auto;padding:26px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,33px);line-height:1.06;margin:4px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:15.5px;margin-bottom:20px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+  label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);
+        font-weight:700;margin-bottom:6px}
+  input{font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:11px;
+        background:transparent;color:var(--ink);width:100%}
+  input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .field{margin-bottom:13px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media (max-width:520px){.two{grid-template-columns:1fr}}
+
+  .when{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .when button{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;padding:9px 14px;border-radius:999px;
+    border:1.5px solid var(--line);background:transparent;color:var(--mut)}
+  .when button.on{border-color:var(--gold);background:var(--gold);color:#fff}
+  .when button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  button.go{font:inherit;font-weight:700;font-size:16px;cursor:pointer;width:100%;margin-top:14px;
+    padding:14px 16px;border:0;border-radius:12px;color:#fff;
+    background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  button.go:disabled{opacity:.6;cursor:default}
+  .fine{font-size:12px;color:var(--mut);text-align:center;margin-top:11px;line-height:1.6}
+  .done{display:none;padding:18px;border-radius:14px;background:var(--ok-bg);border:1px solid var(--ok);
+        font-size:15.5px;line-height:1.6}
+  .done.show{display:block}
+  .err{display:none;margin-top:12px;padding:13px 15px;border-radius:11px;font-size:14.5px;
+       background:rgba(220,38,38,.09);border:1px solid rgba(220,38,38,.4)}
+  .err.show{display:block}
+  .hours{margin-top:16px;font-size:13px;color:var(--mut);line-height:1.7}
+  .hours b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Callback</p>
+  <h1 id="head">Rather just <em>talk</em>?</h1>
+  <p class="sub" id="sub">Leave a number and a time that suits you. No hold music.</p>
+
+  <div class="card">
+    <form id="cb">
+      <div class="two">
+        <div class="field"><label for="n">Your name</label>
+          <input id="n" autocomplete="name" required placeholder="Your name"></div>
+        <div class="field"><label for="p">Phone</label>
+          <input id="p" type="tel" autocomplete="tel" required placeholder="(555) 555-5555"></div>
+      </div>
+      <div class="field"><label for="e">Email (optional)</label>
+        <input id="e" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="j">What's the job?</label>
+        <input id="j" placeholder="Kitchen countertops, roof repair…"></div>
+      <div class="field">
+        <label>Best time to reach you</label>
+        <div class="when" id="when" role="group" aria-label="Best time to call"></div>
+      </div>
+      <button class="go" type="submit" id="go">Request my callback</button>
+      <p class="fine" id="fine"></p>
+      <div class="err" id="err"></div>
+    </form>
+    <div class="done" id="done"></div>
+    <p class="hours" id="hours"></p>
+  </div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SLOTS = ['As soon as possible', 'This morning', 'This afternoon', 'This evening', 'Tomorrow'];
+let when = SLOTS[0], shopName = null;
+
+function paintSlots() {
+  $('when').innerHTML = SLOTS.map(s =>
+    `<button type="button" class="${s === when ? 'on' : ''}" data-w="${esc(s)}">${esc(s)}</button>`).join('');
+  $('when').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    when = b.dataset.w;
+    $('when').querySelectorAll('button').forEach(o => o.classList.toggle('on', o === b));
+  }));
+}
+
+Remodely.toolSource = 'callback';
+Remodely.toolName = 'Callback Request';
+
+Remodely.ready(t => {
+  shopName = t && t.name ? t.name : null;
+  const promise = (t && t.callbackPromise) || '';
+  const hours = (t && t.hours) || '';
+  const phone = (t && t.phone) || '';
+
+  if (shopName) {
+    $('eyebrow').textContent = shopName;
+    $('head').innerHTML = `Have ${esc(shopName)} <em>call you</em>`;
+  }
+  // Only promise a response time the shop actually set. An invented "within an
+  // hour" is a promise they never made and would have to break.
+  $('sub').textContent = promise
+    ? `Leave a number and they'll call back ${promise}.`
+    : 'Leave a number and a time that suits you. No hold music.';
+  $('fine').textContent = promise ? `Typically ${promise}.` : 'A real person calls you back.';
+  if (hours || phone) {
+    $('hours').innerHTML = [hours ? `<b>Hours:</b> ${esc(hours)}` : '',
+      phone ? `<b>Or call:</b> <a href="tel:${esc(phone.replace(/[^0-9+]/g,''))}">${esc(phone)}</a>` : '']
+      .filter(Boolean).join('<br>');
+  }
+  $('foot').textContent = t ? '' : 'Demo — a shop sets their own hours and response time.';
+
+  paintSlots();
+
+  $('cb').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = $('n').value.trim(), phoneIn = $('p').value.trim();
+    if (!name || phoneIn.replace(/\D/g, '').length < 7) { e.target.reportValidity && e.target.reportValidity(); return; }
+    const btn = $('go'); btn.disabled = true; btn.textContent = 'Sending…';
+    $('err').className = 'err';
+    try {
+      await Remodely.submitLead({
+        name, phone: phoneIn, email: $('e').value.trim(),
+        context: `Callback requested — ${when}${$('j').value.trim() ? ' · ' + $('j').value.trim() : ''}`,
+        best_time: when, job: $('j').value.trim(),
+      });
+    } catch (err) {
+      // Somebody asking to be phoned must never be told "done" if it wasn't sent.
+      console.error('[remodely] callback failed', err);
+      btn.disabled = false; btn.textContent = 'Try again';
+      $('err').className = 'err show';
+      $('err').textContent = "That didn't send. Check your connection and try once more.";
+      return;
+    }
+    $('cb').style.display = 'none';
+    $('done').className = 'done show';
+    $('done').innerHTML = `<b>Got it, ${esc(name.split(' ')[0])}.</b><br>
+      ${esc(shopName || 'Someone')} will call <b>${esc(phoneIn)}</b> — ${esc(when.toLowerCase())}.
+      ${promise ? esc('Typically ' + promise + '.') : ''}`;
+  });
+});
+</script>
+</body>
+</html>

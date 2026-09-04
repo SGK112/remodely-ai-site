@@ -224,7 +224,8 @@ function verifyToken(token) {
 }
 
 /** Only these are writable. Anything about billing state is ours, not theirs. */
-const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb', 'service_zips'];
+const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb',
+  'service_zips', 'hours', 'callback_promise', 'finance_apr', 'finance_terms'];
 const PRIVATE_FIELDS = ['notify'];
 
 function cleanConfig(input) {
