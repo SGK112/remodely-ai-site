@@ -461,9 +461,12 @@ const server = http.createServer(async (req, res) => {
       let doc;
       try { doc = await db.getDoc('reports', id); }
       catch { return json(res, 404, { error: 'not found' }); }
-      if (!doc) return json(res, 404, { error: 'not found' });
+      if (!doc || !doc.data) return json(res, 404, { error: 'not found' });
+      let report;
+      try { report = { ...JSON.parse(doc.data), created: doc.created }; }
+      catch { return json(res, 500, { error: 'stored report is unreadable' }); }
       // Cache: a report is a snapshot of a moment and never changes.
-      return json(res, 200, doc, { 'Cache-Control': 'public, max-age=86400' });
+      return json(res, 200, report, { 'Cache-Control': 'public, max-age=86400' });
     }
 
     // Public audit. Rate-limited by IP because it makes several outbound
@@ -489,8 +492,13 @@ const server = http.createServer(async (req, res) => {
         // same report their partner opens.
         const id = Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-3);
         try {
+          // The Firestore helper encodes scalars only — spreading the report
+          // stored findings and areas as the string "[object Object]". Keep the
+          // structure in one JSON field and flat fields alongside for reading.
           await db.setDoc('reports', id, {
-            ...report, created: new Date().toISOString(),
+            data: JSON.stringify(report),
+            score: report.score, business: report.business || '', site: report.site || '',
+            created: new Date().toISOString(),
             query_url: String(target).trim(), query_name: String(name || '').trim(),
           });
           report.id = id;

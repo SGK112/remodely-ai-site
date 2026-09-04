@@ -9,6 +9,7 @@ const ROOT = path.join(__dirname, '..');
 const ORIGIN = 'https://www.remodely.ai';
 
 const cardFor = rel =>
+  rel.startsWith('r/')       ? 'og-report'  :
   rel.startsWith('widgets/') ? 'og-widgets' :
   rel.startsWith('tools/')   ? 'og-tools'   : 'og';
 
