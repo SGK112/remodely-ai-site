@@ -139,6 +139,23 @@ async function handleEvent(evt) {
     case 'checkout.session.completed': {
       const slug = o.metadata?.slug;
       if (o.payment_status === 'unpaid' && o.status !== 'complete') return;
+
+      // A top-up is a one-off purchase, not an activation. Left to fall through
+      // it would mark the account active and overwrite stripe_subscription with
+      // undefined — turning a $20 pack into a free subscription.
+      if (o.metadata?.kind === 'audit_topup') {
+        // Stripe redelivers webhooks; crediting twice for one payment is theft
+        // in the customer's favour and makes the balance untrustworthy either way.
+        const seen = await db.getDoc('audit_topups', o.id).catch(() => null);
+        if (seen) break;
+        await db.setDoc('audit_topups', o.id, {
+          slug, reports: Number(o.metadata.reports || TOPUP_SIZE),
+          at: new Date().toISOString(),
+        });
+        await addCredits(slug, Number(o.metadata.reports || TOPUP_SIZE));
+        break;
+      }
+
       await syncTenant(slug, {
         active: true, status: 'active',
         stripe_customer: o.customer, stripe_subscription: o.subscription,
@@ -407,27 +424,61 @@ ${phone ? `<p>Need them sooner? <a href="tel:${esc(String(phone).replace(/[^0-9+
  * Firestore helper here has no filtering — and history is one compact document
  * per tenant so a dashboard costs a single read.
  */
-const DEFAULT_QUOTA = 25;
+const RATE_HOUR = 10;      // bursts are fine; a runaway loop is not
+const RATE_DAY = 60;
 const HISTORY_CAP = 400;
-const monthKey = (d = new Date()) => d.toISOString().slice(0, 7);
 
-async function auditUsage(slug) {
-  const doc = await db.getDoc('audit_usage', `${slug}__${monthKey()}`).catch(() => null);
-  return Number(doc?.count || 0);
+/**
+ * One plan, rate limited — not tiers. Each report costs paid Places lookups and
+ * several outbound fetches, so the limit exists to stop a runaway loop or a
+ * scraper, not to meter customers into brackets.
+ *
+ * The windows are read straight off the timestamps already in audit_history, so
+ * this costs no extra storage and no extra read.
+ */
+function rateState(items) {
+  const now = Date.now();
+  const since = ms => items.filter(it => now - new Date(it.at).getTime() < ms).length;
+  const hour = since(3600e3), day = since(86400e3);
+  return {
+    hour, day, hourLimit: RATE_HOUR, dayLimit: RATE_DAY,
+    blocked: hour >= RATE_HOUR ? 'hour' : day >= RATE_DAY ? 'day' : null,
+  };
 }
 
-async function bumpUsage(slug) {
-  const id = `${slug}__${monthKey()}`;
-  const used = await auditUsage(slug);
-  await db.setDoc('audit_usage', id, { slug, month: monthKey(), count: used + 1 });
-  return used + 1;
+/**
+ * A rate limit that only says "come back later" is a dead end. Credits let a
+ * subscriber who needs more right now buy a pack and carry on, so the limit is
+ * a decision point rather than a wall.
+ */
+const TOPUP_SIZE = Number(process.env.AUDIT_TOPUP_SIZE || 20);
+const TOPUP_PRICE = process.env.STRIPE_PRICE_TOPUP || '';
+
+async function creditsOf(slug) {
+  const doc = await db.getDoc('audit_credits', slug).catch(() => null);
+  return Math.max(0, Number(doc?.balance || 0));
 }
 
-/** Compact per-site trail so movement is visible, not claimed. */
-async function pushHistory(slug, entry) {
+async function addCredits(slug, n) {
+  const balance = (await creditsOf(slug)) + Number(n || 0);
+  await db.setDoc('audit_credits', slug, { slug, balance, updated: new Date().toISOString() });
+  return balance;
+}
+
+async function spendCredit(slug) {
+  const balance = await creditsOf(slug);
+  if (balance <= 0) return false;
+  await db.setDoc('audit_credits', slug, { slug, balance: balance - 1, updated: new Date().toISOString() });
+  return true;
+}
+
+async function historyOf(slug) {
   const doc = await db.getDoc('audit_history', slug).catch(() => null);
-  let items = [];
-  try { items = JSON.parse(doc?.items || '[]'); } catch { items = []; }
+  try { return JSON.parse(doc?.items || '[]'); } catch { return []; }
+}
+
+async function pushHistory(slug, entry) {
+  const items = await historyOf(slug);
   items.unshift(entry);
   await db.setDoc('audit_history', slug, {
     items: JSON.stringify(items.slice(0, HISTORY_CAP)),
@@ -501,6 +552,7 @@ const server = http.createServer(async (req, res) => {
       ]);
       let items = [];
       try { items = JSON.parse(hist?.items || '[]'); } catch { items = []; }
+      const rate = rateState(items);
 
       // Group by site so a dashboard shows standing, not a flat log. Newest
       // first in, so the first entry per site is the current one.
@@ -518,8 +570,8 @@ const server = http.createServer(async (req, res) => {
 
       return json(res, 200, {
         sites,
-        usage: { used: await auditUsage(slug), quota: Number(tenant?.audit_quota || DEFAULT_QUOTA),
-                 month: monthKey() },
+        rate, credits: await creditsOf(slug), topup: TOPUP_SIZE,
+        active: tenant?.active !== false,
       });
     }
 
@@ -556,20 +608,27 @@ const server = http.createServer(async (req, res) => {
 
       // A subscriber's reports are metered; the free public tool is not.
       const slug = String(shop || '').trim().slice(0, 60);
-      let tenant = null;
+      let tenant = null, usedCredit = false;
       if (slug) {
         tenant = await db.getDoc('tenants', slug).catch(() => null);
         if (!tenant) return json(res, 404, { error: 'Unknown account' });
         if (tenant.active === false) {
           return json(res, 402, { error: 'This subscription is inactive.', inactive: true });
         }
-        const quota = Number(tenant.audit_quota || DEFAULT_QUOTA);
-        const used = await auditUsage(slug);
-        if (used >= quota) {
-          return json(res, 402, {
-            error: `You've used all ${quota} reports on your plan this month.`,
-            quota, used, exhausted: true,
-          });
+        const rate = rateState(await historyOf(slug));
+        if (rate.blocked) {
+          // Spend a purchased credit before refusing. Only charge for the run
+          // that actually goes ahead — the credit is taken here, and the audit
+          // below either succeeds or throws, in which case it is returned.
+          usedCredit = await spendCredit(slug);
+          if (!usedCredit) {
+            return json(res, 429, {
+              error: rate.blocked === 'hour'
+                ? `That's ${RATE_HOUR} reports in the last hour, which is the limit.`
+                : `That's ${RATE_DAY} reports in the last day, which is the limit.`,
+              rate, limited: true, topup: TOPUP_SIZE,
+            }, { 'Retry-After': rate.blocked === 'hour' ? '900' : '3600' });
+          }
         }
       }
       try {
@@ -605,12 +664,12 @@ const server = http.createServer(async (req, res) => {
           report.id = id;
           report.share_url = `${SITE}/r/?id=${id}` + (shop ? `&shop=${encodeURIComponent(shop)}` : '');
           if (slug) {
-            const used = await bumpUsage(slug);
             await pushHistory(slug, {
               id, site: report.site, business: report.business, place_id: report.place_id || null,
               score: report.score, areas: report.areas, at: new Date().toISOString(),
             });
-            report.usage = { used, quota: Number(tenant.audit_quota || DEFAULT_QUOTA) };
+            report.rate = rateState(await historyOf(slug));
+            report.credits = await creditsOf(slug);
           }
         } catch (e) {
           // Sharing is a bonus; never lose the report the visitor is waiting on.
@@ -619,6 +678,7 @@ const server = http.createServer(async (req, res) => {
         return json(res, 200, report);
       } catch (e) {
         console.error('[billing] ai-visibility:', e.message);
+        if (usedCredit) await addCredits(slug, 1);
         return json(res, 200, { error: true, message: "We couldn't read that site. Check the address and try again." });
       }
     }
@@ -815,6 +875,30 @@ const server = http.createServer(async (req, res) => {
         embed: embedSnippet(slug),
         preview: `${EMBED_BASE}/embed/edge-visualizer?shop=${slug}`,
       });
+    }
+
+    // Buying another pack of reports when the limit is reached. One-off, not a
+    // second subscription: the recurring plan stays one plan.
+    if (url.pathname === '/topup' && req.method === 'POST') {
+      const { slug } = JSON.parse((await readBody(req)) || '{}');
+      if (!SLUG_RE.test(slug || '')) return json(res, 400, { error: 'valid shop slug required' });
+      if (!TOPUP_PRICE) return json(res, 503, { error: 'Top-ups are not configured yet.' });
+
+      const tenant = await db.getDoc('tenants', slug);
+      if (!tenant) return json(res, 404, { error: 'unknown account' });
+
+      const session = await stripe('checkout/sessions', {
+        mode: 'payment',
+        line_items: [{ price: TOPUP_PRICE, quantity: 1 }],
+        customer: tenant.stripe_customer || undefined,
+        client_reference_id: slug,
+        metadata: { slug, kind: 'audit_topup', reports: String(TOPUP_SIZE) },
+        allow_promotion_codes: true,
+        success_url: `${SITE}/dashboard/?topup=ok`,
+        cancel_url: `${SITE}/dashboard/`,
+        integration_identifier: 'audittopup-hqzwmnbe',
+      });
+      return json(res, 200, { url: session.url, reports: TOPUP_SIZE });
     }
 
     if (url.pathname === '/checkout' && req.method === 'POST') {
