@@ -184,7 +184,7 @@ const MARK = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mar
   <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/></svg>`;
 
 const NAV = `<header class="nav"><a class="brand" href="/">${MARK}<b>remodely<i>.ai</i></b></a>
-  <nav><a href="/blog/">Blog</a><a href="/tools/ai-visibility/">Free audit</a><a href="/widgets/">Widgets</a><a class="cta" href="/pricing/">Pricing</a></nav></header>`;
+  <nav><a href="/work/">Work</a><a href="/blog/">Blog</a><a href="/tools/ai-visibility/">Free audit</a><a href="/widgets/">Widgets</a><a class="cta" href="/pricing/">Pricing</a></nav></header>`;
 
 const FOOT = `<footer class="foot"><div class="wrap">
   <p><b>Remodely AI</b> — lead tools and AI visibility reporting for remodeling contractors.</p>
