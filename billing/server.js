@@ -281,7 +281,7 @@ const json = (res, code, obj, extra = {}) => {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS',
     ...extra,
   });
   res.end(JSON.stringify(obj));
