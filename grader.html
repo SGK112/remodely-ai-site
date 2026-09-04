@@ -2257,7 +2257,7 @@
               <option value="evening">Evening (5pm - 8pm)</option>
             </select>
             <button type="submit" id="detailsSubmitBtn">
-              <span class="btn-text">Schedule Aria to Call Me</span>
+              <span class="btn-text">Get my action plan</span>
               <span class="btn-loading" style="display: none;">Saving...</span>
             </button>
           </form>
@@ -3119,9 +3119,26 @@
         // ALWAYS show success (don't wait for Firebase)
         unlockContent();
         document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('ctaSection').style.display = 'block';
+        const ctaEl = document.getElementById('ctaSection');
+        ctaEl.style.display = 'block';
         const fomo = document.getElementById('fomoBanner');
         if (fomo) fomo.classList.remove('active');
+
+        // The dropdown offers "Call me now" and this handler used to ignore
+        // preferredTime entirely — it emailed a report and revealed a call
+        // button far below the fold that nobody scrolls to. Someone who asked
+        // to be called now gets called now.
+        if (preferredTime === 'now' && phone) {
+          triggerAriaCall();
+        } else if (preferredTime) {
+          const label = { morning: 'this morning (9am–12pm)', afternoon: 'this afternoon (12pm–5pm)',
+                          evening: 'this evening (5pm–8pm)' }[preferredTime] || 'shortly';
+          const note = ctaEl.querySelector('p');
+          if (note) note.textContent = `Aria will call ${name || 'you'} ${label} on ${phone}. ` +
+            `Want to talk sooner? Use the button below.`;
+        }
+        // Reveal is useless if it happens off-screen.
+        ctaEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         // Re-enable button
         if (btn) {
