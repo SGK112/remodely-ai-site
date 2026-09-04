@@ -73,6 +73,13 @@ function extractJsonLd(html) {
 
 const typeOf = n => [].concat(n['@type'] || []).join(' ');
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function bzGet(slug) {
+  try { return await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 8000 }); }
+  catch { return null; }
+}
+
 async function places(path, key, fieldMask, body) {
   const r = await fetch(`https://places.googleapis.com/v1/${path}`, {
     method: body ? 'POST' : 'GET',
@@ -170,39 +177,50 @@ async function audit({ url, name, key }) {
   // company in another state. So: try the plausible slugs, then require the page
   // to corroborate — phone, licence number, or city AND state must match.
   const siteLicence = (html.match(/\b(?:ROC|LIC|License|Lic\.?)\s*#?\s*(\d{5,8})\b/i) || [])[1];
-  const addr = place?.formattedAddress || '';
-  const city = (addr.split(',')[1] || '').trim().toLowerCase();
-  const state = (addr.match(/,\s*([A-Z]{2})\s+\d{5}/) || [])[1];
-
   const words = clean(name || siteName)
     .replace(/\b(llc|inc|co|corp|company|ltd|the)\b/g, ' ').trim().split(/\s+/).filter(Boolean);
+  // Shortest first: BuildZoom slugs are usually the trading name without the
+  // legal suffixes ("surprise-granite"), so the likeliest candidate goes first
+  // and the common case costs one request.
   const candidates = [...new Set([
-    words.join('-'),
-    words.slice(0, 3).join('-'),
     words.slice(0, 2).join('-'),
+    words.slice(0, 3).join('-'),
+    words.join('-'),
   ].filter(c => c.length > 2))];
 
-  let bzUrl = null, bzBlocked = false;
-  for (const slug of candidates) {
-    let page;
-    try { page = await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 8000 }); }
-    catch { bzBlocked = true; continue; }
+  let bzUrl = null, bzBlocked = false, bzMaybe = null;
+  for (const [n, slug] of candidates.entries()) {
+    // BuildZoom answers 429 to rapid sequential requests, which was making this
+    // check flip between "found" and "not listed" for the same business.
+    if (n) await sleep(1100);
+    let page = await bzGet(slug);
+    if (page?.status === 429) { await sleep(2500); page = await bzGet(slug); }
+    if (!page) { bzBlocked = true; continue; }
     // A clean 404 means "no such listing"; a 403/429/5xx means we were refused
     // and know nothing. Those must not read the same to the contractor.
     if (page.status !== 200 && page.status !== 404) { bzBlocked = true; continue; }
     if (!page.ok || /Page not found/i.test(page.body.slice(0, 4000))) continue;
 
-    // A 200 is not proof it is YOUR listing — corroborate before believing it.
+    // A 200 is not proof it is YOUR listing, and a location match is too weak:
+    // the Lebanon PA page carries a stray "NY" in its boilerplate, so a New York
+    // shop of the same name would be credited with a stranger's page. Only a
+    // licence number or a phone number identifies a business unambiguously.
     const b = page.body;
-    const matches = (siteLicence && b.includes(siteLicence))
-      || (gPhone && digits((b.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/g) || []).find(t => digits(t) === gPhone)) === gPhone)
-      || (!!state && new RegExp(`\\b${state}\\b`).test(b) && !!city && b.toLowerCase().includes(city));
-    if (matches) { bzUrl = page.url; break; }
+    const pagePhones = (b.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/g) || []).map(digits);
+    if ((siteLicence && b.includes(siteLicence)) || (validPhone(gPhone) && pagePhones.includes(gPhone))) {
+      bzUrl = page.url; break;
+    }
+    // A page exists under their name but nothing proves it is theirs. Saying
+    // "no listing" would be a guess, so hand it back for a human to settle.
+    bzMaybe = bzMaybe || page.url;
   }
 
   // Unreachable is not a failure. Scoring a shop down for our own blocked
   // request would be inventing a problem, so an unknown drops out of the score.
-  if (bzUrl || !bzBlocked) {
+  if (!bzUrl && bzMaybe) {
+    unchecked.push({ title: 'BuildZoom listing',
+      why: `There is a BuildZoom page under your business name (${bzMaybe}), but nothing on it — no matching licence number or phone — proves it is yours rather than a same-named company elsewhere. Open it and claim it if it is.` });
+  } else if (bzUrl || !bzBlocked) {
     add('footprint', !!bzUrl, 9, 'Listed on BuildZoom',
       bzUrl ? `Found your BuildZoom page — the most heavily cited source for trades. (${bzUrl})`
          : 'No BuildZoom listing found that matches your licence, phone or city. In testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
