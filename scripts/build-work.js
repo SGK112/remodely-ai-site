@@ -27,6 +27,16 @@ const WORK = [
     facts: ['iOS + Android, v1.2.0', 'Answers live calls', 'Quotes from a real price book'],
   },
   {
+    name: 'Remodely Design Pro',
+    tag: 'Product · Kitchen design & fabrication',
+    url: 'https://www.surprisegranite.com/tools/room-designer/',
+    img: '/images/work/design-pro.png',
+    lede: 'Draw the room, lay the cabinets, pick the stone, and get a fabrication plan and a priced item list out the other end.',
+    detail: '2D plan and 3D view, a searchable element library with real cabinet catalogues, slab layout against actual inventory, cut lists and cutouts on the fabrication plan, building-standards validation, and a quick quote that toggles between retail and cost. Runs in the browser with an offline-capable service worker, and it is what the countertop shop designs jobs in.',
+    stack: ['Canvas + WebGL', 'Slab layout engine', 'Stone price book', 'Supabase', 'PWA'],
+    facts: ['2D plan + 3D view', 'Fabrication plans with cut lists', 'Live retail and cost pricing'],
+  },
+  {
     name: 'Webstew',
     tag: 'Product · AI website builder',
     url: 'https://www.webstew.net/',
