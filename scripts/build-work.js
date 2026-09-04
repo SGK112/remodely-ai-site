@@ -37,6 +37,16 @@ const WORK = [
     facts: ['2D plan + 3D view', 'Fabrication plans with cut lists', 'Live retail and cost pricing'],
   },
   {
+    name: 'Blueprint Takeoff',
+    tag: 'Product · Estimating',
+    url: 'https://www.surprisegranite.com/tools/blueprint-takeoff/',
+    img: '/images/work/blueprint-takeoff.png',
+    lede: 'Upload the plan set, get a quantity takeoff, a priced estimate and a proposal out the far end.',
+    detail: 'Five steps — upload, pick the sheets, extract materials, price the estimate, send the proposal. Reads the drawings, holds your own catalogues and rates rather than generic ones, saves projects between sessions, and hands back a document a customer can accept.',
+    stack: ['Plan extraction', 'Catalogues + rate cards', 'Canvas', 'Node API'],
+    facts: ['Plans to proposal in five steps', 'Your catalogues and your rates', 'Saved projects'],
+  },
+  {
     name: 'Webstew',
     tag: 'Product · AI website builder',
     url: 'https://www.webstew.net/',
