@@ -75,6 +75,8 @@
   .find{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--bad);
         border-radius:12px;padding:16px 18px;margin-bottom:10px}
   .find.ok{border-left-color:var(--ok)}
+  .find.unknown{border-left-color:var(--mut)}
+  .find.unknown .mark{background:var(--mut)}
   .find .t{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:650;letter-spacing:-.01em}
   .find .mark{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
               font-size:12px;font-weight:800;color:#fff;background:var(--bad)}
@@ -192,6 +194,11 @@ function render(r) {
        <div class="find ok"><p class="t"><span class="mark">✓</span>Every check passed.</p>
        <p class="d">You are as verifiable as this grader can measure. Keep reviews coming in —
        that is the signal that decays.</p></div>`}
+
+    ${(r.unchecked || []).length ? `<h2 class="sec">Couldn't check</h2>
+      ${r.unchecked.map(u => `<div class="find unknown">
+        <p class="t"><span class="mark">?</span>${esc(u.title)}</p>
+        <p class="d">${esc(u.why)}</p></div>`).join('')}` : ''}
 
     ${passes.length ? `<details class="passed">
       <summary>${passes.length} check${passes.length > 1 ? 's' : ''} you already pass &mdash; show</summary>
