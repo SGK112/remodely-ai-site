@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Visibility Grader — Free Tool · Remodely AI</title>
+<meta name="description" content="Other graders check your meta tags. This one checks whether an AI assistant can actually verify your business exists — Google listing, BuildZoom, licence, NAP match, review standing.">
+<link rel="canonical" href="https://www.remodely.ai/tools/ai-visibility/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<meta property="og:title" content="AI Visibility Grader — Remodely AI">
+<meta property="og:description" content="ChatGPT recommends whoever it can verify. Find out if that's you — free, 30 seconds, no signup.">
+<meta property="og:url" content="https://www.remodely.ai/tools/ai-visibility/">
+<meta property="og:image" content="https://www.remodely.ai/images/og.png">
+<script src="/tools/_tenant.js?v=6"></script>
+<script src="/tools/_leadform.js?v=3"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --ok:#15803d;--ok-bg:rgba(21,128,61,.10);--bad:#b91c1c;--bad-bg:rgba(185,28,28,.08);
+        --stage-a:#131c2e;--stage-b:#0a0f1a;--track:#e2e8f0}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;--track:#1e293b;
+    --ok:#4ade80;--ok-bg:rgba(74,222,128,.12);--bad:#f87171;--bad-bg:rgba(248,113,113,.10);
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;--track:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:26px 20px 70px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(25px,4.4vw,37px);line-height:1.05;margin:5px 0 10px;letter-spacing:-.025em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:16px;margin-bottom:24px;max-width:60ch}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;
+        box-shadow:var(--shadow)}
+  label{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut);
+        font-weight:700;margin-bottom:7px}
+  .field+.field{margin-top:15px}
+  input[type=text]{font:inherit;font-size:16.5px;padding:13px 15px;border:1px solid var(--line);
+    border-radius:12px;background:transparent;color:var(--ink);width:100%}
+  input[type=text]:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  button.go{font:inherit;font-weight:700;font-size:16px;cursor:pointer;padding:14px 24px;border:0;
+    border-radius:12px;color:#fff;width:100%;margin-top:17px;
+    background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  button.go:hover:not(:disabled){filter:brightness(1.07)}
+  button.go:disabled{opacity:.6;cursor:progress}
+  .hint{font-size:12.5px;color:var(--mut);margin-top:11px;line-height:1.6}
+
+  /* results */
+  #out{margin-top:22px}
+  .stage{background:linear-gradient(160deg,var(--stage-a),var(--stage-b));border-radius:20px;padding:26px;
+         box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.05)}
+  .stage .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700}
+  .scoreline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:8px 0 3px}
+  .score{font-size:clamp(46px,10vw,64px);font-weight:800;color:#fff;line-height:1;letter-spacing:-.035em;
+         font-variant-numeric:tabular-nums}
+  .score small{font-size:19px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:0}
+  .verdict{font-size:15.5px;font-weight:600;color:rgba(255,255,255,.8)}
+  .who{font-size:13.5px;color:rgba(255,255,255,.55);margin-top:6px}
+
+  .bars{margin-top:20px;border-top:1px solid rgba(255,255,255,.12);padding-top:17px;
+        display:flex;flex-direction:column;gap:11px}
+  .bar{display:grid;grid-template-columns:1fr 46px;gap:10px 12px;align-items:center}
+  .bar .nm{font-size:13.5px;color:rgba(255,255,255,.78)}
+  .bar .nm i{font-style:normal;color:rgba(255,255,255,.4);font-size:12px}
+  .bar .pc{text-align:right;font-size:13.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+  .bar .track{grid-column:1/-1;height:6px;border-radius:3px;background:rgba(255,255,255,.13);overflow:hidden}
+  .bar .fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold-lite),var(--gold-deep))}
+  .bar.good .fill{background:linear-gradient(90deg,#4ade80,#15803d)}
+
+  h2.sec{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);
+         font-weight:700;margin:26px 0 12px}
+  .find{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--bad);
+        border-radius:12px;padding:16px 18px;margin-bottom:10px}
+  .find.ok{border-left-color:var(--ok)}
+  .find .t{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:650;letter-spacing:-.01em}
+  .find .mark{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
+              font-size:12px;font-weight:800;color:#fff;background:var(--bad)}
+  .find.ok .mark{background:var(--ok)}
+  .find .d{font-size:14.5px;color:var(--mut);margin-top:6px;line-height:1.6}
+  .find .fix{font-size:14.5px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);line-height:1.6}
+  .find .fix b{color:var(--gold-deep);font-weight:700}
+  details.passed{margin-top:4px}
+  details.passed summary{cursor:pointer;font-size:14px;color:var(--mut);font-weight:600;
+    padding:11px 14px;border:1px dashed var(--line);border-radius:12px;list-style:none}
+  details.passed summary::-webkit-details-marker{display:none}
+  details.passed summary:hover{color:var(--ink);border-color:var(--gold)}
+  details.passed[open] summary{margin-bottom:10px}
+
+  .err{background:var(--bad-bg);border:1px solid var(--bad);border-radius:14px;padding:17px 19px;
+       font-size:15px;line-height:1.6}
+  .load{color:var(--mut);font-size:15px;text-align:center;padding:26px}
+  .load b{color:var(--ink);display:block;font-size:16px;margin-bottom:4px}
+  .cross{margin-top:26px;font-size:14px;color:var(--mut);text-align:center;line-height:1.7}
+  .cross a{color:var(--gold-deep);font-weight:650;text-decoration:none}
+  .cross a:hover{text-decoration:underline}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:26px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">AI visibility</p>
+  <h1>When ChatGPT gets asked who to hire, <em>can it verify you?</em></h1>
+  <p class="sub">Assistants are penalised for naming a business they might get wrong, so the
+    recommendation goes to whoever is easiest to check. Most graders score your meta tags. This one
+    scores whether you can be verified at all.</p>
+
+  <div class="card">
+    <form id="f">
+      <div class="field">
+        <label for="site">Your website</label>
+        <input id="site" type="text" inputmode="url" autocomplete="url"
+               placeholder="yourcompany.com" required>
+      </div>
+      <div class="field">
+        <label for="biz">Business name <span style="text-transform:none;letter-spacing:0">(as it appears on Google)</span></label>
+        <input id="biz" type="text" autocomplete="organization" placeholder="Valley Kitchen &amp; Bath">
+      </div>
+      <button class="go" type="submit" id="go">Grade my AI visibility &rarr;</button>
+      <p class="hint">Free, no signup. We read your public homepage and compare it against your Google
+        listing and the directories assistants cite.</p>
+    </form>
+  </div>
+
+  <div id="out"></div>
+
+  <p class="cross" id="cross"></p>
+  <p class="foot">Weighted to how assistants actually pick a local business: content authority 30%,
+    entity recognition 25%, structured data 20%, digital footprint 15%, freshness 10%.</p>
+</div>
+
+<script>
+const BILLING = 'https://remodely-billing.onrender.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// Area labels the contractor recognises, in the order they matter.
+const AREAS = [
+  ['authority',  'Authority',        'Enough corroboration to be picked'],
+  ['entity',     'Entity',           'Can you be identified at all'],
+  ['structured', 'Structured data',  'Machine-readable details'],
+  ['footprint',  'Footprint',        'Where assistants look you up'],
+  ['freshness',  'Access & freshness','Can the crawlers read you'],
+];
+
+function verdictFor(n) {
+  if (n >= 85) return 'Strong — you are easy to verify.';
+  if (n >= 70) return 'Decent, with real gaps.';
+  if (n >= 50) return 'Assistants will hesitate to name you.';
+  return 'Effectively invisible to AI assistants.';
+}
+
+let lastReport = null;
+
+function render(r) {
+  const fails = r.findings.filter(f => !f.ok);
+  const passes = r.findings.filter(f => f.ok);
+
+  const card = f => `
+    <div class="find ${f.ok ? 'ok' : ''}">
+      <p class="t"><span class="mark">${f.ok ? '✓' : '!'}</span>${esc(f.title)}</p>
+      <p class="d">${esc(f.detail)}</p>
+      ${f.fix ? `<p class="fix"><b>Do this:</b> ${esc(f.fix)}</p>` : ''}
+    </div>`;
+
+  $('out').innerHTML = `
+    <div class="stage">
+      <p class="lbl">AI visibility score</p>
+      <div class="scoreline">
+        <span class="score">${r.score}<small>/100</small></span>
+        <span class="verdict">${esc(verdictFor(r.score))}</span>
+      </div>
+      <p class="who">${esc(r.business)}${r.reviews ? ` · ${r.rating} from ${r.reviews.toLocaleString()} Google reviews` : ''}</p>
+      <div class="bars">
+        ${AREAS.filter(([k]) => r.areas[k] != null).map(([k, nm, note]) => {
+          const pc = r.areas[k];
+          return `<div class="bar ${pc >= 80 ? 'good' : ''}">
+            <span class="nm">${nm} <i>&mdash; ${note}</i></span>
+            <span class="pc">${pc}%</span>
+            <span class="track"><span class="fill" style="width:${pc}%"></span></span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${fails.length ? `<h2 class="sec">${fails.length} thing${fails.length > 1 ? 's' : ''} to fix &mdash; biggest first</h2>
+      ${fails.map(card).join('')}` :
+      `<h2 class="sec">Nothing to fix</h2>
+       <div class="find ok"><p class="t"><span class="mark">✓</span>Every check passed.</p>
+       <p class="d">You are as verifiable as this grader can measure. Keep reviews coming in —
+       that is the signal that decays.</p></div>`}
+
+    ${passes.length ? `<details class="passed">
+      <summary>${passes.length} check${passes.length > 1 ? 's' : ''} you already pass &mdash; show</summary>
+      ${passes.map(card).join('')}</details>` : ''}`;
+
+  $('cross').innerHTML = `Want to hear what the assistants actually say about you?
+    <a href="/tools/ai-probe/">Run the AI Assistant Probe &rarr;</a>`;
+
+  $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+Remodely.toolSource = 'ai-visibility';
+Remodely.toolName = 'AI Visibility Grader';
+
+$('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const site = $('site').value.trim();
+  if (!site) return;
+  $('go').disabled = true;
+  $('go').textContent = 'Checking…';
+  $('out').innerHTML = `<div class="card load"><b>Reading your site and cross-checking it.</b>
+    Homepage, Google listing, directories and robots rules — about fifteen seconds.</div>`;
+
+  try {
+    const res = await fetch(`${BILLING}/ai-visibility`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: site, name: $('biz').value.trim() }),
+    });
+    const d = await res.json();
+    if (!res.ok || d.error) throw new Error(d.message || d.error || 'lookup failed');
+    lastReport = d;
+    render(d);
+  } catch (err) {
+    // Say what went wrong and what to try. Never invent a score.
+    $('out').innerHTML = `<div class="err"><b>We couldn't grade that address.</b><br>
+      ${esc(err.message && err.message !== 'lookup failed' ? err.message
+        : 'Check the spelling, and use the address your site actually loads on.')}</div>`;
+  } finally {
+    $('go').disabled = false;
+    $('go').textContent = 'Grade my AI visibility →';
+  }
+});
+
+Remodely.ready(() => {
+  Remodely.mountLeadForm({
+    after: '#out',
+    heading: 'Want this fixed for you?',
+    context: () => lastReport
+      ? `Scored ${lastReport.score}/100 — ${lastReport.business} — failing: ` +
+        lastReport.findings.filter(f => !f.ok).map(f => f.title).join(', ')
+      : 'AI visibility grader (no report run)',
+  });
+});
+</script>
+</body>
+</html>

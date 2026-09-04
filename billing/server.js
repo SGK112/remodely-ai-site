@@ -24,6 +24,7 @@
 const http = require('http');
 const crypto = require('crypto');
 const db = require('../scripts/lib/gcp.js');
+const { audit } = require('./ai-visibility.js');
 
 const SK = process.env.STRIPE_SECRET_KEY;
 const WHSEC = process.env.STRIPE_WEBHOOK_SECRET;
@@ -299,6 +300,7 @@ async function sendMagicLink(tenant, email) {
    --------------------------------------------------------------------------- */
 const REVIEW_TTL_MS = 1000 * 60 * 60 * 6;
 const reviewCache = new Map();
+const auditHits = new Map();
 
 async function fetchReviews(placeId) {
   const hit = reviewCache.get(placeId);
@@ -450,6 +452,30 @@ const server = http.createServer(async (req, res) => {
         } catch (e) { console.error('[billing] price lookup failed', id, e.message); }
       }
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
+    }
+
+    // Public audit. Rate-limited by IP because it makes several outbound
+    // requests per call, including paid Places lookups.
+    if (url.pathname === '/ai-visibility' && req.method === 'POST') {
+      const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+      const now = Date.now();
+      const hits = (auditHits.get(ip) || []).filter(t => now - t < 60 * 60 * 1000);
+      if (hits.length >= 12) return json(res, 429, { error: 'Too many audits from this address. Try again later.' });
+      hits.push(now); auditHits.set(ip, hits);
+
+      const { url: target, name } = JSON.parse((await readBody(req)) || '{}');
+      if (!target || !/^[\w.-]+\.[a-z]{2,}/i.test(String(target).replace(/^https?:\/\//, ''))) {
+        return json(res, 400, { error: 'A website address is required' });
+      }
+      const key = process.env.GOOGLE_PLACES_KEY || process.env.GOOGLE_AI_API_KEY;
+      if (!key) return json(res, 503, { error: 'Audit is unavailable right now' });
+      try {
+        const report = await audit({ url: String(target).trim(), name: String(name || '').trim(), key });
+        return json(res, 200, report);
+      } catch (e) {
+        console.error('[billing] ai-visibility:', e.message);
+        return json(res, 200, { error: true, message: "We couldn't read that site. Check the address and try again." });
+      }
     }
 
     // Public: a widget on a customer's site posts a lead here. Writes it and sends

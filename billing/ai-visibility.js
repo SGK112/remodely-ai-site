@@ -1,0 +1,243 @@
+/**
+ * AI visibility audit.
+ *
+ * The existing graders measure on-page SEO. Research on how assistants actually
+ * pick a local business weights it very differently: content authority ~30%,
+ * entity recognition ~25%, structured data ~20%, digital footprint ~15%,
+ * freshness ~10%. Models are penalised for naming a business they might get
+ * wrong, so the recommendation goes to whoever is easiest to VERIFY.
+ *
+ * So this checks verifiability, not prettiness: can a model find you on Google,
+ * does your site agree with that listing, are you corroborated on the sources
+ * assistants lean on, and is any of it recent.
+ */
+const dns = require('dns').promises;
+
+const UA = 'RemodelyAIVisibilityBot/1.0 (+https://www.remodely.ai/tools/ai-visibility/)';
+
+/**
+ * Fetching a URL a stranger typed is an SSRF hole unless it is fenced. Public
+ * http(s) only, no private ranges, hard timeout, capped body.
+ */
+async function safeFetch(target, { timeout = 9000, maxBytes = 900_000 } = {}) {
+  let u;
+  try { u = new URL(target); } catch { throw new Error('bad url'); }
+  if (!/^https?:$/.test(u.protocol)) throw new Error('unsupported scheme');
+  if (/^(localhost|.*\.local|.*\.internal)$/i.test(u.hostname)) throw new Error('blocked host');
+
+  const { address } = await dns.lookup(u.hostname).catch(() => ({ address: null }));
+  if (!address) throw new Error('dns failed');
+  if (/^(10\.|127\.|0\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|::1|fc|fd)/i.test(address)) {
+    throw new Error('private address');
+  }
+
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeout);
+  try {
+    const r = await fetch(u.href, { signal: ctl.signal, redirect: 'follow', headers: { 'User-Agent': UA } });
+    const buf = await r.arrayBuffer();
+    return { ok: r.ok, status: r.status, url: r.url,
+      body: Buffer.from(buf.slice(0, maxBytes)).toString('utf8') };
+  } finally { clearTimeout(timer); }
+}
+
+// Last ten digits: a schema telephone is often +1-prefixed while the Google
+// listing is not, and comparing raw digits reports a mismatch for every US
+// business on earth.
+const digits = s => {
+  const d = String(s || '').replace(/\D/g, '');
+  return d.length > 10 ? d.slice(-10) : d;
+};
+const pretty = d => (d && d.length === 10) ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d;
+const clean = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+/** Every JSON-LD block on the page, flattened, so @graph and arrays both work. */
+function extractJsonLd(html) {
+  const out = [];
+  const re = /<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    try {
+      const parsed = JSON.parse(m[1].trim());
+      const push = n => { if (n && typeof n === 'object') out.push(n); };
+      if (Array.isArray(parsed)) parsed.forEach(push);
+      else { push(parsed); (parsed['@graph'] || []).forEach(push); }
+    } catch { /* a malformed block is itself a finding, handled by the caller */ }
+  }
+  return out;
+}
+
+const typeOf = n => [].concat(n['@type'] || []).join(' ');
+
+async function places(path, key, fieldMask, body) {
+  const r = await fetch(`https://places.googleapis.com/v1/${path}`, {
+    method: body ? 'POST' : 'GET',
+    headers: {
+      'X-Goog-Api-Key': key, 'X-Goog-FieldMask': fieldMask,
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error?.message || `places ${r.status}`);
+  return data;
+}
+
+/**
+ * Score is deliberately weighted to the research, not to what is easy to check.
+ * Entity + footprint are 40% between them, which is exactly where most
+ * contractors — and every other grader — are blind.
+ */
+const WEIGHTS = { entity: 25, footprint: 15, structured: 20, authority: 30, freshness: 10 };
+
+async function audit({ url, name, key }) {
+  const findings = [];
+  const add = (area, ok, weight, title, detail, fix) =>
+    findings.push({ area, ok, weight, title, detail, ...(fix ? { fix } : {}) });
+
+  // ---- the site itself -----------------------------------------------------
+  const site = await safeFetch(url.startsWith('http') ? url : 'https://' + url);
+  const html = site.body || '';
+  const origin = new URL(site.url).origin;
+  const host = new URL(site.url).hostname.replace(/^www\./, '');
+
+  const ld = extractJsonLd(html);
+  const biz = ld.find(n => /LocalBusiness|Organization|HomeAndConstructionBusiness|GeneralContractor/i.test(typeOf(n)));
+  const sitePhone = digits(biz?.telephone || (html.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/) || [])[0]);
+  const siteName = biz?.name || (html.match(/<title>([^<]{3,80})/i) || [])[1] || name || host;
+
+  // ---- entity recognition: can a model find and verify you at all? ---------
+  let place = null;
+  try {
+    const q = `${name || siteName} ${biz?.address?.addressLocality || ''} ${biz?.address?.addressRegion || ''}`.trim();
+    const found = await places('places:searchText', key,
+      'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri,places.nationalPhoneNumber,places.primaryTypeDisplayName',
+      { textQuery: q, maxResultCount: 3 });
+    place = (found.places || []).find(p => {
+      const w = p.websiteUri ? new URL(p.websiteUri).hostname.replace(/^www\./, '') : '';
+      return w === host || clean(p.displayName?.text).includes(clean(name || siteName).slice(0, 14));
+    }) || (found.places || [])[0] || null;
+  } catch (e) { /* handled as a not-found finding below */ }
+
+  add('entity', !!place, 12, 'Findable on Google',
+    place ? `Matched "${place.displayName?.text}" — assistants can verify you exist.`
+          : 'No Google listing matched your business name and site. Assistants avoid naming businesses they cannot verify.',
+    place ? null : 'Claim and complete your Google Business Profile. This is the single foundation everything else is checked against.');
+
+  const gPhone = digits(place?.nationalPhoneNumber);
+  const napMatch = !!(gPhone && sitePhone && gPhone === sitePhone);
+  add('entity', napMatch, 8, 'Website and Google agree',
+    !gPhone || !sitePhone ? 'Could not compare a phone number between your site and your Google listing.'
+      : napMatch ? 'The phone number on your site matches your Google listing.'
+      : `Your site shows ${pretty(sitePhone)} but Google has ${pretty(gPhone)}.`,
+    napMatch ? null : 'Make the phone number identical everywhere. Conflicting details are the fastest way to become un-verifiable.');
+
+  const siteLinked = !!(place?.websiteUri && new URL(place.websiteUri).hostname.replace(/^www\./, '') === host);
+  add('entity', siteLinked, 5, 'Google listing points at this site',
+    siteLinked ? 'Your listing links to this website, which ties the two records together.'
+               : 'Your Google listing does not link to this website, so the two are not obviously the same business.',
+    siteLinked ? null : 'Add your website to your Google Business Profile.');
+
+  // ---- digital footprint: the sources assistants actually cite -------------
+  const slug = clean(name || siteName).replace(/\s+/g, '-');
+  let bz = false;
+  try {
+    const r = await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 7000 });
+    bz = r.ok;
+  } catch { bz = false; }
+  add('footprint', bz, 9, 'Listed on BuildZoom',
+    bz ? 'You have a BuildZoom page, the most heavily cited source for trades.'
+       : 'No BuildZoom listing found. In 2026 testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
+    bz ? null : 'Claim your free BuildZoom listing. It is the highest-leverage hour in this whole report.');
+
+  const licenceOnSite = /\b(ROC|LIC|License|Lic\.?)\s*#?\s*\d{4,}/i.test(html);
+  add('footprint', licenceOnSite, 6, 'Licence number published',
+    licenceOnSite ? 'Your licence number is on the page, which is directly checkable against the state board.'
+                  : 'No licence number found on your homepage.',
+    licenceOnSite ? null : 'Put your licence number in the footer. It is one of the few claims a model can verify against an authoritative record.');
+
+  // ---- structured data ----------------------------------------------------
+  add('structured', !!biz, 8, 'LocalBusiness schema',
+    biz ? `Found ${typeOf(biz)} markup, so your details are machine-readable.`
+        : 'No LocalBusiness or Organization schema found.',
+    biz ? null : 'Add LocalBusiness JSON-LD with your name, address, phone and hours.');
+
+  const hasRating = ld.some(n => JSON.stringify(n).includes('aggregateRating'));
+  add('structured', hasRating, 6, 'Ratings in your markup',
+    hasRating ? 'Your reviews are exposed as structured data.' : 'No aggregateRating in your schema.',
+    hasRating ? null : 'Add aggregateRating so your standing is readable without scraping.');
+
+  const sameAs = biz?.sameAs ? [].concat(biz.sameAs).length : 0;
+  add('structured', sameAs >= 3, 6, 'Linked to your other profiles',
+    sameAs ? `${sameAs} sameAs links found.` : 'No sameAs links connecting this site to your other profiles.',
+    sameAs >= 3 ? null : 'List your Google, Houzz, Facebook, Yelp and BBB URLs in sameAs — this is how a model knows those profiles are the same business as you.');
+
+  // ---- authority: is there enough corroboration to be picked? -------------
+  const reviews = place?.userRatingCount || 0;
+  const rating = place?.rating || 0;
+  add('authority', reviews >= 25, 10, 'Enough reviews to be recommended',
+    reviews ? `${reviews} Google reviews at ${rating}.` : 'No review count available.',
+    reviews >= 25 ? null : 'Assistants lean on review volume as corroboration. Ask every finished customer.');
+
+  add('authority', rating >= 4, 8, 'Rated well enough to be suggested',
+    rating ? `Rated ${rating} out of 5.` : 'No rating found.',
+    rating >= 4 ? null : 'Most buyers filter below four stars, and assistants mirror that.');
+
+  // Competitors in the same category and area — the comparison a model makes.
+  let rivals = [];
+  try {
+    if (place) {
+      const near = await places('places:searchText', key,
+        'places.displayName,places.rating,places.userRatingCount',
+        { textQuery: `${place.primaryTypeDisplayName?.text || 'contractor'} near ${place.formattedAddress}`, maxResultCount: 8 });
+      rivals = (near.places || []).filter(p => p.displayName?.text !== place.displayName?.text && p.userRatingCount);
+    }
+  } catch { /* comparison is a bonus, not a requirement */ }
+  const beaten = rivals.filter(r => (r.userRatingCount || 0) > reviews).length;
+  if (rivals.length) {
+    add('authority', beaten <= 2, 7, 'Standing against nearby competitors',
+      beaten === 0 ? `You have more reviews than every nearby competitor checked (${rivals.length}).`
+        : `${beaten} of ${rivals.length} nearby competitors have more reviews than you — ${rivals.slice(0, 2).map(r => `${r.displayName.text} (${r.userRatingCount})`).join(', ')}.`,
+      beaten <= 2 ? null : 'When a model has to choose, the better-corroborated business wins. Closing this gap is the most direct fix.');
+  }
+
+  // ---- freshness and access ----------------------------------------------
+  let robots = '';
+  try { robots = (await safeFetch(origin + '/robots.txt', { timeout: 6000 })).body || ''; } catch {}
+  const blocksAI = /User-agent:\s*(GPTBot|ClaudeBot|PerplexityBot|Google-Extended)[\s\S]{0,120}?Disallow:\s*\/\s*$/im.test(robots);
+  add('freshness', !blocksAI, 6, 'AI crawlers allowed',
+    blocksAI ? 'Your robots.txt blocks at least one AI crawler, so those assistants cannot read you at all.'
+             : 'No AI crawler is blocked in robots.txt.',
+    blocksAI ? 'Remove the Disallow for GPTBot, ClaudeBot, PerplexityBot and Google-Extended unless you deliberately want to be invisible to them.' : null);
+
+  let llms = false;
+  try { llms = (await safeFetch(origin + '/llms.txt', { timeout: 5000 })).ok; } catch {}
+  add('freshness', llms, 4, 'llms.txt present',
+    llms ? 'You publish an llms.txt summarising the business for models.'
+         : 'No llms.txt. It is not yet a standard, but it is cheap and it states plainly who you are and what you do.',
+    llms ? null : 'Add /llms.txt with your name, licence, service area, services and contact details.');
+
+  // ---- score --------------------------------------------------------------
+  const byArea = {};
+  for (const f of findings) {
+    byArea[f.area] ??= { got: 0, max: 0 };
+    byArea[f.area].max += f.weight;
+    if (f.ok) byArea[f.area].got += f.weight;
+  }
+  let score = 0;
+  for (const [area, w] of Object.entries(WEIGHTS)) {
+    const a = byArea[area];
+    if (a && a.max) score += (a.got / a.max) * w;
+  }
+
+  return {
+    site: site.url,
+    business: place?.displayName?.text || siteName,
+    rating, reviews,
+    score: Math.round(score),
+    areas: Object.fromEntries(Object.entries(byArea).map(([k, v]) => [k, Math.round((v.got / v.max) * 100)])),
+    findings: findings.sort((a, b) => (a.ok - b.ok) || (b.weight - a.weight)),
+  };
+}
+
+module.exports = { audit, safeFetch };
