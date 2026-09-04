@@ -48,6 +48,10 @@ const digits = s => {
   const d = String(s || '').replace(/\D/g, '');
   return d.length > 10 ? d.slice(-10) : d;
 };
+// NANP: area code and exchange both start 2-9. Without this the first
+// ten-digit run on the page — a licence, an SKU, a date — becomes "your phone"
+// and every site gets told it disagrees with Google.
+const validPhone = d => /^[2-9]\d{2}[2-9]\d{6}$/.test(d || '');
 const pretty = d => (d && d.length === 10) ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d;
 const clean = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -104,7 +108,14 @@ async function audit({ url, name, key }) {
 
   const ld = extractJsonLd(html);
   const biz = ld.find(n => /LocalBusiness|Organization|HomeAndConstructionBusiness|GeneralContractor/i.test(typeOf(n)));
-  const sitePhone = digits(biz?.telephone || (html.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/) || [])[0]);
+  // Trust the markup, then a tel: link, then the page text — first one that is
+  // actually a phone number wins.
+  const phoneCandidates = [
+    biz?.telephone,
+    ...(html.match(/href=["']tel:([^"']+)/gi) || []).map(m => m.slice(m.indexOf(':') + 1)),
+    ...(html.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/g) || []),
+  ];
+  const sitePhone = phoneCandidates.map(digits).find(validPhone) || '';
   const siteName = biz?.name || (html.match(/<title>([^<]{3,80})/i) || [])[1] || name || host;
 
   // ---- entity recognition: can a model find and verify you at all? ---------
@@ -120,21 +131,34 @@ async function audit({ url, name, key }) {
     }) || (found.places || [])[0] || null;
   } catch (e) { /* handled as a not-found finding below */ }
 
-  add('entity', !!place, 12, 'Findable on Google',
-    place ? `Matched "${place.displayName?.text}" — assistants can verify you exist.`
-          : 'No Google listing matched your business name and site. Assistants avoid naming businesses they cannot verify.',
-    place ? null : 'Claim and complete your Google Business Profile. This is the single foundation everything else is checked against.');
+  // Grading the wrong company is this tool's worst failure, and a bare name
+  // search will happily return a same-named shop three states away. Only treat
+  // the match as ours when the listing links back to this site, or the address
+  // agrees with the address in the site's own markup.
+  const placeHost = place?.websiteUri ? new URL(place.websiteUri).hostname.replace(/^www\./, '') : '';
+  const ldCity = clean(biz?.address?.addressLocality);
+  const confident = !!place && (
+    placeHost === host ||
+    (!!ldCity && clean(place.formattedAddress).includes(ldCity))
+  );
+
+  add('entity', confident, 12, 'Findable on Google',
+    confident ? `Matched "${place.displayName?.text}" — assistants can verify you exist.`
+      : place ? `We found "${place.displayName?.text}" in ${place.formattedAddress || 'another area'}, but nothing ties it to this website, so we can't be sure it's you.`
+      : 'No Google listing matched your business name and site. Assistants avoid naming businesses they cannot verify.',
+    confident ? null
+      : 'Claim your Google Business Profile and add this website to it. Until the listing and the site point at each other, neither we nor an assistant can tell which business is yours.');
 
   const gPhone = digits(place?.nationalPhoneNumber);
   const napMatch = !!(gPhone && sitePhone && gPhone === sitePhone);
-  add('entity', napMatch, 8, 'Website and Google agree',
+  if (confident) add('entity', napMatch, 8, 'Website and Google agree',
     !gPhone || !sitePhone ? 'Could not compare a phone number between your site and your Google listing.'
       : napMatch ? 'The phone number on your site matches your Google listing.'
       : `Your site shows ${pretty(sitePhone)} but Google has ${pretty(gPhone)}.`,
     napMatch ? null : 'Make the phone number identical everywhere. Conflicting details are the fastest way to become un-verifiable.');
 
-  const siteLinked = !!(place?.websiteUri && new URL(place.websiteUri).hostname.replace(/^www\./, '') === host);
-  add('entity', siteLinked, 5, 'Google listing points at this site',
+  const siteLinked = placeHost === host;
+  if (place) add('entity', siteLinked, 5, 'Google listing points at this site',
     siteLinked ? 'Your listing links to this website, which ties the two records together.'
                : 'Your Google listing does not link to this website, so the two are not obviously the same business.',
     siteLinked ? null : 'Add your website to your Google Business Profile.');
@@ -211,20 +235,20 @@ async function audit({ url, name, key }) {
     sameAs >= 3 ? null : 'List your Google, Houzz, Facebook, Yelp and BBB URLs in sameAs — this is how a model knows those profiles are the same business as you.');
 
   // ---- authority: is there enough corroboration to be picked? -------------
-  const reviews = place?.userRatingCount || 0;
-  const rating = place?.rating || 0;
-  add('authority', reviews >= 25, 10, 'Enough reviews to be recommended',
+  const reviews = confident ? (place.userRatingCount || 0) : 0;
+  const rating = confident ? (place.rating || 0) : 0;
+  if (confident) add('authority', reviews >= 25, 10, 'Enough reviews to be recommended',
     reviews ? `${reviews} Google reviews at ${rating}.` : 'No review count available.',
     reviews >= 25 ? null : 'Assistants lean on review volume as corroboration. Ask every finished customer.');
 
-  add('authority', rating >= 4, 8, 'Rated well enough to be suggested',
+  if (confident) add('authority', rating >= 4, 8, 'Rated well enough to be suggested',
     rating ? `Rated ${rating} out of 5.` : 'No rating found.',
     rating >= 4 ? null : 'Most buyers filter below four stars, and assistants mirror that.');
 
   // Competitors in the same category and area — the comparison a model makes.
   let rivals = [];
   try {
-    if (place) {
+    if (confident) {
       const near = await places('places:searchText', key,
         'places.displayName,places.rating,places.userRatingCount',
         { textQuery: `${place.primaryTypeDisplayName?.text || 'contractor'} near ${place.formattedAddress}`, maxResultCount: 8 });
@@ -240,6 +264,11 @@ async function audit({ url, name, key }) {
   }
 
   // ---- freshness and access ----------------------------------------------
+  if (!confident) {
+    unchecked.push({ title: 'Review standing',
+      why: "We couldn't confirm which Google listing is yours, so we didn't grade your reviews or compare you to nearby competitors — we won't score you on another company's numbers. Link this site from your Google Business Profile and run it again." });
+  }
+
   let robots = '';
   try { robots = (await safeFetch(origin + '/robots.txt', { timeout: 6000 })).body || ''; } catch {}
   const blocksAI = /User-agent:\s*(GPTBot|ClaudeBot|PerplexityBot|Google-Extended)[\s\S]{0,120}?Disallow:\s*\/\s*$/im.test(robots);
@@ -262,11 +291,17 @@ async function audit({ url, name, key }) {
     byArea[f.area].max += f.weight;
     if (f.ok) byArea[f.area].got += f.weight;
   }
-  let score = 0;
+  // Score only over what we could actually measure. An area we skipped — because
+  // we couldn't confirm the listing, or a source refused us — must not read as a
+  // zero the shop earned; that is a made-up failure.
+  let score = 0, possible = 0;
   for (const [area, w] of Object.entries(WEIGHTS)) {
     const a = byArea[area];
-    if (a && a.max) score += (a.got / a.max) * w;
+    if (!a || !a.max) continue;
+    score += (a.got / a.max) * w;
+    possible += w;
   }
+  score = possible ? (score / possible) * 100 : 0;
 
   return {
     site: site.url,
