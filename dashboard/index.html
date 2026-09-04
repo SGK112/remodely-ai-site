@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widget Settings</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1f5; --sheet:#fff; --ink:#0e141c; --ink-2:#3d4b59; --steel:#5a6b7a;
+    --rule:#cdd6de; --rule-soft:#e2e8ee; --accent:#f97316; --accent-deep:#c2410c;
+    --accent-wash:rgba(249,115,22,.09); --ok:#15803d; --ok-wash:rgba(21,128,61,.10);
+    --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --shadow:0 1px 2px rgba(14,20,28,.05),0 12px 32px -18px rgba(14,20,28,.28);
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#0a0f1a; --sheet:#121a26; --ink:#e9eef4; --ink-2:#a7b4c2; --steel:#8497a8;
+    --rule:#26313f; --rule-soft:#1b2532; --accent:#fb923c; --accent-deep:#fdba74;
+    --accent-wash:rgba(251,146,60,.12); --ok:#4ade80; --ok-wash:rgba(74,222,128,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.7);}}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent-deep)}
+  h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.017em;text-wrap:balance}
+  p{margin:0}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+
+  .top{border-bottom:1px solid var(--rule);background:var(--sheet)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:13px}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:700;font-size:15px}
+  .logo b{color:var(--accent-deep)}
+  .who{font-family:var(--mono);font-size:12px;color:var(--steel)}
+
+  main{padding-block:40px 90px}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);
+       display:flex;align-items:center;gap:10px;margin:0 0 12px}
+  .tag::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h1{font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.08;font-weight:700}
+  .lede{color:var(--ink-2);margin-top:10px;max-width:60ch}
+
+  .card{background:var(--sheet);border:1px solid var(--rule);border-radius:5px;box-shadow:var(--shadow);
+        padding:24px;margin-top:22px}
+  .card h2{font-size:1.12rem;font-weight:600;margin-bottom:4px}
+  .card .hint{color:var(--steel);font-size:14px;margin-bottom:16px;max-width:58ch}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+  label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+        color:var(--steel);margin-bottom:5px}
+  input,textarea{font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--rule);border-radius:4px;
+                 background:var(--paper);color:var(--ink);width:100%}
+  input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .field{margin-bottom:14px}
+
+  .swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .sw{width:30px;height:30px;border-radius:4px;border:1px solid rgba(0,0,0,.2);cursor:pointer;padding:0}
+  .sw[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
+  .sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* rates — the whole reason this screen exists */
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--steel);font-weight:500;padding:0 8px 8px 0}
+  td{padding:5px 8px 5px 0;vertical-align:middle}
+  td input{padding:9px 10px;font-size:14.5px}
+  .num{width:100%;font-variant-numeric:tabular-nums}
+  .rm{background:none;border:0;color:var(--steel);font-size:19px;cursor:pointer;line-height:1;padding:4px 6px}
+  .rm:hover{color:#dc2626}
+  .addrow{font:inherit;font-size:14px;font-weight:600;cursor:pointer;background:none;color:var(--accent-deep);
+          border:1px dashed var(--rule);border-radius:4px;padding:10px 14px;width:100%;margin-top:10px}
+  .addrow:hover{border-color:var(--accent);background:var(--accent-wash)}
+
+  .embed{font-family:var(--mono);font-size:12.5px;line-height:1.7;white-space:pre;overflow-x:auto;
+         background:var(--paper);border:1px solid var(--rule);border-left:3px solid var(--accent);
+         border-radius:4px;padding:14px 16px;margin:0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{font:inherit;font-family:var(--display);font-weight:600;font-size:15px;cursor:pointer;padding:11px 17px;
+       border-radius:4px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;display:inline-block}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:hover{filter:brightness(1.05)}
+
+  /* save bar — a settings screen must never leave you guessing if it saved */
+  .savebar{position:fixed;left:0;right:0;bottom:0;background:var(--sheet);border-top:1px solid var(--rule);
+           padding:12px 22px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;
+           justify-content:space-between;gap:14px;z-index:20;box-shadow:0 -6px 24px -12px rgba(0,0,0,.28)}
+  .savebar .state{font-family:var(--mono);font-size:12px;color:var(--steel)}
+  .savebar .state.ok{color:var(--ok)}
+  .savebar .state.err{color:#dc2626}
+
+  .note{padding:14px 16px;border-radius:4px;font-size:14.5px;line-height:1.55;margin-top:16px}
+  .note.warn{background:var(--accent-wash);border:1px solid var(--accent)}
+  .note.ok{background:var(--ok-wash);border:1px solid var(--ok)}
+  .center{max-width:430px;margin:14vh auto;text-align:center}
+  .center form{margin-top:18px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="/">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
+      <defs><linearGradient id="rh" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4285F4"/><stop offset="33%" stop-color="#EA4335"/>
+        <stop offset="66%" stop-color="#FBBC05"/><stop offset="100%" stop-color="#34A853"/></linearGradient></defs>
+      <path d="M3 21V10l9-7 9 7v11" stroke="url(#rh)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/></svg>
+    REMODELY<b>.AI</b>
+  </a>
+  <span class="who" id="who"></span>
+</div></header>
+
+<main><div class="wrap" id="root">
+  <p class="tag">Loading</p><h1>One moment.</h1>
+</div></main>
+
+<script>
+const BILLING = 'https://remodely-billing.onrender.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const token = new URLSearchParams(location.search).get('token');
+let DATA = null, dirty = false;
+
+/* ---------------- signed out ---------------- */
+function signIn(msg) {
+  document.body.querySelector('main .wrap').innerHTML = `
+    <div class="center">
+      <p class="tag" style="justify-content:center">Widget settings</p>
+      <h1>Sign in</h1>
+      <p class="lede" style="margin:10px auto 0">${msg || 'Enter the email your leads go to and we\\'ll send you a link. No password.'}</p>
+      <form id="signin">
+        <div class="field"><input name="email" type="email" placeholder="you@yourcompany.com" autocomplete="email" required></div>
+        <button class="btn primary" type="submit" style="width:100%">Email me a link</button>
+      </form>
+      <div class="note ok" id="sent" style="display:none">
+        If that address is on an account, the link is on its way. It works for two weeks.
+      </div>
+    </div>`;
+  $('signin').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      await fetch(BILLING + '/auth/request', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: e.target.email.value.trim() }),
+      });
+    } catch (err) { /* the same message either way — see the server note */ }
+    e.target.style.display = 'none';
+    $('sent').style.display = 'block';
+  });
+}
+
+/* ---------------- rates table ---------------- */
+function rateRow(r = {}) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input class="label" value="${esc(r.label || '')}" placeholder="e.g. Granite, installed"></td>
+    <td><input class="unit" value="${esc(r.unit || 'sq ft')}" placeholder="sq ft"></td>
+    <td><input class="low num" type="number" min="0" step="0.01" value="${r.low ?? ''}" placeholder="0"></td>
+    <td><input class="high num" type="number" min="0" step="0.01" value="${r.high ?? ''}" placeholder="0"></td>
+    <td><button class="rm" type="button" aria-label="Remove">&times;</button></td>`;
+  tr.querySelector('.rm').addEventListener('click', () => { tr.remove(); markDirty(); });
+  tr.querySelectorAll('input').forEach(i => i.addEventListener('input', markDirty));
+  return tr;
+}
+const readRates = () => [...document.querySelectorAll('#rates tbody tr')].map(tr => ({
+  label: tr.querySelector('.label').value.trim(),
+  unit: tr.querySelector('.unit').value.trim() || 'sq ft',
+  low: Number(tr.querySelector('.low').value) || 0,
+  high: Number(tr.querySelector('.high').value) || 0,
+})).filter(r => r.label);
+
+function markDirty() {
+  dirty = true;
+  const s = $('savestate'); if (s) { s.className = 'state'; s.textContent = 'Unsaved changes'; }
+}
+
+/* ---------------- the settings screen ---------------- */
+function render(d) {
+  DATA = d;
+  $('who').textContent = d.config.name || d.slug;
+  const c = d.config;
+  document.querySelector('main .wrap').innerHTML = `
+    <p class="tag">Widget settings</p>
+    <h1>Make these yours.</h1>
+    <p class="lede">Everything here is what your customers see. Nothing is shared with any other
+      business, and your rates are never shown to anyone but your own visitors.</p>
+
+    ${d.active ? '' : `<div class="note warn"><b>Your subscription isn't active</b>, so your widgets
+      aren't serving right now. <a href="${BILLING}/portal?slug=${encodeURIComponent(d.slug)}">Fix billing &rarr;</a></div>`}
+
+    <div class="card">
+      <h2>Your business</h2>
+      <p class="hint">The name and colour your customers see on every widget.</p>
+      <div class="grid2">
+        <div class="field"><label for="f-name">Business name</label>
+          <input id="f-name" value="${esc(c.name)}" placeholder="Your company"></div>
+        <div class="field"><label for="f-phone">Phone</label>
+          <input id="f-phone" value="${esc(c.phone)}" placeholder="(555) 555-5555"></div>
+        <div class="field"><label for="f-website">Website</label>
+          <input id="f-website" value="${esc(c.website)}" placeholder="https://yourcompany.com"></div>
+        <div class="field"><label for="f-area">Service area</label>
+          <input id="f-area" value="${esc(c.service_area)}" placeholder="Greater Phoenix, AZ"></div>
+      </div>
+      <div class="field"><label for="f-logo">Logo URL (optional)</label>
+        <input id="f-logo" value="${esc(c.logo_url)}" placeholder="https://yourcompany.com/logo.png"></div>
+      <div class="field"><label>Accent colour</label>
+        <div class="swatches" id="swatches" role="group" aria-label="Accent colour">
+          ${['c2410c','1d4ed8','15803d','0f172a','9d174d','7c3aed'].map(h =>
+            `<button type="button" class="sw" data-c="${h}" style="background:#${h}"
+              aria-pressed="${(c.accent||'').replace('#','') === h}" aria-label="#${h}"></button>`).join('')}
+          <input id="f-accent" value="${esc(c.accent || '#c2410c')}" style="width:120px;font-family:var(--mono)">
+        </div></div>
+    </div>
+
+    <div class="card">
+      <h2>Where your leads go</h2>
+      <p class="hint">Every enquiry from every widget is emailed here, usually within five minutes.</p>
+      <div class="field"><label for="f-notify">Lead email</label>
+        <input id="f-notify" type="email" value="${esc(d.notify)}" placeholder="you@yourcompany.com"></div>
+    </div>
+
+    <div class="card">
+      <h2>Your prices</h2>
+      <p class="hint">Your rates, not ours. The quote calculator shows these to your visitors —
+        leave it empty and it collects project details without quoting a price.</p>
+      <table id="rates">
+        <thead><tr><th>Service</th><th>Per</th><th>From&nbsp;$</th><th>To&nbsp;$</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button class="addrow" type="button" id="addrate">+ Add a service</button>
+    </div>
+
+    <div class="card">
+      <h2>Your embed code</h2>
+      <p class="hint">Paste this where you want the tool to appear. Nothing to download.</p>
+      <pre class="embed" id="embed">${esc(d.embed)}</pre>
+      <div class="row">
+        <button class="btn primary" id="copy" type="button">Copy the line</button>
+        <a class="btn" href="/tools/edge-visualizer/?shop=${encodeURIComponent(d.slug)}" target="_blank" rel="noopener">Preview &rarr;</a>
+        <a class="btn" href="${BILLING}/portal?slug=${encodeURIComponent(d.slug)}">Billing</a>
+      </div>
+    </div>
+
+    <div class="savebar">
+      <span class="state" id="savestate">Saved</span>
+      <button class="btn primary" id="save" type="button">Save changes</button>
+    </div>`;
+
+  const tbody = document.querySelector('#rates tbody');
+  (d.rates.length ? d.rates : [{}]).forEach(r => tbody.appendChild(rateRow(r)));
+  $('addrate').addEventListener('click', () => { tbody.appendChild(rateRow()); markDirty(); });
+
+  document.querySelectorAll('.card input').forEach(i => i.addEventListener('input', markDirty));
+  document.querySelectorAll('#swatches .sw').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#swatches .sw').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    $('f-accent').value = '#' + b.dataset.c; markDirty();
+  }));
+
+  $('copy').addEventListener('click', async e => {
+    try { await navigator.clipboard.writeText(DATA.embed); e.target.textContent = 'Copied'; }
+    catch { const r = document.createRange(); r.selectNodeContents($('embed'));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent = 'Selected — ⌘C'; }
+    setTimeout(() => { e.target.textContent = 'Copy the line'; }, 2400);
+  });
+
+  $('save').addEventListener('click', save);
+  addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+}
+
+async function save() {
+  const btn = $('save'), state = $('savestate');
+  btn.disabled = true; state.className = 'state'; state.textContent = 'Saving…';
+  const payload = {
+    config: {
+      name: $('f-name').value, phone: $('f-phone').value, website: $('f-website').value,
+      service_area: $('f-area').value, logo_url: $('f-logo').value, accent: $('f-accent').value,
+    },
+    notify: $('f-notify').value.trim(),
+    rates: readRates(),
+  };
+  try {
+    const r = await fetch(`${BILLING}/config?token=${encodeURIComponent(token)}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not save');
+    dirty = false;
+    state.className = 'state ok'; state.textContent = 'Saved — live on your site now';
+  } catch (e) {
+    // Never show "saved" for something that didn't save.
+    state.className = 'state err'; state.textContent = e.message;
+  }
+  btn.disabled = false;
+}
+
+(async () => {
+  if (!token) return signIn();
+  try {
+    const r = await fetch(`${BILLING}/config?token=${encodeURIComponent(token)}`);
+    const d = await r.json();
+    if (!r.ok) return signIn(d.error || 'That link has expired. Enter your email for a new one.');
+    render(d);
+  } catch (e) {
+    signIn("We couldn't load your settings. Enter your email for a fresh link.");
+  }
+})();
+</script>
+</body>
+</html>

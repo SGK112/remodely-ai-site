@@ -190,6 +190,92 @@ async function tenantByCustomer(customerId) {
   return all.find(t => t.stripe_customer === customerId)?.id || null;
 }
 
+/* ---------------------------------------------------------------------------
+   Dashboard auth.
+
+   A shop signs in with the email their leads go to — no password to forget, and
+   nothing for us to store or leak. The link carries a signed, expiring token;
+   the server re-checks the signature on every config call, so possession of an
+   old URL is worthless once it expires.
+   --------------------------------------------------------------------------- */
+const AUTH_SECRET = process.env.AUTH_SECRET || '';
+const TOKEN_TTL_MS = 1000 * 60 * 60 * 24 * 14;   // two weeks
+
+const b64u = b => Buffer.from(b).toString('base64url');
+
+function signToken(slug, expires) {
+  if (!AUTH_SECRET) throw new Error('AUTH_SECRET is not set');
+  const body = `${b64u(slug)}.${expires}`;
+  const sig = crypto.createHmac('sha256', AUTH_SECRET).update(body).digest('base64url');
+  return `${body}.${sig}`;
+}
+
+function verifyToken(token) {
+  if (!AUTH_SECRET || !token) return null;
+  const parts = String(token).split('.');
+  if (parts.length !== 3) return null;
+  const [rawSlug, exp, sig] = parts;
+  const expected = crypto.createHmac('sha256', AUTH_SECRET).update(`${rawSlug}.${exp}`).digest('base64url');
+  const a = Buffer.from(sig), b = Buffer.from(expected);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  if (Number(exp) < Date.now()) return null;
+  const slug = Buffer.from(rawSlug, 'base64url').toString();
+  return SLUG_RE.test(slug) ? slug : null;
+}
+
+/** Only these are writable. Anything about billing state is ours, not theirs. */
+const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb'];
+const PRIVATE_FIELDS = ['notify'];
+
+function cleanConfig(input) {
+  const out = {};
+  for (const k of PUBLIC_FIELDS) {
+    if (typeof input[k] !== 'string') continue;
+    let v = input[k].trim().slice(0, 400);
+    if (k === 'accent') { if (!/^#?[0-9a-fA-F]{6}$/.test(v)) continue; v = '#' + v.replace('#', '').toLowerCase(); }
+    out[k] = v;
+  }
+  return out;
+}
+
+/**
+ * A shop's own services and prices. This is the whole point of the rebuild:
+ * a calculator must quote THEIR numbers, never ours. Stored as an array so a
+ * roofer's "per square" and a painter's "per room" are the same shape.
+ */
+function cleanRates(list) {
+  if (!Array.isArray(list)) return null;
+  return list.slice(0, 40).map(r => ({
+    label: String(r.label ?? '').trim().slice(0, 60),
+    unit: String(r.unit ?? 'sq ft').trim().slice(0, 24),
+    low: Math.max(0, Number(r.low) || 0),
+    high: Math.max(0, Number(r.high) || 0),
+    note: String(r.note ?? '').trim().slice(0, 120),
+  })).filter(r => r.label && (r.low > 0 || r.high > 0));
+}
+
+async function sendMagicLink(tenant, email) {
+  const key = process.env.RESEND_API_KEY;
+  const link = `${SITE}/dashboard/?token=${encodeURIComponent(signToken(tenant.slug || tenant.id, Date.now() + TOKEN_TTL_MS))}`;
+  if (!key) { console.warn('[billing] RESEND_API_KEY unset — magic link not sent'); return link; }
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: process.env.LEAD_FROM || 'Remodely AI <support@remodely.ai>',
+      to: [email],
+      subject: 'Your settings link',
+      text: `Open your widget settings:\n\n${link}\n\nThe link works for two weeks. If you didn't ask for it, ignore this — nothing changes.`,
+      html: `<div style="font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a">
+        <p>Open your widget settings:</p>
+        <p><a href="${link}" style="background:#ea580c;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600">Open settings</a></p>
+        <p style="color:#64748b;font-size:13px">Works for two weeks. If you didn't ask for it, ignore this — nothing changes.</p></div>`,
+    }),
+  });
+  if (!r.ok) console.error('[billing] magic link send failed:', (await r.text()).slice(0, 160));
+  return link;
+}
+
 const json = (res, code, obj, extra = {}) => {
   res.writeHead(code, {
     'Content-Type': 'application/json',
@@ -243,6 +329,57 @@ const server = http.createServer(async (req, res) => {
         } catch (e) { console.error('[billing] price lookup failed', id, e.message); }
       }
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
+    }
+
+    // --- dashboard: sign in with the email their leads go to ----------------
+    if (url.pathname === '/auth/request' && req.method === 'POST') {
+      const { email } = JSON.parse((await readBody(req)) || '{}');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email || '')) return json(res, 400, { error: 'A valid email is required' });
+      const priv = await db.listDocs('tenant_private');
+      const match = priv.find(t => (t.notify || '').toLowerCase() === email.toLowerCase());
+      // Always answer the same way. Telling a stranger whether an address is a
+      // customer is a free customer list.
+      if (match) { try { await sendMagicLink(match, email); } catch (e) { console.error('[billing] magic link:', e.message); } }
+      else console.log(`[billing] settings link requested for unknown address`);
+      return json(res, 200, { sent: true });
+    }
+
+    if (url.pathname === '/config') {
+      const slug = verifyToken(url.searchParams.get('token'));
+      if (!slug) return json(res, 401, { error: 'That link has expired. Request a new one.' });
+
+      if (req.method === 'GET') {
+        const t = await db.getDoc('tenants', slug);
+        const p = await db.getDoc('tenant_private', slug);
+        if (!t) return json(res, 404, { error: 'Shop not found' });
+        return json(res, 200, {
+          slug,
+          active: !!t.active,
+          status: t.status || null,
+          config: Object.fromEntries(PUBLIC_FIELDS.map(k => [k, t[k] || ''])),
+          notify: p?.notify || '',
+          rates: (() => { try { return JSON.parse(t.rates_json || '[]'); } catch { return []; } })(),
+          embed: embedSnippet(slug),
+          tools: ['edge-visualizer', 'quote-calculator', 'design-gallery'],
+        });
+      }
+
+      if (req.method === 'PUT' || req.method === 'POST') {
+        const body = JSON.parse((await readBody(req)) || '{}');
+        const patch = cleanConfig(body.config || {});
+        const rates = cleanRates(body.rates);
+        // Rates live as JSON on the tenant doc: the widget fetches one document
+        // unauthenticated, and a subcollection would need a second round trip.
+        if (rates) patch.rates_json = JSON.stringify(rates);
+        if (Object.keys(patch).length) {
+          patch.updated_at = new Date().toISOString();
+          await db.patchDoc('tenants', slug, patch);
+        }
+        if (typeof body.notify === 'string' && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(body.notify.trim())) {
+          await db.patchDoc('tenant_private', slug, { notify: body.notify.trim(), updated_at: new Date().toISOString() });
+        }
+        return json(res, 200, { saved: true, fields: Object.keys(patch) });
+      }
     }
 
     // Self-serve signup: create the shop, then send them straight to Checkout.
