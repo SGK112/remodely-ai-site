@@ -158,11 +158,14 @@
         applyAccent(accentParam || t.accent || '#c2410c');
         // A shop's own services and prices, set in their dashboard. Absent or
         // empty is normal and meaningful: quote nothing rather than guess.
-        let rates = [];
+        let rates = [], showcase = [];
         try { rates = JSON.parse(t.rates_json || '[]'); } catch (e) { rates = []; }
+        try { showcase = JSON.parse(t.showcase_json || '[]'); } catch (e) { showcase = []; }
         settle({
           slug: shopParam, name: t.name || shopParam, accent: t.accent, active: true,
           rates: Array.isArray(rates) ? rates : [],
+          showcase: Array.isArray(showcase) ? showcase : [],
+          serviceZips: (t.service_zips || '').split(/[^0-9A-Za-z]+/).filter(Boolean),
           phone: t.phone || '', website: t.website || '',
           serviceArea: t.service_area || '', logo: t.logo_url || '',
         });

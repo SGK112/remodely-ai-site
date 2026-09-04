@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Service Area Checker</title>
+<meta name="description" content="Let visitors check in one step whether you cover their address — and capture the ones who do instead of losing them to a phone call they never make.">
+<link rel="canonical" href="https://www.remodely.ai/tools/service-area/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=3"></script>
+<script src="/tools/_leadform.js?v=2"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --ok:#15803d;--ok-bg:rgba(21,128,61,.10);--no:#b45309;--no-bg:rgba(180,83,9,.10)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --ok:#4ade80;--ok-bg:rgba(74,222,128,.12);--no:#fbbf24;--no-bg:rgba(251,191,36,.12);
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:660px;margin:0 auto;padding:26px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,34px);line-height:1.06;margin:4px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:15.5px;margin-bottom:22px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;
+        box-shadow:var(--shadow)}
+  label{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut);
+        font-weight:700;margin-bottom:7px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input[type=text]{font:inherit;font-size:21px;font-weight:600;letter-spacing:.06em;padding:13px 15px;
+    border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--ink);
+    width:170px;font-variant-numeric:tabular-nums}
+  input[type=text]:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  button.go{font:inherit;font-weight:700;font-size:15.5px;cursor:pointer;padding:13px 22px;border:0;
+    border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  button.go:hover{filter:brightness(1.07)}
+
+  .result{display:none;margin-top:18px;padding:17px 19px;border-radius:14px;font-size:15.5px;line-height:1.55}
+  .result.show{display:block}
+  .result.yes{background:var(--ok-bg);border:1px solid var(--ok)}
+  .result.no{background:var(--no-bg);border:1px solid var(--no)}
+  .result h2{font-size:17px;margin-bottom:5px;letter-spacing:-.01em}
+  .result p{color:var(--mut)}
+  .result .jump{display:inline-block;margin-top:12px;font-weight:700;color:var(--gold-deep);
+                text-decoration:none;font-size:15px}
+  .result .jump:hover{text-decoration:underline}
+
+  .areas{margin-top:18px;font-size:13px;color:var(--mut);line-height:1.7}
+  .areas b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:26px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Service area</p>
+  <h1 id="head">Do we cover <em>your address</em>?</h1>
+  <p class="sub" id="sub">Enter your ZIP and find out in one step — no phone call, no waiting.</p>
+
+  <div class="card">
+    <form id="check">
+      <label for="zip">Your ZIP code</label>
+      <div class="row">
+        <input id="zip" type="text" inputmode="numeric" autocomplete="postal-code"
+               maxlength="10" placeholder="85379" required>
+        <button class="go" type="submit">Check</button>
+      </div>
+    </form>
+    <div class="result" id="result" role="status" aria-live="polite"></div>
+    <p class="areas" id="areas"></p>
+  </div>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ZIPS = [], shopName = null, lastZip = '', covered = null;
+
+const norm = z => String(z || '').trim().toUpperCase().replace(/\s+/g, '').slice(0, 10);
+
+function check(e) {
+  e.preventDefault();
+  const zip = norm($('zip').value);
+  if (!zip) { $('zip').reportValidity && $('zip').reportValidity(); return; }
+  lastZip = zip;
+  const who = shopName || 'we';
+  const box = $('result');
+
+  // No list configured is not a "no" — never tell a visitor they're out of area
+  // on the strength of a field the shop hasn't filled in.
+  if (!ZIPS.length) {
+    covered = null;
+    box.className = 'result yes show';
+    box.innerHTML = `<h2>Let's find out.</h2>
+      <p>${esc(who === 'we' ? 'We' : who)} covers a lot of ground — send your details and you'll get a
+      straight answer today, along with a price for the work.</p>
+      <a class="jump" href="#leadForm">Send my details &rarr;</a>`;
+    return;
+  }
+
+  covered = ZIPS.includes(zip);
+  if (covered) {
+    box.className = 'result yes show';
+    box.innerHTML = `<h2>Yes — ${esc(zip)} is covered.</h2>
+      <p>${esc(who === 'we' ? "We work" : who + ' works')} in your area. Send your details and you'll
+      hear back with a real number for your job.</p>
+      <a class="jump" href="#leadForm">Get my quote &rarr;</a>`;
+  } else {
+    // Honest, and still useful: a near-miss is often worth a call, so offer it
+    // rather than dead-ending someone who wants to give you money.
+    box.className = 'result no show';
+    box.innerHTML = `<h2>${esc(zip)} isn't in the usual area.</h2>
+      <p>That doesn't always mean no — bigger jobs are often worth the drive. Send your details and
+      ${esc(who)} will tell you straight either way.</p>
+      <a class="jump" href="#leadForm">Ask anyway &rarr;</a>`;
+  }
+}
+
+Remodely.toolSource = 'service-area';
+Remodely.toolName = 'Service Area Checker';
+
+Remodely.ready(t => {
+  shopName = t && t.name ? t.name : null;
+  ZIPS = (t && Array.isArray(t.serviceZips) ? t.serviceZips : []).map(norm).filter(Boolean);
+
+  const isDemo = !t;
+  if (isDemo) ZIPS = ['85379', '85374', '85345', '85302', '85008', '85251'];
+
+  if (shopName) {
+    $('eyebrow').textContent = shopName;
+    $('head').innerHTML = `Does ${esc(shopName)} cover <em>your address</em>?`;
+  }
+  if (t && t.serviceArea) $('sub').textContent = `${t.serviceArea} — enter your ZIP to check in one step.`;
+
+  if (ZIPS.length) {
+    const show = ZIPS.slice(0, 12).join(' · ');
+    $('areas').innerHTML = `<b>Covered ZIPs:</b> ${esc(show)}${ZIPS.length > 12 ? ` and ${ZIPS.length - 12} more` : ''}`;
+  }
+  $('foot').textContent = isDemo
+    ? 'Example ZIPs — every shop sets their own in their dashboard.'
+    : '';
+
+  $('check').addEventListener('submit', check);
+
+  Remodely.mountLeadForm({
+    after: '.card',
+    heading: 'Tell us about your job',
+    context: () => lastZip
+      ? `ZIP ${lastZip} — ${covered === null ? 'area not listed' : covered ? 'in service area' : 'outside usual area'}`
+      : 'Checking service area',
+  });
+});
+</script>
+</body>
+</html>

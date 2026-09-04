@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Before &amp; After Slider</title>
+<meta name="description" content="Show your own work as a drag-to-compare before and after, then capture the visitor who wants the same thing.">
+<link rel="canonical" href="https://www.remodely.ai/tools/before-after/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=3"></script>
+<script src="/tools/_leadform.js?v=2"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(24px,4vw,34px);line-height:1.06;margin:4px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:15.5px;margin-bottom:20px;max-width:60ch}
+
+  /* the comparison — a range input drives it, so it works with a keyboard too */
+  .ba{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
+      background:var(--panel);aspect-ratio:3/2;user-select:none;touch-action:pan-y}
+  .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .ba .after{clip-path:inset(0 0 0 var(--split,50%))}
+  .ba .tagb,.ba .taga{position:absolute;top:12px;font-size:11px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:#fff;background:rgba(3,7,18,.6);padding:5px 10px;border-radius:999px}
+  .ba .tagb{left:12px}.ba .taga{right:12px}
+  .handle{position:absolute;top:0;bottom:0;width:3px;background:#fff;left:var(--split,50%);
+          transform:translateX(-50%);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .handle::after{content:"";position:absolute;top:50%;left:50%;width:42px;height:42px;
+    transform:translate(-50%,-50%);border-radius:50%;background:#fff;
+    box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .handle::before{content:"‹ ›";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:2;font-size:17px;font-weight:700;color:#0f172a;letter-spacing:2px}
+  .slider{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+  .slider:focus-visible + .handle{box-shadow:0 0 0 3px var(--gold)}
+
+  .cap{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .cap p{font-size:14.5px;color:var(--mut)}
+  .cap b{color:var(--ink)}
+  .nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+  .nav button{font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:7px 13px;border-radius:999px;
+    border:1px solid var(--line);background:transparent;color:var(--mut)}
+  .nav button.on{border-color:var(--gold);background:var(--gold);color:#fff}
+  .nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .cta{display:inline-block;margin-top:20px;font:inherit;font-weight:700;font-size:15.5px;
+       padding:13px 22px;border-radius:12px;color:#fff;text-decoration:none;
+       background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  .cta:hover{filter:brightness(1.07)}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:24px;
+         color:var(--mut);font-size:15px;line-height:1.6}
+  .empty b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:26px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Our work</p>
+  <h1 id="head">See the <em>difference</em>.</h1>
+  <p class="sub" id="sub">Drag the handle to compare before and after on real jobs.</p>
+  <div id="mount"></div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let PAIRS = [], idx = 0, shopName = null;
+
+function paint() {
+  const p = PAIRS[idx];
+  $('mount').innerHTML = `
+    <div class="ba" id="ba" style="--split:50%">
+      <img class="before" src="${esc(p.before)}" alt="Before${p.caption ? ' — ' + esc(p.caption) : ''}">
+      <img class="after" src="${esc(p.after)}" alt="After${p.caption ? ' — ' + esc(p.caption) : ''}">
+      <span class="tagb">Before</span><span class="taga">After</span>
+      <input class="slider" id="split" type="range" min="0" max="100" value="50"
+             aria-label="Compare before and after">
+      <div class="handle" aria-hidden="true"></div>
+    </div>
+    <div class="cap">
+      <p>${p.caption ? '<b>' + esc(p.caption) + '</b>' : ''}</p>
+      <p>${idx + 1} of ${PAIRS.length}</p>
+    </div>
+    ${PAIRS.length > 1 ? `<div class="nav" id="nav">${PAIRS.map((x, i) =>
+      `<button type="button" data-i="${i}" class="${i === idx ? 'on' : ''}">${esc(x.caption || 'Job ' + (i + 1))}</button>`).join('')}</div>` : ''}
+    <a class="cta" href="#leadForm">I want this &rarr;</a>`;
+
+  const ba = $('ba'), split = $('split');
+  const set = v => ba.style.setProperty('--split', v + '%');
+  split.addEventListener('input', () => set(split.value));
+  // Dragging anywhere on the image feels right; the range input stays the
+  // source of truth so keyboard and screen readers keep working.
+  const drag = e => {
+    if (e.buttons !== 1 && e.type === 'pointermove') return;
+    const r = ba.getBoundingClientRect();
+    const v = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+    split.value = v; set(v);
+  };
+  ba.addEventListener('pointerdown', drag);
+  ba.addEventListener('pointermove', drag);
+
+  const nav = $('nav');
+  if (nav) nav.querySelectorAll('button').forEach(b =>
+    b.addEventListener('click', () => { idx = Number(b.dataset.i); paint(); }));
+}
+
+Remodely.toolSource = 'before-after';
+Remodely.toolName = 'Before & After';
+
+Remodely.ready(t => {
+  shopName = t && t.name ? t.name : null;
+  PAIRS = (t && Array.isArray(t.showcase) ? t.showcase : []).filter(p => p && p.before && p.after);
+
+  const isDemo = !t;
+  if (isDemo) {
+    // Vendor room photography already shipped with the gallery — real images so
+    // the control can actually be tried, clearly labelled as examples.
+    PAIRS = [
+      { before: '/tools/design-gallery/rooms/arabescato-corchia.jpg', after: '/tools/design-gallery/rooms/calacatta-borghini.jpg', caption: 'Kitchen refit' },
+      { before: '/tools/design-gallery/rooms/blue-tempest.jpg', after: '/tools/design-gallery/rooms/bianco-dolomiti.jpg', caption: 'Master bath' },
+    ];
+  }
+
+  if (shopName) { $('eyebrow').textContent = shopName; $('head').innerHTML = `Work <em>${esc(shopName)}</em> has done`; }
+
+  if (!PAIRS.length) {
+    // A shop with no photos yet: say so plainly rather than render an empty frame.
+    $('mount').innerHTML = `<div class="empty"><b>No before-and-after photos yet.</b><br>
+      Add pairs in your dashboard and they'll appear here — nothing else to do.</div>`;
+    $('sub').textContent = '';
+  } else {
+    paint();
+  }
+
+  $('foot').textContent = isDemo ? 'Example images — every shop uses their own photos.' : '';
+
+  Remodely.mountLeadForm({
+    after: '#mount',
+    heading: 'Want something like this?',
+    context: () => PAIRS[idx] ? `Liked: ${PAIRS[idx].caption || 'job ' + (idx + 1)}` : 'Browsing before and afters',
+  });
+});
+</script>
+</body>
+</html>

@@ -224,7 +224,7 @@ function verifyToken(token) {
 }
 
 /** Only these are writable. Anything about billing state is ours, not theirs. */
-const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb'];
+const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb', 'service_zips'];
 const PRIVATE_FIELDS = ['notify'];
 
 function cleanConfig(input) {
@@ -252,6 +252,18 @@ function cleanRates(list) {
     high: Math.max(0, Number(r.high) || 0),
     note: String(r.note ?? '').trim().slice(0, 120),
   })).filter(r => r.label && (r.low > 0 || r.high > 0));
+}
+
+/** Before/after pairs the shop pastes in. Only http(s) URLs — an embed that
+ *  renders arbitrary strings as image sources is an injection waiting to happen. */
+function cleanShowcase(list) {
+  if (!Array.isArray(list)) return null;
+  const ok = u => typeof u === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(u.trim());
+  return list.slice(0, 24).map(x => ({
+    before: ok(x.before) ? x.before.trim() : '',
+    after: ok(x.after) ? x.after.trim() : '',
+    caption: String(x.caption ?? '').trim().slice(0, 90),
+  })).filter(x => x.before && x.after);
 }
 
 async function sendMagicLink(tenant, email) {
@@ -359,6 +371,7 @@ const server = http.createServer(async (req, res) => {
           config: Object.fromEntries(PUBLIC_FIELDS.map(k => [k, t[k] || ''])),
           notify: p?.notify || '',
           rates: (() => { try { return JSON.parse(t.rates_json || '[]'); } catch { return []; } })(),
+          showcase: (() => { try { return JSON.parse(t.showcase_json || '[]'); } catch { return []; } })(),
           embed: embedSnippet(slug),
           tools: ['edge-visualizer', 'quote-calculator', 'design-gallery'],
         });
@@ -371,6 +384,8 @@ const server = http.createServer(async (req, res) => {
         // Rates live as JSON on the tenant doc: the widget fetches one document
         // unauthenticated, and a subcollection would need a second round trip.
         if (rates) patch.rates_json = JSON.stringify(rates);
+        const showcase = cleanShowcase(body.showcase);
+        if (showcase) patch.showcase_json = JSON.stringify(showcase);
         if (Object.keys(patch).length) {
           patch.updated_at = new Date().toISOString();
           await db.patchDoc('tenants', slug, patch);

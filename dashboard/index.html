@@ -170,6 +170,23 @@ function rateRow(r = {}) {
   tr.querySelectorAll('input').forEach(i => i.addEventListener('input', markDirty));
   return tr;
 }
+function shotRow(x = {}) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input class="b" value="${esc(x.before || '')}" placeholder="https://…/before.jpg"></td>
+    <td><input class="a" value="${esc(x.after || '')}" placeholder="https://…/after.jpg"></td>
+    <td><input class="c" value="${esc(x.caption || '')}" placeholder="Kitchen refit"></td>
+    <td><button class="rm" type="button" aria-label="Remove">&times;</button></td>`;
+  tr.querySelector('.rm').addEventListener('click', () => { tr.remove(); markDirty(); });
+  tr.querySelectorAll('input').forEach(i => i.addEventListener('input', markDirty));
+  return tr;
+}
+const readShowcase = () => [...document.querySelectorAll('#showcase tbody tr')].map(tr => ({
+  before: tr.querySelector('.b').value.trim(),
+  after: tr.querySelector('.a').value.trim(),
+  caption: tr.querySelector('.c').value.trim(),
+})).filter(x => x.before && x.after);
+
 const readRates = () => [...document.querySelectorAll('#rates tbody tr')].map(tr => ({
   label: tr.querySelector('.label').value.trim(),
   unit: tr.querySelector('.unit').value.trim() || 'sq ft',
@@ -239,6 +256,25 @@ function render(d) {
     </div>
 
     <div class="card">
+      <h2>Where you work</h2>
+      <p class="hint">The ZIPs you cover. The service-area widget checks a visitor's postcode against
+        this — leave it empty and it takes their details instead of turning anyone away.</p>
+      <div class="field"><label for="f-zips">Covered ZIP codes</label>
+        <textarea id="f-zips" rows="3" placeholder="85379, 85374, 85345, 85302">${esc(c.service_zips)}</textarea></div>
+    </div>
+
+    <div class="card">
+      <h2>Before &amp; after photos</h2>
+      <p class="hint">Paste image URLs from your own site. Both must be https. They appear in the
+        before/after slider in the order listed.</p>
+      <table id="showcase">
+        <thead><tr><th>Before URL</th><th>After URL</th><th>Caption</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button class="addrow" type="button" id="addshot">+ Add a pair</button>
+    </div>
+
+    <div class="card">
       <h2>Your embed code</h2>
       <p class="hint">Paste this where you want the tool to appear. Nothing to download.</p>
       <pre class="embed" id="embed">${esc(d.embed)}</pre>
@@ -257,6 +293,11 @@ function render(d) {
   const tbody = document.querySelector('#rates tbody');
   (d.rates.length ? d.rates : [{}]).forEach(r => tbody.appendChild(rateRow(r)));
   $('addrate').addEventListener('click', () => { tbody.appendChild(rateRow()); markDirty(); });
+
+  const shots = document.querySelector('#showcase tbody');
+  (d.showcase && d.showcase.length ? d.showcase : [{}]).forEach(x => shots.appendChild(shotRow(x)));
+  $('addshot').addEventListener('click', () => { shots.appendChild(shotRow()); markDirty(); });
+  document.querySelectorAll('.card textarea').forEach(t => t.addEventListener('input', markDirty));
 
   document.querySelectorAll('.card input').forEach(i => i.addEventListener('input', markDirty));
   document.querySelectorAll('#swatches .sw').forEach(b => b.addEventListener('click', () => {
@@ -282,9 +323,11 @@ async function save() {
     config: {
       name: $('f-name').value, phone: $('f-phone').value, website: $('f-website').value,
       service_area: $('f-area').value, logo_url: $('f-logo').value, accent: $('f-accent').value,
+      service_zips: $('f-zips').value,
     },
     notify: $('f-notify').value.trim(),
     rates: readRates(),
+    showcase: readShowcase(),
   };
   try {
     const r = await fetch(`${BILLING}/config?token=${encodeURIComponent(token)}`, {
