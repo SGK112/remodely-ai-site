@@ -454,6 +454,18 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
     }
 
+    // A shared report link resolves here.
+    if (url.pathname === '/report' && req.method === 'GET') {
+      const id = (url.searchParams.get('id') || '').replace(/[^a-z0-9]/gi, '').slice(0, 24);
+      if (!id) return json(res, 400, { error: 'missing id' });
+      let doc;
+      try { doc = await db.getDoc('reports', id); }
+      catch { return json(res, 404, { error: 'not found' }); }
+      if (!doc) return json(res, 404, { error: 'not found' });
+      // Cache: a report is a snapshot of a moment and never changes.
+      return json(res, 200, doc, { 'Cache-Control': 'public, max-age=86400' });
+    }
+
     // Public audit. Rate-limited by IP because it makes several outbound
     // requests per call, including paid Places lookups.
     if (url.pathname === '/ai-visibility' && req.method === 'POST') {
@@ -471,6 +483,22 @@ const server = http.createServer(async (req, res) => {
       if (!key) return json(res, 503, { error: 'Audit is unavailable right now' });
       try {
         const report = await audit({ url: String(target).trim(), name: String(name || '').trim(), key });
+
+        // A report that only exists in one browser tab cannot be shared. Store
+        // it under a short id so the link a contractor texts resolves to the
+        // same report their partner opens.
+        const id = Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-3);
+        try {
+          await db.setDoc('reports', id, {
+            ...report, created: new Date().toISOString(),
+            query_url: String(target).trim(), query_name: String(name || '').trim(),
+          });
+          report.id = id;
+          report.share_url = `${SITE}/r/?id=${id}`;
+        } catch (e) {
+          // Sharing is a bonus; never lose the report the visitor is waiting on.
+          console.error('[billing] report save:', e.message);
+        }
         return json(res, 200, report);
       } catch (e) {
         console.error('[billing] ai-visibility:', e.message);

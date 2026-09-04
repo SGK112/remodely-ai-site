@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Visibility Report · Remodely AI</title>
+<meta name="description" content="What AI assistants find when they look this business up — and the specific steps to fix it.">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="AI Visibility Report — Remodely AI">
+<meta property="og:description" content="Assistants recommend whoever they can verify. Here's what they find when they look this business up.">
+<meta property="og:image" content="https://www.remodely.ai/images/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Visibility Report — Remodely AI">
+<meta name="twitter:description" content="Assistants recommend whoever they can verify. Here's what they find when they look this business up.">
+<meta name="twitter:image" content="https://www.remodely.ai/images/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --ink:#0f172a; --body:#475569; --mut:#64748b; --line:#e2e8f0; --paper:#fff; --bg:#f1f5f9;
+    --navy:#0c1222; --navy2:#1c2942; --orange:#f97316; --orange-lt:#fb923c;
+    --ok:#15803d; --ok-bg:#f0fdf4; --bad:#b91c1c; --bad-bg:#fef2f2; --unk:#64748b; --unk-bg:#f8fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .sheet{max-width:780px;margin:0 auto;background:var(--paper);min-height:100vh;
+         box-shadow:0 0 60px -20px rgba(15,23,42,.22)}
+
+  /* masthead — the brand people see first when they open the text */
+  .head{background:radial-gradient(760px 420px at 82% -30%, var(--navy2), var(--navy) 62%);
+        color:#fff;padding:30px 40px 34px;position:relative;overflow:hidden}
+  .head::after{content:"";position:absolute;inset:auto 0 0 0;height:5px;
+    background:linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853)}
+  .brand{display:flex;align-items:center;gap:11px;margin-bottom:26px}
+  .brand svg{width:34px;height:34px;flex:none}
+  .brand b{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .brand b i{font-style:normal;color:var(--orange-lt)}
+  .brand .kind{margin-left:auto;font-size:11px;letter-spacing:.17em;text-transform:uppercase;
+               color:rgba(255,255,255,.5);font-weight:700}
+  .subject{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange-lt);font-weight:700}
+  .head h1{font-size:clamp(25px,4.6vw,34px);line-height:1.1;letter-spacing:-.028em;margin:7px 0 4px;font-weight:700}
+  .head .meta{font-size:13.5px;color:rgba(255,255,255,.55)}
+
+  .scorebox{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-top:24px;
+            border-top:1px solid rgba(255,255,255,.13);padding-top:22px}
+  .num{font-size:62px;font-weight:800;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+  .num small{font-size:20px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:0}
+  .vd{font-size:16px;font-weight:600;color:rgba(255,255,255,.85);padding-bottom:5px}
+
+  .bars{padding:26px 40px 4px;display:flex;flex-direction:column;gap:14px}
+  .bar{display:grid;grid-template-columns:1fr 44px;gap:7px 12px;align-items:center}
+  .bar .nm{font-size:14px;font-weight:600}
+  .bar .nm i{font-style:normal;font-weight:400;color:var(--mut);font-size:13px}
+  .bar .pc{text-align:right;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .bar .track{grid-column:1/-1;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+  .bar .fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--orange-lt),var(--orange))}
+  .bar.good .fill{background:linear-gradient(90deg,#4ade80,#15803d)}
+
+  section{padding:0 40px}
+  h2.sec{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);
+         font-weight:700;margin:34px 0 14px;padding-top:22px;border-top:1px solid var(--line)}
+  section:first-of-type h2.sec{border-top:0;padding-top:0}
+
+  .item{border:1px solid var(--line);border-left:3px solid var(--bad);border-radius:11px;
+        padding:16px 18px;margin-bottom:10px;background:var(--bad-bg)}
+  .item.ok{border-left-color:var(--ok);background:var(--ok-bg)}
+  .item.unk{border-left-color:var(--unk);background:var(--unk-bg)}
+  .item .t{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:650;letter-spacing:-.01em}
+  .item .mk{flex:none;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
+            font-size:11.5px;font-weight:800;color:#fff;background:var(--bad)}
+  .item.ok .mk{background:var(--ok)} .item.unk .mk{background:var(--unk)}
+  .item .d{font-size:14.5px;color:var(--body);margin-top:6px}
+  .item .fx{font-size:14.5px;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(15,23,42,.14)}
+  .item .fx b{color:#c2410c}
+  details.pass summary{cursor:pointer;font-size:13.5px;color:var(--mut);font-weight:600;padding:11px 14px;
+    border:1px dashed var(--line);border-radius:11px;list-style:none}
+  details.pass summary::-webkit-details-marker{display:none}
+  details.pass[open] summary{margin-bottom:10px}
+
+  /* how we work — the part that turns a report into a conversation */
+  .steps{counter-reset:s;display:flex;flex-direction:column;gap:2px}
+  .step{display:grid;grid-template-columns:36px 1fr;gap:15px;padding:15px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .step::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;
+    background:var(--navy);color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center}
+  .step h3{font-size:15.5px;font-weight:650;letter-spacing:-.01em;margin-bottom:3px}
+  .step p{font-size:14.5px;color:var(--body)}
+
+  .cta{margin:8px 40px 0;background:radial-gradient(620px 300px at 84% -40%, var(--navy2), var(--navy) 64%);
+       border-radius:16px;padding:28px;color:#fff}
+  .cta h2{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+  .cta p{font-size:15px;color:rgba(255,255,255,.7);margin-bottom:19px;max-width:52ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;font-size:15px;font-weight:700;text-decoration:none;padding:13px 22px;
+       border-radius:11px;color:#fff;background:linear-gradient(135deg,var(--orange-lt),var(--orange));border:0;
+       font-family:inherit;cursor:pointer}
+  .btn.ghost{background:none;border:1px solid rgba(255,255,255,.24);font-weight:600}
+  .btn:hover{filter:brightness(1.07)}
+
+  .share{padding:26px 40px 12px}
+  .share h2{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:12px}
+  .share .row .btn{background:var(--paper);color:var(--ink);border:1px solid var(--line);font-weight:600;font-size:14.5px}
+  .share .row .btn:hover{border-color:var(--orange);color:#c2410c;filter:none}
+  .copied{font-size:13.5px;color:var(--ok);font-weight:600;margin-top:10px;display:none}
+  .copied.on{display:block}
+
+  footer{padding:26px 40px 46px;color:var(--mut);font-size:12.5px;line-height:1.7;
+         border-top:1px solid var(--line);margin-top:32px}
+  footer a{color:#c2410c;font-weight:600;text-decoration:none}
+  .load,.err{padding:70px 40px;text-align:center;color:var(--mut);font-size:15.5px}
+  .err b{color:var(--ink);display:block;font-size:17px;margin-bottom:6px}
+
+  @media (max-width:640px){
+    .head,section,.share,footer{padding-left:22px;padding-right:22px}
+    .cta{margin-left:22px;margin-right:22px;padding:24px 22px}
+    .num{font-size:52px}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none}
+    .share,.cta .row{display:none} .item{break-inside:avoid} details.pass{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet">
+  <div class="load" id="load">Loading the report…</div>
+</div>
+
+<script>
+const BILLING = 'https://remodely-billing.onrender.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const MARK = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#4285F4"/><stop offset="25%" stop-color="#EA4335"/>
+  <stop offset="50%" stop-color="#FBBC05"/><stop offset="100%" stop-color="#34A853"/></linearGradient></defs>
+  <path d="M3 21V10l9-7 9 7v11" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M21 21h-7" stroke="#34A853" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+
+const AREAS = [
+  ['authority','Authority','how much corroboration exists'],
+  ['entity','Entity','whether you can be identified'],
+  ['structured','Structured data','machine-readable details'],
+  ['footprint','Footprint','where assistants look you up'],
+  ['freshness','Access & freshness','whether crawlers can read you'],
+];
+const verdict = n => n >= 85 ? 'Strong — easy to verify.'
+  : n >= 70 ? 'Decent, with real gaps.'
+  : n >= 50 ? 'Assistants will hesitate to recommend this business.'
+  : 'Effectively invisible to AI assistants.';
+
+function render(r) {
+  const fails = r.findings.filter(f => !f.ok);
+  const passes = r.findings.filter(f => f.ok);
+  const unk = r.unchecked || [];
+  const when = r.created ? new Date(r.created).toLocaleDateString(undefined,
+    { year:'numeric', month:'long', day:'numeric' }) : '';
+
+  const item = (f, cls, mk) => `<div class="item ${cls}">
+      <p class="t"><span class="mk">${mk}</span>${esc(f.title)}</p>
+      <p class="d">${esc(f.detail || f.why)}</p>
+      ${f.fix ? `<p class="fx"><b>Do this:</b> ${esc(f.fix)}</p>` : ''}
+    </div>`;
+
+  $('sheet').innerHTML = `
+    <div class="head">
+      <div class="brand">${MARK}<b>remodely<i>.ai</i></b><span class="kind">AI visibility report</span></div>
+      <p class="subject">Prepared for</p>
+      <h1>${esc(r.business || r.query_name || r.site || 'This business')}</h1>
+      <p class="meta">${esc(r.site || '')}${when ? ' · ' + esc(when) : ''}</p>
+      <div class="scorebox">
+        <span class="num">${r.score}<small>/100</small></span>
+        <span class="vd">${esc(verdict(r.score))}</span>
+      </div>
+    </div>
+
+    <div class="bars">
+      ${AREAS.filter(([k]) => r.areas && r.areas[k] != null).map(([k,nm,note]) => `
+        <div class="bar ${r.areas[k] >= 80 ? 'good' : ''}">
+          <span class="nm">${nm} <i>— ${note}</i></span>
+          <span class="pc">${r.areas[k]}%</span>
+          <span class="track"><span class="fill" style="width:${r.areas[k]}%"></span></span>
+        </div>`).join('')}
+    </div>
+
+    <section>
+      <h2 class="sec">${fails.length ? `${fails.length} thing${fails.length>1?'s':''} to fix — biggest first` : 'Nothing to fix'}</h2>
+      ${fails.length ? fails.map(f => item(f,'','!')).join('')
+        : `<div class="item ok"><p class="t"><span class="mk">✓</span>Every check passed.</p>
+           <p class="d">This business is as verifiable as this report can measure. Reviews are the signal that decays — keep them coming in.</p></div>`}
+      ${unk.length ? `<h2 class="sec">Couldn't check</h2>${unk.map(u => item(u,'unk','?')).join('')}` : ''}
+      ${passes.length ? `<details class="pass"><summary>${passes.length} check${passes.length>1?'s':''} already passing — show</summary>
+        ${passes.map(f => item(f,'ok','✓')).join('')}</details>` : ''}
+    </section>
+
+    <section>
+      <h2 class="sec">How we'd fix this</h2>
+      <div class="steps">
+        <div class="step"><div><h3>A 15-minute call</h3>
+          <p>We walk this report together and agree which items are worth doing. No charge, no obligation — if the fixes are ones you can make yourself, we'll say so.</p></div></div>
+        <div class="step"><div><h3>We do the off-site work</h3>
+          <p>Claiming and correcting the directory listings, making your name, address and phone agree everywhere, and getting your licence and profiles linked so an assistant can verify you.</p></div></div>
+        <div class="step"><div><h3>We fix the site markup</h3>
+          <p>Business schema, ratings, profile links and crawler rules — written and installed, not handed to you as a to-do list.</p></div></div>
+        <div class="step"><div><h3>You capture what arrives</h3>
+          <p>Being found only pays if the visitors turn into calls. Our widgets — instant quotes, service-area checks, callback requests, your real reviews — go on your site branded to your business.</p></div></div>
+        <div class="step"><div><h3>We re-run this report</h3>
+          <p>Same checks, same scoring, so the change is measured rather than claimed.</p></div></div>
+      </div>
+    </section>
+
+    <div class="cta">
+      <h2>Want this handled?</h2>
+      <p>Start with the call. If you'd rather look at the tools first, they're all free to try and priced in one place.</p>
+      <div class="row">
+        <a class="btn" href="mailto:support@remodely.ai?subject=${encodeURIComponent('AI visibility report — ' + (r.business||''))}&body=${encodeURIComponent("I'd like to talk through this report: " + location.href)}">Book the call &rarr;</a>
+        <a class="btn ghost" href="/widgets/">See the widgets</a>
+        <a class="btn ghost" href="/pricing/">Pricing</a>
+      </div>
+    </div>
+
+    <div class="share">
+      <h2>Send this to someone</h2>
+      <div class="row">
+        <button class="btn" type="button" id="copy">Copy link</button>
+        <a class="btn" id="sms">Text it</a>
+        <a class="btn" id="mail">Email it</a>
+        <button class="btn" type="button" onclick="window.print()">Save as PDF</button>
+      </div>
+      <p class="copied" id="copied">Link copied — paste it anywhere.</p>
+    </div>
+
+    <footer>
+      Prepared by <a href="https://www.remodely.ai/">Remodely AI</a> · Run your own free report at
+      <a href="https://www.remodely.ai/tools/ai-visibility/">remodely.ai/tools/ai-visibility</a><br>
+      Scored on how AI assistants weigh a local business: content authority 30%, entity recognition 25%,
+      structured data 20%, digital footprint 15%, freshness 10%.
+    </footer>`;
+
+  const who = r.business || 'this business';
+  const line = `${who} scored ${r.score}/100 on AI visibility — here's the full report: ${location.href}`;
+  $('sms').href = `sms:?&body=${encodeURIComponent(line)}`;
+  $('mail').href = `mailto:?subject=${encodeURIComponent('AI visibility report — ' + who)}&body=${encodeURIComponent(line)}`;
+  $('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href); $('copied').classList.add('on'); }
+    catch { prompt('Copy this link:', location.href); }
+  });
+
+  document.title = `${who} — ${r.score}/100 AI Visibility Report · Remodely AI`;
+}
+
+(async () => {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) return show("This link is missing its report id.", true);
+  try {
+    const res = await fetch(`${BILLING}/report?id=${encodeURIComponent(id)}`);
+    if (!res.ok) throw new Error('not found');
+    render(await res.json());
+  } catch (e) {
+    show("We couldn't find that report. Reports are kept for a while but not forever — running a fresh one takes about fifteen seconds.", true);
+  }
+})();
+
+function show(msg, isErr) {
+  $('sheet').innerHTML = `<div class="err"><b>${isErr ? 'Report unavailable' : ''}</b>${esc(msg)}
+    <p style="margin-top:18px"><a class="btn" href="/tools/ai-visibility/">Run a fresh report &rarr;</a></p></div>`;
+}
+</script>
+</body>
+</html>
