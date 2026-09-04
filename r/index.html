@@ -176,17 +176,22 @@ async function tenantOf(slug) {
 /** An agency's report carries their name, mark and colour — not ours. */
 function brand(r, t) {
   if (!t || !t.name) return { mark: MARK, name: 'remodely<i>.ai</i>', who: 'Remodely AI',
-    site: 'https://www.remodely.ai/', contact: 'support@remodely.ai', tenant: false };
+    site: 'https://www.remodely.ai/', tenant: false, promise: '',
+    action: { href: 'mailto:support@remodely.ai', label: 'Book the call &rarr;' } };
   if (t.accent) {
     const st = document.createElement('style');
     st.textContent = `:root{--orange:${t.accent};--orange-lt:${t.accent};` +
       `--navy:#0f172a;--navy2:#1e293b}`;
     document.head.appendChild(st);
   }
+  const tel = String(t.phone || '').replace(/[^0-9+]/g, '');
   return {
     mark: t.logo_url ? `<img src="${esc(t.logo_url)}" alt="" style="height:var(--logo-h);width:auto">` : '',
     name: esc(t.name), who: t.name,
-    site: t.website || '', contact: t.email || '', tenant: true,
+    site: t.website || '', tenant: true, promise: t.callback_promise || '',
+    // Whatever the agency actually published, in order of directness. Never ours.
+    action: tel ? { href: 'tel:' + tel, label: `Call ${esc(t.phone)}` }
+      : t.website ? { href: t.website, label: 'Get in touch' } : null,
   };
 }
 
@@ -253,9 +258,14 @@ function render(r, t) {
 
     <div class="cta">
       <h2>Want this handled?</h2>
-      <p>Start with the call. If you'd rather look at the tools first, they're all free to try and priced in one place.</p>
+      <p>${B.tenant
+        ? `Start with a conversation${B.promise ? ' — ' + esc(B.promise) : ''}. We'll walk this report together and agree what's worth doing.`
+        : "Start with the call. If you'd rather look at the tools first, they're all free to try and priced in one place."}</p>
       <div class="row">
-        <a class="btn" href="mailto:${esc(B.contact || 'support@remodely.ai')}?subject=${encodeURIComponent('AI visibility report — ' + (r.business||''))}&body=${encodeURIComponent("I'd like to talk through this report: " + location.href)}">Book the call &rarr;</a>
+        ${B.action ? `<a class="btn" href="${esc(B.action.href)}${B.action.href.startsWith('mailto:')
+          ? '?subject=' + encodeURIComponent('AI visibility report — ' + (r.business || '')) +
+            '&body=' + encodeURIComponent("I'd like to talk through this report: " + location.href)
+          : ''}">${B.action.label}</a>` : ''}
         ${B.tenant ? '' : `<a class="btn ghost" href="/widgets/">See the widgets</a>
         <a class="btn ghost" href="/pricing/">Pricing</a>`}
       </div>
