@@ -19,7 +19,24 @@ const path = require('path');
 const OUT = path.join(__dirname, '..', 'widgets');
 const SITE = 'https://www.remodely.ai';
 
+const toolPath = w => w.tool || w.slug;
+
 const WIDGETS = [
+  {
+    slug: 'ai-audit',
+    tool: 'ai-visibility',
+    name: 'AI Visibility Audit',
+    intent: 'White-Label AI Visibility Audit Tool for Marketing Agencies',
+    hook: 'Give prospects a reason to hand you their website.',
+    lede: 'A free audit on your own site, under your own name. A local business types in their address and gets a scored report on whether AI assistants can verify them — Google listing, directory presence, licence, review standing — and <em>you</em> get the lead and the branded report to follow up with.',
+    who: 'Marketing agencies, web designers and SEO consultants selling to contractors and local trades.',
+    points: [
+      ['The report carries your brand', 'Your name, your logo, your colour, your contact details. Send it to a prospect and nothing on it says Remodely.'],
+      ['It finds real problems, not meta tags', 'Unclaimed directory listings, a phone that disagrees with Google, no licence on the page, review counts behind every competitor nearby.'],
+      ['Every run is a lead', 'The business, their site, their score and exactly what they failed — in your inbox, with a report link you can send straight back.'],
+    ],
+    height: 1250,
+  },
   {
     slug: 'quote-calculator',
     name: 'Instant Quote Calculator',
@@ -260,13 +277,13 @@ const page = w => `<!DOCTYPE html>
   <p class="lede">${w.lede}</p>
   <div class="row">
     <a class="btn primary" href="/pricing/">Add to my site &mdash; $49/mo &rarr;</a>
-    <a class="btn" href="/tools/${w.slug}/">Open it full size</a>
+    <a class="btn" href="/tools/${toolPath(w)}/">Open it full size</a>
     <span class="price">All eight widgets included &middot; cancel anytime</span>
   </div>
 
   <div class="demo">
     <p class="bar">Live widget &mdash; not a screenshot. Use it exactly as your visitor would.</p>
-    <iframe src="/tools/${w.slug}/" title="${w.name} demo" loading="lazy"></iframe>
+    <iframe src="/tools/${toolPath(w)}/" title="${w.name} demo" loading="lazy"></iframe>
   </div>
 
   <div class="who"><b>Who it's for</b><p>${w.who}</p></div>
@@ -288,7 +305,7 @@ const page = w => `<!DOCTYPE html>
     <li><b>Paste it</b> into your page where you want the widget to appear. Works on WordPress, Wix, Squarespace, GoDaddy &mdash; anything that takes an embed.</li>
     <li><b>Leads arrive</b> in your inbox with everything the visitor picked.</li>
   </ol>
-  <code class="embed">&lt;iframe src="${SITE}/embed/${w.slug}?shop=<span style="color:var(--accent-deep)">your-shop</span>"
+  <code class="embed">&lt;iframe src="${SITE}/embed/${toolPath(w)}?shop=<span style="color:var(--accent-deep)">your-shop</span>"
         width="100%" height="${w.height}" style="border:0"&gt;&lt;/iframe&gt;</code>
 </div></section>
 

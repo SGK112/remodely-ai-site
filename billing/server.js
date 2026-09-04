@@ -463,7 +463,7 @@ const server = http.createServer(async (req, res) => {
       catch { return json(res, 404, { error: 'not found' }); }
       if (!doc || !doc.data) return json(res, 404, { error: 'not found' });
       let report;
-      try { report = { ...JSON.parse(doc.data), created: doc.created }; }
+      try { report = { ...JSON.parse(doc.data), created: doc.created, shop_slug: doc.shop_slug || '' }; }
       catch { return json(res, 500, { error: 'stored report is unreadable' }); }
       // Cache: a report is a snapshot of a moment and never changes.
       return json(res, 200, report, { 'Cache-Control': 'public, max-age=86400' });
@@ -478,7 +478,7 @@ const server = http.createServer(async (req, res) => {
       if (hits.length >= 12) return json(res, 429, { error: 'Too many audits from this address. Try again later.' });
       hits.push(now); auditHits.set(ip, hits);
 
-      const { url: target, name } = JSON.parse((await readBody(req)) || '{}');
+      const { url: target, name, shop } = JSON.parse((await readBody(req)) || '{}');
       if (!target || !/^[\w.-]+\.[a-z]{2,}/i.test(String(target).replace(/^https?:\/\//, ''))) {
         return json(res, 400, { error: 'A website address is required' });
       }
@@ -498,11 +498,12 @@ const server = http.createServer(async (req, res) => {
           await db.setDoc('reports', id, {
             data: JSON.stringify(report),
             score: report.score, business: report.business || '', site: report.site || '',
+            shop_slug: String(shop || '').slice(0, 60),
             created: new Date().toISOString(),
             query_url: String(target).trim(), query_name: String(name || '').trim(),
           });
           report.id = id;
-          report.share_url = `${SITE}/r/?id=${id}`;
+          report.share_url = `${SITE}/r/?id=${id}` + (shop ? `&shop=${encodeURIComponent(shop)}` : '');
         } catch (e) {
           // Sharing is a bonus; never lose the report the visitor is waiting on.
           console.error('[billing] report save:', e.message);

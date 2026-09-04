@@ -253,7 +253,8 @@ $('f').addEventListener('submit', async e => {
   try {
     const res = await fetch(`${BILLING}/ai-visibility`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: site, name: $('biz').value.trim() }),
+      body: JSON.stringify({ url: site, name: $('biz').value.trim(),
+        shop: new URLSearchParams(location.search).get('shop') || '' }),
     });
     const d = await res.json();
     if (!res.ok || d.error) throw new Error(d.message || d.error || 'lookup failed');

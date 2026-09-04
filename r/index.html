@@ -24,6 +24,7 @@
   :root{
     --ink:#0f172a; --body:#475569; --mut:#64748b; --line:#e2e8f0; --paper:#fff; --bg:#f1f5f9;
     --navy:#0c1222; --navy2:#1c2942; --orange:#f97316; --orange-lt:#fb923c;
+    --logo-h:34px;
     --ok:#15803d; --ok-bg:#f0fdf4; --bad:#b91c1c; --bad-bg:#fef2f2; --unk:#64748b; --unk-bg:#f8fafc;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -157,7 +158,40 @@ const verdict = n => n >= 85 ? 'Strong — easy to verify.'
   : n >= 50 ? 'Assistants will hesitate to recommend this business.'
   : 'Effectively invisible to AI assistants.';
 
-function render(r) {
+const FS = 'https://firestore.googleapis.com/v1/projects/remodelyai-app/databases/(default)/documents/tenants/';
+const unwrap = f => Object.fromEntries(Object.entries(f || {}).map(([k, v]) =>
+  [k, 'booleanValue' in v ? v.booleanValue : 'integerValue' in v ? Number(v.integerValue) : v.stringValue]));
+
+/** Whoever ran the audit. A brand we can't confirm is never guessed at. */
+async function tenantOf(slug) {
+  if (!/^[a-z0-9][a-z0-9-]{1,48}$/.test(slug)) return null;
+  try {
+    const r = await fetch(FS + encodeURIComponent(slug));
+    if (!r.ok) return null;
+    const t = unwrap((await r.json()).fields);
+    return t.active === false ? null : t;
+  } catch { return null; }
+}
+
+/** An agency's report carries their name, mark and colour — not ours. */
+function brand(r, t) {
+  if (!t || !t.name) return { mark: MARK, name: 'remodely<i>.ai</i>', who: 'Remodely AI',
+    site: 'https://www.remodely.ai/', contact: 'support@remodely.ai', tenant: false };
+  if (t.accent) {
+    const st = document.createElement('style');
+    st.textContent = `:root{--orange:${t.accent};--orange-lt:${t.accent};` +
+      `--navy:#0f172a;--navy2:#1e293b}`;
+    document.head.appendChild(st);
+  }
+  return {
+    mark: t.logo_url ? `<img src="${esc(t.logo_url)}" alt="" style="height:var(--logo-h);width:auto">` : '',
+    name: esc(t.name), who: t.name,
+    site: t.website || '', contact: t.email || '', tenant: true,
+  };
+}
+
+function render(r, t) {
+  const B = brand(r, t);
   const fails = r.findings.filter(f => !f.ok);
   const passes = r.findings.filter(f => f.ok);
   const unk = r.unchecked || [];
@@ -172,7 +206,7 @@ function render(r) {
 
   $('sheet').innerHTML = `
     <div class="head">
-      <div class="brand">${MARK}<b>remodely<i>.ai</i></b><span class="kind">AI visibility report</span></div>
+      <div class="brand">${B.mark}<b>${B.name}</b><span class="kind">AI visibility report</span></div>
       <p class="subject">Prepared for</p>
       <h1>${esc(r.business || r.query_name || r.site || 'This business')}</h1>
       <p class="meta">${esc(r.site || '')}${when ? ' · ' + esc(when) : ''}</p>
@@ -211,7 +245,7 @@ function render(r) {
         <div class="step"><div><h3>We fix the site markup</h3>
           <p>Business schema, ratings, profile links and crawler rules — written and installed, not handed to you as a to-do list.</p></div></div>
         <div class="step"><div><h3>You capture what arrives</h3>
-          <p>Being found only pays if the visitors turn into calls. Our widgets — instant quotes, service-area checks, callback requests, your real reviews — go on your site branded to your business.</p></div></div>
+          <p>Being found only pays if the visitors turn into calls${B.tenant ? '' : ' — instant quotes, service-area checks, callback requests and your real reviews, branded to your business and dropped into your site'}.</p></div></div>
         <div class="step"><div><h3>We re-run this report</h3>
           <p>Same checks, same scoring, so the change is measured rather than claimed.</p></div></div>
       </div>
@@ -221,9 +255,9 @@ function render(r) {
       <h2>Want this handled?</h2>
       <p>Start with the call. If you'd rather look at the tools first, they're all free to try and priced in one place.</p>
       <div class="row">
-        <a class="btn" href="mailto:support@remodely.ai?subject=${encodeURIComponent('AI visibility report — ' + (r.business||''))}&body=${encodeURIComponent("I'd like to talk through this report: " + location.href)}">Book the call &rarr;</a>
-        <a class="btn ghost" href="/widgets/">See the widgets</a>
-        <a class="btn ghost" href="/pricing/">Pricing</a>
+        <a class="btn" href="mailto:${esc(B.contact || 'support@remodely.ai')}?subject=${encodeURIComponent('AI visibility report — ' + (r.business||''))}&body=${encodeURIComponent("I'd like to talk through this report: " + location.href)}">Book the call &rarr;</a>
+        ${B.tenant ? '' : `<a class="btn ghost" href="/widgets/">See the widgets</a>
+        <a class="btn ghost" href="/pricing/">Pricing</a>`}
       </div>
     </div>
 
@@ -239,8 +273,9 @@ function render(r) {
     </div>
 
     <footer>
-      Prepared by <a href="https://www.remodely.ai/">Remodely AI</a> · Run your own free report at
-      <a href="https://www.remodely.ai/tools/ai-visibility/">remodely.ai/tools/ai-visibility</a><br>
+      Prepared by ${B.site ? `<a href="${esc(B.site)}">${esc(B.who)}</a>` : esc(B.who)}${
+        B.tenant ? '' : ` · Run your own free report at
+        <a href="https://www.remodely.ai/tools/ai-visibility/">remodely.ai/tools/ai-visibility</a>`}<br>
       Scored on how AI assistants weigh a local business: content authority 30%, entity recognition 25%,
       structured data 20%, digital footprint 15%, freshness 10%.
     </footer>`;
@@ -254,7 +289,7 @@ function render(r) {
     catch { prompt('Copy this link:', location.href); }
   });
 
-  document.title = `${who} — ${r.score}/100 AI Visibility Report · Remodely AI`;
+  document.title = `${who} — ${r.score}/100 AI Visibility Report · ${B.who}`;
 }
 
 (async () => {
@@ -263,7 +298,12 @@ function render(r) {
   try {
     const res = await fetch(`${BILLING}/report?id=${encodeURIComponent(id)}`);
     if (!res.ok) throw new Error('not found');
-    render(await res.json());
+    const report = await res.json();
+    // The slug travels with the report, so a forwarded link keeps the brand
+    // even when the query string has been stripped along the way.
+    const slug = (report.shop_slug || new URLSearchParams(location.search).get('shop') || '')
+      .trim().slice(0, 60);
+    render(report, slug ? await tenantOf(slug) : null);
   } catch (e) {
     show("We couldn't find that report. Reports are kept for a while but not forever — running a fresh one takes about fifteen seconds.", true);
   }
