@@ -92,6 +92,7 @@ const WEIGHTS = { entity: 25, footprint: 15, structured: 20, authority: 30, fres
 
 async function audit({ url, name, key }) {
   const findings = [];
+  const unchecked = [];
   const add = (area, ok, weight, title, detail, fix) =>
     findings.push({ area, ok, weight, title, detail, ...(fix ? { fix } : {}) });
 
@@ -157,11 +158,14 @@ async function audit({ url, name, key }) {
     words.slice(0, 2).join('-'),
   ].filter(c => c.length > 2))];
 
-  let bzUrl = null;
+  let bzUrl = null, bzBlocked = false;
   for (const slug of candidates) {
     let page;
     try { page = await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 8000 }); }
-    catch { continue; }
+    catch { bzBlocked = true; continue; }
+    // A clean 404 means "no such listing"; a 403/429/5xx means we were refused
+    // and know nothing. Those must not read the same to the contractor.
+    if (page.status !== 200 && page.status !== 404) { bzBlocked = true; continue; }
     if (!page.ok || /Page not found/i.test(page.body.slice(0, 4000))) continue;
 
     // A 200 is not proof it is YOUR listing — corroborate before believing it.
@@ -172,10 +176,17 @@ async function audit({ url, name, key }) {
     if (matches) { bzUrl = page.url; break; }
   }
 
-  add('footprint', !!bzUrl, 9, 'Listed on BuildZoom',
-    bzUrl ? `Found your BuildZoom page — the most heavily cited source for trades. (${bzUrl})`
-       : 'No BuildZoom listing found that matches your licence, phone or city. In testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
-    bzUrl ? null : 'Claim your free BuildZoom listing. It is the highest-leverage hour in this whole report.');
+  // Unreachable is not a failure. Scoring a shop down for our own blocked
+  // request would be inventing a problem, so an unknown drops out of the score.
+  if (bzUrl || !bzBlocked) {
+    add('footprint', !!bzUrl, 9, 'Listed on BuildZoom',
+      bzUrl ? `Found your BuildZoom page — the most heavily cited source for trades. (${bzUrl})`
+         : 'No BuildZoom listing found that matches your licence, phone or city. In testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
+      bzUrl ? null : 'Claim your free BuildZoom listing. It is the highest-leverage hour in this whole report.');
+  } else {
+    unchecked.push({ title: 'BuildZoom listing',
+      why: "BuildZoom refused our request, so we couldn't tell whether you have a page. Search your business name there yourself — it is the most heavily cited source for trades." });
+  }
 
   const licenceOnSite = !!siteLicence;
   add('footprint', licenceOnSite, 6, 'Licence number published',
@@ -264,6 +275,7 @@ async function audit({ url, name, key }) {
     score: Math.round(score),
     areas: Object.fromEntries(Object.entries(byArea).map(([k, v]) => [k, Math.round((v.got / v.max) * 100)])),
     findings: findings.sort((a, b) => (a.ok - b.ok) || (b.weight - a.weight)),
+    unchecked,
   };
 }
 
