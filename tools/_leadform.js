@@ -28,6 +28,11 @@
     padding:13px 16px;border:0;border-radius:11px;color:#fff;
     background:linear-gradient(135deg,var(--gold-lite,#fb923c),var(--gold-deep,#ea580c))}
   .rl-form button:disabled{opacity:.6;cursor:default}
+  .rl-when{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:11px}
+  .rl-when-l{font-size:12px;font-weight:700;color:var(--mut,#64748b);letter-spacing:.06em;text-transform:uppercase;margin-right:2px}
+  .rl-when button{font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;padding:7px 12px;border-radius:999px;
+    border:1px solid var(--line,#e2e8f0);background:transparent;color:var(--mut,#64748b)}
+  .rl-when button.on{border-color:var(--gold,#f97316);background:var(--gold,#f97316);color:#fff}
   .rl-fine{font-size:11.5px;color:var(--mut,#64748b);text-align:center;margin:10px 0 0}
   .rl-note{display:none;margin-top:12px;padding:13px 15px;border-radius:11px;font-size:14px;line-height:1.5}
   .rl-note.show{display:block}
@@ -61,9 +66,20 @@
         <input name="phone" placeholder="Phone (optional)" autocomplete="tel">
         <input name="zip" placeholder="ZIP code" inputmode="numeric" autocomplete="postal-code" required>
       </div>
+      <div class="rl-when" role="group" aria-label="When do you want this done">
+        <span class="rl-when-l">When?</span>
+        ${['ASAP', '1-3 months', '3-6 months', 'Just planning'].map((w, i) =>
+          `<button type="button" data-w="${w}"${i === 0 ? ' class="on"' : ''}>${w}</button>`).join('')}
+      </div>
       <button type="submit">Send my details →</button>
       <p class="rl-fine">No obligation · your details go straight to ${escapeHtml(object)}.</p>
       <div class="rl-note" id="rlNote"></div>`;
+
+    let timeline = 'ASAP';
+    wrap.querySelectorAll('.rl-when button').forEach(b => b.addEventListener('click', () => {
+      timeline = b.dataset.w;
+      wrap.querySelectorAll('.rl-when button').forEach(o => o.classList.toggle('on', o === b));
+    }));
 
     const anchor = opts.after && document.querySelector(opts.after);
     (anchor ? anchor.parentNode : document.body).insertBefore(
@@ -88,7 +104,7 @@
       btn.disabled = true; btn.textContent = 'Sending…';
       try {
         await global.Remodely.submitLead({
-          name, email, zip, phone: f.phone.value.trim(),
+          name, email, zip, phone: f.phone.value.trim(), timeline,
           context: typeof opts.context === 'function' ? opts.context() : (opts.context || ''),
         });
       } catch (err) {
@@ -99,7 +115,7 @@
         note.textContent = "That didn't send. Check your connection and try once more.";
         return;
       }
-      wrap.querySelectorAll('.rl-fields,.rl-fine,button').forEach(el => el.style.display = 'none');
+      wrap.querySelectorAll('.rl-fields,.rl-fine,.rl-when,button').forEach(el => el.style.display = 'none');
       note.className = 'rl-note ok show';
       note.innerHTML = `✓ Thanks, ${escapeHtml(name.split(' ')[0])}. ${escapeHtml(subject[0].toUpperCase()+subject.slice(1))} will be in touch at <b>${escapeHtml(email)}</b>.`;
     });

@@ -18,6 +18,7 @@
  * With no ?shop= the tool stays Remodely-branded and nothing below applies.
  */
 (function (global) {
+  const BILLING = 'https://remodely-billing.onrender.com';
   const FS = 'https://firestore.googleapis.com/v1/projects/remodelyai-app/databases/(default)/documents/tenants/';
   const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,48}$/;
   const q = new URLSearchParams(location.search);
@@ -104,8 +105,24 @@
         shop_slug: t.slug || null,
         tool: api.toolName || document.title,
         source: api.toolSource || 'lead-tool',
-        timestamp: new Date().toISOString(),
       };
+
+      // Straight to the server so the shop is emailed and the visitor gets an
+      // acknowledgement immediately. 78% of homeowners hire whoever answers
+      // first, so a queue here would cost the shop the job.
+      try {
+        const r = await fetch(BILLING + '/lead', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(doc),
+        });
+        if (r.ok) return doc;
+        throw new Error('lead endpoint ' + r.status);
+      } catch (e) {
+        console.warn('[remodely] instant delivery unavailable, storing directly', e.message);
+      }
+
+      // Fallback: write to Firestore ourselves. Slower — the delivery cron picks
+      // it up — but a lead must never be lost because one service is down.
       if (!global.firebase) {
         await loadScript('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
         await loadScript('https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js');
@@ -118,7 +135,8 @@
           appId: '1:254256003480:web:0b5f62324a7fb09a7b13ed',
         });
       }
-      await global.firebase.firestore().collection('leads').add(doc);
+      await global.firebase.firestore().collection('leads')
+        .add({ ...doc, timestamp: new Date().toISOString() });
       return doc;
     },
   };

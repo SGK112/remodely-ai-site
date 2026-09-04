@@ -335,6 +335,68 @@ async function fetchReviews(placeId) {
   return data;
 }
 
+/* ---------------------------------------------------------------------------
+   Lead intake — the part that decides whether a shop wins the job.
+
+   78% of homeowners hire whoever responds first, and responding inside a minute
+   roughly quadruples conversion. A five-minute batch was therefore the worst
+   place in this system to have latency, so a lead is written and both emails
+   are sent on the request itself. The cron stays as a safety net for anything
+   that reached Firestore another way.
+   --------------------------------------------------------------------------- */
+async function mailVia(from, to, subject, text, html, replyTo) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) { console.warn('[billing] RESEND_API_KEY unset — mail skipped'); return null; }
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from, to: [to], reply_to: replyTo || undefined, subject, text, html }),
+  });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) { console.error('[billing] mail failed:', body.message || r.status); return null; }
+  return body.id;
+}
+
+const esc = v => String(v ?? '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+function leadEmailToShop(lead, shopName) {
+  const rows = [['Name', lead.name], ['Email', lead.email], ['Phone', lead.phone],
+    ['ZIP', lead.zip || lead.company], ['Timeline', lead.timeline],
+    ['Wants', lead.context], ['Tool', lead.tool]].filter(([, v]) => v);
+  return {
+    subject: `New lead — ${lead.name || 'website'}${lead.timeline ? ` · ${lead.timeline}` : ''}`,
+    text: `New lead from your website.\n\n${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\n` +
+      (lead.email ? `Reply straight to them: ${lead.email}\n` : '') +
+      `\nThey are comparing you with other contractors right now — the first to call usually wins.`,
+    html: `<div style="font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a">
+<p style="margin:0 0 14px"><b>New lead from your website.</b></p>
+<table style="border-collapse:collapse;font-size:15px">${rows.map(([k, v]) => `
+<tr><td style="padding:6px 16px 6px 0;color:#64748b;white-space:nowrap">${esc(k)}</td>
+<td style="padding:6px 0"><b>${esc(v)}</b></td></tr>`).join('')}</table>
+${lead.phone ? `<p style="margin:18px 0 0"><a href="tel:${esc(String(lead.phone).replace(/[^0-9+]/g, ''))}"
+  style="background:#ea580c;color:#fff;padding:11px 18px;border-radius:8px;text-decoration:none;font-weight:600">Call ${esc(lead.name || 'them')}</a></p>` : ''}
+<p style="margin:16px 0 0;color:#64748b;font-size:13px">They're comparing contractors right now.
+  The first to call usually wins the job.</p></div>`,
+  };
+}
+
+/** The homeowner hears back instantly even if the shop is on a roof. */
+function ackEmailToHomeowner(lead, shopName, promise, phone) {
+  const who = shopName || 'The team';
+  return {
+    subject: `${who} has your request`,
+    text: `Thanks${lead.name ? ', ' + lead.name.split(' ')[0] : ''} — ${who} has your details` +
+      `${lead.context ? ` about ${lead.context}` : ''}.\n\n` +
+      `Someone will be in touch${promise ? ' ' + promise : ' shortly'}.` +
+      `${phone ? `\n\nNeed them sooner? Call ${phone}.` : ''}\n\nThis is an automatic confirmation.`,
+    html: `<div style="font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a">
+<p>Thanks${lead.name ? ', ' + esc(lead.name.split(' ')[0]) : ''} — <b>${esc(who)}</b> has your details${lead.context ? ` about <b>${esc(lead.context)}</b>` : ''}.</p>
+<p>Someone will be in touch ${esc(promise || 'shortly')}.</p>
+${phone ? `<p>Need them sooner? <a href="tel:${esc(String(phone).replace(/[^0-9+]/g, ''))}" style="color:#c2410c">${esc(phone)}</a></p>` : ''}
+<p style="color:#94a3b8;font-size:13px;margin-top:20px">This is an automatic confirmation.</p></div>`,
+  };
+}
+
 const json = (res, code, obj, extra = {}) => {
   res.writeHead(code, {
     'Content-Type': 'application/json',
@@ -388,6 +450,65 @@ const server = http.createServer(async (req, res) => {
         } catch (e) { console.error('[billing] price lookup failed', id, e.message); }
       }
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
+    }
+
+    // Public: a widget on a customer's site posts a lead here. Writes it and sends
+    // both emails on the request — no queue, no batch.
+    if (url.pathname === '/lead' && req.method === 'POST') {
+      const lead = JSON.parse((await readBody(req)) || '{}');
+      const slug = String(lead.shop_slug || '').trim();
+      const name = String(lead.name || '').trim().slice(0, 120);
+      const email = String(lead.email || '').trim().slice(0, 200);
+      const phone = String(lead.phone || '').trim().slice(0, 40);
+      if (!name || (!email && !phone)) return json(res, 400, { error: 'name and a way to reach you are required' });
+
+      const doc = {
+        name, email, phone,
+        zip: String(lead.zip || '').trim().slice(0, 16),
+        timeline: String(lead.timeline || '').trim().slice(0, 60),
+        context: String(lead.context || '').trim().slice(0, 400),
+        tool: String(lead.tool || '').trim().slice(0, 80),
+        source: String(lead.source || 'widget').trim().slice(0, 60),
+        shop_slug: SLUG_RE.test(slug) ? slug : null,
+        shop: String(lead.shop || '').trim().slice(0, 120) || null,
+        timestamp: new Date().toISOString(),
+      };
+
+      let shopName = doc.shop, notify = null, promise = '', shopPhone = '';
+      if (doc.shop_slug) {
+        const [t, p] = await Promise.all([db.getDoc('tenants', doc.shop_slug), db.getDoc('tenant_private', doc.shop_slug)]);
+        if (t) { shopName = t.name || shopName; promise = t.callback_promise || ''; shopPhone = t.phone || ''; }
+        notify = p?.notify || null;
+      }
+
+      // Persist first. An email we can't back up with a stored lead is worse
+      // than a slow one, and the shop must be able to find it later.
+      const id = 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      try { await db.setDoc('leads', id, doc); }
+      catch (e) { console.error('[billing] lead store failed:', e.message); return json(res, 500, { error: 'could not save' }); }
+
+      let delivered = false;
+      if (notify) {
+        const m = leadEmailToShop(doc, shopName);
+        const sent = await mailVia(process.env.LEAD_FROM || 'Remodely AI <support@remodely.ai>',
+          notify, m.subject, m.text, m.html, doc.email || undefined);
+        if (sent) {
+          delivered = true;
+          await db.patchDoc('leads', id, {
+            delivered_at: new Date().toISOString(), delivered_to: notify, delivery_id: sent,
+          }).catch(() => {});
+        }
+      }
+
+      // Acknowledge the homeowner regardless — this is the fast first response
+      // that decides who gets the job, and it fires even if the shop is on a roof.
+      if (doc.email) {
+        const a = ackEmailToHomeowner(doc, shopName, promise, shopPhone);
+        await mailVia(process.env.LEAD_FROM || 'Remodely AI <support@remodely.ai>',
+          doc.email, a.subject, a.text, a.html, notify || undefined).catch(() => {});
+      }
+
+      return json(res, 200, { saved: true, id, delivered });
     }
 
     // Public: a shop's widget calls this from their own site, so no auth — but it
