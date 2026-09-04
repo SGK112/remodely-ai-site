@@ -141,7 +141,7 @@
     if (!SLUG_RE.test(shopParam)) {
       // Not a slug — a literal name typed into the sales-page preview.
       applyAccent(accentParam || '#c2410c');
-      return settle({ slug: null, name: shopParam, preview: true, active: true });
+      return settle({ slug: null, name: shopParam, preview: true, active: true, rates: [] });
     }
     // Firestore is the live source: a Stripe webhook flips `active` there the
     // moment a subscription lapses. The static JSON is a fallback so an outage
@@ -156,7 +156,16 @@
           return block("This shop's subscription is inactive. If it's your tool, contact Remodely AI to switch it back on.");
         }
         applyAccent(accentParam || t.accent || '#c2410c');
-        settle({ slug: shopParam, name: t.name || shopParam, accent: t.accent, active: true });
+        // A shop's own services and prices, set in their dashboard. Absent or
+        // empty is normal and meaningful: quote nothing rather than guess.
+        let rates = [];
+        try { rates = JSON.parse(t.rates_json || '[]'); } catch (e) { rates = []; }
+        settle({
+          slug: shopParam, name: t.name || shopParam, accent: t.accent, active: true,
+          rates: Array.isArray(rates) ? rates : [],
+          phone: t.phone || '', website: t.website || '',
+          serviceArea: t.service_area || '', logo: t.logo_url || '',
+        });
       })
       .catch(() => {
         // An unknown slug must never fall back to OUR branding on someone else's

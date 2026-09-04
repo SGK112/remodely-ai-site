@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Instant Quote Calculator</title>
+<meta name="description" content="Let visitors price their own job on your website using your rates, then send you the lead with everything they picked.">
+<link rel="canonical" href="https://www.remodely.ai/tools/quote-calculator/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=2"></script>
+<script src="/tools/_leadform.js?v=2"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --stage-a:#131c2e;--stage-b:#0a0f1a}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:22px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(23px,3.6vw,33px);line-height:1.07;margin:3px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);max-width:60ch;font-size:15px;margin-bottom:22px}
+
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+  @media (max-width:840px){.grid{grid-template-columns:1fr}}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+  .panel h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;
+            margin:0 0 13px;display:flex;justify-content:space-between;align-items:baseline}
+  .panel h2 small{font-weight:600;letter-spacing:0;text-transform:none;font-size:11px}
+
+  .svc{display:grid;gap:9px}
+  .svc button{font:inherit;text-align:left;cursor:pointer;background:transparent;color:inherit;
+    border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;transition:border-color .15s,background .15s}
+  .svc button:hover{border-color:var(--gold-lite)}
+  .svc button.on{border-color:var(--gold);background:rgba(249,115,22,.07)}
+  .svc button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .svc b{display:block;font-size:15.5px;font-weight:600}
+  .svc span{font-size:12.5px;color:var(--mut)}
+
+  .qty{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+  .qty label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);
+             font-weight:700;margin-bottom:6px}
+  .qty input{font:inherit;font-size:19px;font-weight:600;padding:11px 13px;border:1px solid var(--line);
+             border-radius:11px;background:transparent;color:var(--ink);width:150px;
+             font-variant-numeric:tabular-nums}
+  .qty input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+  .qty .unit{font-size:15px;color:var(--mut);padding-bottom:12px}
+  .presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+  .presets button{font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 12px;
+    border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mut)}
+  .presets button:hover{border-color:var(--gold);color:var(--ink)}
+
+  /* the estimate — the only place money is shown, and only ever the shop's own */
+  .stage{background:linear-gradient(160deg,var(--stage-a),var(--stage-b));border-radius:20px;
+         padding:24px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.05);position:sticky;top:20px}
+  .stage .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700}
+  .amount{font-size:clamp(30px,6vw,46px);font-weight:800;color:#fff;line-height:1.05;margin:8px 0 2px;
+          letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .amount small{font-size:15px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:0}
+  .breakdown{margin-top:16px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+  .brow{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;color:rgba(255,255,255,.75);padding:5px 0}
+  .brow b{color:#fff;font-weight:600}
+  .note{font-size:12.5px;color:rgba(255,255,255,.55);margin-top:14px;line-height:1.55}
+  .cta{display:block;width:100%;margin-top:16px;text-align:center;font:inherit;font-weight:700;font-size:15px;
+       cursor:pointer;padding:13px 16px;border:0;border-radius:12px;color:#fff;text-decoration:none;
+       background:linear-gradient(135deg,var(--gold-lite),var(--gold-deep))}
+  .cta:hover{filter:brightness(1.07)}
+
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:22px;
+         color:var(--mut);font-size:14.5px;line-height:1.6}
+  .empty b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:24px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Instant estimate</p>
+  <h1 id="head">What will my project <em>cost</em>?</h1>
+  <p class="sub" id="sub">Pick what you need and enter a rough size — you'll get a real range in a few seconds.</p>
+
+  <div class="grid">
+    <div>
+      <div class="panel" id="svcPanel">
+        <h2>1 · What do you need <small id="svcCount"></small></h2>
+        <div class="svc" id="svc"></div>
+      </div>
+      <div class="panel" id="qtyPanel">
+        <h2>2 · How much</h2>
+        <div class="qty">
+          <div>
+            <label for="q">Size</label>
+            <input id="q" type="number" min="0" step="any" inputmode="decimal" value="" placeholder="0">
+          </div>
+          <span class="unit" id="unit">sq ft</span>
+        </div>
+        <div class="presets" id="presets"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="stage" id="stage">
+        <p class="lbl">Your estimate</p>
+        <p class="amount" id="amount">—</p>
+        <div class="breakdown" id="breakdown"></div>
+        <p class="note" id="stageNote"></p>
+        <a class="cta" href="#leadForm" id="cta">Get my exact price →</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money = n => '$' + Math.round(n).toLocaleString();
+
+let RATES = [], picked = 0, shopName = null;
+
+function paintServices() {
+  $('svcCount').textContent = RATES.length + (RATES.length === 1 ? ' option' : ' options');
+  $('svc').innerHTML = RATES.map((r, i) => `
+    <button type="button" data-i="${i}" class="${i === picked ? 'on' : ''}">
+      <b>${esc(r.label)}</b>
+      <span>${r.low && r.high ? money(r.low) + '–' + money(r.high) : 'priced on site'} per ${esc(r.unit)}</span>
+    </button>`).join('');
+  $('svc').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    picked = Number(b.dataset.i);
+    $('svc').querySelectorAll('button').forEach(o => o.classList.toggle('on', o === b));
+    paintUnit(); calc();
+  }));
+}
+
+function paintUnit() {
+  const r = RATES[picked];
+  $('unit').textContent = r ? r.unit : 'sq ft';
+  // Presets sized to the unit — nobody types "40" for squares of roofing.
+  const sets = /sq ?ft|square feet/i.test(r?.unit || '') ? [40, 80, 120, 200]
+             : /linear|lf|ft/i.test(r?.unit || '') ? [10, 20, 40, 60]
+             : /room|each|unit|square/i.test(r?.unit || '') ? [1, 2, 3, 4]
+             : [1, 5, 10, 25];
+  $('presets').innerHTML = sets.map(n => `<button type="button" data-n="${n}">${n} ${esc(r?.unit || '')}</button>`).join('');
+  $('presets').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    $('q').value = b.dataset.n; calc();
+  }));
+}
+
+function calc() {
+  const r = RATES[picked];
+  const qty = Number($('q').value) || 0;
+  if (!r || !qty) {
+    $('amount').innerHTML = '—';
+    $('breakdown').innerHTML = '';
+    $('stageNote').textContent = 'Enter a size to see your range.';
+    return;
+  }
+  const lo = r.low * qty, hi = r.high * qty;
+  $('amount').innerHTML = lo && hi && lo !== hi
+    ? `${money(lo)}–${money(hi)}`
+    : money(hi || lo) + ' <small>estimated</small>';
+  $('breakdown').innerHTML = `
+    <div class="brow"><span>${esc(r.label)}</span><b>${qty.toLocaleString()} ${esc(r.unit)}</b></div>
+    <div class="brow"><span>Rate</span><b>${money(r.low)}–${money(r.high)} per ${esc(r.unit)}</b></div>`;
+  $('stageNote').textContent = shopName
+    ? `${shopName}'s own pricing. Your exact number is confirmed on a measure.`
+    : 'Your exact number is confirmed on a measure.';
+}
+
+/** No rates configured is a normal state, not an error — collect the job, quote nothing. */
+function noRatesMode() {
+  $('svcPanel').outerHTML = `<div class="empty" id="svcPanel">
+    <b>Tell us about your project.</b><br>
+    Send over the details below and ${shopName ? esc(shopName) : 'we'} will come back with a real
+    number — measured, not guessed.</div>`;
+  $('qtyPanel').remove();
+  $('stage').innerHTML = `
+    <p class="lbl">Next step</p>
+    <p class="amount" style="font-size:26px">A real quote,<br>not a guess.</p>
+    <p class="note">Every job is different. Send your details and you'll get a proper number
+      rather than a range that turns out to be wrong.</p>
+    <a class="cta" href="#leadForm">Send my details →</a>`;
+  $('head').innerHTML = 'Get a real <em>quote</em> on your project';
+  $('sub').textContent = 'A few details is all it takes.';
+}
+
+Remodely.toolSource = 'quote-calculator';
+Remodely.toolName = 'Instant Quote Calculator';
+
+Remodely.ready(t => {
+  shopName = t && t.name ? t.name : null;
+  RATES = (t && Array.isArray(t.rates) ? t.rates : []).filter(r => r && r.label);
+
+  // On our own site with no shop, show what a configured shop would see — an
+  // empty calculator demonstrates nothing. Clearly labelled as example rates.
+  const isDemo = !t;
+  if (isDemo) {
+    RATES = [
+      { label: 'Granite countertops, installed', unit: 'sq ft', low: 45, high: 75 },
+      { label: 'Quartz countertops, installed', unit: 'sq ft', low: 55, high: 95 },
+      { label: 'Tile flooring, installed', unit: 'sq ft', low: 9, high: 18 },
+    ];
+  }
+
+  if (shopName) $('eyebrow').textContent = shopName;
+
+  if (!RATES.length) {
+    // A real shop that hasn't set prices yet: collect the job, quote nothing.
+    noRatesMode();
+  } else {
+    paintServices(); paintUnit(); calc();
+    $('q').addEventListener('input', calc);
+    $('foot').textContent = isDemo
+      ? 'Example rates — every shop sets their own in their dashboard.'
+      : `Estimates use ${shopName || 'current'} pricing and include installation.`;
+  }
+
+  Remodely.mountLeadForm({
+    after: '.grid',
+    heading: RATES.length ? 'Get your exact price' : 'Tell us about your project',
+    context: () => {
+      const r = RATES[picked], qty = Number($('q')?.value) || 0;
+      if (!r || !qty) return RATES.length ? 'Browsing the calculator' : 'Quote request';
+      return `${r.label} · ${qty.toLocaleString()} ${r.unit} · est. ${money(r.low * qty)}–${money(r.high * qty)}`;
+    },
+  });
+});
+</script>
+</body>
+</html>
