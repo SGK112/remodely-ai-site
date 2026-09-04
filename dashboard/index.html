@@ -277,6 +277,11 @@ function render(d) {
         <div class="field"><label for="f-terms">Terms offered (months)</label>
           <input id="f-terms" value="${esc(c.finance_terms)}" placeholder="12, 24, 36, 60"></div>
       </div>
+      <div class="field"><label for="f-place">Google Place ID</label>
+        <input id="f-place" value="${esc(c.place_id)}" placeholder="ChIJ…">
+        <p class="hint" style="margin:6px 0 0">Find yours at
+          <a href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" rel="noopener">Google's Place ID finder</a>.
+          Your real reviews then pull through automatically — we never edit or hand-pick them.</p></div>
     </div>
 
     <div class="card">
@@ -342,6 +347,7 @@ async function save() {
       service_zips: $('f-zips').value,
       hours: $('f-hours').value, callback_promise: $('f-promise').value,
       finance_apr: $('f-apr').value, finance_terms: $('f-terms').value,
+      place_id: $('f-place').value,
     },
     notify: $('f-notify').value.trim(),
     rates: readRates(),

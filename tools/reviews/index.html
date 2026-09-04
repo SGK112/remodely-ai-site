@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Google Reviews Widget</title>
+<meta name="description" content="Show your real Google reviews on your own website, pulled live and kept current, so the proof sits where people decide.">
+<link rel="canonical" href="https://www.remodely.ai/tools/reviews/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<script src="/tools/_tenant.js?v=5"></script>
+<script src="/tools/_buybar.js?v=1"></script>
+<style>
+  :root{--gold:#f97316;--gold-deep:#ea580c;--gold-lite:#fb923c;--ink:#0f172a;--mut:#64748b;
+        --bg:#f8fafc;--panel:#fff;--line:#e2e8f0;--shadow:0 18px 44px -18px rgba(15,23,42,.28);
+        --star:#f59e0b}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b;
+    --shadow:0 20px 50px -18px rgba(0,0,0,.7)}}
+  :root[data-theme="dark"]{--ink:#f1f5f9;--mut:#94a3b8;--bg:#0a0f1a;--panel:#131c2e;--line:#1e293b}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 20px 60px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  h1{font-size:clamp(23px,3.6vw,32px);line-height:1.07;margin:4px 0 8px;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--gold-deep)}
+  .sub{color:var(--mut);font-size:15px;margin-bottom:20px}
+
+  .summary{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--panel);
+    border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:16px}
+  .score{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+  .summary .meta{font-size:14px;color:var(--mut)}
+  .summary .meta b{color:var(--ink)}
+  .summary a{margin-left:auto;font-size:14px;font-weight:600;color:var(--gold-deep);text-decoration:none}
+  .summary a:hover{text-decoration:underline}
+  .stars{color:var(--star);letter-spacing:2px;font-size:17px;line-height:1}
+
+  .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(300px,1fr);gap:14px;
+        overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:thin}
+  .rail::-webkit-scrollbar{height:7px}
+  .rail::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+  .rev{scroll-snap-align:start;background:var(--panel);border:1px solid var(--line);border-radius:16px;
+       padding:18px;display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow)}
+  .rev .who{display:flex;align-items:center;gap:10px}
+  .rev .who img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;background:var(--line)}
+  .rev .who b{font-size:14.5px;font-weight:600;display:block}
+  .rev .who span{font-size:12px;color:var(--mut)}
+  .rev p{font-size:14.5px;color:var(--ink);line-height:1.6}
+  .rev.clamped p{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+  .rev button.more{align-self:flex-start;font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+    background:none;border:0;color:var(--gold-deep);padding:0}
+  .rev button.more:hover{text-decoration:underline}
+
+  .nav{display:flex;gap:8px;margin-top:14px}
+  .nav button{font:inherit;font-size:17px;cursor:pointer;width:40px;height:40px;border-radius:50%;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);line-height:1}
+  .nav button:hover{border-color:var(--gold)}
+  .nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:24px;
+         color:var(--mut);font-size:15px;line-height:1.6}
+  .empty b{color:var(--ink)}
+  .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:22px;line-height:1.7}
+  @media (prefers-reduced-motion:reduce){.rail{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow" id="eyebrow">Reviews</p>
+  <h1 id="head">What customers <em>actually say</em>.</h1>
+  <p class="sub" id="sub">Pulled straight from Google — nothing hand-picked, nothing edited.</p>
+  <div id="mount"><div class="empty">Loading reviews…</div></div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const BILLING = 'https://remodely-billing.onrender.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(Math.max(0, 5 - Math.round(n)));
+
+function render(d) {
+  if (!d.reviews.length) {
+    $('mount').innerHTML = `<div class="empty"><b>No reviews to show yet.</b><br>
+      Once Google has reviews for this listing they'll appear here automatically.</div>`;
+    return;
+  }
+  $('mount').innerHTML = `
+    <div class="summary">
+      <span class="score">${d.rating ? d.rating.toFixed(1) : '—'}</span>
+      <div>
+        <div class="stars" aria-label="${d.rating} out of 5">${stars(d.rating || 0)}</div>
+        <p class="meta"><b>${d.count.toLocaleString()}</b> Google reviews</p>
+      </div>
+      ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">See them on Google &rarr;</a>` : ''}
+    </div>
+    <div class="rail" id="rail">
+      ${d.reviews.map(r => `
+        <article class="rev clamped">
+          <div class="who">
+            ${r.photo ? `<img src="${esc(r.photo)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '<img alt="">'}
+            <div><b>${esc(r.author)}</b><span>${esc(r.when)}</span></div>
+          </div>
+          <div class="stars" aria-label="${r.rating} out of 5">${stars(r.rating)}</div>
+          <p>${esc(r.text)}</p>
+          <button class="more" type="button">Read more</button>
+        </article>`).join('')}
+    </div>
+    ${d.reviews.length > 1 ? `<div class="nav">
+      <button type="button" id="prev" aria-label="Previous reviews">‹</button>
+      <button type="button" id="next" aria-label="More reviews">›</button></div>` : ''}`;
+
+  // Expand in place rather than truncating someone's words permanently.
+  $('mount').querySelectorAll('.rev').forEach(card => {
+    const p = card.querySelector('p'), btn = card.querySelector('.more');
+    if (p.scrollHeight <= p.clientHeight + 4) { btn.remove(); return; }
+    btn.addEventListener('click', () => {
+      const open = card.classList.toggle('clamped');
+      btn.textContent = open ? 'Read more' : 'Show less';
+    });
+  });
+
+  const rail = $('rail');
+  const step = () => rail.querySelector('.rev').getBoundingClientRect().width + 14;
+  $('prev')?.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+  $('next')?.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+}
+
+Remodely.toolSource = 'reviews';
+Remodely.toolName = 'Google Reviews';
+
+Remodely.ready(async t => {
+  const slug = t && t.slug;
+  if (t && t.name) { $('eyebrow').textContent = t.name; $('head').innerHTML = `What ${esc(t.name)}'s customers <em>actually say</em>`; }
+
+  if (!slug) {
+    // Unbranded on our own site — show a real listing so the widget can be judged.
+    $('foot').textContent = 'Example listing — every shop connects their own Google profile.';
+    try {
+      const r = await fetch(`${BILLING}/reviews?shop=summit-stone`);
+      const d = await r.json();
+      if (d.configured && d.reviews?.length) return render(d);
+    } catch (e) { /* fall through to the message below */ }
+    $('mount').innerHTML = `<div class="empty"><b>Connect a Google listing to see this live.</b><br>
+      Paste your Place ID in your dashboard and your real reviews appear here.</div>`;
+    return;
+  }
+
+  try {
+    const r = await fetch(`${BILLING}/reviews?shop=${encodeURIComponent(slug)}`);
+    const d = await r.json();
+    if (!d.configured) {
+      $('mount').innerHTML = `<div class="empty"><b>Google listing not connected yet.</b><br>
+        Add your Place ID in your dashboard and your reviews appear here — nothing else to do.</div>`;
+      $('sub').textContent = '';
+      return;
+    }
+    if (d.error) throw new Error('lookup failed');
+    render(d);
+  } catch (e) {
+    // Never fabricate social proof. If the lookup fails, say nothing about ratings.
+    $('mount').innerHTML = `<div class="empty">Reviews couldn't be loaded just now. Please try again shortly.</div>`;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Widgets for Contractors</title>
+<meta name="description" content="Eight embeddable widgets that turn a contractor's website visitors into leads — quote calculator, service area checker, before and after slider, Google reviews and more. Your branding, your rates, your leads.">
+<link rel="canonical" href="https://www.remodely.ai/widgets/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#eef1f5;--sheet:#fff;--ink:#0e141c;--ink-2:#3d4b59;--steel:#5a6b7a;
+        --rule:#cdd6de;--rule-soft:#e2e8ee;--accent:#f97316;--accent-deep:#c2410c;
+        --display:"Archivo",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;
+        --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+        --shadow:0 1px 2px rgba(14,20,28,.05),0 12px 32px -18px rgba(14,20,28,.28)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#0a0f1a;--sheet:#121a26;--ink:#e9eef4;--ink-2:#a7b4c2;--steel:#8497a8;
+    --rule:#26313f;--rule-soft:#1b2532;--accent:#fb923c;--accent-deep:#fdba74;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.7)}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62}
+  a{color:var(--accent-deep)}
+  h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.017em;text-wrap:balance}
+  p{margin:0}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .top{border-bottom:1px solid var(--rule);background:var(--sheet)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:13px}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:700;font-size:15px}
+  .logo b{color:var(--accent-deep)}
+  .top nav a.cta{color:#fff;background:var(--accent);padding:8px 14px;border-radius:4px;font-weight:600;text-decoration:none;font-size:13.5px}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);
+       display:flex;align-items:center;gap:10px;margin:0 0 13px}
+  .tag::after{content:"";flex:1;height:1px;background:var(--rule)}
+  main{padding-block:48px 70px}
+  h1{font-size:clamp(2rem,4.6vw,3rem);line-height:1.05;font-weight:700;max-width:17ch}
+  .lede{color:var(--ink-2);max-width:58ch;margin-top:15px;font-size:clamp(1rem,1.5vw,1.16rem)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:34px}
+  .card{background:var(--sheet);border:1px solid var(--rule);border-radius:5px;box-shadow:var(--shadow);
+        padding:20px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:7px}
+  .card:hover{border-color:var(--accent)}
+  .card h2{font-size:1.08rem;font-weight:600}
+  .card p{color:var(--ink-2);font-size:14.5px}
+  .card span{font-family:var(--mono);font-size:11.5px;color:var(--accent-deep);margin-top:auto;padding-top:8px}
+  footer.foot{border-top:1px solid var(--rule);padding-block:24px;font-family:var(--mono);font-size:12px;color:var(--steel)}
+  footer.foot .wrap{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between}
+  footer.foot a{color:var(--steel)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
+      <defs><linearGradient id="rh2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4285F4"/><stop offset="33%" stop-color="#EA4335"/>
+        <stop offset="66%" stop-color="#FBBC05"/><stop offset="100%" stop-color="#34A853"/></linearGradient></defs>
+      <path d="M3 21V10l9-7 9 7v11" stroke="url(#rh2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/></svg>
+    REMODELY<b>.AI</b>
+  </a>
+  <nav><a href="/pricing/" class="cta">Get the widgets</a></nav>
+</div></header>
+
+<main><div class="wrap">
+  <p class="tag">Widgets for contractor websites</p>
+  <h1>Eight ways to stop losing the visitor.</h1>
+  <p class="lede">Each one goes on your own website under your name and colours, runs on your own
+    numbers, and sends every lead to your inbox. One subscription covers all of them, and there is
+    nothing to download &mdash; you paste one line.</p>
+  <div class="grid">
+    <a class="card" href="/widgets/quote-calculator/">
+      <h2>Instant Quote Calculator</h2>
+      <p>Visitors want a number before they call.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/service-area/">
+      <h2>Service Area Checker</h2>
+      <p>"Do you come to me?" is why most visitors leave.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/before-after/">
+      <h2>Before &amp; After Slider</h2>
+      <p>You have the photos. Almost nobody shows them properly.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/reviews/">
+      <h2>Google Reviews Widget</h2>
+      <p>Your reviews are on Google. Your buyers are on your website.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/financing/">
+      <h2>Monthly Payment Calculator</h2>
+      <p>A big number is why people stall on a big job.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/callback/">
+      <h2>Request a Callback</h2>
+      <p>Most people will not wait on hold, and will not call twice.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/edge-visualizer/">
+      <h2>Countertop Edge Visualizer</h2>
+      <p>Your customers cannot name the edge they want.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+    <a class="card" href="/widgets/design-gallery/">
+      <h2>Design Gallery</h2>
+      <p>A slab on a rack sells nothing.</p>
+      <span>See how it works &rarr;</span>
+    </a>
+  </div>
+</div></main>
+
+<footer class="foot"><div class="wrap">
+  <span>&copy; <span id="yr"></span> Remodely AI</span>
+  <span><a href="/pricing/">Pricing</a> &middot; <a href="/tools/">All tools</a> &middot;
+    <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

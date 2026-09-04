@@ -225,7 +225,7 @@ function verifyToken(token) {
 
 /** Only these are writable. Anything about billing state is ours, not theirs. */
 const PUBLIC_FIELDS = ['name', 'accent', 'logo_url', 'phone', 'website', 'service_area', 'blurb',
-  'service_zips', 'hours', 'callback_promise', 'finance_apr', 'finance_terms'];
+  'service_zips', 'hours', 'callback_promise', 'finance_apr', 'finance_terms', 'place_id'];
 const PRIVATE_FIELDS = ['notify'];
 
 function cleanConfig(input) {
@@ -289,6 +289,52 @@ async function sendMagicLink(tenant, email) {
   return link;
 }
 
+/* ---------------------------------------------------------------------------
+   Google reviews.
+
+   Proxied here rather than called from the widget: the key stays server-side,
+   and one cached lookup serves every visitor to a shop's site. Reviews change
+   slowly, so a long cache costs almost nothing and keeps us well inside the
+   free tier — a shop with a thousand visitors a day is one API call.
+   --------------------------------------------------------------------------- */
+const REVIEW_TTL_MS = 1000 * 60 * 60 * 6;
+const reviewCache = new Map();
+
+async function fetchReviews(placeId) {
+  const hit = reviewCache.get(placeId);
+  if (hit && hit.until > Date.now()) return hit.data;
+
+  const key = process.env.GOOGLE_PLACES_KEY || process.env.GOOGLE_AI_API_KEY;
+  if (!key) throw new Error('No Google Places key configured');
+
+  const r = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, {
+    headers: {
+      'X-Goog-Api-Key': key,
+      'X-Goog-FieldMask': 'displayName,rating,userRatingCount,reviews,googleMapsUri',
+    },
+  });
+  const body = await r.json();
+  if (!r.ok) throw new Error(body.error?.message || `Places ${r.status}`);
+
+  // Reshape to only what the widget renders. Never pass Google's payload
+  // through wholesale — it changes shape and carries fields we don't want.
+  const data = {
+    name: body.displayName?.text || '',
+    rating: body.rating || null,
+    count: body.userRatingCount || 0,
+    url: body.googleMapsUri || '',
+    reviews: (body.reviews || []).map(v => ({
+      rating: v.rating || 0,
+      text: (v.text?.text || v.originalText?.text || '').slice(0, 700),
+      author: v.authorAttribution?.displayName || 'A Google user',
+      photo: v.authorAttribution?.photoUri || '',
+      when: v.relativePublishTimeDescription || '',
+    })).filter(v => v.text),
+  };
+  reviewCache.set(placeId, { data, until: Date.now() + REVIEW_TTL_MS });
+  return data;
+}
+
 const json = (res, code, obj, extra = {}) => {
   res.writeHead(code, {
     'Content-Type': 'application/json',
@@ -342,6 +388,24 @@ const server = http.createServer(async (req, res) => {
         } catch (e) { console.error('[billing] price lookup failed', id, e.message); }
       }
       return json(res, 200, { plans: out }, { 'Cache-Control': 'public, max-age=300' });
+    }
+
+    // Public: a shop's widget calls this from their own site, so no auth — but it
+    // only ever exposes what Google already shows publicly for that place.
+    if (url.pathname === '/reviews') {
+      const slug = (url.searchParams.get('shop') || '').trim();
+      if (!SLUG_RE.test(slug)) return json(res, 400, { error: 'shop required' });
+      const t = await db.getDoc('tenants', slug);
+      if (!t) return json(res, 404, { error: 'unknown shop' });
+      if (t.active === false) return json(res, 403, { error: 'inactive' });
+      if (!t.place_id) return json(res, 200, { configured: false, reviews: [] });
+      try {
+        const data = await fetchReviews(t.place_id);
+        return json(res, 200, { configured: true, ...data }, { 'Cache-Control': 'public, max-age=1800' });
+      } catch (e) {
+        console.error('[billing] reviews:', e.message);
+        return json(res, 200, { configured: true, error: true, reviews: [] });
+      }
     }
 
     // --- dashboard: sign in with the email their leads go to ----------------

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monthly Payment Calculator</title>
+<meta name="description" content="A big number is why people stall on a big job. Show the monthly version on your own financing terms. The same $18,000 kitchen reads very differently at $814 a month, a">
+<link rel="canonical" href="https://www.remodely.ai/widgets/financing/">
+<link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
+<meta property="og:title" content="Financing and Monthly Payment Calculator Widget">
+<meta property="og:description" content="A big number is why people stall on a big job.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.remodely.ai/widgets/financing/">
+<meta property="og:image" content="https://www.remodely.ai/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication",
+ "name":"Monthly Payment Calculator",
+ "applicationCategory":"BusinessApplication","operatingSystem":"Web browser",
+ "description":"A big number is why people stall on a big job.",
+ "url":"https://www.remodely.ai/widgets/financing/",
+ "offers":{"@type":"Offer","price":"49","priceCurrency":"USD",
+   "priceSpecification":{"@type":"UnitPriceSpecification","price":"49","priceCurrency":"USD","billingDuration":1,"billingIncrement":1,"unitText":"MONTH"}},
+ "provider":{"@type":"Organization","name":"Remodely AI","url":"https://www.remodely.ai"}}
+</script>
+<style>
+  :root{--paper:#eef1f5;--sheet:#fff;--ink:#0e141c;--ink-2:#3d4b59;--steel:#5a6b7a;
+        --rule:#cdd6de;--rule-soft:#e2e8ee;--accent:#f97316;--accent-deep:#c2410c;
+        --accent-wash:rgba(249,115,22,.09);--ok:#15803d;
+        --display:"Archivo",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;
+        --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+        --shadow:0 1px 2px rgba(14,20,28,.05),0 12px 32px -18px rgba(14,20,28,.28)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#0a0f1a;--sheet:#121a26;--ink:#e9eef4;--ink-2:#a7b4c2;--steel:#8497a8;
+    --rule:#26313f;--rule-soft:#1b2532;--accent:#fb923c;--accent-deep:#fdba74;
+    --accent-wash:rgba(251,146,60,.12);--ok:#4ade80;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.7)}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent-deep)}
+  h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.017em;text-wrap:balance}
+  p{margin:0}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .top{border-bottom:1px solid var(--rule);background:var(--sheet)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:13px}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:700;font-size:15px}
+  .logo b{color:var(--accent-deep)}
+  .top nav{display:flex;gap:16px;font-size:13.5px}
+  .top nav a{color:var(--steel);text-decoration:none}
+  .top nav a.cta{color:#fff;background:var(--accent);padding:8px 14px;border-radius:4px;font-weight:600}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);
+       display:flex;align-items:center;gap:10px;margin:0 0 13px}
+  .tag::after{content:"";flex:1;height:1px;background:var(--rule)}
+  section{padding-block:52px}
+  section+section{border-top:1px solid var(--rule-soft)}
+  .hero{padding-top:46px;padding-bottom:24px}
+  h1{font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.05;font-weight:700;max-width:18ch}
+  .lede{color:var(--ink-2);max-width:58ch;margin-top:15px;font-size:clamp(1rem,1.5vw,1.15rem)}
+  .lede em{font-style:normal;color:var(--ink);font-weight:600}
+  .row{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px;align-items:center}
+  .btn{font-family:var(--display);font-weight:600;font-size:15.5px;padding:12px 19px;border-radius:4px;
+       text-decoration:none;display:inline-block;border:1px solid var(--rule);color:var(--ink);background:var(--sheet)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:hover{filter:brightness(1.05)}
+  .price{font-family:var(--mono);font-size:12.5px;color:var(--steel)}
+  .demo{background:var(--sheet);border:1px solid var(--rule);border-radius:5px;box-shadow:var(--shadow);
+        overflow:hidden;margin-top:30px}
+  .demo .bar{font-family:var(--mono);font-size:11.5px;color:var(--steel);padding:10px 16px;
+             background:var(--accent-wash);border-bottom:1px solid var(--rule-soft)}
+  .demo iframe{display:block;width:100%;border:0;height:900px}
+  .points{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media (max-width:800px){.points{grid-template-columns:1fr;gap:18px}}
+  .points h3{font-size:1.02rem;font-weight:600;margin-bottom:6px}
+  .points p{color:var(--ink-2);font-size:15px}
+  .steps{counter-reset:s;list-style:none;margin:22px 0 0;padding:0}
+  .steps li{counter-increment:s;position:relative;padding:13px 0 13px 42px;border-bottom:1px solid var(--rule-soft);color:var(--ink-2)}
+  .steps li:last-child{border-bottom:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:13px;width:26px;height:26px;border-radius:50%;
+    background:var(--accent-wash);color:var(--accent-deep);font-family:var(--mono);font-size:12px;
+    display:flex;align-items:center;justify-content:center;font-weight:600}
+  .steps b{color:var(--ink)}
+  code.embed{display:block;font-family:var(--mono);font-size:13px;line-height:1.7;background:var(--sheet);
+    border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:4px;padding:15px 17px;
+    margin-top:18px;overflow-x:auto;white-space:pre;color:var(--ink)}
+  .who{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--steel);
+       border-radius:4px;padding:18px 20px;margin-top:26px}
+  .who b{display:block;margin-bottom:4px}
+  .who p{color:var(--ink-2);font-size:15px}
+  .more{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:22px}
+  .more a{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:14px 16px;
+          text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+  .more a:hover{border-color:var(--accent)}
+  .more a span{display:block;font-weight:400;font-size:13px;color:var(--steel);margin-top:3px}
+  footer.foot{border-top:1px solid var(--rule);padding-block:24px;font-family:var(--mono);font-size:12px;color:var(--steel)}
+  footer.foot .wrap{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between}
+  footer.foot a{color:var(--steel)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true">
+      <defs><linearGradient id="rh" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4285F4"/><stop offset="33%" stop-color="#EA4335"/>
+        <stop offset="66%" stop-color="#FBBC05"/><stop offset="100%" stop-color="#34A853"/></linearGradient></defs>
+      <path d="M3 21V10l9-7 9 7v11" stroke="url(#rh)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 21h-7" stroke="#34A853" stroke-width="3" stroke-linecap="round"/></svg>
+    REMODELY<b>.AI</b>
+  </a>
+  <nav>
+    <a href="/widgets/">All widgets</a>
+    <a href="/pricing/" class="cta">Get the widgets</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <p class="tag">Monthly Payment Calculator &middot; widget</p>
+  <h1>A big number is why people stall on a big job.</h1>
+  <p class="lede">Show the monthly version on your own financing terms. The same $18,000 kitchen reads very differently at $814 a month, and the visitor who was going to think about it books a call instead.</p>
+  <div class="row">
+    <a class="btn primary" href="/pricing/">Add to my site &mdash; $49/mo &rarr;</a>
+    <a class="btn" href="/tools/financing/">Open it full size</a>
+    <span class="price">All eight widgets included &middot; cancel anytime</span>
+  </div>
+
+  <div class="demo">
+    <p class="bar">Live widget &mdash; not a screenshot. Use it exactly as your visitor would.</p>
+    <iframe src="/tools/financing/" title="Monthly Payment Calculator demo" loading="lazy"></iframe>
+  </div>
+
+  <div class="who"><b>Who it's for</b><p>Anyone selling work over a few thousand dollars: remodeling, roofing, HVAC, windows, solar, hardscape.</p></div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="tag">Why it works</p>
+  <div class="points">
+    <div><h3>Your APR and your terms</h3><p>Set the rate and the lengths you actually offer. No terms set means no calculator, never an invented rate.</p></div>
+    <div><h3>Proper amortisation</h3><p>Standard monthly payment maths, with 0% handled exactly because a 0% offer is a real one.</p></div>
+    <div><h3>Leads that name a budget</h3><p>You learn the project size and the term they picked before you speak.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="tag">Putting it on your site</p>
+  <h2 style="font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:600;max-width:22ch">Nothing to download. One line to paste.</h2>
+  <ol class="steps">
+    <li><b>Sign up</b> and set your name, colours and details. About a minute.</li>
+    <li><b>Copy the line</b> we give you on the next screen. We email it too.</li>
+    <li><b>Paste it</b> into your page where you want the widget to appear. Works on WordPress, Wix, Squarespace, GoDaddy &mdash; anything that takes an embed.</li>
+    <li><b>Leads arrive</b> in your inbox with everything the visitor picked.</li>
+  </ol>
+  <code class="embed">&lt;iframe src="https://www.remodely.ai/embed/financing?shop=<span style="color:var(--accent-deep)">your-shop</span>"
+        width="100%" height="900" style="border:0"&gt;&lt;/iframe&gt;</code>
+</div></section>
+
+<section><div class="wrap">
+  <p class="tag">The other widgets</p>
+  <div class="more">
+    <a href="/widgets/quote-calculator/">Instant Quote Calculator<span>Visitors want a number before they call.</span></a>
+    <a href="/widgets/service-area/">Service Area Checker<span>"Do you come to me?" is why most visitors leave.</span></a>
+    <a href="/widgets/before-after/">Before &amp; After Slider<span>You have the photos. Almost nobody shows them properly.</span></a>
+    <a href="/widgets/reviews/">Google Reviews Widget<span>Your reviews are on Google. Your buyers are on your website.</span></a>
+    <a href="/widgets/callback/">Request a Callback<span>Most people will not wait on hold, and will not call twice.</span></a>
+    <a href="/widgets/edge-visualizer/">Countertop Edge Visualizer<span>Your customers cannot name the edge they want.</span></a>
+    <a href="/widgets/design-gallery/">Design Gallery<span>A slab on a rack sells nothing.</span></a>
+  </div>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <span>&copy; <span id="yr"></span> Remodely AI</span>
+  <span><a href="/widgets/">All widgets</a> &middot; <a href="/pricing/">Pricing</a> &middot;
+    <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
+</div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
