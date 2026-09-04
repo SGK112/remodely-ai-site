@@ -71,7 +71,7 @@
         ${['ASAP', '1-3 months', '3-6 months', 'Just planning'].map((w, i) =>
           `<button type="button" data-w="${w}"${i === 0 ? ' class="on"' : ''}>${w}</button>`).join('')}
       </div>
-      <button type="submit">Send my details →</button>
+      <button type="submit" class="rl-submit">Send my details →</button>
       <p class="rl-fine">No obligation · your details go straight to ${escapeHtml(object)}.</p>
       <div class="rl-note" id="rlNote"></div>`;
 
@@ -96,7 +96,7 @@
 
     wrap.addEventListener('submit', async e => {
       e.preventDefault();
-      const btn = wrap.querySelector('button');
+      const btn = wrap.querySelector('.rl-submit');
       const note = wrap.querySelector('#rlNote');
       const f = e.target;
       const name = f.name.value.trim(), email = f.email.value.trim(), zip = f.zip.value.trim();
@@ -115,7 +115,7 @@
         note.textContent = "That didn't send. Check your connection and try once more.";
         return;
       }
-      wrap.querySelectorAll('.rl-fields,.rl-fine,.rl-when,button').forEach(el => el.style.display = 'none');
+      wrap.querySelectorAll('.rl-fields,.rl-fine,.rl-when,.rl-submit').forEach(el => el.style.display = 'none');
       note.className = 'rl-note ok show';
       note.innerHTML = `✓ Thanks, ${escapeHtml(name.split(' ')[0])}. ${escapeHtml(subject[0].toUpperCase()+subject.slice(1))} will be in touch at <b>${escapeHtml(email)}</b>.`;
     });
