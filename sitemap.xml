@@ -73,6 +73,24 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://www.remodely.ai/room-designer/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.remodely.ai/room-designer/embed.html</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.remodely.ai/room-designer/gallery.html</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.remodely.ai/smart-scheduler.html</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
