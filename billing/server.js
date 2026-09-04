@@ -479,6 +479,11 @@ const server = http.createServer(async (req, res) => {
         const [t, p] = await Promise.all([db.getDoc('tenants', doc.shop_slug), db.getDoc('tenant_private', doc.shop_slug)]);
         if (t) { shopName = t.name || shopName; promise = t.callback_promise || ''; shopPhone = t.phone || ''; }
         notify = p?.notify || null;
+      } else {
+        // No shop means someone used a tool on our own site — that is a lead for
+        // US, and it was previously stored and mailed to nobody.
+        notify = process.env.OWN_LEADS_TO || 'support@remodely.ai';
+        doc.source = doc.source + ' (unbranded)';
       }
 
       // Persist first. An email we can't back up with a stored lead is worse
