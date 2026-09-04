@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AI Visibility Grader — Free Tool · Remodely AI</title>
+<title>Can AI Verify You? — Free Tool · Remodely AI</title>
 <meta name="description" content="Other graders check your meta tags. This one checks whether an AI assistant can actually verify your business exists — Google listing, BuildZoom, licence, NAP match, review standing.">
 <link rel="canonical" href="https://www.remodely.ai/tools/ai-visibility/">
 <link rel="icon" type="image/svg+xml" href="/images/remodely-house-logo.svg">
-<meta property="og:title" content="AI Visibility Grader — Remodely AI">
+<meta property="og:title" content="Can AI Verify You? — Remodely AI">
 <meta property="og:description" content="ChatGPT recommends whoever it can verify. Find out if that's you — free, 30 seconds, no signup.">
 <meta property="og:url" content="https://www.remodely.ai/tools/ai-visibility/">
 <meta property="og:image" content="https://www.remodely.ai/images/og.png">
@@ -102,7 +102,7 @@
 </head>
 <body>
 <div class="wrap">
-  <p class="eyebrow">AI visibility</p>
+  <p class="eyebrow">Off-site verification</p>
   <h1>When ChatGPT gets asked who to hire, <em>can it verify you?</em></h1>
   <p class="sub">Assistants are penalised for naming a business they might get wrong, so the
     recommendation goes to whoever is easiest to check. Most graders score your meta tags. This one
@@ -119,7 +119,7 @@
         <label for="biz">Business name <span style="text-transform:none;letter-spacing:0">(as it appears on Google)</span></label>
         <input id="biz" type="text" autocomplete="organization" placeholder="Valley Kitchen &amp; Bath">
       </div>
-      <button class="go" type="submit" id="go">Grade my AI visibility &rarr;</button>
+      <button class="go" type="submit" id="go">Check if AI can verify me &rarr;</button>
       <p class="hint">Free, no signup. We read your public homepage and compare it against your Google
         listing and the directories assistants cite.</p>
     </form>
@@ -168,7 +168,7 @@ function render(r) {
 
   $('out').innerHTML = `
     <div class="stage">
-      <p class="lbl">AI visibility score</p>
+      <p class="lbl">Verification score</p>
       <div class="scoreline">
         <span class="score">${r.score}<small>/100</small></span>
         <span class="verdict">${esc(verdictFor(r.score))}</span>
@@ -197,14 +197,15 @@ function render(r) {
       <summary>${passes.length} check${passes.length > 1 ? 's' : ''} you already pass &mdash; show</summary>
       ${passes.map(card).join('')}</details>` : ''}`;
 
-  $('cross').innerHTML = `Want to hear what the assistants actually say about you?
-    <a href="/tools/ai-probe/">Run the AI Assistant Probe &rarr;</a>`;
+  $('cross').innerHTML = `This grades what sits <em>off</em> your site. For the on-page half —
+    schema, meta, headings — <a href="/grader.html">run the full grader</a>, or
+    <a href="/tools/ai-probe/">ask the assistants directly</a> what they say about you.`;
 
   $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 Remodely.toolSource = 'ai-visibility';
-Remodely.toolName = 'AI Visibility Grader';
+Remodely.toolName = 'AI Verification Check';
 
 $('f').addEventListener('submit', async e => {
   e.preventDefault();
@@ -231,7 +232,7 @@ $('f').addEventListener('submit', async e => {
         : 'Check the spelling, and use the address your site actually loads on.')}</div>`;
   } finally {
     $('go').disabled = false;
-    $('go').textContent = 'Grade my AI visibility →';
+    $('go').textContent = 'Check if AI can verify me →';
   }
 });
 
