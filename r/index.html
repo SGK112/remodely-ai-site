@@ -178,10 +178,14 @@ function brand(r, t) {
   if (!t || !t.name) return { mark: MARK, name: 'remodely<i>.ai</i>', who: 'Remodely AI',
     site: 'https://www.remodely.ai/', tenant: false, promise: '',
     action: { href: 'mailto:support@remodely.ai', label: 'Book the call &rarr;' } };
-  if (t.accent) {
+  {
+    // The rainbow rule is our mark — on a branded report it reads as someone
+    // else's brand, or worse as a Google affiliation. Swap it for their colour.
     const st = document.createElement('style');
-    st.textContent = `:root{--orange:${t.accent};--orange-lt:${t.accent};` +
-      `--navy:#0f172a;--navy2:#1e293b}`;
+    st.textContent = (t.accent
+        ? `:root{--orange:${t.accent};--orange-lt:${t.accent};--navy:#0f172a;--navy2:#1e293b}`
+        : '') +
+      '.head::after,.bar.good .fill{background:linear-gradient(90deg,var(--orange-lt),var(--orange))}';
     document.head.appendChild(st);
   }
   const tel = String(t.phone || '').replace(/[^0-9+]/g, '');
