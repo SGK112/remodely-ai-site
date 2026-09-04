@@ -139,18 +139,45 @@ async function audit({ url, name, key }) {
     siteLinked ? null : 'Add your website to your Google Business Profile.');
 
   // ---- digital footprint: the sources assistants actually cite -------------
-  const slug = clean(name || siteName).replace(/\s+/g, '-');
-  let bz = false;
-  try {
-    const r = await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 7000 });
-    bz = r.ok;
-  } catch { bz = false; }
-  add('footprint', bz, 9, 'Listed on BuildZoom',
-    bz ? 'You have a BuildZoom page, the most heavily cited source for trades.'
-       : 'No BuildZoom listing found. In 2026 testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
-    bz ? null : 'Claim your free BuildZoom listing. It is the highest-leverage hour in this whole report.');
+  // BuildZoom has no public API, so the page has to be found by slug. Guessing
+  // one slug is wrong in both directions: a miss reports "no listing" for a shop
+  // that has one under a different slug, and a hit can land on a same-named
+  // company in another state. So: try the plausible slugs, then require the page
+  // to corroborate — phone, licence number, or city AND state must match.
+  const siteLicence = (html.match(/\b(?:ROC|LIC|License|Lic\.?)\s*#?\s*(\d{5,8})\b/i) || [])[1];
+  const addr = place?.formattedAddress || '';
+  const city = (addr.split(',')[1] || '').trim().toLowerCase();
+  const state = (addr.match(/,\s*([A-Z]{2})\s+\d{5}/) || [])[1];
 
-  const licenceOnSite = /\b(ROC|LIC|License|Lic\.?)\s*#?\s*\d{4,}/i.test(html);
+  const words = clean(name || siteName)
+    .replace(/\b(llc|inc|co|corp|company|ltd|the)\b/g, ' ').trim().split(/\s+/).filter(Boolean);
+  const candidates = [...new Set([
+    words.join('-'),
+    words.slice(0, 3).join('-'),
+    words.slice(0, 2).join('-'),
+  ].filter(c => c.length > 2))];
+
+  let bzUrl = null;
+  for (const slug of candidates) {
+    let page;
+    try { page = await safeFetch(`https://www.buildzoom.com/contractor/${slug}`, { timeout: 8000 }); }
+    catch { continue; }
+    if (!page.ok || /Page not found/i.test(page.body.slice(0, 4000))) continue;
+
+    // A 200 is not proof it is YOUR listing — corroborate before believing it.
+    const b = page.body;
+    const matches = (siteLicence && b.includes(siteLicence))
+      || (gPhone && digits((b.match(/\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}/g) || []).find(t => digits(t) === gPhone)) === gPhone)
+      || (!!state && new RegExp(`\\b${state}\\b`).test(b) && !!city && b.toLowerCase().includes(city));
+    if (matches) { bzUrl = page.url; break; }
+  }
+
+  add('footprint', !!bzUrl, 9, 'Listed on BuildZoom',
+    bzUrl ? `Found your BuildZoom page — the most heavily cited source for trades. (${bzUrl})`
+       : 'No BuildZoom listing found that matches your licence, phone or city. In testing BuildZoom appeared in ChatGPT citations for every trade checked — assistants use it to verify licences and permit history.',
+    bzUrl ? null : 'Claim your free BuildZoom listing. It is the highest-leverage hour in this whole report.');
+
+  const licenceOnSite = !!siteLicence;
   add('footprint', licenceOnSite, 6, 'Licence number published',
     licenceOnSite ? 'Your licence number is on the page, which is directly checkable against the state board.'
                   : 'No licence number found on your homepage.',
