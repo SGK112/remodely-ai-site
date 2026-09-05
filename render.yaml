@@ -98,6 +98,9 @@ services:
         source: /lead-tools
         destination: /lead-tools/index.html
       - type: rewrite
+        source: /room-designer/login
+        destination: /room-designer/login/index.html
+      - type: rewrite
         source: /tools/edge-visualizer
         destination: /tools/edge-visualizer/index.html
       - type: rewrite

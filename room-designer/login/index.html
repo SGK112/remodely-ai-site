@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · Remodely Design Pro</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="/images/remodely-house-logo.svg">
+<link rel="canonical" href="https://www.remodely.ai/room-designer/login/">
+<meta name="description" content="Sign in to Remodely Design Pro to save your room designs to the cloud and open them from any device.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+<style>
+  *,*::before,*::after { box-sizing: border-box; }
+  :root {
+    --bg: #0c1222;
+    --panel: #131c30;
+    --line: rgba(255,255,255,0.10);
+    --text: #f1f5f9;
+    --muted: rgba(241,245,249,0.62);
+    --accent: #f97316;
+    --accent-press: #ea580c;
+    --error: #f87171;
+    --ok: #34d399;
+    --radius: 12px;
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(249,115,22,0.10), transparent 60%),
+      linear-gradient(180deg, #0c1222 0%, #101828 55%, #0c1222 100%);
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    line-height: 1.5;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand img { width: 34px; height: 34px; display: block; }
+  .brand span { color: var(--accent); }
+  .brand small {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 26px 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+  }
+
+  h1 { margin: 0 0 6px; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+  .sub { margin: 0 0 22px; color: var(--muted); font-size: 0.9rem; }
+
+  label { display: block; font-size: 0.8rem; font-weight: 500; margin-bottom: 6px; color: var(--muted); }
+  .field { margin-bottom: 16px; }
+  input[type=email], input[type=password], input[type=text] {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.07);
+  }
+  input::placeholder { color: rgba(241,245,249,0.35); }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+  button[disabled] { opacity: 0.6; cursor: default; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 13px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+  }
+  .btn-primary:hover:not([disabled]) { background: var(--accent-press); }
+
+  .btn-ghost {
+    width: 100%;
+    padding: 12px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover:not([disabled]) { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  .btn-google {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: #1f2937;
+    background: #fff;
+    border: none;
+  }
+  .btn-google:hover:not([disabled]) { background: #f1f3f5; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .msg {
+    font-size: 0.85rem;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .msg.error { display: block; color: var(--error); background: rgba(248,113,113,0.10); border: 1px solid rgba(248,113,113,0.28); }
+  .msg.ok { display: block; color: var(--ok); background: rgba(52,211,153,0.10); border: 1px solid rgba(52,211,153,0.28); }
+
+  .foot { margin-top: 18px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  .foot a, .linkbtn {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .foot a:hover, .linkbtn:hover { text-decoration: underline; }
+
+  .guest { margin-top: 14px; text-align: center; }
+  .fineprint { margin-top: 10px; text-align: center; font-size: 0.72rem; color: var(--muted); opacity: 0.75; }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 18px;
+  }
+  .who .avatar {
+    width: 40px; height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .who .email { font-size: 0.85rem; color: var(--muted); word-break: break-all; }
+  .who .name { font-weight: 600; font-size: 0.95rem; }
+
+  [hidden] { display: none !important; }
+
+  .spinner {
+    display: inline-block;
+    width: 15px; height: 15px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: -2px;
+    margin-right: 7px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+</style>
+</head>
+<body>
+
+<a class="brand" href="/room-designer/">
+  <img src="/images/remodely-house-logo.svg" alt="">
+  <span style="color:var(--text)">REMODELY<span>.AI</span><small>Design Pro</small></span>
+</a>
+
+<main class="card">
+  <!-- Loading: we do not know yet whether there is a session -->
+  <div id="viewLoading">
+    <h1>One moment</h1>
+    <p class="sub"><span class="spinner"></span>Checking your session…</p>
+  </div>
+
+  <!-- Already signed in -->
+  <div id="viewSignedIn" hidden>
+    <h1>You're signed in</h1>
+    <p class="sub">Pick up where you left off.</p>
+    <div class="who">
+      <div class="avatar" id="whoInitials">?</div>
+      <div>
+        <div class="name" id="whoName">—</div>
+        <div class="email" id="whoEmail"></div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btnContinue">Open Design Pro</button>
+    <div class="guest"><button class="btn-ghost" id="btnSignOut">Sign out</button></div>
+  </div>
+
+  <!-- Sign in / sign up -->
+  <div id="viewForm" hidden>
+    <h1 id="formTitle">Sign in</h1>
+    <p class="sub" id="formSub">Save your designs to the cloud and open them from any device.</p>
+
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+    <button class="btn-google" id="btnGoogle">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      <span id="googleLabel">Continue with Google</span>
+    </button>
+
+    <div class="divider" id="orDivider">or</div>
+
+    <form id="authForm" novalidate>
+      <div class="field" id="nameField" hidden>
+        <label for="fullName">Full name</label>
+        <input type="text" id="fullName" autocomplete="name" placeholder="Jane Contractor">
+      </div>
+      <div class="field" id="emailField">
+        <label for="email">Email</label>
+        <input type="email" id="email" autocomplete="email" placeholder="you@company.com" required>
+      </div>
+      <div class="field" id="passwordField">
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+      <button class="btn-primary" type="submit" id="btnSubmit">Sign in</button>
+    </form>
+
+    <div class="foot" id="footSignin">
+      <button class="linkbtn" id="linkForgot">Forgot password?</button>
+      <div style="margin-top:8px">Don't have an account? <button class="linkbtn" id="linkToSignup">Sign up free</button></div>
+    </div>
+    <div class="foot" id="footSignup" hidden>
+      Already have an account? <button class="linkbtn" id="linkToSignin">Sign in</button>
+    </div>
+    <div class="foot" id="footReset" hidden>
+      <button class="linkbtn" id="linkBackToSignin">Back to sign in</button>
+    </div>
+    <div class="foot" id="footNewpass" hidden>
+      <button class="linkbtn" id="linkCancelNewpass">Cancel</button>
+    </div>
+
+    <div class="guest" id="guestArea">
+      <button class="btn-ghost" id="btnGuest">Continue as guest</button>
+      <p class="fineprint">Guest designs are saved in this browser only.</p>
+    </div>
+  </div>
+</main>
+
+<!-- Same auth stack the designer itself loads, so a session created here is the
+     session it sees. Only the pages a visitor is sent to are Remodely's own. -->
+<script src="/js/config.js?v=rd20260904"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/supabase-init.js?v=rd20260904"></script>
+<script src="/js/sg-auth.js?v=rd20260904"></script>
+<script>
+(function () {
+  'use strict';
+
+  var DESIGNER = '/room-designer/';
+
+  /**
+   * Where to send the visitor once they are in.
+   *
+   * Only same-origin absolute paths are accepted. A bare "/foo" is fine;
+   * "//evil.com" and "https://evil.com" are not, or this page would be an open
+   * redirect that a phishing link could point anywhere.
+   */
+  function nextUrl() {
+    var raw;
+    try { raw = new URLSearchParams(location.search).get('next'); } catch (e) { raw = null; }
+    if (!raw) return DESIGNER;
+    if (raw.charAt(0) !== '/' || raw.charAt(1) === '/' || raw.charAt(1) === '\\') return DESIGNER;
+    return raw;
+  }
+
+  function startMode() {
+    // Supabase sends the password-reset link back here with the recovery type
+    // in the fragment. Landing on "you're signed in" would strand someone who
+    // came specifically to choose a new password.
+    if (location.hash.indexOf('type=recovery') !== -1) return 'newpass';
+    var m;
+    try { m = (new URLSearchParams(location.search).get('mode') || '').toLowerCase(); } catch (e) { m = ''; }
+    return (m === 'signup' || m === 'reset') ? m : 'signin';
+  }
+
+  // Did we just come back from Google? We set this ourselves on the way out —
+  // the OAuth fragment is consumed by supabase-js before this code runs, so it
+  // is not something we can look for after the fact.
+  function returningFromOAuth() {
+    try { return new URLSearchParams(location.search).get('oauth') === '1'; } catch (e) { return false; }
+  }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = startMode();
+
+  var views = { loading: $('viewLoading'), signedIn: $('viewSignedIn'), form: $('viewForm') };
+  function show(which) {
+    Object.keys(views).forEach(function (k) { views[k].hidden = (k !== which); });
+  }
+
+  function say(text, kind) {
+    var el = $('msg');
+    el.textContent = text || '';
+    el.className = 'msg' + (text ? ' ' + (kind || 'error') : '');
+  }
+
+  // Buttons here hold markup (the Google mark), so stash innerHTML, not text.
+  var savedLabel = new WeakMap();
+  function busy(btn, on, label) {
+    btn.disabled = on;
+    if (on) {
+      if (!savedLabel.has(btn)) savedLabel.set(btn, btn.innerHTML);
+      btn.innerHTML = '<span class="spinner"></span>' + (label || 'Working…');
+    } else if (savedLabel.has(btn)) {
+      btn.innerHTML = savedLabel.get(btn);
+      savedLabel.delete(btn);
+    }
+  }
+
+  // ----- mode switching -------------------------------------------------
+  function applyMode() {
+    var isSignup = mode === 'signup';
+    var isReset = mode === 'reset';
+    var isNewpass = mode === 'newpass';
+
+    $('formTitle').textContent = isSignup ? 'Create your account'
+      : isReset ? 'Reset your password'
+      : isNewpass ? 'Choose a new password'
+      : 'Sign in';
+    $('formSub').textContent = isSignup
+      ? 'Free. Your designs sync to the cloud and open on any device.'
+      : isReset
+        ? "Enter your email and we'll send you a reset link."
+        : isNewpass
+          ? 'Pick something at least 8 characters long.'
+          : 'Save your designs to the cloud and open them from any device.';
+
+    $('nameField').hidden = !isSignup;
+    $('emailField').hidden = isNewpass;
+    $('email').required = !isNewpass;
+    $('passwordField').hidden = isReset;
+    $('password').required = !isReset;
+    $('password').autocomplete = (isSignup || isNewpass) ? 'new-password' : 'current-password';
+    $('password').placeholder = isNewpass ? 'New password' : '••••••••';
+    $('btnSubmit').textContent = isSignup ? 'Create account'
+      : isReset ? 'Send reset link'
+      : isNewpass ? 'Save password'
+      : 'Sign in';
+    $('googleLabel').textContent = isSignup ? 'Sign up with Google' : 'Continue with Google';
+    $('btnGoogle').hidden = isReset || isNewpass;
+    $('orDivider').hidden = isReset || isNewpass;
+    $('guestArea').hidden = isNewpass;
+
+    $('footSignin').hidden = mode !== 'signin';
+    $('footSignup').hidden = mode !== 'signup';
+    $('footReset').hidden = mode !== 'reset';
+    $('footNewpass').hidden = mode !== 'newpass';
+    say('');
+  }
+
+  function setMode(next) {
+    mode = next;
+    applyMode();
+    // Keep the address bar honest without adding history entries the back
+    // button would have to walk through.
+    try {
+      var u = new URL(location.href);
+      if (next === 'signin') u.searchParams.delete('mode');
+      else u.searchParams.set('mode', next);
+      history.replaceState(null, '', u);
+    } catch (e) {}
+  }
+
+  $('linkToSignup').onclick = function () { setMode('signup'); };
+  $('linkToSignin').onclick = function () { setMode('signin'); };
+  $('linkBackToSignin').onclick = function () { setMode('signin'); };
+  $('linkForgot').onclick = function () { setMode('reset'); };
+  $('linkCancelNewpass').onclick = function () {
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    setMode('signin');
+  };
+
+  // ----- signed-in view -------------------------------------------------
+  function initials(name, email) {
+    var src = (name || '').trim() || (email || '').trim();
+    if (!src) return '?';
+    var parts = src.split(/[\s@._-]+/).filter(Boolean);
+    return (parts.slice(0, 2).map(function (p) { return p.charAt(0).toUpperCase(); }).join('')) || '?';
+  }
+
+  function showSignedIn(user, profile) {
+    var name = (profile && profile.full_name) || (user.user_metadata && user.user_metadata.full_name) || '';
+    $('whoName').textContent = name || user.email;
+    $('whoEmail').textContent = name ? user.email : '';
+    $('whoInitials').textContent = initials(name, user.email);
+    show('signedIn');
+  }
+
+  $('btnContinue').onclick = function () { location.href = nextUrl(); };
+
+  $('btnSignOut').onclick = async function () {
+    busy(this, true, 'Signing out…');
+    try {
+      // redirect:false — SgAuth would otherwise navigate to '/', which is the
+      // marketing homepage here, not this app.
+      await window.SgAuth.signOut({ redirect: false });
+    } catch (e) { /* the local session is cleared either way */ }
+    busy(this, false);
+    setMode('signin');
+    show('form');
+  };
+
+  $('btnGuest').onclick = function () { location.href = nextUrl(); };
+
+  // ----- submit ---------------------------------------------------------
+  $('authForm').onsubmit = async function (e) {
+    e.preventDefault();
+    var email = $('email').value.trim();
+    var password = $('password').value;
+    var btn = $('btnSubmit');
+
+    if (mode !== 'newpass' && !email) { say('Enter your email address.'); $('email').focus(); return; }
+    if (mode !== 'reset' && !password) { say('Enter your password.'); $('password').focus(); return; }
+    if ((mode === 'signup' || mode === 'newpass') && password.length < 8) {
+      say('Use at least 8 characters for your password.');
+      return;
+    }
+
+    say('');
+    busy(btn, true, mode === 'signup' ? 'Creating account…'
+      : mode === 'reset' ? 'Sending…'
+      : mode === 'newpass' ? 'Saving…'
+      : 'Signing in…');
+
+    try {
+      if (mode === 'newpass') {
+        // The recovery link already put us in a session; set the password on it.
+        var c = window.SgAuth.getClient() || window._sgSupabaseClient;
+        var up = await c.auth.updateUser({ password: password });
+        if (up.error) throw up.error;
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+        location.href = nextUrl();
+        return;
+      }
+
+      if (mode === 'reset') {
+        var client = window.SgAuth.getClient() || window._sgSupabaseClient;
+        var res = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+        if (res.error) throw res.error;
+        say('Check your inbox for a reset link.', 'ok');
+        busy(btn, false);
+        return;
+      }
+
+      if (mode === 'signup') {
+        var data = await window.SgAuth.signUp(email, password, { full_name: $('fullName').value.trim() });
+        // With email confirmation on, signUp returns a user but no session.
+        if (data && data.user && !data.session) {
+          busy(btn, false);
+          setMode('signin');
+          say('Almost there — confirm your email, then sign in.', 'ok');
+          $('email').value = email;
+          return;
+        }
+      } else {
+        await window.SgAuth.signIn(email, password);
+      }
+
+      location.href = nextUrl();
+    } catch (err) {
+      say((err && err.message) || 'That did not work. Try again.');
+      busy(btn, false);
+    }
+  };
+
+  // ----- Google ---------------------------------------------------------
+  $('btnGoogle').onclick = async function () {
+    say('');
+    busy(this, true, 'Connecting to Google…');
+    try {
+      // Google returns to THIS page, which then forwards to `next`. Sending it
+      // straight to the designer would work too, but coming back here keeps
+      // one redirect URL to allowlist in Supabase and Google.
+      var back = location.origin + location.pathname + '?oauth=1&next=' + encodeURIComponent(nextUrl());
+      await window.SgAuth.signInWithGoogle(back);
+    } catch (err) {
+      say((err && err.message) || 'Could not connect to Google. Try again.');
+      busy(this, false);
+    }
+  };
+
+  // ----- boot -----------------------------------------------------------
+  (async function boot() {
+    applyMode();
+    try {
+      await window.SgAuth.init();
+    } catch (e) { /* fall through to the form */ }
+
+    var forward = returningFromOAuth();
+    var user = window.SgAuth.getUser();
+
+    // Someone who came from the reset email wants the password form, not a
+    // "you're signed in" card — even though the recovery link signed them in.
+    if (mode === 'newpass') {
+      show('form');
+      setTimeout(function () { $('password').focus(); }, 60);
+      return;
+    }
+
+    if (user) {
+      if (forward) { location.href = nextUrl(); return; }
+      showSignedIn(user, window.SgAuth.getProfile());
+      return;
+    }
+
+    // The client can resolve a session a beat after init while it parses an
+    // OAuth fragment. Catch that rather than leaving a stale form on screen.
+    window.SgAuth.onAuthChange(function (event) {
+      if (event === 'logout') return;
+      var u = window.SgAuth.getUser();
+      if (!u) return;
+      if (forward) location.href = nextUrl();
+      else showSignedIn(u, window.SgAuth.getProfile());
+    });
+
+    show('form');
+    setTimeout(function () { $('email').focus(); }, 60);
+  })();
+})();
+</script>
+</body>
+</html>

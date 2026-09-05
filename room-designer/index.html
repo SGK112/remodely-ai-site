@@ -98,43 +98,104 @@
 <meta name="twitter:image" content="https://www.remodely.ai/images/og.png">
 <script>
 /**
- * Whose name the app wears — resolved before first paint.
+ * Whose name the app wears, and whose login it sends people to — resolved
+ * before first paint.
  *
- * The app is hosted on the countertop shop's domain but the product is
- * Remodely Design Pro; its own manifest already says so. A visitor arriving
- * from remodely.ai was landing on something branded Surprise Granite, which
- * reads as the wrong company's software.
+ * The app now lives at remodely.ai/room-designer/ and the product is Remodely
+ * Design Pro, so Remodely is the default. The countertop shop still embeds it
+ * under its own name via ?brand=surprise-granite.
  *
- * Default stays Surprise Granite, so the shop's own visitors see no change.
- * ?brand=remodely — how remodely.ai links to it — wears Remodely instead.
+ * Each brand also carries its own auth routes. The designer used to send every
+ * visitor to surprisegranite.com to sign up and to /account/ and /log-in/ —
+ * paths that only exist on the shop's site and 404 on remodely.ai. A Remodely
+ * visitor now stays on Remodely's own login path throughout.
+ *
  * This must run in <head>: the main script is ~2.8MB and parses for seconds,
  * and a name that corrects itself after the fact is worse than none.
  */
 (function () {
   var BRANDS = {
     'surprise-granite': {
+      key: 'surprise-granite',
       name: 'Surprise Granite',
       logo: 'https://www.surprisegranite.com/migrated/6456ce4476abb25581fbad0c/6456ce4476abb269c6fbb176_Surprise-Granite-favicon-32x32px.png',
-      home: 'https://www.surprisegranite.com/'
+      home: 'https://www.surprisegranite.com/',
+      // The shop's auth lives on the shop's site — unchanged.
+      login: 'https://www.surprisegranite.com/log-in/',
+      signUp: 'https://www.surprisegranite.com/sign-up/',
+      account: 'https://www.surprisegranite.com/account/',
+      designs: 'https://www.surprisegranite.com/account/?page=my-designs',
+      tools: 'https://www.surprisegranite.com/account/?page=tools',
+      // The shop's CRM. Remodely has no equivalent, so these stay null there
+      // and the features that lead to them are hidden rather than sent to a 404.
+      projects: 'https://www.surprisegranite.com/account/#projects&from_design=1',
+      inbox: 'https://www.surprisegranite.com/account/?page=messages'
     },
     remodely: {
+      key: 'remodely',
       name: 'Remodely',
       logo: 'https://www.remodely.ai/images/remodely-house-logo.svg',
-      home: 'https://www.remodely.ai/'
+      home: 'https://www.remodely.ai/',
+      // Remodely's own login path. Same accounts as before — only the pages
+      // the visitor is sent to changed.
+      login: '/room-designer/login/',
+      signUp: '/room-designer/login/?mode=signup',
+      account: '/room-designer/login/',
+      designs: null, // the designs list is a modal in this app; no navigation
+      tools: '/tools/',
+      projects: null,
+      inbox: null
     }
   };
+
+  var STORE_KEY = 'rd-brand';
+  function stored() {
+    try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; }
+  }
+
   var q = '';
   try { q = (new URLSearchParams(location.search).get('brand') || '').toLowerCase(); } catch (e) {}
   var b = BRANDS[q];
+  // Google bounces the visitor back here with only an auth fragment, so the
+  // ?brand= that got them here is gone. Remember the last explicit choice.
+  if (!b) b = BRANDS[stored()];
   if (!b) {
-    // A link from remodely.ai that lost its query string still should not show
-    // another company's name to that visitor.
+    // A link from the shop that lost its query string still should not show
+    // the other company's name to that visitor.
     try {
       if (document.referrer && new URL(document.referrer).hostname.indexOf('surprisegranite.com') !== -1) b = BRANDS['surprise-granite'];
     } catch (e) {}
   }
   b = b || BRANDS.remodely;
+  if (BRANDS[q]) { try { localStorage.setItem(STORE_KEY, b.key); } catch (e) {} }
   window.ACTIVE_BRAND = b;
+
+  // Carry the brand through any link or redirect that leaves and comes back.
+  window.brandedUrl = function (path) {
+    if (!path) return path;
+    if (b.key === 'remodely') return path; // the default needs no marker
+    return path + (path.indexOf('?') === -1 ? '?' : '&') + 'brand=' + encodeURIComponent(b.key);
+  };
+  /**
+   * This app's own root, derived from where it is actually being served.
+   *
+   * Self-references throughout the file were hardcoded to /tools/room-designer/
+   * — Stripe success URLs, share links, "start a new design". That path stopped
+   * existing when the app moved to /room-designer/, so each one was a 404.
+   * Reading it off location.pathname keeps both deployments working.
+   */
+  window.appBase = function () {
+    var marker = '/room-designer/';
+    var i = location.pathname.indexOf(marker);
+    return i === -1 ? marker : location.pathname.slice(0, i + marker.length);
+  };
+  window.appUrl = function (suffix) {
+    return location.origin + window.appBase() + (suffix || '');
+  };
+  // Where an OAuth provider should drop the visitor back.
+  window.designerReturnUrl = function () {
+    return location.origin + window.brandedUrl(location.pathname);
+  };
 
   function paint() {
     var co = document.getElementById('preloaderCompanyMain');
@@ -143,6 +204,36 @@
     if (img) { img.src = b.logo; img.alt = b.name; }
     var link = document.getElementById('mainLogo');
     if (link) link.href = b.home;
+
+    var signUp = document.getElementById('loginSignUpLink');
+    if (signUp) {
+      if (b.key === 'remodely') {
+        // Same tab, and it comes straight back. Safe to leave: the designer
+        // autosaves to room_designer_autosave and restores on load.
+        signUp.href = b.signUp + '&next=' + encodeURIComponent(location.pathname);
+        signUp.removeAttribute('target');
+      } else {
+        // Another company's site — open it beside the design, not over it.
+        signUp.href = b.signUp;
+        signUp.target = '_blank';
+      }
+    }
+    var acct = document.getElementById('menuMyAccount');
+    if (acct) acct.href = b.account;
+    var tools = document.getElementById('menuAllTools');
+    if (tools) tools.href = b.tools;
+    var designs = document.getElementById('menuMyDesigns');
+    if (designs) {
+      if (b.designs) { designs.href = b.designs; designs.onclick = null; }
+      else {
+        designs.href = '#';
+        designs.onclick = function (e) {
+          e.preventDefault();
+          if (window.closeUserMenu) window.closeUserMenu();
+          if (window.openMyDesignsModal) window.openMyDesignsModal();
+        };
+      }
+    }
   }
   // Exported documents carry the same brand as the app that made them.
   window.pdfFooterLine = function () {
@@ -337,14 +428,14 @@
             </div>
             <!-- Logged in state -->
             <div id="loggedInMenu" style="display: none;">
-              <a href="https://www.surprisegranite.com/account/" class="dropdown-item">
+              <a href="https://www.surprisegranite.com/account/" id="menuMyAccount" class="dropdown-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
                 My Account
               </a>
-              <a href="/account/?page=my-designs" class="dropdown-item">
+              <a href="/account/?page=my-designs" id="menuMyDesigns" class="dropdown-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                   <line x1="3" y1="9" x2="21" y2="9"/>
@@ -352,7 +443,7 @@
                 </svg>
                 My Designs
               </a>
-              <a href="/account/?page=tools" class="dropdown-item">
+              <a href="/account/?page=tools" id="menuAllTools" class="dropdown-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
                 </svg>
@@ -3812,7 +3903,7 @@
           <span class="btn-signin-loader"></span>
         </button>
         <div style="text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
-          Don't have an account? <a href="https://www.surprisegranite.com/sign-up/" target="_blank" style="color: var(--gold); font-weight: 500;">Sign up free</a>
+          Don't have an account? <a href="https://www.surprisegranite.com/sign-up/" id="loginSignUpLink" target="_blank" style="color: var(--gold); font-weight: 500;">Sign up free</a>
         </div>
         <div class="login-divider" style="margin-bottom: 16px;">
           <span>or</span>
@@ -8683,8 +8774,8 @@
             user_email: user.email,
             plan: plan,
             billing_cycle: 'monthly',
-            success_url: window.location.origin + '/tools/room-designer/?subscription=success&plan=' + plan,
-            cancel_url: window.location.origin + '/tools/room-designer/?subscription=canceled'
+            success_url: window.appUrl('?subscription=success&plan=' + plan),
+            cancel_url: window.appUrl('?subscription=canceled')
           })
         });
 
@@ -58534,8 +58625,8 @@
               image: ''
             }],
             customer_email: email,
-            success_url: `${window.location.origin}/tools/room-designer/?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${window.location.origin}/tools/room-designer/?payment=canceled`,
+            success_url: window.appUrl('?payment=success&session_id={CHECKOUT_SESSION_ID}'),
+            cancel_url: window.appUrl('?payment=canceled'),
             metadata: {
               order_source: 'room_designer',
               payment_type: selectedPaymentOption,
@@ -58635,7 +58726,7 @@
               image: ''
             }],
             customer_email: customerEmail,
-            success_url: `${window.location.origin}/tools/room-designer/?approval=success&share_id=${shareId}&session_id={CHECKOUT_SESSION_ID}`,
+            success_url: window.appUrl(`?approval=success&share_id=${shareId}&session_id={CHECKOUT_SESSION_ID}`),
             cancel_url: `${window.location.href}`,
             metadata: {
               order_source: 'room_designer_approval',
@@ -61189,7 +61280,7 @@
           total: quotePreviewData.items.reduce((sum, i) => sum + i.retailPrice, 0)
         }));
 
-        const fallbackUrl = `${window.location.origin}/tools/room-designer/share.html?data=${encodedData.substr(0, 1000)}`;
+        const fallbackUrl = window.appUrl(`share.html?data=${encodedData.substr(0, 1000)}`);
         document.getElementById('generatedShareLink').value = fallbackUrl;
         document.getElementById('generatedLinkSection').style.display = 'block';
 
@@ -62133,10 +62224,14 @@
           throw new Error('Authentication not available');
         }
 
+        // Come back to this designer, wherever it is actually served from.
+        // This was hardcoded to /tools/room-designer/, a path that stopped
+        // existing when the app moved to /room-designer/ — so every Google
+        // sign-in from this modal landed on a 404.
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: window.location.origin + '/tools/room-designer/'
+            redirectTo: window.designerReturnUrl()
           }
         });
 
@@ -62268,7 +62363,7 @@
             <span style="width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--dark);font-size:12px;">${name.charAt(0).toUpperCase()}</span>
             <span>${name}</span>
           `;
-          accountBtn.onclick = () => window.location.href = '/account/';
+          accountBtn.onclick = () => window.location.href = window.ACTIVE_BRAND.account;
         } else {
           accountBtn.innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;">
@@ -62329,7 +62424,10 @@
       closeUserMenu();
       try {
         if (window.SgAuth) {
-          await window.SgAuth.signOut();
+          // SgAuth defaults to redirect:true and navigates to '/', which on
+          // remodely.ai drops the visitor on the marketing homepage and loses
+          // the design they have open. Stay put and just update the header.
+          await window.SgAuth.signOut({ redirect: false });
         }
         updateAuthUI();
         showToast('Signed out successfully');
@@ -63307,7 +63405,7 @@
               ${message}
             </p>
             <div style="display: flex; gap: 12px;">
-              <a href="/tools/room-designer/" class="btn btn-primary" style="text-decoration: none;">
+              <a href="${window.appBase()}" class="btn btn-primary" style="text-decoration: none;">
                 Start New Design
               </a>
               <a href="/" class="btn btn-secondary" style="text-decoration: none;">
@@ -65312,7 +65410,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
 
       try {
         // Generate share link if not already shared
-        let shareUrl = window.location.origin + '/tools/room-designer/share/?token=' + currentDesignId;
+        let shareUrl = window.appUrl('share/?token=' + currentDesignId);
 
         // Send approval request email via API
         const response = await fetch('/api/email/send-approval-request', {
@@ -66032,20 +66130,24 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
 
             // Offer to create a project from this design (only if not in silent mode)
             if (user && designId) {
-              const createProj = await showConfirmDialog({
-                title: 'Create Project?',
-                message: 'Design saved! Would you like to create a project from this design?',
-                confirmText: 'Create Project',
-                cancelText: 'Not Now'
-              });
-              if (createProj) {
-                sessionStorage.setItem('sg_design_for_project', JSON.stringify({
-                  design_id: designId,
-                  name: projectName || 'Room Design',
-                  room_type: roomType || '',
-                  quote_total: quoteTotal || 0
-                }));
-                window.location.href = '/account/#projects&from_design=1';
+              // Projects live in the shop's CRM. Don't offer the step to a
+              // brand that has nowhere to send them.
+              if (window.ACTIVE_BRAND.projects) {
+                const createProj = await showConfirmDialog({
+                  title: 'Create Project?',
+                  message: 'Design saved! Would you like to create a project from this design?',
+                  confirmText: 'Create Project',
+                  cancelText: 'Not Now'
+                });
+                if (createProj) {
+                  sessionStorage.setItem('sg_design_for_project', JSON.stringify({
+                    design_id: designId,
+                    name: projectName || 'Room Design',
+                    room_type: roomType || '',
+                    quote_total: quoteTotal || 0
+                  }));
+                  window.location.href = window.ACTIVE_BRAND.projects;
+                }
               }
             }
           }
@@ -68001,9 +68103,14 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
 
     // Clear a single notification
 
-    // Open full inbox (redirect to account CRM messages page)
+    // Open full inbox (the shop's account CRM messages page). Remodely has no
+    // such page, so the panel above this button is the whole inbox there.
     function openFullInbox() {
-      window.location.href = '/account/?page=messages';
+      if (!window.ACTIVE_BRAND.inbox) {
+        showToast('This panel is your full inbox.');
+        return;
+      }
+      window.location.href = window.ACTIVE_BRAND.inbox;
     }
 
     // Legacy compatibility
@@ -68043,7 +68150,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
       }
 
       // Navigate to design with share token
-      window.location.href = `/tools/room-designer/?share=${shareToken}`;
+      window.location.href = window.appBase() + `?share=${shareToken}`;
     }
 
     // Helper: Get time ago string
