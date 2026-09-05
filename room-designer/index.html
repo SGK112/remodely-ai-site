@@ -11812,6 +11812,26 @@
     }
 
     // Snap to standard dimension
+    /**
+     * Axis-aligned bounds of an element, accounting for rotation.
+     *
+     * Elements are drawn rotated about their CENTRE, so a 90-degree turn keeps
+     * the centre and swaps the extents. Several call sites swapped width and
+     * height but kept el.x/el.y as the top-left of the swapped box, which is
+     * off by (w - h) / 2 on each axis. For a square base cabinet that is zero
+     * and invisible; for a 30x12 wall cabinet it is nine inches, which is why
+     * cabinets on side walls snapped to the wrong place and fought the mouse.
+     */
+    function getElementBounds(el) {
+      const rot = (((el.rotation || 0) % 360) + 360) % 360;
+      const w = el.width * pixelsPerFoot;
+      const h = el.height * pixelsPerFoot;
+      if (rot !== 90 && rot !== 270) return { x: el.x, y: el.y, w, h };
+      const cx = el.x + w / 2;
+      const cy = el.y + h / 2;
+      return { x: cx - h / 2, y: cy - w / 2, w: h, h: w };
+    }
+
     function snapToStandard(value, type = 'width') {
       const standards = type === 'width' ? SNAP_DIMENSIONS.widths : SNAP_DIMENSIONS.depths;
       const tolerance = SNAP_DIMENSIONS.tolerance;
@@ -19158,11 +19178,11 @@
       const roomW = roomWidth * pixelsPerFoot;
       const roomH = roomDepth * pixelsPerFoot;
 
-      const rot = ((selectedElement.rotation || 0) % 360 + 360) % 360;
-      const elX = selectedElement.x;
-      const elY = selectedElement.y;
-      const elW = (rot === 90 || rot === 270) ? selectedElement.height * pixelsPerFoot : selectedElement.width * pixelsPerFoot;
-      const elH = (rot === 90 || rot === 270) ? selectedElement.width * pixelsPerFoot : selectedElement.height * pixelsPerFoot;
+      const selBounds = getElementBounds(selectedElement);
+      const elX = selBounds.x;
+      const elY = selBounds.y;
+      const elW = selBounds.w;
+      const elH = selBounds.h;
 
       ctx.save();
       ctx.setLineDash([6, 4]);
@@ -19336,8 +19356,9 @@
 
         const rot = (el.rotation || 0) % 360;
         const isRotated = (rot === 90 || rot === 270);
-        const elW = (isRotated ? el.height : el.width) * pixelsPerFoot;
-        const elH = (isRotated ? el.width : el.height) * pixelsPerFoot;
+        const _b = getElementBounds(el);
+        const elW = _b.w;
+        const elH = _b.h;
         const elX = el.x * pixelsPerFoot;
         const elY = el.y * pixelsPerFoot;
 
@@ -26130,44 +26151,49 @@
       el.width = roundToSixteenth(el.width);
       el.height = roundToSixteenth(el.height);
 
-      // NOW recalculate position to keep the anchored edge fixed AFTER snapping
-      // This ensures the opposite edge doesn't move when we snap to standard sizes
-      switch(handle) {
-        case 'nw': // Keep bottom-right fixed
-          el.x = originalRight - el.width * pixelsPerFoot;
-          el.y = originalBottom - el.height * pixelsPerFoot;
-          break;
+      // Reposition so the anchored edge stays exactly where it was.
+      //
+      // This used to anchor the UNROTATED bounding box — el.x + width for the
+      // right edge, and so on. Elements are drawn rotated about their centre,
+      // so on any wall other than the back one that edge is not where the
+      // element visually is: resizing a cabinet turned 90 degrees moved it
+      // sideways and appeared to change the wrong dimension. That is the
+      // "controls are messed up on every other wall" bug.
+      //
+      // Correct form: take the anchor as an offset from the centre in the
+      // element's own axes, rotate it into world space, and solve for the
+      // centre that keeps that world point fixed. At rotation 0 this reduces
+      // to the old behaviour exactly.
+      {
+        const rot = (resizeStart.rotation || 0) * Math.PI / 180;
+        const cos = Math.cos(rot), sin = Math.sin(rot);
 
-        case 'n': // Keep bottom fixed
-          el.y = originalBottom - el.height * pixelsPerFoot;
-          break;
+        // Which local corner/edge midpoint must not move, as a sign pair.
+        const ANCHOR = {
+          nw: [ 1,  1], n: [ 0,  1], ne: [-1,  1], e: [-1,  0],
+          se: [-1, -1], s: [ 0, -1], sw: [ 1, -1], w: [ 1,  0],
+        }[handle] || [0, 0];
 
-        case 'ne': // Keep bottom-left fixed, x stays at originalLeft
-          el.x = originalLeft;
-          el.y = originalBottom - el.height * pixelsPerFoot;
-          break;
+        const oldW = resizeStart.width * pixelsPerFoot;
+        const oldH = resizeStart.height * pixelsPerFoot;
+        const newW = el.width * pixelsPerFoot;
+        const newH = el.height * pixelsPerFoot;
 
-        case 'e': // Keep left fixed
-          el.x = originalLeft;
-          break;
+        const oldCx = resizeStart.elX + oldW / 2;
+        const oldCy = resizeStart.elY + oldH / 2;
 
-        case 'se': // Keep top-left fixed
-          el.x = originalLeft;
-          el.y = originalTop;
-          break;
+        // The anchor's world position before the resize.
+        const ax = ANCHOR[0] * oldW / 2, ay = ANCHOR[1] * oldH / 2;
+        const worldAx = oldCx + ax * cos - ay * sin;
+        const worldAy = oldCy + ax * sin + ay * cos;
 
-        case 's': // Keep top fixed
-          el.y = originalTop;
-          break;
+        // Where that same anchor sits relative to the new centre.
+        const bx = ANCHOR[0] * newW / 2, by = ANCHOR[1] * newH / 2;
+        const newCx = worldAx - (bx * cos - by * sin);
+        const newCy = worldAy - (bx * sin + by * cos);
 
-        case 'sw': // Keep top-right fixed
-          el.x = originalRight - el.width * pixelsPerFoot;
-          el.y = originalTop;
-          break;
-
-        case 'w': // Keep right fixed
-          el.x = originalRight - el.width * pixelsPerFoot;
-          break;
+        el.x = newCx - newW / 2;
+        el.y = newCy - newH / 2;
       }
 
       // Show snap indicator if snapped to standard
@@ -26603,8 +26629,9 @@
       // Element dimensions in screen footprint (X,Y extents on canvas).
       // For 90°/270° rotated elements, width and height swap on screen.
       const elRot = ((selectedElement.rotation || 0) % 360 + 360) % 360;
-      const elW = (elRot === 90 || elRot === 270) ? selectedElement.height * pixelsPerFoot : selectedElement.width * pixelsPerFoot;
-      const elH = (elRot === 90 || elRot === 270) ? selectedElement.width * pixelsPerFoot : selectedElement.height * pixelsPerFoot;
+      const elBounds = getElementBounds(selectedElement);
+      const elW = elBounds.w;
+      const elH = elBounds.h;
 
       // Check if this is a cabinet-type element for stricter alignment
       const cabinetTypes = ['base-cabinet', 'drawer-base', 'sink-base', 'wall-cabinet',
@@ -26646,11 +26673,11 @@
       elements.forEach(other => {
         if (other.id === selectedElement.id) return;
 
-        const otherX = other.x;
-        const otherY = other.y;
-        const otherRot = ((other.rotation || 0) % 360 + 360) % 360;
-        const otherW = (otherRot === 90 || otherRot === 270) ? other.height * pixelsPerFoot : other.width * pixelsPerFoot;
-        const otherH = (otherRot === 90 || otherRot === 270) ? other.width * pixelsPerFoot : other.height * pixelsPerFoot;
+        const otherBounds = getElementBounds(other);
+        const otherX = otherBounds.x;
+        const otherY = otherBounds.y;
+        const otherW = otherBounds.w;
+        const otherH = otherBounds.h;
         const isOtherCabinet = cabinetTypes.includes(other.type) ||
                                other.type?.startsWith('base-cabinet-') ||
                                other.type?.startsWith('wall-cabinet-') ||
@@ -27548,14 +27575,18 @@
                 break;
             }
 
-            // Constrain to room boundaries
+            // Constrain to room boundaries.
+            // Clamp the element's real footprint, not its unrotated one — a
+            // cabinet turned onto a side wall was being held against the wrong
+            // limits, so arrow keys shoved it out of place or refused to move it.
             const roomW = roomWidth * pixelsPerFoot;
             const roomH = roomDepth * pixelsPerFoot;
-            const elW = selectedElement.width * pixelsPerFoot;
-            const elH = selectedElement.height * pixelsPerFoot;
+            const nb = getElementBounds(selectedElement);
 
-            selectedElement.x = Math.max(0, Math.min(roomW - elW, selectedElement.x));
-            selectedElement.y = Math.max(0, Math.min(roomH - elH, selectedElement.y));
+            const clampedX = Math.max(0, Math.min(roomW - nb.w, nb.x));
+            const clampedY = Math.max(0, Math.min(roomH - nb.h, nb.y));
+            selectedElement.x += clampedX - nb.x;
+            selectedElement.y += clampedY - nb.y;
 
             // Move grouped elements too
             if (selectedElement.groupId) {
