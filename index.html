@@ -59,8 +59,8 @@
 
   <!-- Full stylesheet — minified production build, preloaded for early fetch + LCP boost.
        Source of truth is /css/styles.css; minifier in scripts/minify-css.py regenerates this. -->
-  <link rel="preload" as="style" href="/css/styles.min.css?v=154">
-  <link rel="stylesheet" href="/css/styles.min.css?v=154" fetchpriority="high">
+  <link rel="preload" as="style" href="/css/styles.min.css?v=155">
+  <link rel="stylesheet" href="/css/styles.min.css?v=155" fetchpriority="high">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.remodely.ai/">
@@ -398,10 +398,11 @@
       <div class="mobile-menu-content">
         <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
         <nav class="mobile-menu-nav">
+          <a href="/work/">Work</a>
+          <a href="/widgets/">Widgets</a>
+          <a href="/design-pro/">Design Pro</a>
           <a href="/grader.html">Free Grader</a>
-          <a href="#services">Services</a>
-          <a href="#services">Products</a>
-          <a href="#about">About</a>
+          <a href="/pricing/">Pricing</a>
           <a href="/client-dashboard.html" class="mobile-menu-login">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
               <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -665,16 +666,15 @@
           REMODELY<span>.AI</span>
         </a>
 
+        <!-- Five destinations, one login, one CTA. The bar is sized to stay on a
+             single line down to 992px, where the hamburger drawer takes over —
+             adding items back will overflow it, so put them in the footer. -->
         <ul class="nav-links">
           <li><a href="/work/">Work</a></li>
-          <li><a href="/design-pro/">Design Pro</a></li>
           <li><a href="/widgets/">Widgets</a></li>
-          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/design-pro/">Design Pro</a></li>
           <li><a href="/grader.html">Free Grader</a></li>
-          <li><a href="/pricing/" class="nav-cta">Get the tools</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#services">Products</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
           <li><a href="/client-dashboard.html" class="nav-login">Client Login</a></li>
           <li><a href="#contact" class="nav-cta">Get Started</a></li>
         </ul>
@@ -2723,6 +2723,7 @@
           </div>
           <ul class="footer-links">
             <li><a href="#contact">Contact</a></li>
+            <li><a href="/blog/">Blog</a></li>
             <li><a href="/careers.html">Careers</a></li>
             <li><a href="/business-plan.html">Business Plan</a></li>
             <li><a href="https://github.com/SGK112">GitHub</a></li>
