@@ -61205,59 +61205,35 @@
       btn.disabled = true;
 
       try {
-        // Save design to Supabase for sharing
-        const shareData = {
-          projectName: currentProjectName || 'Untitled Design',
-          customerEmail: document.getElementById('shareCustomerEmail').value || null,
-          showPricing: document.getElementById('shareShowPricing').checked,
-          allowDeposit: document.getElementById('shareAllowDeposit').checked,
-          allowSchedule: document.getElementById('shareAllowSchedule').checked,
-          expiryDays: parseInt(document.getElementById('shareLinkExpiry').value),
-          rooms: projectRooms,
-          elements: elements.map(el => ({
-            ...el,
-            // Strip out Three.js objects
-            mesh: undefined,
-            object3D: undefined
-          })),
-          quoteItems: quotePreviewData.items,
-          totalRetail: quotePreviewData.items.reduce((sum, i) => sum + i.retailPrice, 0),
-          createdAt: new Date().toISOString()
-        };
+        // This used to write its own shared_quotes row and hand out a
+        // /quote/view/?id= link, with a share.html?data= fallback. Neither page
+        // was ever built, and the insert names allow_deposit, allow_schedule
+        // and lead_id — columns that table does not have — so PostgREST 400'd
+        // every attempt and the customer always got the dead fallback link.
+        //
+        // Everything this modal offers already exists as a permission level on
+        // the design share the app does serve, so ask for that instead.
+        const showPricing = document.getElementById('shareShowPricing').checked;
+        const allowDeposit = document.getElementById('shareAllowDeposit').checked;
+        const expiryDays = parseInt(document.getElementById('shareLinkExpiry').value, 10);
 
-        // Generate unique share ID
-        const shareId = 'sq_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+        const permission = !showPricing ? 'material_view'
+          : allowDeposit ? 'quote_approval'
+          : 'quote_view';
 
-        // Save to Supabase
-        const { data, error } = await supabaseClient
-          .from('shared_quotes')
-          .insert({
-            share_id: shareId,
-            project_name: shareData.projectName,
-            customer_email: shareData.customerEmail,
-            show_pricing: shareData.showPricing,
-            allow_deposit: shareData.allowDeposit,
-            allow_schedule: shareData.allowSchedule,
-            expires_at: shareData.expiryDays > 0 ? new Date(Date.now() + shareData.expiryDays * 24 * 60 * 60 * 1000).toISOString() : null,
-            data: shareData,
-            lead_id: currentLeadInfo?.id || window.currentLeadId || null,
-            created_by: (await supabaseClient.auth.getUser()).data?.user?.id || null
-          })
-          .select()
-          .single();
+        const shareUrl = await generateShareLink({
+          permission: permission,
+          expiresAt: expiryDays > 0
+            ? new Date(Date.now() + expiryDays * 86400000).toISOString()
+            : null
+        });
 
-        // If linked to a lead, update lead status to "quoted"
-        if (currentLeadInfo?.id || window.currentLeadId) {
-          await supabaseClient
-            .from('leads')
-            .update({ status: 'quoted', updated_at: new Date().toISOString() })
-            .eq('id', currentLeadInfo?.id || window.currentLeadId);
+        if (!shareUrl) {
+          // generateShareLink surfaces its own reason (login prompt, demo gate).
+          btn.textContent = 'Generate Link';
+          btn.disabled = false;
+          return;
         }
-
-        if (error) throw error;
-
-        // Generate shareable URL
-        const shareUrl = `${window.location.origin}/quote/view/?id=${shareId}`;
 
         document.getElementById('generatedShareLink').value = shareUrl;
         document.getElementById('generatedLinkSection').style.display = 'block';
@@ -61267,27 +61243,13 @@
           btn.textContent = 'Generate New Link';
           btn.disabled = false;
         }, 2000);
-
-        showNotification('Share link generated!', 'success');
-
+        // generateShareLink already toasts on success — don't say it twice.
       } catch (error) {
-        console.error('Error generating share link:', error);
-
-        // Fallback: create a local share link with encoded data
-        const encodedData = btoa(JSON.stringify({
-          name: currentProjectName,
-          items: quotePreviewData.items.slice(0, 20), // Limit for URL length
-          total: quotePreviewData.items.reduce((sum, i) => sum + i.retailPrice, 0)
-        }));
-
-        const fallbackUrl = window.appUrl(`share.html?data=${encodedData.substr(0, 1000)}`);
-        document.getElementById('generatedShareLink').value = fallbackUrl;
-        document.getElementById('generatedLinkSection').style.display = 'block';
-
+        console.error('Error generating quote share link:', error);
+        // No silent fallback link: one that 404s is worse than a visible failure.
+        showToast('Could not generate the link. Please try again.', 'error');
         btn.textContent = 'Generate Link';
         btn.disabled = false;
-
-        showNotification('Share link created (local only)', 'warning');
       }
     }
 
@@ -62622,7 +62584,18 @@
     }
 
     // Generate share link and save to Supabase
-    async function generateShareLink() {
+    /**
+     * Mint a share link for the current design.
+     *
+     * The viewer is this app: ?share=<token> is picked up by loadSharedDesign()
+     * and rendered under the PERMISSION_LEVELS entry the share was created with.
+     * There is no separate share page and there does not need to be.
+     *
+     * opts.permission — override the radio in #shareModal (the quote and
+     *   approval flows pick a level rather than showing that UI).
+     * opts.expiresAt — ISO string for room_design_shares.expires_at.
+     */
+    async function generateShareLink(opts = {}) {
       console.log('=== generateShareLink START ===');
 
       // Demo mode check
@@ -62654,7 +62627,8 @@
       }
 
       const permissionBtn = document.querySelector('#shareModal .permission-btn.active');
-      const permission = permissionBtn ? permissionBtn.dataset.permission : 'quote_view';
+      const permission = opts.permission
+        || (permissionBtn ? permissionBtn.dataset.permission : 'quote_view');
       console.log('Permission selected:', permission);
 
       const projectName = document.getElementById('projectName').value || 'Untitled Design';
@@ -62839,6 +62813,8 @@
           share_token: designToken,
           permission_level: permission
         };
+
+        if (opts.expiresAt) shareData.expires_at = opts.expiresAt;
 
         if (leadId) {
           shareData.lead_id = leadId;
@@ -65409,8 +65385,12 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
       }
 
       try {
-        // Generate share link if not already shared
-        let shareUrl = window.appUrl('share/?token=' + currentDesignId);
+        // Mint a real share. This pointed at share/?token=<design UUID>, which
+        // was wrong twice over: that path was never built, and loadSharedDesign
+        // looks designs up by share_token, never by id — so even the correct
+        // path would not have resolved it.
+        const shareUrl = await generateShareLink({ permission: 'quote_approval' });
+        if (!shareUrl) return; // generateShareLink already said why
 
         // Send approval request email via API
         const response = await fetch('/api/email/send-approval-request', {
