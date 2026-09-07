@@ -30,7 +30,25 @@
   const config = window.REMODELY_CONFIG || {};
   const SUPABASE_URL = config.SUPABASE_URL || 'https://ypeypgwsycxcagncgdur.supabase.co';
   const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME';
-  const STORAGE_KEY = config.SUPABASE_STORAGE_KEY || 'sg-auth-token';
+  const STORAGE_KEY = config.SUPABASE_STORAGE_KEY || 'remodely-auth-token';
+  const LEGACY_STORAGE_KEY = config.SUPABASE_STORAGE_KEY_LEGACY || 'sg-auth-token';
+
+  // Carry a session across the rename. supabase-js only ever looks at
+  // STORAGE_KEY, so without this every signed-in user would come back to a
+  // login screen the moment the key changed. Copy rather than move: if this
+  // build gets rolled back, the old key still holds a valid session.
+  try {
+    if (STORAGE_KEY !== LEGACY_STORAGE_KEY && !localStorage.getItem(STORAGE_KEY)) {
+      const carried = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (carried) {
+        localStorage.setItem(STORAGE_KEY, carried);
+        console.debug('Supabase: carried session from', LEGACY_STORAGE_KEY, 'to', STORAGE_KEY);
+      }
+    }
+  } catch (e) {
+    // Private mode, disabled storage — the user signs in again, nothing breaks.
+    console.debug('Supabase: session carry-over skipped:', e.message);
+  }
 
   const { createClient } = window.supabase;
 

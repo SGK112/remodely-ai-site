@@ -36,11 +36,12 @@
     // Supabase Configuration
     SUPABASE_URL: 'https://ypeypgwsycxcagncgdur.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME',
-    // Deliberately NOT renamed with the rest: this is the localStorage key
-    // every existing session lives under, so changing it signs out every user
-    // at once. It needs a migration that reads the old key and writes the new
-    // one, not a find-and-replace.
-    SUPABASE_STORAGE_KEY: 'sg-auth-token',
+    SUPABASE_STORAGE_KEY: 'remodely-auth-token',
+    // The key sessions used to live under. supabase-init.js carries a session
+    // found here over to the new key on first load, so renaming it does not
+    // sign everyone out. Safe to drop once no active session predates the
+    // change — sessions expire, so a release or two is enough.
+    SUPABASE_STORAGE_KEY_LEGACY: 'sg-auth-token',
 
     // Business Settings
     COMMISSION_RATE: 5, // 5% commission on marketplace sales

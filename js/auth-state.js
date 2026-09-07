@@ -391,8 +391,11 @@
 
     // Clear localStorage
     try {
-      const storageKey = window._remodelySupabaseConfig?.storageKey || 'sg-auth-token';
+      const storageKey = window._remodelySupabaseConfig?.storageKey || 'remodely-auth-token';
       localStorage.removeItem(storageKey);
+      // The pre-rename key too: leaving it behind means the carry-over above
+      // restores the session on the next load and the user is signed back in.
+      localStorage.removeItem('sg-auth-token');
       localStorage.removeItem('sb-ypeypgwsycxcagncgdur-auth-token');
     } catch (e) {}
 
