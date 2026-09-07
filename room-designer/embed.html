@@ -326,9 +326,16 @@
 
       try {
         // Try share token first
+        // Via get_shared_design, which takes the token and runs as the table
+        // owner — reading the table directly would need blanket SELECT for
+        // anon, and that lets anyone list every design with the public key.
         let response = await fetch(
-          `${SUPABASE_URL}/rest/v1/room_designs?share_token=eq.${shareToken}&select=*`,
-          { headers: { 'apikey': SUPABASE_ANON_KEY } }
+          `${SUPABASE_URL}/rest/v1/rpc/get_shared_design`,
+          {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ p_token: shareToken })
+          }
         );
         let data = await response.json();
         let design = data[0];

@@ -5139,13 +5139,19 @@
         try {
           const { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY } = getSupabaseConfig();
 
+          // Polls the design the visitor already holds a token for, rather
+          // than reading it by id — an id-keyed read needs table-wide SELECT.
+          const pollToken = SHARE_STATE.designToken || SHARE_STATE.shareToken;
           const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/room_designs?id=eq.${designId}&select=updated_at,elements,rooms,room_width,room_depth,settings`,
+            `${SUPABASE_URL}/rest/v1/rpc/get_shared_design`,
             {
+              method: 'POST',
               headers: {
                 'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-              }
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ p_token: pollToken })
             }
           );
 
@@ -63325,8 +63331,8 @@
 
         try {
           const shareRes = await fetch(
-            `${SUPABASE_URL}/rest/v1/room_design_shares?share_token=eq.${shareToken}&select=*`,
-            { headers }
+            `${SUPABASE_URL}/rest/v1/rpc/get_share_record`,
+            { method: 'POST', headers, body: JSON.stringify({ p_token: shareToken }) }
           );
           if (shareRes.ok) {
             const shareResults = await shareRes.json();
@@ -63345,9 +63351,14 @@
           console.log('Not found in shares, trying room_designs directly...');
 
           try {
+          // Reads go through get_shared_design/get_share_record, which run as
+          // the table owner and take the share token as their only argument.
+          // Selecting the table directly needs blanket SELECT for anon, and
+          // that lets anyone list every design in the system with the public
+          // key — the token is the authorisation, so make it the input.
             const designRes = await fetch(
-              `${SUPABASE_URL}/rest/v1/room_designs?share_token=eq.${shareToken}&select=*`,
-              { headers }
+              `${SUPABASE_URL}/rest/v1/rpc/get_shared_design`,
+              { method: 'POST', headers, body: JSON.stringify({ p_token: shareToken }) }
             );
             if (designRes.ok) {
               const designResults = await designRes.json();
@@ -63443,8 +63454,8 @@
         let design = null;
         try {
           const designRes = await fetch(
-            `${SUPABASE_URL}/rest/v1/room_designs?id=eq.${shareData.design_id}&select=*`,
-            { headers }
+            `${SUPABASE_URL}/rest/v1/rpc/get_shared_design`,
+            { method: 'POST', headers, body: JSON.stringify({ p_token: shareToken }) }
           );
           const designResults = await designRes.json();
           design = designResults.length > 0 ? designResults[0] : null;
