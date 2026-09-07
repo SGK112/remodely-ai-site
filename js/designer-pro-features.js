@@ -506,7 +506,9 @@
   };
 
   // === ALIGNMENT TOOLS ===
-  window.alignElements = function(alignment) {
+  // Orphaned duplicate: index.html declares alignElements() and calls it, and
+  // this deferred file replaced it. Nothing here calls this copy.
+  window.proAlignElements = function(alignment) {
     if (!window.selectedElements || window.selectedElements.length < 2) {
       if (typeof showToast === 'function') showToast('Select 2+ elements to align', 'warning');
       return;
@@ -547,7 +549,9 @@
   };
 
   // === DISTRIBUTE EVENLY ===
-  window.distributeElements = function(direction) {
+  // Orphaned duplicate: index.html declares distributeElements() and calls it, and
+  // this deferred file replaced it. Nothing here calls this copy.
+  window.proDistributeElements = function(direction) {
     if (!window.selectedElements || window.selectedElements.length < 3) {
       if (typeof showToast === 'function') showToast('Select 3+ elements to distribute', 'warning');
       return;
@@ -1469,7 +1473,9 @@
     if (typeof showToast === 'function') showToast('Design exported', 'success');
   };
 
-  window.importFromJSON = function(file) {
+  // Orphaned duplicate: index.html declares importFromJSON() and calls it, and
+  // this deferred file replaced it. Nothing here calls this copy.
+  window.proImportFromJSON = function(file) {
     const reader = new FileReader();
     reader.onload = function(e) {
       try {
@@ -1825,7 +1831,9 @@
     return localStorage.getItem(AUTOSAVE_KEY) !== null;
   };
 
-  window.clearAutoSave = function() {
+  // Orphaned duplicate: index.html declares clearAutoSave() and calls it, and
+  // this deferred file replaced it. Nothing here calls this copy.
+  window.proClearAutoSave = function() {
     localStorage.removeItem(AUTOSAVE_KEY);
   };
 
@@ -2966,7 +2974,17 @@
   };
 
   // === SHARE DESIGN ===
-  window.generateShareLink = function() {
+  /**
+   * Legacy compact-link builder: the whole design base64'd into ?design=.
+   * Pairs with loadBase64SharedDesign above.
+   *
+   * Nothing calls it. It was named generateShareLink, which is also the real
+   * Supabase share-link builder in index.html, and this file is deferred — so
+   * this orphan replaced the live one, and the share button, the invite flow
+   * and the quote-share modal all silently got a stripped base64 link with no
+   * materials or prices instead of a share token.
+   */
+  window.generateBase64ShareLink = function() {
     if (!window.elements || window.elements.length === 0) {
       if (typeof showToast === 'function') showToast('Nothing to share', 'info');
       return null;
@@ -3003,7 +3021,17 @@
     }
   };
 
-  window.loadSharedDesign = function() {
+  /**
+   * Legacy ?design=<base64> loader — a whole design encoded in the URL.
+   *
+   * This was called loadSharedDesign, which is also the name of the real
+   * share-token loader declared in index.html. This file is deferred, so it
+   * runs after that declaration and its assignment replaced it: every
+   * ?share=<token> link then reached this function instead, found no ?design=
+   * param, returned false without logging, and left the visitor looking at an
+   * empty designer.
+   */
+  window.loadBase64SharedDesign = function() {
     const params = new URLSearchParams(window.location.search);
     const designData = params.get('design');
 
@@ -3069,8 +3097,9 @@
     // Initialize touch gestures
     window.initTouchGestures();
 
-    // Check for shared design in URL
-    window.loadSharedDesign();
+    // Check for a legacy ?design= payload. Share tokens are handled by
+    // checkSharedDesignUrl() in index.html — do not call that loader here.
+    window.loadBase64SharedDesign();
   });
 
   console.log('Room Designer Pro Features v5.0 loaded');
