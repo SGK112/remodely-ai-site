@@ -91,7 +91,11 @@
     }
   };
 
-  window.getElementIcon = function(type) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.getElementIcon = window.getElementIcon || function(type) {
     const icons = {
       counter: '🔲', cabinet: '🗄️', sink: '🚰', stove: '🔥', dishwasher: '🫧',
       refrigerator: '❄️', window: '🪟', door: '🚪', wall: '🧱', toilet: '🚽',
@@ -1193,7 +1197,11 @@
   });
 
   // === LAYER MANAGEMENT ===
-  window.bringToFront = function(element) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.bringToFront = window.bringToFront || function(element) {
     if (!element) element = window.selectedElement;
     if (!element || !window.elements) return;
 
@@ -1206,7 +1214,11 @@
     }
   };
 
-  window.sendToBack = function(element) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.sendToBack = window.sendToBack || function(element) {
     if (!element) element = window.selectedElement;
     if (!element || !window.elements) return;
 
@@ -1261,11 +1273,19 @@
     return currentZoom;
   };
 
-  window.zoomIn = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.zoomIn = window.zoomIn || function() {
     return window.setZoom(currentZoom * 1.25);
   };
 
-  window.zoomOut = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.zoomOut = window.zoomOut || function() {
     return window.setZoom(currentZoom / 1.25);
   };
 
@@ -1862,7 +1882,11 @@
   }
 
   // === WORK TRIANGLE VALIDATOR ===
-  window.validateWorkTriangle = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.validateWorkTriangle = window.validateWorkTriangle || function() {
     if (!window.elements) return null;
 
     const sink = window.elements.find(e => e.type === 'sink');
@@ -3421,7 +3445,11 @@
     renderSeams();
   };
 
-  window.removeSeam = function(id) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.removeSeam = window.removeSeam || function(id) {
     plannedSeams = plannedSeams.filter(s => s.id !== id);
     try { localStorage.setItem(SEAMS_KEY, JSON.stringify(plannedSeams)); } catch (e) {}
     renderSeams();
@@ -3890,7 +3918,11 @@
     modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
   };
 
-  window.exportTakeoffPDF = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.exportTakeoffPDF = window.exportTakeoffPDF || function() {
     // Generate a printable version
     const report = window.generateMaterialTakeoff();
     if (!report) return;
@@ -4039,7 +4071,11 @@
     ]
   };
 
-  window.showCabinetLibrary = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.showCabinetLibrary = window.showCabinetLibrary || function() {
     const existing = document.getElementById('cabinetLibraryModal');
     if (existing) existing.remove();
 
@@ -4112,7 +4148,11 @@
     return icons[type] || '▭';
   }
 
-  window.showCabinetCategory = function(category) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.showCabinetCategory = window.showCabinetCategory || function(category) {
     document.querySelectorAll('.cab-tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
     document.getElementById('cabinetLibraryGrid').innerHTML = renderCabinetCategory(category);
@@ -4135,7 +4175,11 @@
     `).join('');
   };
 
-  window.addCabinetFromLibrary = function(category, cabId) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.addCabinetFromLibrary = window.addCabinetFromLibrary || function(category, cabId) {
     const cabinet = CABINET_LIBRARY[category]?.find(c => c.id === cabId);
     if (!cabinet) return;
     addCabinetToCanvas(cabinet);
@@ -4177,7 +4221,11 @@
     if (typeof showToast === 'function') showToast(`Added ${cabinet.name}`, 'success');
   }
 
-  window.addCustomCabinet = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.addCustomCabinet = window.addCustomCabinet || function() {
     const w = parseFloat(document.getElementById('customCabWidth')?.value);
     const d = parseFloat(document.getElementById('customCabDepth')?.value);
     const h = parseFloat(document.getElementById('customCabHeight')?.value);
@@ -4486,7 +4534,11 @@
     if (typeof showToast === 'function') showToast('Room duplicated', 'success');
   };
 
-  window.deleteRoom = function(index) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.deleteRoom = window.deleteRoom || function(index) {
     if (!commercialProject || !commercialProject.rooms[index]) return;
     if (!confirm(`Delete "${commercialProject.rooms[index].name}"?`)) return;
 
@@ -4499,7 +4551,11 @@
     if (typeof showToast === 'function') showToast('Room deleted', 'success');
   };
 
-  window.editRoom = function(index) {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.editRoom = window.editRoom || function(index) {
     if (!commercialProject || !commercialProject.rooms[index]) return;
     const room = commercialProject.rooms[index];
 
@@ -7689,7 +7745,11 @@
   };
 
   // === 4. APPROVAL WORKFLOW ===
-  window.sendForApproval = function() {
+  /* Guarded: index.html defines this and calls it. This file is deferred, so a
+     plain assignment replaced the app's version with one written against a
+     different build — these reach for #roomCanvas and window.renderCanvas(),
+     neither of which exists here (#canvas and draw() do). Keep the app's. */
+  window.sendForApproval = window.sendForApproval || function() {
     if (!commercialProject) {
       if (typeof showToast === 'function') showToast('No project to send', 'warning');
       return;

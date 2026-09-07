@@ -10228,6 +10228,14 @@
     }
     window.openInBiddingTool = openInBiddingTool;
 
+    /* designer-pro-features.js calls window.renderCanvas() in 35 places to
+       repaint after it changes something. This app's repaint is draw(); there
+       has never been a renderCanvas, so every one of those calls was a no-op
+       and the pro features that mutate elements left the canvas stale. */
+    window.renderCanvas = function () {
+      if (typeof draw === 'function') draw();
+    };
+
     function generateTakeoffReport() {
       const takeoffs = calculateTakeoffs();
       showTakeoffModal(takeoffs);
@@ -70338,7 +70346,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
     });
   </script>
 
-<script defer src="/js/designer-pro-features.js?v=rd20260907"></script>
+<script defer src="/js/designer-pro-features.js?v=rd20260907b"></script>
 <script defer src="/js/remodely-hub.js?v=rd20260907"></script>
 </body>
 </html>
