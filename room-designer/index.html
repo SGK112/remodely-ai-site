@@ -223,8 +223,13 @@
   // Carry the brand through any link or redirect that leaves and comes back.
   window.brandedUrl = function (path) {
     if (!path) return path;
-    if (b.key === 'remodely') return path; // the default needs no marker
-    return path + (path.indexOf('?') === -1 ? '?' : '&') + 'brand=' + encodeURIComponent(b.key);
+    // A share link is opened by someone who has never been here, with no
+    // ?shop= of their own — the link has to carry whose tool this is.
+    var param = shop ? 'shop=' + encodeURIComponent(shop)
+      : b.key !== 'remodely' ? 'brand=' + encodeURIComponent(b.key)
+      : '';
+    if (!param) return path; // the default needs no marker
+    return path + (path.indexOf('?') === -1 ? '?' : '&') + param;
   };
   /**
    * This app's own root, derived from where it is actually being served.
@@ -62934,7 +62939,7 @@
         }
 
         // Display share URL — uses designToken which is always on room_designs.share_token
-        const shareUrl = `${window.location.origin}${window.location.pathname}?share=${designToken}`;
+        const shareUrl = window.location.origin + window.brandedUrl(`${window.location.pathname}?share=${designToken}`);
         document.getElementById('shareLink').value = shareUrl;
         document.getElementById('copyShareBtn').disabled = false;
         document.getElementById('shareStatusText').textContent = 'Design shared!';
@@ -62982,7 +62987,7 @@
         localShares[token] = localDesign;
         localStorage.setItem('roomDesignerLocalShares', JSON.stringify(localShares));
 
-        const shareUrl = `${window.location.origin}${window.location.pathname}?share=${token}`;
+        const shareUrl = window.location.origin + window.brandedUrl(`${window.location.pathname}?share=${token}`);
         document.getElementById('shareLink').value = shareUrl;
         document.getElementById('copyShareBtn').disabled = false;
         document.getElementById('shareStatusText').textContent = 'Link generated (local mode - for testing)';
@@ -64344,7 +64349,7 @@
             <span class="share-stats">${share.access_count || 0} views</span>
           </div>
           <div class="share-actions">
-            <button class="btn btn-sm" onclick="copyToClipboard('${window.location.origin}${window.location.pathname}?share=${share.share_token}')">Copy</button>
+            <button class="btn btn-sm" onclick="copyToClipboard('${window.location.origin}${window.brandedUrl(`${window.location.pathname}?share=${share.share_token}`)}')">Copy</button>
             <button class="btn btn-sm btn-danger" onclick="revokeShare('${share.id}')">Revoke</button>
           </div>
         </div>
