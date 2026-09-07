@@ -343,7 +343,10 @@
         document.getElementById('projectMeta').textContent = `${Math.round((design.room_width || 12) * 12)}" × ${Math.round((design.room_depth || 10) * 12)}" ${design.room_type || 'Kitchen'}`;
         document.getElementById('companyName').textContent = design.settings?.company_name || 'Remodely';
         document.getElementById('quoteTotal').textContent = '$' + (design.quote_total || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('openDesigner').href = `/tools/room-designer/?token=${shareToken}`;
+        // Two things were wrong here: /tools/room-designer/ stopped existing
+        // when the app moved, and the designer reads ?share= (or ?p=), never
+        // ?token= — so this link resolved to nothing even on the old path.
+        document.getElementById('openDesigner').href = `./?share=${shareToken}`;
 
         // Initialize 3D viewer
         init3DViewer(design);
