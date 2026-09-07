@@ -96,6 +96,13 @@
 <meta name="twitter:title" content="Remodely Design Pro — Kitchen Designer & Fabrication Plans">
 <meta name="twitter:description" content="Draw the room, lay out cabinets, pick your stone, and get a fabrication plan with cut lists and a priced item list. 2D plan and 3D view, free to try.">
 <meta name="twitter:image" content="https://www.remodely.ai/images/og.png">
+
+<!-- White-label layer shared with the lead tools: ?shop=<slug> resolves a
+     contractor from Firestore (falling back to /tenants/<slug>.json) and
+     recolours the page from their accent. It assigns window.Remodely
+     synchronously and defers its own boot to DOMContentLoaded, so the brand
+     script below can queue a callback against it. -->
+<script src="/tools/_tenant.js?v=6"></script>
 <script>
 /**
  * Whose name the app wears, and whose login it sends people to — resolved
@@ -161,6 +168,32 @@
     try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; }
   }
 
+  var shop = '';
+  try { shop = (new URLSearchParams(location.search).get('shop') || '').trim(); } catch (e) {}
+  var TENANT_KEY = 'rd-tenant:' + shop;
+
+  /**
+   * A contractor's own name over the top of the Remodely brand.
+   *
+   * They keep Remodely's login and account paths — they are a Remodely
+   * customer — and they never get the payment path, which belongs to the one
+   * brand that owns the Stripe account behind it.
+   */
+  function tenantBrand(t) {
+    var b = Object.create(BRANDS.remodely);
+    b.key = 'shop:' + (t.slug || shop);
+    b.name = t.name || shop;
+    if (t.logo) b.logo = t.logo;
+    if (t.website) b.home = t.website;
+    b.tenant = t;
+    return b;
+  }
+
+  function cachedTenant() {
+    if (!shop) return null;
+    try { return JSON.parse(localStorage.getItem(TENANT_KEY) || 'null'); } catch (e) { return null; }
+  }
+
   var q = '';
   try { q = (new URLSearchParams(location.search).get('brand') || '').toLowerCase(); } catch (e) {}
   var b = BRANDS[q];
@@ -176,6 +209,15 @@
   }
   b = b || BRANDS.remodely;
   if (BRANDS[q]) { try { localStorage.setItem(STORE_KEY, b.key); } catch (e) {} }
+
+  // ?shop= wins over everything: it is the contractor whose customer is looking
+  // at this. Resolving it needs a network round trip, and the main script is
+  // ~2.8MB — a name that corrects itself seconds later is worse than none — so
+  // paint from the last known value now and reconcile when the real one lands.
+  if (shop) {
+    var cached = cachedTenant();
+    if (cached) b = tenantBrand(cached);
+  }
   window.ACTIVE_BRAND = b;
 
   // Carry the brand through any link or redirect that leaves and comes back.
@@ -249,9 +291,34 @@
       ? 'Surprise Granite \u2022 surprisegranite.com \u2022 (623) 466-4177'
       : 'Remodely AI \u2022 remodely.ai \u2022 support@remodely.ai';
   };
+  // Every "if we don't know the company, say ___" fallback in the app. It used
+  // to say Surprise Granite, which is the wrong company on every install but
+  // theirs — and it reached customers, on the proposal PDF among other places.
+  window.brandCompanyName = function () {
+    return (window.ACTIVE_BRAND && window.ACTIVE_BRAND.name) || 'Remodely';
+  };
   window.__paintBrand = paint;
   paint();
   document.addEventListener('DOMContentLoaded', paint);
+
+  // Reconcile against the live tenant record once _tenant.js resolves it.
+  // Firestore is the source of truth there (a Stripe webhook flips `active` the
+  // moment a subscription lapses), so a cached name can go stale.
+  if (shop && window.Remodely && window.Remodely.ready) {
+    window.Remodely.ready(function (t) {
+      if (!t || !t.name) return;
+      var next = {
+        slug: t.slug || shop,
+        name: t.name,
+        logo: t.logo || '',
+        website: t.website || ''
+      };
+      try { localStorage.setItem(TENANT_KEY, JSON.stringify(next)); } catch (e) {}
+      b = tenantBrand(next);
+      window.ACTIVE_BRAND = b;
+      paint();
+    });
+  }
 })();
 </script>
 </head>
@@ -15481,7 +15548,7 @@
 
     async function init() {
       // Start preloader animation immediately
-      showPreloader('Loading workspace', (typeof ACTIVE_BRAND !== 'undefined' && ACTIVE_BRAND.name) || 'Surprise Granite');
+      showPreloader('Loading workspace', brandCompanyName());
 
       // Check if viewing a shared design (allow without login)
       const urlParams = new URLSearchParams(window.location.search);
@@ -59628,7 +59695,7 @@
     async function shareToSocial(platform) {
       const shareUrl = document.getElementById('shareLink').value;
       const projectName = document.getElementById('projectName').value || 'My Room Design';
-      const description = `Check out my ${document.getElementById('roomType').value || 'room'} design created with Surprise Granite Room Designer!`;
+      const description = `Check out my ${document.getElementById('roomType').value || 'room'} design created with ${brandCompanyName()} Room Designer!`;
 
       if (!shareUrl && platform !== 'download') {
         showToast('Please generate a share link first', 'warning');
@@ -59959,7 +60026,7 @@
                          permInfo.canEdit ? 'collaborate on' :
                          permInfo.canViewPrices ? 'view the quote for' : 'view';
 
-      const co = branding.companyName || 'Surprise Granite';
+      const co = branding.companyName || brandCompanyName();
       const senderName = branding.senderName || co;
       const phone = branding.phone || '';
       const email = branding.email || '';
@@ -60065,7 +60132,7 @@
       ${footerLogo}
       ${footerContact}
       <div style="font-size:11px;color:#888888;">
-        Powered by Surprise Granite Room Designer
+        Powered by ${co} Room Designer
       </div>
       <div style="font-size:11px;color:#aaaaaa;margin-top:6px;">
         &copy; ${yr} ${co}. All rights reserved.
@@ -60128,7 +60195,7 @@
 
       // Build branding object from profile
       const branding = {
-        companyName: 'Surprise Granite Marble & Quartz',
+        companyName: brandCompanyName(),
         senderName: '',
         phone: '',
         email: '',
@@ -61320,14 +61387,14 @@
       const total = document.getElementById('quotePreviewTotal').textContent;
 
       // Open email client
-      const subject = encodeURIComponent(`Quote for ${currentProjectName || 'Your Project'} - Surprise Granite`);
+      const subject = encodeURIComponent(`Quote for ${currentProjectName || 'Your Project'} - ${brandCompanyName()}`);
       const body = encodeURIComponent(
         `Hi ${customerName || 'Valued Customer'},\n\n` +
         `Thank you for your interest! Here is your quote for ${currentProjectName || 'your project'}:\n\n` +
         `Estimated Total: ${total}\n\n` +
         `View your full quote and design here:\n${shareUrl}\n\n` +
         `If you have any questions, please don't hesitate to reach out.\n\n` +
-        `Best regards,\nSurprise Granite Team`
+        `Best regards,\n${brandCompanyName()} Team`
       );
 
       window.open(`mailto:${customerEmail}?subject=${subject}&body=${body}`, '_blank');
@@ -61967,7 +62034,7 @@
 
         // Set company name
         if (companyEl) {
-          companyEl.textContent = companyName || 'Surprise Granite';
+          companyEl.textContent = companyName || brandCompanyName();
         }
 
         // Reset progress
@@ -62645,7 +62712,7 @@
       showLoading('Generating share link...');
 
       // Get user profile for company name
-      let companyName = 'Surprise Granite Marble & Quartz'; // default
+      let companyName = brandCompanyName(); // default
       try {
         const profile = await window.SgAuth?.getProfile();
         if (profile && profile.company_name) {
@@ -62938,7 +63005,7 @@
 
       try {
         // Update preloader with company name
-        let companyName = 'Surprise Granite Marble & Quartz';
+        let companyName = brandCompanyName();
         if (design.settings && design.settings.company_name) {
           companyName = design.settings.company_name;
         } else if (design.created_by) {
@@ -63881,7 +63948,7 @@
             .map(m => ({
               text: m.message,
               timestamp: m.created_at,
-              author: m.direction === 'outbound' ? (m.metadata?.author || 'Surprise Granite') : 'Customer',
+              author: m.direction === 'outbound' ? (m.metadata?.author || brandCompanyName()) : 'Customer',
               direction: m.direction,
               messageId: m.id
             }));
@@ -65478,7 +65545,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
-      doc.text('Surprise Granite', 15, 20);
+      doc.text(brandCompanyName(), 15, 20);
 
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
