@@ -22,6 +22,10 @@
     DEBUG: !isProduction,
 
     // API Configuration
+    // THE line to change to move Design Pro onto a Remodely-owned backend.
+    // Everything reads this through window.apiBase(); nothing else names a host.
+    // Note this API's CORS allow list decides which origins may call it, so a
+    // new domain has to be added there too or every endpoint answers 403.
     API_BASE: 'https://surprise-granite-email-api.onrender.com',
 
     // Google Configuration

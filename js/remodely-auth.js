@@ -652,7 +652,7 @@
    * @param {Object} options - Fetch options (method, body, headers, etc.)
    */
   async function apiRequest(path, options = {}) {
-    const API_BASE = window.REMODELY_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com';
+    const API_BASE = window.REMODELY_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com'; // see js/config.js
     const token = await getAccessToken();
 
     const headers = {

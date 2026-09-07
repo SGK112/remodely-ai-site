@@ -4964,8 +4964,12 @@
   }
 
   async function analyzeMultiImages(images, userContext) {
-    const AI_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? 'https://surprise-granite-email-api.onrender.com' : '';
+    // Was: the remote host when run locally, and '' (same origin) in
+    // production. But the site is served statically and proxies no /api/*, so
+    // in production these POSTs hit the static handler and came back 200 with
+    // an empty body — which surfaces as "AI server returned an empty response".
+    // The same trap is documented at the AI_API_BASE in index.html.
+    const AI_BASE = (window.apiBase && window.apiBase()) || 'https://surprise-granite-email-api.onrender.com';
 
     const resultsEl = document.getElementById('extractedRooms');
     document.getElementById('pdfParseResults').style.display = 'block';
@@ -5804,7 +5808,7 @@
   }
 
   // Analyze blueprint with AI Vision API (uses production endpoint)
-  const AI_API_BASE = 'https://surprise-granite-email-api.onrender.com';
+  const AI_API_BASE = (window.apiBase && window.apiBase()) || 'https://surprise-granite-email-api.onrender.com';
 
   // Get user's account type for rate limiting
   function getUserAccountType() {

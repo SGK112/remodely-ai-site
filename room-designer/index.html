@@ -39,14 +39,14 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/FXAAShader.js"></script>
 
   <!-- Centralized Configuration -->
-  <script src="/js/config.js?v=rd20260907"></script>
+  <script src="/js/config.js?v=rd20260907c"></script>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/js/supabase-init.js?v=rd20260907"></script>
 
   <!-- Auth System -->
-  <script src="/js/remodely-auth.js?v=rd20260907"></script>
+  <script src="/js/remodely-auth.js?v=rd20260907c"></script>
   <script src="/js/auth-state.js?v=rd20260907"></script>
 
   <!-- PDF Export -->
@@ -305,6 +305,20 @@
   // Every "if we don't know the company, say ___" fallback in the app. It used
   // to say Surprise Granite, which is the wrong company on every install but
   // theirs — and it reached customers, on the proposal PDF among other places.
+  /**
+   * The one place the app asks where its backend is.
+   *
+   * The host was written out in fourteen places across four files, each with
+   * its own inline fallback, so pointing Design Pro at a Remodely-owned API
+   * meant finding all fourteen. It reads REMODELY_CONFIG.API_BASE now — set in
+   * js/config.js, which is the single line to change.
+   */
+  window.apiBase = function () {
+    var c = window.REMODELY_CONFIG || {};
+    if (c.API_BASE) return c.API_BASE;
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return 'http://localhost:3001';
+    return 'https://surprise-granite-email-api.onrender.com';
+  };
   window.brandCompanyName = function () {
     return (window.ACTIVE_BRAND && window.ACTIVE_BRAND.name) || 'Remodely';
   };
@@ -5805,7 +5819,7 @@
       async function heicViaCloudinary(dataUrl) {
         // Server-side fallback: upload the HEIC bytes to Cloudinary via our
         // api endpoint, fetch the f_jpg-transformed JPEG, convert to dataUrl.
-        const apiBase = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com';
+        const apiBase = window.apiBase();
         const heicBlob = dataUrlToBlobLocal(dataUrl);
         const upResp = await fetch(`${apiBase}/api/heic-to-jpeg`, {
           method: 'POST',
@@ -5985,8 +5999,7 @@
       // static site doesn't proxy /api/* anywhere, so POSTs landed on Render's
       // static handler and silently returned 200 + empty body, looking like
       // "AI server returned an empty 200 response" in the user's browser.
-      const AI_API_BASE = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE)
-        || 'https://surprise-granite-email-api.onrender.com';
+      const AI_API_BASE = window.apiBase();
 
       window.analyzeRoomImage = async function() {
         if (!uploadedImageData && uploadedMultiImages.length === 0) {
@@ -7659,7 +7672,7 @@
       });
       const heicCloud = async () => {
         // Server-side fallback via Cloudinary's HEIC → JPEG transform.
-        const apiBase = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com';
+        const apiBase = window.apiBase();
         const upResp = await fetch(`${apiBase}/api/heic-to-jpeg`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/octet-stream' },
@@ -8010,7 +8023,7 @@
         if (sendBtn) sendBtn.disabled = true;
         showTypingIndicator();
         try {
-          const apiBase = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com';
+          const apiBase = window.apiBase();
           const ctrl = new AbortController();
           const tid = setTimeout(() => ctrl.abort(), 120000); // multi-image takes longer
           let resp;
@@ -8099,7 +8112,7 @@
         // Call AI endpoint. MUST be absolute — the static host (www) does NOT
         // proxy /api, so a relative URL returns an empty 200 and JSON.parse
         // throws "Unexpected end of JSON input". Mirror room-scan's AI_API_BASE.
-        const designApiBase = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com';
+        const designApiBase = window.apiBase();
         const response = await fetch(`${designApiBase}/api/ai/design-chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -14081,11 +14094,7 @@
 
     // ===== DISTRIBUTOR MARKETPLACE INTEGRATION =====
     // Use local API in development, Render in production
-    const MARKETPLACE_API_BASE = (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE)
-      ? window.REMODELY_CONFIG.API_BASE
-      : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://localhost:3001'
-        : 'https://surprise-granite-email-api.onrender.com';
+    const MARKETPLACE_API_BASE = window.apiBase();
 
     const MARKETPLACE_ENDPOINTS = {
       products: `${MARKETPLACE_API_BASE}/api/marketplace/products`,
@@ -58569,7 +58578,7 @@
     // ============ PAYMENT PROCESSING ============
 
     const STRIPE_PUBLIC_KEY = 'pk_live_51Smr3E3qDbNyHFmdatW3Hsua7p5EHSwkLa2WLx3YTSACjb9Yv5qoaGNX7pk2TZt5FcjSxRWw1KG1PoEpEkXmuCfr00vbSGkIMu';
-    const API_BASE = 'https://surprise-granite-email-api.onrender.com';
+    const API_BASE = window.apiBase();
     let selectedPaymentOption = 'deposit';
     let stripeInstance = null;
 
@@ -60180,7 +60189,7 @@
         // user's access token.
         const session = await window.RemodelyAuth?.getSession?.();
         const authToken = session?.access_token || SUPABASE_ANON_KEY;
-        const response = await fetch('https://surprise-granite-email-api.onrender.com/api/email/notify', {
+        const response = await fetch(window.apiBase() + '/api/email/notify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
           body: JSON.stringify({
@@ -70196,7 +70205,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
 
     async function notifyRecipient(conv, message) {
       try {
-        const API_BASE = window.REMODELY_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com';
+        const API_BASE = window.apiBase();
         await fetch(`${API_BASE}/api/email/notify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'new_message', recipientEmail: conv.email, senderName: currentUser?.user_metadata?.full_name || 'Designer', message, link: window.location.href }) });
       } catch (e) { console.log('Notify skipped'); }
     }
@@ -70210,7 +70219,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
       const container = document.getElementById('msgCollaboratorList');
       container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Loading...</div>';
       try {
-        const API_BASE = window.REMODELY_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com';
+        const API_BASE = window.apiBase();
         const token = await getAccessToken();
         const res = await fetch(`${API_BASE}/api/collaboration/my-collaborators`, { headers: { 'Authorization': token ? `Bearer ${token}` : '' } });
         const data = await res.json();
@@ -70346,7 +70355,7 @@ Lazy Susan,BLS33,lazy-susan,33,33,34.5,420`;
     });
   </script>
 
-<script defer src="/js/designer-pro-features.js?v=rd20260907b"></script>
+<script defer src="/js/designer-pro-features.js?v=rd20260907c"></script>
 <script defer src="/js/remodely-hub.js?v=rd20260907"></script>
 </body>
 </html>
