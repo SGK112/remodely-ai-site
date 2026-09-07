@@ -39,15 +39,15 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/shaders/FXAAShader.js"></script>
 
   <!-- Centralized Configuration -->
-  <script src="/js/config.js?v=rd20260907d"></script>
+  <script src="/js/config.js?v=rd20260907e"></script>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/js/supabase-init.js?v=rd20260907d"></script>
+  <script src="/js/supabase-init.js?v=rd20260907e"></script>
 
   <!-- Auth System -->
-  <script src="/js/remodely-auth.js?v=rd20260907d"></script>
-  <script src="/js/auth-state.js?v=rd20260907d"></script>
+  <script src="/js/remodely-auth.js?v=rd20260907e"></script>
+  <script src="/js/auth-state.js?v=rd20260907e"></script>
 
   <!-- PDF Export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13916,8 +13916,8 @@
       if (supabaseProductsLoaded) return;
 
       // Inline config since getSupabaseConfig may not be defined yet
-      const SUPABASE_URL = 'https://ypeypgwsycxcagncgdur.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME';
+      const SUPABASE_URL = 'https://cpnqippzgcezidoorwry.supabase.co';
+      const SUPABASE_ANON_KEY = 'sb_publishable_CNuuG7ZWQqdyws0UJAKBAw_U11KanGP';
 
       try {
         // Fetch ALL products (paginate)
@@ -62144,8 +62144,8 @@
     function getSupabaseConfig() {
       const config = window.REMODELY_CONFIG || window._remodelySupabaseConfig || {};
       return {
-        url: config.SUPABASE_URL || config.url || 'https://ypeypgwsycxcagncgdur.supabase.co',
-        anonKey: config.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME',
+        url: config.SUPABASE_URL || config.url || 'https://cpnqippzgcezidoorwry.supabase.co',
+        anonKey: config.SUPABASE_ANON_KEY || 'sb_publishable_CNuuG7ZWQqdyws0UJAKBAw_U11KanGP',
         storageKey: config.SUPABASE_STORAGE_KEY || config.storageKey || 'remodely-auth-token'
       };
     }

@@ -34,8 +34,12 @@
     GOOGLE_ANALYTICS_PROPERTY: 'properties/495413683',
 
     // Supabase Configuration
-    SUPABASE_URL: 'https://ypeypgwsycxcagncgdur.supabase.co',
-    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME',
+    // Remodely's own project. Design Pro ran on the countertop shop's Supabase
+    // until now; the 67 designs and 42 share records were copied across before
+    // the switch, and share links resolve by token so they kept working.
+    // This key is the new-format publishable key — browser-safe, RLS-bound.
+    SUPABASE_URL: 'https://cpnqippzgcezidoorwry.supabase.co',
+    SUPABASE_ANON_KEY: 'sb_publishable_CNuuG7ZWQqdyws0UJAKBAw_U11KanGP',
     SUPABASE_STORAGE_KEY: 'remodely-auth-token',
     // The key sessions used to live under. supabase-init.js carries a session
     // found here over to the new key on first load, so renaming it does not
