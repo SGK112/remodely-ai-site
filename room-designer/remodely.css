@@ -3398,7 +3398,15 @@
       overflow-y: auto;
       overflow-x: hidden;
       box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-      height: 100%;
+      /* max-height, NOT height. Both panels are flex items in .main, which sizes
+         itself with flex:1 rather than an explicit height. Setting height:100%
+         here took the cross-size out of `auto`, so align-items:stretch no longer
+         applied and the percentage had nothing definite to resolve against — the
+         panel grew to its content instead, overflowed .main (overflow:hidden)
+         and got clipped, with no scrollbar anywhere. The left sidebar always
+         used max-height, kept an auto height, got stretched to a definite
+         height, and scrolled. That was the whole difference. */
+      max-height: 100%;
       min-height: 0;
     }
 

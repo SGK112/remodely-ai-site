@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Remodely Design Pro</title>
-  <link rel="icon" href="https://www.surprisegranite.com/migrated/6456ce4476abb25581fbad0c/6456ce4476abb269c6fbb176_Surprise-Granite-favicon-32x32px.png">
+  <link rel="icon" id="faviconLink" href="/images/remodely-house-logo.svg">
   <!-- PWA: installable "Remodely Design Pro" app (manifest + SW are external files) -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#7C3AED">
@@ -137,6 +137,7 @@
       // and the features that lead to them are hidden rather than sent to a 404.
       projects: 'https://www.surprisegranite.com/account/#projects&from_design=1',
       inbox: 'https://www.surprisegranite.com/account/?page=messages',
+      biddingTool: '/tools/blueprint-takeoff/',
       // The checkout is hardcoded to the shop's own live Stripe account and
       // sells the shop's own services ("$99 with our design expert", "our team
       // will contact you"). That is correct on the shop's install and wrong
@@ -159,7 +160,8 @@
       tools: '/tools/',
       projects: null,
       inbox: null,
-      payments: false
+      payments: false,
+      biddingTool: null // that tool only exists on the shop's deployment
     }
   };
 
@@ -259,6 +261,10 @@
     if (img) { img.src = b.logo; img.alt = b.name; }
     var link = document.getElementById('mainLogo');
     if (link) link.href = b.home;
+    var icon = document.getElementById('faviconLink');
+    if (icon && b.logo) icon.href = b.logo;
+    var bidding = document.getElementById('biddingToolBtn');
+    if (bidding) bidding.hidden = !b.biddingTool;
 
     var signUp = document.getElementById('loginSignUpLink');
     if (signUp) {
@@ -662,7 +668,7 @@
           </div>
         </div>
 
-        <button class="btn btn-primary" onclick="openInBiddingTool()" title="Send this design to the Bidding Tool — get a priced estimate, AI proposal, share link, e-sign, deposit collection">
+        <button class="btn btn-primary" id="biddingToolBtn" onclick="openInBiddingTool()" title="Send this design to the Bidding Tool — get a priced estimate, AI proposal, share link, e-sign, deposit collection">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
             <rect x="9" y="3" width="6" height="4" rx="1"/>
@@ -10130,6 +10136,10 @@
      * + extraction steps and lands directly on the estimate page.
      */
     function openInBiddingTool() {
+      if (!window.ACTIVE_BRAND.biddingTool) {
+        showToast('The bidding tool is not available on this plan.', 'info');
+        return;
+      }
       if (!Array.isArray(elements) || !elements.length) {
         alert('Add some elements (cabinets, countertops, etc.) to the room first, then send to the Bidding Tool.');
         return;
@@ -10214,7 +10224,7 @@
         return;
       }
 
-      window.open('/tools/blueprint-takeoff/?import=handoff', '_blank');
+      window.open(window.ACTIVE_BRAND.biddingTool + '?import=handoff', '_blank');
     }
     window.openInBiddingTool = openInBiddingTool;
 
