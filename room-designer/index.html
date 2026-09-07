@@ -129,7 +129,14 @@
       // The shop's CRM. Remodely has no equivalent, so these stay null there
       // and the features that lead to them are hidden rather than sent to a 404.
       projects: 'https://www.surprisegranite.com/account/#projects&from_design=1',
-      inbox: 'https://www.surprisegranite.com/account/?page=messages'
+      inbox: 'https://www.surprisegranite.com/account/?page=messages',
+      // The checkout is hardcoded to the shop's own live Stripe account and
+      // sells the shop's own services ("$99 with our design expert", "our team
+      // will contact you"). That is correct on the shop's install and wrong
+      // anywhere else: a contractor's homeowner would be paying another
+      // company, with nothing in the Stripe metadata saying whose design sold
+      // it. Only the brand that owns the account gets the payment path.
+      payments: true
     },
     remodely: {
       key: 'remodely',
@@ -144,7 +151,8 @@
       designs: null, // the designs list is a modal in this app; no navigation
       tools: '/tools/',
       projects: null,
-      inbox: null
+      inbox: null,
+      payments: false
     }
   };
 
@@ -58443,7 +58451,10 @@
       window.currentQuoteCost = totalCost;
       const quoteActions = document.getElementById('quoteActions');
       if (quoteActions) {
-        quoteActions.style.display = totalRetail > 0 ? 'block' : 'none';
+        // Only condition used to be a non-zero total — no permission or brand
+        // check — so any homeowner opening any priced share saw Checkout.
+        const canSell = window.ACTIVE_BRAND && window.ACTIVE_BRAND.payments;
+        quoteActions.style.display = (canSell && totalRetail > 0) ? 'block' : 'none';
       }
 
       // Update quick takeoff stats
@@ -58473,6 +58484,12 @@
     let stripeInstance = null;
 
     function openPaymentModal() {
+      if (!(window.ACTIVE_BRAND && window.ACTIVE_BRAND.payments)) {
+        // Belt and braces: the button above is hidden, but nothing else should
+        // be able to open a checkout billed to a brand that does not own it.
+        console.warn('Checkout is not available for brand:', window.ACTIVE_BRAND && window.ACTIVE_BRAND.key);
+        return;
+      }
       const total = window.currentQuoteTotal || 0;
       if (total <= 0) {
         showToast('Add items to your design before checkout', 'error');
@@ -58662,6 +58679,10 @@
 
     // Approve and Pay - for quote_approval permission
     window.approveAndPay = async function() {
+      if (!(window.ACTIVE_BRAND && window.ACTIVE_BRAND.payments)) {
+        showToast('Approval recorded. The designer will follow up about payment.', 'success');
+        return;
+      }
       const btn = document.querySelector('.approve-pay-btn');
       if (!btn) return;
 
@@ -61196,6 +61217,12 @@
     async function shareQuoteLink() {
       document.getElementById('generatedLinkSection').style.display = 'none';
       document.getElementById('generateLinkBtn').textContent = 'Generate Link';
+      // Hide the deposit option where checkout is not available, so the modal
+      // does not offer to collect money this brand cannot collect.
+      const depositRow = document.getElementById('shareAllowDeposit')?.closest('div');
+      if (depositRow) {
+        depositRow.hidden = !(window.ACTIVE_BRAND && window.ACTIVE_BRAND.payments);
+      }
       document.getElementById('shareQuoteModal').classList.add('active');
     }
 
@@ -61214,7 +61241,11 @@
         // Everything this modal offers already exists as a permission level on
         // the design share the app does serve, so ask for that instead.
         const showPricing = document.getElementById('shareShowPricing').checked;
-        const allowDeposit = document.getElementById('shareAllowDeposit').checked;
+        const canSell = window.ACTIVE_BRAND && window.ACTIVE_BRAND.payments;
+        // Only let the deposit option raise the permission where a deposit can
+        // actually be taken — otherwise the customer is told to expect a
+        // payment step that this brand does not have.
+        const allowDeposit = canSell && document.getElementById('shareAllowDeposit').checked;
         const expiryDays = parseInt(document.getElementById('shareLinkExpiry').value, 10);
 
         const permission = !showPricing ? 'material_view'
@@ -63502,7 +63533,7 @@
             </form>
           </div>
 
-          ${permission === 'quote_approval' ? `
+          ${permission === 'quote_approval' && window.ACTIVE_BRAND.payments ? `
           <div class="review-actions quote-approval-actions">
             <div class="approval-summary">
               <p class="approval-note">Review the design above. When ready, approve and pay to confirm your order.</p>
@@ -63516,7 +63547,7 @@
             </button>
             <p class="approval-terms">By clicking above, you approve this design and authorize a 50% deposit charge.</p>
           </div>
-          ` : permission === 'full_collab' || permission === 'quote_view' ? `
+          ` : permission === 'quote_approval' || permission === 'full_collab' || permission === 'quote_view' ? `
           <div class="review-actions">
             <button class="btn btn-success" onclick="approveAllElements()">Approve All</button>
             <button class="btn btn-primary" onclick="submitReview()">Submit Review</button>
