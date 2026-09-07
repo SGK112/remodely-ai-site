@@ -10,8 +10,16 @@ set -euo pipefail
 DEST="${1:?usage: sync-design-pro.sh <path-to-remodely-design-pro>}"
 [ -d "$DEST/.git" ] || { echo "not a git checkout: $DEST" >&2; exit 1; }
 
-# app files (room-designer/* -> repo root)
-rsync -a --delete --exclude '.git' room-designer/ "$DEST/"
+# App files (room-designer/* -> repo root).
+#
+# --delete is what keeps a file removed here from lingering there, but the
+# destination has files of its own that were never in room-designer/ — its
+# README, deploy config and .gitignore. Without these excludes the first sync
+# deletes them.
+rsync -a --delete --exclude '.git' \
+      --exclude 'README.md' --exclude 'render.yaml' --exclude '.gitignore' \
+      --exclude 'js/' --exclude 'css/' --exclude 'images/' \
+      room-designer/ "$DEST/"
 
 # the site-root files the app depends on
 mkdir -p "$DEST/js" "$DEST/css" "$DEST/images"
