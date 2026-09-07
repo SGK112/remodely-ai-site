@@ -63675,6 +63675,30 @@
         }
       }
 
+      /**
+       * A customer opening a share is being shown a finished room, not handed a
+       * CAD tool — they got the 2D floor plan, which is the working view, and
+       * had to find the 3D button themselves. Anyone who cannot edit now lands
+       * in 3D. full_collab is left in 2D because they are here to move things,
+       * and the plan view is where that happens.
+       *
+       * Deferred: the 3D scene needs the canvas to have real dimensions, and
+       * the panel that just opened is still settling the layout.
+       */
+      if (!PERMISSION_LEVELS[permission]?.canEdit) {
+        setTimeout(() => {
+          try {
+            if (typeof setView === 'function' && currentView !== '3d') {
+              setView('3d');
+              const btn = document.getElementById('toggle3DBtn');
+              if (btn) btn.textContent = '2D View';
+            }
+          } catch (e) {
+            console.warn('[room-designer] could not open the shared view in 3D:', e);
+          }
+        }, 400);
+      }
+
       // Subscribe to real-time comment updates (so customer sees designer replies)
       subscribeToShareCommentsForCustomer();
 
