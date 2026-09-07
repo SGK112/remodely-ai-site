@@ -21,7 +21,7 @@
   });
 
   // Use centralized config or fallback to defaults
-  const config = window.SG_CONFIG || {};
+  const config = window.REMODELY_CONFIG || {};
   const SUPABASE_URL = config.SUPABASE_URL || 'https://ypeypgwsycxcagncgdur.supabase.co';
   const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME';
 
@@ -100,17 +100,17 @@
 
   async function init() {
     try {
-      // Use SgAuth's shared client if available (preferred - avoids multiple clients)
-      if (window.SgAuth) {
-        await window.SgAuth.init();
-        supabaseClient = window.SgAuth.getClient();
-        currentUser = window.SgAuth.getUser();
+      // Use RemodelyAuth's shared client if available (preferred - avoids multiple clients)
+      if (window.RemodelyAuth) {
+        await window.RemodelyAuth.init();
+        supabaseClient = window.RemodelyAuth.getClient();
+        currentUser = window.RemodelyAuth.getUser();
 
         // Only update UI once after auth state is known
         updateAllAuthDisplays(currentUser);
 
-        // Listen for auth changes via SgAuth
-        window.SgAuth.onAuthChange((event, data) => {
+        // Listen for auth changes via RemodelyAuth
+        window.RemodelyAuth.onAuthChange((event, data) => {
           if (data?.user) {
             currentUser = data.user;
             updateAllAuthDisplays(currentUser);
@@ -124,13 +124,13 @@
 
       // Wait for global client (created by supabase-init.js)
       let attempts = 0;
-      while (!window._sgSupabaseClient && attempts < 50) {
+      while (!window._remodelySupabaseClient && attempts < 50) {
         await new Promise(r => setTimeout(r, 100));
         attempts++;
       }
 
-      if (window._sgSupabaseClient) {
-        supabaseClient = window._sgSupabaseClient;
+      if (window._remodelySupabaseClient) {
+        supabaseClient = window._remodelySupabaseClient;
       } else {
         console.error('Auth state: Global Supabase client not found');
         return;
@@ -227,7 +227,7 @@
       container.innerHTML = `
         <div style="${STYLES.container}">
           <a href="/account/" style="${STYLES.badge}" title="My Account">${initial}</a>
-          <button onclick="window.SurpriseGraniteAuth.logout()" style="${STYLES.logoutDark}">Log Out</button>
+          <button onclick="window.RemodelyAuthUI.logout()" style="${STYLES.logoutDark}">Log Out</button>
         </div>
       `;
     } else {
@@ -266,7 +266,7 @@
     if (user) {
       authContainer.innerHTML = `
         <a href="/account/" style="${STYLES.badge}" title="My Account">${initial}</a>
-        <button onclick="window.SurpriseGraniteAuth.logout()" style="${STYLES.logoutLight}">Log Out</button>
+        <button onclick="window.RemodelyAuthUI.logout()" style="${STYLES.logoutLight}">Log Out</button>
       `;
     } else {
       authContainer.innerHTML = `
@@ -308,7 +308,7 @@
     if (user) {
       authContainer.innerHTML = `
         <a href="/account/" style="${STYLES.badge}" title="My Account">${initial}</a>
-        <button onclick="window.SurpriseGraniteAuth.logout()" style="${STYLES.logoutDark}">Log Out</button>
+        <button onclick="window.RemodelyAuthUI.logout()" style="${STYLES.logoutDark}">Log Out</button>
       `;
     } else {
       authContainer.innerHTML = `
@@ -349,7 +349,7 @@
               <span style="display: block; color: #22c55e; font-size: 12px; font-weight: 500;">Logged In</span>
             </span>
           </a>
-          <button onclick="window.SurpriseGraniteAuth.logout()" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 14px; font-weight: 500; cursor: pointer;">
+          <button onclick="window.RemodelyAuthUI.logout()" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 14px; font-weight: 500; cursor: pointer;">
             Log Out
           </button>
         `;
@@ -375,9 +375,9 @@
   // LOGOUT FUNCTION
   // ============================================
   async function logout() {
-    // Use SgAuth's comprehensive logout if available
-    if (window.SgAuth && typeof window.SgAuth.signOut === 'function') {
-      await window.SgAuth.signOut({ redirect: true, redirectUrl: '/' });
+    // Use RemodelyAuth's comprehensive logout if available
+    if (window.RemodelyAuth && typeof window.RemodelyAuth.signOut === 'function') {
+      await window.RemodelyAuth.signOut({ redirect: true, redirectUrl: '/' });
       return;
     }
 
@@ -391,7 +391,7 @@
 
     // Clear localStorage
     try {
-      const storageKey = window._sgSupabaseConfig?.storageKey || 'sg-auth-token';
+      const storageKey = window._remodelySupabaseConfig?.storageKey || 'sg-auth-token';
       localStorage.removeItem(storageKey);
       localStorage.removeItem('sb-ypeypgwsycxcagncgdur-auth-token');
     } catch (e) {}
@@ -410,7 +410,7 @@
   });
 
   // Expose global API
-  window.SurpriseGraniteAuth = {
+  window.RemodelyAuthUI = {
     getSupabase: () => supabaseClient,
     getUser: () => currentUser,
     refresh: init,

@@ -310,10 +310,10 @@
 
 <!-- Same auth stack the designer itself loads, so a session created here is the
      session it sees. Only the pages a visitor is sent to are Remodely's own. -->
-<script src="/js/config.js?v=rd20260904"></script>
+<script src="/js/config.js?v=rd20260907"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/js/supabase-init.js?v=rd20260904"></script>
-<script src="/js/sg-auth.js?v=rd20260904"></script>
+<script src="/js/supabase-init.js?v=rd20260907"></script>
+<script src="/js/remodely-auth.js?v=rd20260907"></script>
 <script>
 (function () {
   'use strict';
@@ -463,9 +463,9 @@
   $('btnSignOut').onclick = async function () {
     busy(this, true, 'Signing out…');
     try {
-      // redirect:false — SgAuth would otherwise navigate to '/', which is the
+      // redirect:false — RemodelyAuth would otherwise navigate to '/', which is the
       // marketing homepage here, not this app.
-      await window.SgAuth.signOut({ redirect: false });
+      await window.RemodelyAuth.signOut({ redirect: false });
     } catch (e) { /* the local session is cleared either way */ }
     busy(this, false);
     setMode('signin');
@@ -497,7 +497,7 @@
     try {
       if (mode === 'newpass') {
         // The recovery link already put us in a session; set the password on it.
-        var c = window.SgAuth.getClient() || window._sgSupabaseClient;
+        var c = window.RemodelyAuth.getClient() || window._remodelySupabaseClient;
         var up = await c.auth.updateUser({ password: password });
         if (up.error) throw up.error;
         try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
@@ -506,7 +506,7 @@
       }
 
       if (mode === 'reset') {
-        var client = window.SgAuth.getClient() || window._sgSupabaseClient;
+        var client = window.RemodelyAuth.getClient() || window._remodelySupabaseClient;
         var res = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
         if (res.error) throw res.error;
         say('Check your inbox for a reset link.', 'ok');
@@ -515,7 +515,7 @@
       }
 
       if (mode === 'signup') {
-        var data = await window.SgAuth.signUp(email, password, { full_name: $('fullName').value.trim() });
+        var data = await window.RemodelyAuth.signUp(email, password, { full_name: $('fullName').value.trim() });
         // With email confirmation on, signUp returns a user but no session.
         if (data && data.user && !data.session) {
           busy(btn, false);
@@ -525,7 +525,7 @@
           return;
         }
       } else {
-        await window.SgAuth.signIn(email, password);
+        await window.RemodelyAuth.signIn(email, password);
       }
 
       location.href = nextUrl();
@@ -544,7 +544,7 @@
       // straight to the designer would work too, but coming back here keeps
       // one redirect URL to allowlist in Supabase and Google.
       var back = location.origin + location.pathname + '?oauth=1&next=' + encodeURIComponent(nextUrl());
-      await window.SgAuth.signInWithGoogle(back);
+      await window.RemodelyAuth.signInWithGoogle(back);
     } catch (err) {
       say((err && err.message) || 'Could not connect to Google. Try again.');
       busy(this, false);
@@ -555,11 +555,11 @@
   (async function boot() {
     applyMode();
     try {
-      await window.SgAuth.init();
+      await window.RemodelyAuth.init();
     } catch (e) { /* fall through to the form */ }
 
     var forward = returningFromOAuth();
-    var user = window.SgAuth.getUser();
+    var user = window.RemodelyAuth.getUser();
 
     // Someone who came from the reset email wants the password form, not a
     // "you're signed in" card — even though the recovery link signed them in.
@@ -571,18 +571,18 @@
 
     if (user) {
       if (forward) { location.href = nextUrl(); return; }
-      showSignedIn(user, window.SgAuth.getProfile());
+      showSignedIn(user, window.RemodelyAuth.getProfile());
       return;
     }
 
     // The client can resolve a session a beat after init while it parses an
     // OAuth fragment. Catch that rather than leaving a stale form on screen.
-    window.SgAuth.onAuthChange(function (event) {
+    window.RemodelyAuth.onAuthChange(function (event) {
       if (event === 'logout') return;
-      var u = window.SgAuth.getUser();
+      var u = window.RemodelyAuth.getUser();
       if (!u) return;
       if (forward) location.href = nextUrl();
-      else showSignedIn(u, window.SgAuth.getProfile());
+      else showSignedIn(u, window.RemodelyAuth.getProfile());
     });
 
     show('form');

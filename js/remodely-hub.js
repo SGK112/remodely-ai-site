@@ -632,8 +632,8 @@
     const accountDesc = document.getElementById('rhAccountDesc');
 
     function updateAuthState() {
-      const isLoggedIn = window.SgAuth?.isLoggedIn?.() || false;
-      const profile = window.SgAuth?.getProfile?.() || {};
+      const isLoggedIn = window.RemodelyAuth?.isLoggedIn?.() || false;
+      const profile = window.RemodelyAuth?.getProfile?.() || {};
       const userName = profile.full_name || profile.email?.split('@')[0] || 'User';
       const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 
@@ -674,7 +674,7 @@
     // Handle auth-gated tool clicks
     designerLink?.addEventListener('click', (e) => {
       e.preventDefault();
-      const isLoggedIn = window.SgAuth?.isLoggedIn?.() || false;
+      const isLoggedIn = window.RemodelyAuth?.isLoggedIn?.() || false;
       const toolUrl = designerLink.getAttribute('data-tool-url');
 
       if (isLoggedIn) {
@@ -694,8 +694,8 @@
     updateAuthState();
 
     // Listen for auth changes
-    if (window.SgAuth?.onAuthChange) {
-      window.SgAuth.onAuthChange(updateAuthState);
+    if (window.RemodelyAuth?.onAuthChange) {
+      window.RemodelyAuth.onAuthChange(updateAuthState);
     }
 
     // Also check after a delay (for slow auth init)

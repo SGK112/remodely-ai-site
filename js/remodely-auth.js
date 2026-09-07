@@ -1,5 +1,5 @@
 /**
- * Surprise Granite - Unified Authentication Service
+ * Remodely - Unified Authentication Service
  * Provides consistent auth state across all pages
  * Syncs with Supabase and updates UI globally
  *
@@ -18,7 +18,7 @@
   });
 
   // Use centralized config or fallback to defaults
-  const config = window.SG_CONFIG || {};
+  const config = window.REMODELY_CONFIG || {};
   const SUPABASE_URL = config.SUPABASE_URL || 'https://ypeypgwsycxcagncgdur.supabase.co';
   const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME';
 
@@ -38,13 +38,13 @@
       try {
         // Wait for global client to be available (created by supabase-init.js)
         let attempts = 0;
-        while (!window._sgSupabaseClient && attempts < 50) {
+        while (!window._remodelySupabaseClient && attempts < 50) {
           await new Promise(r => setTimeout(r, 100));
           attempts++;
         }
 
-        if (window._sgSupabaseClient) {
-          supabaseClient = window._sgSupabaseClient;
+        if (window._remodelySupabaseClient) {
+          supabaseClient = window._remodelySupabaseClient;
         } else {
           console.warn('SG Auth: Global Supabase client not found, continuing without auth');
           isInitialized = true;
@@ -54,7 +54,7 @@
         // Get current session. supabase.auth.getSession() can hang
         // indefinitely under bad network / corrupt localStorage conditions.
         // Strategy:
-        //   • Race the call against a 5s deadline so SgAuth.init() can
+        //   • Race the call against a 5s deadline so RemodelyAuth.init() can
         //     resolve and unblock page init even if Supabase is slow.
         //   • DO NOT give up on the underlying promise — let it keep
         //     running in the background. When it eventually resolves,
@@ -70,7 +70,7 @@
         try {
           console.log('SG Auth: Checking for existing session...');
           const timeoutPromise = new Promise((_, reject) =>
-            setTimeout(() => { timedOut = true; reject(new Error('SgAuth getSession timed out after 5s — continuing in background')); }, TIMEOUT_MS)
+            setTimeout(() => { timedOut = true; reject(new Error('RemodelyAuth getSession timed out after 5s — continuing in background')); }, TIMEOUT_MS)
           );
           const { data: { session }, error } = await Promise.race([sessionPromise, timeoutPromise]);
 
@@ -431,7 +431,7 @@
 
     // Clear auth-related localStorage items
     try {
-      const storageKey = window._sgSupabaseConfig?.storageKey || 'sg-auth-token';
+      const storageKey = window._remodelySupabaseConfig?.storageKey || 'sg-auth-token';
       localStorage.removeItem(storageKey);
       // Also clear any legacy keys
       localStorage.removeItem('sb-ypeypgwsycxcagncgdur-auth-token');
@@ -652,7 +652,7 @@
    * @param {Object} options - Fetch options (method, body, headers, etc.)
    */
   async function apiRequest(path, options = {}) {
-    const API_BASE = window.SG_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com';
+    const API_BASE = window.REMODELY_CONFIG?.API_BASE || 'https://surprise-granite-email-api.onrender.com';
     const token = await getAccessToken();
 
     const headers = {
@@ -1174,7 +1174,7 @@
   }
 
   // Expose global API
-  window.SgAuth = {
+  window.RemodelyAuth = {
     init,
     signIn,
     signUp,
@@ -1219,5 +1219,9 @@
     isDistributor,
     isPro
   };
+
+  // Old name, kept as an alias so anything still calling SgAuth keeps working
+  // — including a page cached mid-deploy. Same object, not a copy.
+  window.SgAuth = window.RemodelyAuth;
 
 })();

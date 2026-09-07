@@ -11,7 +11,7 @@
   'use strict';
 
   // The static host (www) does NOT proxy /api, so API calls must be absolute.
-  function apiBase() { return (window.SG_CONFIG && window.SG_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com'; }
+  function apiBase() { return (window.REMODELY_CONFIG && window.REMODELY_CONFIG.API_BASE) || 'https://surprise-granite-email-api.onrender.com'; }
   function mode() { return window.ARIA_VOICE_MODE === 'realtime' ? 'realtime' : 'hybrid'; }
   function say(role, text) { if (text && typeof window.aiChatSay === 'function') window.aiChatSay(role, text); }
   function setChip(state) {

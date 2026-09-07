@@ -1,5 +1,5 @@
 /**
- * SURPRISE GRANITE - CENTRALIZED CONFIGURATION
+ * REMODELY - CENTRALIZED CONFIGURATION
  * All API endpoints, keys, and settings in one place
  * Version: 1.0
  */
@@ -16,7 +16,7 @@
                         window.location.hostname === '127.0.0.1';
 
   // Configuration object
-  window.SG_CONFIG = {
+  window.REMODELY_CONFIG = {
     // Environment
     ENV: isProduction ? 'production' : (isDevelopment ? 'development' : 'staging'),
     DEBUG: !isProduction,
@@ -32,6 +32,10 @@
     // Supabase Configuration
     SUPABASE_URL: 'https://ypeypgwsycxcagncgdur.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME',
+    // Deliberately NOT renamed with the rest: this is the localStorage key
+    // every existing session lives under, so changing it signs out every user
+    // at once. It needs a migration that reads the old key and writes the new
+    // one, not a find-and-replace.
     SUPABASE_STORAGE_KEY: 'sg-auth-token',
 
     // Business Settings
@@ -157,14 +161,14 @@
   };
 
   // Helper Functions
-  window.SG_CONFIG.helpers = {
+  window.REMODELY_CONFIG.helpers = {
     /**
      * Format price with currency
      */
     formatPrice: function(amount, perUnit = 'sqft') {
-      const formatted = new Intl.NumberFormat(SG_CONFIG.DEFAULT_LOCALE, {
+      const formatted = new Intl.NumberFormat(REMODELY_CONFIG.DEFAULT_LOCALE, {
         style: 'currency',
-        currency: SG_CONFIG.CURRENCY,
+        currency: REMODELY_CONFIG.CURRENCY,
         minimumFractionDigits: 2
       }).format(amount);
       return perUnit ? `${formatted}/${perUnit}` : formatted;
@@ -186,7 +190,7 @@
       if (diffHours < 24) return `${diffHours}h ago`;
       if (diffDays < 7) return `${diffDays}d ago`;
 
-      return date.toLocaleDateString(SG_CONFIG.DEFAULT_LOCALE, {
+      return date.toLocaleDateString(REMODELY_CONFIG.DEFAULT_LOCALE, {
         month: 'short',
         day: 'numeric',
         year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
@@ -240,14 +244,14 @@
      * Get API endpoint URL
      */
     apiUrl: function(path) {
-      return `${SG_CONFIG.API_BASE}${path}`;
+      return `${REMODELY_CONFIG.API_BASE}${path}`;
     },
 
     /**
      * Log debug messages (only in development)
      */
     debug: function(...args) {
-      if (SG_CONFIG.DEBUG) {
+      if (REMODELY_CONFIG.DEBUG) {
         console.log('[SG]', ...args);
       }
     },
@@ -270,17 +274,20 @@
      * Log info messages (only in development)
      */
     info: function(...args) {
-      if (SG_CONFIG.DEBUG) {
+      if (REMODELY_CONFIG.DEBUG) {
         console.info('[SG]', ...args);
       }
     }
   };
 
-  // Note: Supabase client is created by /js/supabase-init.js as window._sgSupabaseClient
+  // Note: Supabase client is created by /js/supabase-init.js as window._remodelySupabaseClient
   // Do NOT create another client here to avoid session conflicts
 
+  // Old name, aliased for anything still reading SG_CONFIG.
+  window.SG_CONFIG = window.REMODELY_CONFIG;
+
   // Log initialization
-  if (SG_CONFIG.DEBUG) {
-    console.log('[SG] Config loaded:', SG_CONFIG.ENV);
+  if (REMODELY_CONFIG.DEBUG) {
+    console.log('[SG] Config loaded:', REMODELY_CONFIG.ENV);
   }
 })();

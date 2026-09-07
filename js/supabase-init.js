@@ -17,7 +17,7 @@
   });
 
   // Only create if not already created
-  if (window._sgSupabaseClient) {
+  if (window._remodelySupabaseClient) {
     return;
   }
 
@@ -27,7 +27,7 @@
   }
 
   // Use centralized config or fallback to defaults
-  const config = window.SG_CONFIG || {};
+  const config = window.REMODELY_CONFIG || {};
   const SUPABASE_URL = config.SUPABASE_URL || 'https://ypeypgwsycxcagncgdur.supabase.co';
   const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZXlwZ3dzeWN4Y2FnbmNnZHVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NTQ4MjMsImV4cCI6MjA4MzMzMDgyM30.R13pNv2FDtGhfeu7gUcttYNrQAbNYitqR4FIq3O2-ME';
   const STORAGE_KEY = config.SUPABASE_STORAGE_KEY || 'sg-auth-token';
@@ -59,7 +59,7 @@
   };
 
   try {
-    window._sgSupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    window._remodelySupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -73,17 +73,21 @@
     });
 
     // Store config for reference by other scripts
-    window._sgSupabaseConfig = {
+    window._remodelySupabaseConfig = {
       url: SUPABASE_URL,
       storageKey: STORAGE_KEY
     };
+
+    // Old names, aliased to the same client so a second one is never created.
+    window._sgSupabaseClient = window._remodelySupabaseClient;
+    window._sgSupabaseConfig = window._remodelySupabaseConfig;
 
   } catch (e) {
     console.warn('Supabase init error, retrying without locks:', e.message);
     // Fallback: minimal options, but keep the lock-free auth lock so this path
     // can't reintroduce the deadlock we just removed above.
     try {
-      window._sgSupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      window._remodelySupabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         auth: { lock: lockFree }
       });
     } catch (e2) {
