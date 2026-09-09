@@ -7093,31 +7093,50 @@
       const wallPad = 0.5;
       const cursors = { top: wallPad, bottom: wallPad, left: wallPad, right: wallPad };
 
+      /**
+       * width/height are feet, x/y are pixels. This function laid everything
+       * out in feet and assigned it straight to x/y, so every element landed at
+       * a fraction of its intended position — and how badly depended on the
+       * wall, which is why it looked like some walls worked.
+       *
+       * A top-wall element sits at y = 0 and a left-wall one at x = 0, and zero
+       * is zero in either unit, so those two came out roughly right. The bottom
+       * wall computes y = roomDepth - depth and the right wall x = roomWidth -
+       * depth, both in feet: in a 19x8 room that is y = 6 and x = 17, written
+       * into fields the renderer reads as 6px and 17px. Bottom-wall cabinets
+       * appeared jammed against the top wall and right-wall ones against the
+       * left, piled in the corner.
+       *
+       * The layout still reads in feet, which is the sane unit for it; only the
+       * assignment converts.
+       */
+      const toPx = ft => ft * pixelsPerFoot;
+
       function reflow(wall, list) {
         list.forEach(el => {
           const widthFt = (el.aiWidthInches || el.width * 12) / 12;
           const depthFt = (el.aiDepthInches || (el.height || 24) * 12) / 12;
           if (wall === 'top') {
-            el.x = cursors.top;
+            el.x = toPx(cursors.top);
             el.y = 0;
             el.width = widthFt;
             el.height = depthFt;
             cursors.top += widthFt;
           } else if (wall === 'bottom') {
-            el.x = cursors.bottom;
-            el.y = roomDepth - depthFt;
+            el.x = toPx(cursors.bottom);
+            el.y = toPx(roomDepth - depthFt);
             el.width = widthFt;
             el.height = depthFt;
             cursors.bottom += widthFt;
           } else if (wall === 'left') {
             el.x = 0;
-            el.y = cursors.left;
+            el.y = toPx(cursors.left);
             el.width = depthFt;
             el.height = widthFt;
             cursors.left += widthFt;
           } else if (wall === 'right') {
-            el.x = roomWidth - depthFt;
-            el.y = cursors.right;
+            el.x = toPx(roomWidth - depthFt);
+            el.y = toPx(cursors.right);
             el.width = depthFt;
             el.height = widthFt;
             cursors.right += widthFt;
@@ -7134,8 +7153,8 @@
       byWall.island.forEach(el => {
         const widthFt = (el.aiWidthInches || el.width * 12) / 12;
         const depthFt = (el.aiDepthInches || (el.height || 24) * 12) / 12;
-        el.x = roomWidth / 2 - widthFt / 2;
-        el.y = islandY;
+        el.x = toPx(roomWidth / 2 - widthFt / 2);
+        el.y = toPx(islandY);
         el.width = widthFt;
         el.height = depthFt;
         islandY += depthFt + 0.25;
@@ -7146,7 +7165,7 @@
       let unplacedY = 0;
       byWall.unplaced.forEach(el => {
         el.x = 0;
-        el.y = unplacedY;
+        el.y = toPx(unplacedY);
         unplacedY += el.height + 0.1;
         el.needsManualPlacement = true;
       });
@@ -19558,13 +19577,23 @@
         if (!isDoorWindowType(el.type)) return;
         if (el.hidden) return;
 
-        const rot = (el.rotation || 0) % 360;
-        const isRotated = (rot === 90 || rot === 270);
+        // getElementBounds already returns pixels, with the 90/270 swap applied.
+        // These two lines multiplied el.x/el.y by pixelsPerFoot a second time —
+        // x and y are stored in pixels — so every coordinate came out 40x too
+        // large while the widths beside them were correct.
+        //
+        // It read as "openings only work on some walls": the top test is
+        // elY <= threshold and the left test elX <= threshold, and an element
+        // flush to those walls sits at 0, which survives being multiplied. The
+        // bottom and right tests compare against roomH and roomW, which a 40x
+        // value never comes near, so a door on either of those walls never cut
+        // the wall line at all — and the openings that did register were pushed
+        // far off-canvas by the same factor.
         const _b = getElementBounds(el);
         const elW = _b.w;
         const elH = _b.h;
-        const elX = el.x * pixelsPerFoot;
-        const elY = el.y * pixelsPerFoot;
+        const elX = _b.x;
+        const elY = _b.y;
 
         // Check which wall this element is on based on proximity
         // Top wall (y near 0)
@@ -50154,16 +50183,26 @@
 
         // Helper: find openings on a given wall for 3D cutouts
         function getWallForElement3D(el) {
-          const snapThresh = 0.5;
+          const snapThresh = 0.5; // feet
           const rot = (el.rotation || 0) % 360;
           const isRotated = (rot === 90 || rot === 270);
-          const elW = isRotated ? el.height : el.width;
-          const elH = isRotated ? el.width : el.height;
+          const elW = isRotated ? el.height : el.width;   // feet
+          const elH = isRotated ? el.width : el.height;   // feet
 
-          if (el.y <= snapThresh && el.y >= -snapThresh) return 'back';
-          if (Math.abs((el.y + elH) - roomDepth) <= snapThresh || Math.abs(el.y - roomDepth) <= snapThresh) return 'front';
-          if (el.x <= snapThresh && el.x >= -snapThresh) return 'left';
-          if (Math.abs((el.x + elW) - roomWidth) <= snapThresh || Math.abs(el.x - roomWidth) <= snapThresh) return 'right';
+          // x and y are pixels; elW/elH, roomWidth/roomDepth and the threshold
+          // are all feet. Comparing them directly meant only the two walls that
+          // test against zero ever matched — an element flush to the back or
+          // left wall sits at 0, which reads the same in either unit. Front and
+          // right compare against roomDepth/roomWidth, and a pixel value is
+          // pixelsPerFoot times too large to ever land within half a foot of
+          // them, so no door or window was ever detected on those two walls.
+          const elXft = el.x / pixelsPerFoot;
+          const elYft = el.y / pixelsPerFoot;
+
+          if (elYft <= snapThresh && elYft >= -snapThresh) return 'back';
+          if (Math.abs((elYft + elH) - roomDepth) <= snapThresh || Math.abs(elYft - roomDepth) <= snapThresh) return 'front';
+          if (elXft <= snapThresh && elXft >= -snapThresh) return 'left';
+          if (Math.abs((elXft + elW) - roomWidth) <= snapThresh || Math.abs(elXft - roomWidth) <= snapThresh) return 'right';
           return null;
         }
 
@@ -50178,12 +50217,13 @@
             const isRotated = (rot === 90 || rot === 270);
             const elW = isRotated ? el.height : el.width;
 
-            // Position along wall
+            // Position along the wall, in feet — the geometry built from this
+            // is in feet, and el.x/el.y are pixels.
             let pos;
             if (wallName === 'back' || wallName === 'front') {
-              pos = el.x; // X position along wall
+              pos = el.x / pixelsPerFoot; // X along the wall
             } else {
-              pos = el.y; // Y position along wall (maps to Z in 3D)
+              pos = el.y / pixelsPerFoot; // Y along the wall (Z in 3D)
             }
 
             // Opening height from floor
