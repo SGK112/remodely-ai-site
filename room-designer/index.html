@@ -27211,25 +27211,41 @@
               targetRotation = selectedElement.rotation || 0;
           }
 
-          // If rotation changes, we need to swap the element's screen footprint
-          // and recalculate snap position so the element stays against the wall
-          const oldRot = ((elRot) % 360 + 360) % 360;
+          /**
+           * Moving between a horizontal wall and a vertical one turns the
+           * cabinet, so its stored width and height have to trade places: on
+           * the back wall the face runs along X and the depth along Y, and on a
+           * side wall it is the other way round.
+           *
+           * This used to leave width and height alone and shift x/y instead, on
+           * the belief that the footprint swaps itself once the rotation
+           * changes. It does not — drawElement swaps the box and then rotates,
+           * and the two cancel, so what is painted is the stored box whatever
+           * the rotation. A cabinet dragged from the back wall to a side wall
+           * kept its 3ft face running across the room and its 2ft depth along
+           * the wall: sticking a yard into the floor and covering two feet of
+           * the wall it was supposed to sit against.
+           */
+          const oldRot = ((selectedElement.rotation || 0) % 360 + 360) % 360;
           const newRot = ((targetRotation) % 360 + 360) % 360;
-          const wasSwapped = (oldRot === 90 || oldRot === 270);
-          const nowSwapped = (newRot === 90 || newRot === 270);
+          const wasSideOn = (oldRot === 90 || oldRot === 270);
+          const nowSideOn = (newRot === 90 || newRot === 270);
 
-          if (wasSwapped !== nowSwapped) {
-            // Dimensions swap on screen — recalculate position to keep element at wall
-            const oldW = elW;
-            const oldH = elH;
-            const newW = oldH; // Swapped
-            const newH = oldW;
-            // Keep center position stable, adjust x/y for new footprint
-            const cx = snapX + oldW / 2;
-            const cy = snapY + oldH / 2;
+          if (wasSideOn !== nowSideOn) {
+            const cx = snapX + elW / 2;
+            const cy = snapY + elH / 2;
+
+            // Turn the cabinet: face and depth trade axes.
+            const tmpW = selectedElement.width;
+            selectedElement.width = selectedElement.height;
+            selectedElement.height = tmpW;
+
+            const newW = selectedElement.width * pixelsPerFoot;
+            const newH = selectedElement.height * pixelsPerFoot;
+
+            // Keep it where it was along the wall, then put its back on the wall.
             snapX = cx - newW / 2;
             snapY = cy - newH / 2;
-            // Re-snap to the wall with new dimensions
             if (snappedToWall === 'left') snapX = 0;
             else if (snappedToWall === 'right') snapX = roomRightWall - newW;
             else if (snappedToWall === 'back') snapY = 0;
@@ -27243,10 +27259,10 @@
           lastSnappedWall = null;
         }
 
-        // Recalculate screen footprint after potential auto-rotation change
-        const curRot = ((selectedElement.rotation || 0) % 360 + 360) % 360;
-        const curElW = (curRot === 90 || curRot === 270) ? selectedElement.height * pixelsPerFoot : selectedElement.width * pixelsPerFoot;
-        const curElH = (curRot === 90 || curRot === 270) ? selectedElement.width * pixelsPerFoot : selectedElement.height * pixelsPerFoot;
+        // Footprint after any auto-rotation. No swap by rotation: the painted
+        // box is the stored box, and the turn above already traded the two.
+        const curElW = selectedElement.width * pixelsPerFoot;
+        const curElH = selectedElement.height * pixelsPerFoot;
 
         // Snap to custom drawn walls - cabinets snap AGAINST walls (like magnets attracting)
         walls.forEach(wall => {
