@@ -12049,14 +12049,38 @@
      * and invisible; for a 30x12 wall cabinet it is nine inches, which is why
      * cabinets on side walls snapped to the wrong place and fought the mouse.
      */
+    /**
+     * The element's footprint on the canvas, in pixels.
+     *
+     * This used to swap width and height for 90/270 elements, which put it at
+     * odds with what actually gets painted. drawElement swaps the box AND then
+     * calls ctx.rotate, and those two cancel: a side-wall cabinet stored 2ft
+     * wide by 3ft tall is painted 2ft wide by 3ft tall. The swap here described
+     * drawElement's intermediate step — correct inside that function, where the
+     * rotation follows, and wrong for a caller that just wants the rectangle on
+     * screen.
+     *
+     * Every caller wants the rectangle on screen: the snap guides, the drag
+     * snapping on both the dragged element and the ones it aligns to, the
+     * arrow-key clamp to the room, and the wall-opening test. None of them
+     * applies a rotation afterwards, so all five were reading a box that was
+     * both the wrong shape and in the wrong place — but only for elements on
+     * the left and right walls, since rot 0 and 180 took the early return.
+     *
+     * That is why cabinets misbehave on the side walls specifically: they snap
+     * against inverted extents, clamp against an offset box, and report the
+     * wrong wall.
+     *
+     * drawElement and isPointInElement keep their own inline swap. They need
+     * the pre-rotation box, because they rotate immediately after.
+     */
     function getElementBounds(el) {
-      const rot = (((el.rotation || 0) % 360) + 360) % 360;
-      const w = el.width * pixelsPerFoot;
-      const h = el.height * pixelsPerFoot;
-      if (rot !== 90 && rot !== 270) return { x: el.x, y: el.y, w, h };
-      const cx = el.x + w / 2;
-      const cy = el.y + h / 2;
-      return { x: cx - h / 2, y: cy - w / 2, w: h, h: w };
+      return {
+        x: el.x,
+        y: el.y,
+        w: el.width * pixelsPerFoot,
+        h: el.height * pixelsPerFoot
+      };
     }
 
     function snapToStandard(value, type = 'width') {
@@ -26922,9 +26946,9 @@
       // Element-to-element snapping (for placing cabinets together)
       const snapDistance = pixelsPerFoot * 0.15; // ~1.8 inches - gentle alignment snap
 
-      // Element dimensions in screen footprint (X,Y extents on canvas).
-      // For 90°/270° rotated elements, width and height swap on screen.
-      const elRot = ((selectedElement.rotation || 0) % 360 + 360) % 360;
+      // Element footprint on the canvas. getElementBounds is the screen
+      // rectangle for every rotation — the 90/270 swap that used to live in it
+      // described drawElement's intermediate box, not the painted one.
       const elBounds = getElementBounds(selectedElement);
       const elW = elBounds.w;
       const elH = elBounds.h;
