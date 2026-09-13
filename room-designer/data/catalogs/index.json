@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "updated": "2026-09-04",
+  "version": 3,
+  "updated": "2026-09-12",
   "catalogs": [
     {
       "id": "procraft",
@@ -13,6 +13,18 @@
       "name": "MSI Cabinetry",
       "skus": 70,
       "file": "msi.json"
+    },
+    {
+      "id": "sollid",
+      "name": "SOLLiD Cabinetry \u2014 Custom Series",
+      "skus": 42,
+      "file": "sollid.json"
+    },
+    {
+      "id": "highland",
+      "name": "Highland Cabinetry",
+      "skus": 158,
+      "file": "highland.json"
     },
     {
       "id": "custom",

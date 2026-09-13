@@ -3383,6 +3383,24 @@
     }
 
     /* Right Panel */
+    /*
+     * The hidden attribute has to actually hide things.
+     *
+     * The UA stylesheet gives [hidden] display:none, but any class that sets
+     * display beats it on specificity — and every button in this app carries
+     * .btn, which is display:inline-flex. So `el.hidden = true` looked like it
+     * worked in the code and did nothing on screen.
+     *
+     * That is how the "Open in Bidding Tool" button stayed visible on a brand
+     * whose config sets biddingTool: null. The brand logic was right and hid
+     * it; the button ignored it, and clicking it reported that the tool is not
+     * available on this plan — which reads as an account problem rather than a
+     * button that should never have been there.
+     */
+    [hidden] {
+      display: none !important;
+    }
+
     .right-panel {
       width: 260px;
       min-width: 260px;
@@ -3732,14 +3750,64 @@
       font-size: 11px;
     }
 
+    /* An always-visible scrollbar on the two tool panels.
+       macOS hides overlay scrollbars until something is already scrolling, so
+       a panel whose content runs past the bottom of the window looks exactly
+       like a panel that ends there — there is no cue that anything is below
+       the last thing you can see. These panels routinely run to twice the
+       window height once a design has cabinets in it, so the cue matters more
+       here than the few pixels it costs. Matches .element-grid's styling. */
+    .right-panel::-webkit-scrollbar,
+    .sidebar::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .right-panel::-webkit-scrollbar-track,
+    .sidebar::-webkit-scrollbar-track {
+      background: var(--dark-elevated);
+    }
+
+    .right-panel::-webkit-scrollbar-thumb,
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 5px;
+      border: 2px solid var(--dark-elevated);
+    }
+
+    .right-panel::-webkit-scrollbar-thumb:hover,
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Standard properties only for Firefox. Chrome supports scrollbar-width
+       too, and when it is present it WINS over the ::-webkit-scrollbar rules
+       above and reverts to a 0-width overlay bar — which is the very thing
+       being fixed here. Scoped to Firefox so both engines get a visible bar. */
+    @supports (-moz-appearance: none) {
+      .right-panel, .sidebar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) var(--dark-elevated);
+      }
+    }
+
+    /* One scroll region, not three.
+       This panel is 260px wide and stacks Room Settings, the item list,
+       Properties and Building Standards. The item list and the properties
+       panel each had their own max-height and overflow-y:auto, so wheeling
+       over either scrolled the inner box while the panel itself stayed put —
+       and the item list occupies the middle of the panel, which is where the
+       cursor usually is. The panel looked frozen until you happened to point
+       at a gap between the nested scrollers, which reads as "sometimes it
+       scrolls and sometimes it doesn't". The list keeps its border and
+       background so it still reads as a distinct list; it just grows and lets
+       the panel do the scrolling. */
     .item-picker-list {
       min-height: 100px;
-      max-height: 280px;
-      overflow-y: auto;
+      overflow: visible;
       border: 1px solid var(--border);
       border-radius: 6px;
       background: var(--dark-surface);
-      flex: 1 1 auto;
+      flex: 0 0 auto;
     }
 
     .item-picker-item {
@@ -8829,16 +8897,28 @@
     }
 
     /* Toast Notifications */
+    /* Bottom LEFT of the plan, not bottom centre. The floating element
+       toolbar lives at bottom centre, so centred toasts stacked directly on
+       top of the delete, duplicate and link buttons — and a run of them
+       ("Switched to Bath", "Switched to Laundry", "Showing the whole house")
+       buried the toolbar entirely for several seconds. The bottom right is no
+       better: that is the item list and the running total. The bottom-left
+       corner of the canvas is the one part of the screen with nothing in it. */
     .toast-container {
       position: fixed;
       bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 236px;
       z-index: 10000;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 10px;
       pointer-events: none;
+      max-width: min(380px, 32vw);
+    }
+
+    @media (max-width: 900px) {
+      .toast-container { left: 12px; bottom: 12px; max-width: calc(100vw - 24px); }
     }
 
     .toast {
@@ -8854,7 +8934,16 @@
       font-weight: 500;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
       animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.3s ease 2.7s forwards;
-      pointer-events: auto;
+      /* Nothing in one of these is clickable — showToast builds an icon and a
+         span, and the two toasts that do carry buttons (.undo-toast and
+         .comment-notification-toast) are not this class. Taking pointer events
+         put a 506x52 dead zone over the bottom centre of the plan for three
+         seconds at a time, which is where the front wall is drawn, and the
+         canvas stops receiving mousemove the moment the cursor crosses it: a
+         cabinet being dragged to the front wall simply stopped following the
+         mouse. The designer raises these mid-drag ("Snapped to left wall"), so
+         a snap could kill the drag that produced it. */
+      pointer-events: none;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
@@ -12431,15 +12520,40 @@
       max-height: calc(100vh - 56px - 48px); /* Account for demo banner (~48px) */
     }
 
+    /*
+     * NOTHING in this panel may shrink.
+     *
+     * .right-panel is a flex column with a definite height. Flex children
+     * default to flex-shrink:1, so when the sections add up to more than the
+     * window they do not overflow — they COMPRESS. scrollHeight then never
+     * exceeds clientHeight, the panel has nothing to scroll, and the sections
+     * at the bottom are squashed and clipped instead. That is why the panel
+     * refused to scroll while looking like it had more content below: it did
+     * have more content, but the browser was fitting it by crushing it rather
+     * than by overflowing.
+     *
+     * The rule below existed for exactly this reason but was only ever applied
+     * to three sections by id, so every other one — Room Settings, Room
+     * Templates, Cabinet Settings, Scene Settings, Building Standards, Quick
+     * Quote, the Price List / Margins row — still shrank. It bites harder the
+     * more content there is, which is why it showed up when signed in (extra
+     * pricing sections) and not when signed out.
+     *
+     * A child selector covers whatever gets added to the panel next.
+     */
+    .right-panel > * {
+      flex-shrink: 0;
+    }
+
     /* Right panel sections - all flex-shrink:0 so panel scrolls instead of overlapping */
     .right-panel .panel-section#itemPickerSection {
       flex-shrink: 0;
     }
 
+    /* See .item-picker-list: the panel is the scroll region, not this. */
     .right-panel .panel-section#propertiesPanel {
       flex-shrink: 0;
-      overflow-y: auto;
-      max-height: 350px;
+      overflow: visible;
     }
 
     /* Collapsible message section shouldn't break layout */

@@ -1,0 +1,1647 @@
+{
+  "name": "Highland Cabinetry",
+  "source": "Highland Cabinetry Shaker/Nano + Euro catalogs, June 2025",
+  "note": "Colours sampled from Highland\u2019s own catalog artwork; their disclaimer notes printed colour may vary from the product. Neither catalog carries prices, so this is a cut list \u2014 codes and sizes \u2014 to be priced by the dealer. SKU sizes are decoded from the code itself (W3012 = 30\" wide x 12\" high); depths are the standard per family except where the code states one.",
+  "series": {
+    "shaker-grey": {
+      "name": "Shaker Grey",
+      "color": "#86837f",
+      "finish": "painted",
+      "grainType": "flat",
+      "line": "Shaker",
+      "hciType": "paint"
+    },
+    "shaker-luxe": {
+      "name": "Shaker Luxe",
+      "color": "#b3a18b",
+      "finish": "wood-grain",
+      "grainType": "maple",
+      "line": "Shaker",
+      "hciType": "stain"
+    },
+    "shaker-modern-slate": {
+      "name": "Shaker Modern Slate",
+      "color": "#716966",
+      "finish": "wood-grain",
+      "grainType": "maple",
+      "line": "Shaker",
+      "hciType": "stain"
+    },
+    "shaker-onyx-black": {
+      "name": "Shaker Onyx Black",
+      "color": "#212224",
+      "finish": "painted",
+      "grainType": "flat",
+      "line": "Shaker",
+      "hciType": "paint"
+    },
+    "shaker-signature-blue": {
+      "name": "Shaker Signature Blue",
+      "color": "#414357",
+      "finish": "painted",
+      "grainType": "flat",
+      "line": "Shaker",
+      "hciType": "paint"
+    },
+    "shaker-white": {
+      "name": "Shaker White",
+      "color": "#d6d7db",
+      "finish": "painted",
+      "grainType": "flat",
+      "line": "Shaker",
+      "hciType": "paint"
+    },
+    "nano-green": {
+      "name": "Nano Green",
+      "color": "#69715c",
+      "finish": "matte",
+      "grainType": "flat",
+      "line": "Nano",
+      "hciType": "paint"
+    },
+    "nano-white": {
+      "name": "Nano White",
+      "color": "#d5d6da",
+      "finish": "matte",
+      "grainType": "flat",
+      "line": "Nano",
+      "hciType": "paint"
+    },
+    "euro-frost-white": {
+      "name": "Frost White",
+      "color": "#cbcdd1",
+      "finish": "matte",
+      "grainType": "flat",
+      "line": "Euro",
+      "substrate": "PET (MDF)"
+    },
+    "euro-glacial-white": {
+      "name": "Glacial White",
+      "color": "#d4d5d9",
+      "finish": "gloss",
+      "grainType": "flat",
+      "line": "Euro",
+      "substrate": "PET (MDF)"
+    },
+    "euro-natural-walnut": {
+      "name": "Natural Walnut",
+      "color": "#7a5d48",
+      "finish": "wood-grain",
+      "grainType": "walnut",
+      "line": "Euro",
+      "substrate": "Melamine (MDF)"
+    },
+    "euro-stone-grey": {
+      "name": "Stone Grey",
+      "color": "#83827f",
+      "finish": "matte",
+      "grainType": "flat",
+      "line": "Euro",
+      "substrate": "PET (MDF)"
+    },
+    "euro-white-oak": {
+      "name": "White Oak",
+      "color": "#9d8366",
+      "finish": "wood-grain",
+      "grainType": "walnut",
+      "line": "Euro",
+      "substrate": "Melamine (MDF)"
+    }
+  },
+  "doorStyles": [
+    {
+      "id": "shaker",
+      "name": "Shaker",
+      "profile": "shaker",
+      "line": "Shaker",
+      "rail": 2.25,
+      "stile": 2.25
+    },
+    {
+      "id": "nano",
+      "name": "Nano Slab",
+      "profile": "slab",
+      "line": "Nano"
+    },
+    {
+      "id": "euro",
+      "name": "Euro Slab",
+      "profile": "slab",
+      "line": "Euro"
+    }
+  ],
+  "cabinets": {
+    "base": [
+      {
+        "sku": "B09",
+        "name": "Base 9\"",
+        "width": 0.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B12",
+        "name": "Base 12\"",
+        "width": 1.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B15",
+        "name": "Base 15\"",
+        "width": 1.25,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B18",
+        "name": "Base 18\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B21",
+        "name": "Base 21\"",
+        "width": 1.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B24",
+        "name": "Base 24\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BEC24",
+        "name": "Base End Cabinet 24\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B27",
+        "name": "Base 27\"",
+        "width": 2.25,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B30",
+        "name": "Base 30\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BMC30",
+        "name": "Base Microwave Cabinet 30\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B33",
+        "name": "Base 33\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B36",
+        "name": "Base 36\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "B42",
+        "name": "Base 42\"",
+        "width": 3.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "base-cabinet",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BBC36",
+        "name": "Base Blind Corner 36\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "blind-corner",
+        "cabinetHeight": 34.5,
+        "mount": "floor"
+      },
+      {
+        "sku": "BBC42",
+        "name": "Base Blind Corner 42\"",
+        "width": 3.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "blind-corner",
+        "cabinetHeight": 34.5,
+        "mount": "floor"
+      },
+      {
+        "sku": "BFD21",
+        "name": "Drawer Base 21\"",
+        "width": 1.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "drawer-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BFD22",
+        "name": "Drawer Base 22\"",
+        "width": 1.8333,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "drawer-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BFD24",
+        "name": "Drawer Base 24\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "drawer-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BFD25",
+        "name": "Drawer Base 25\"",
+        "width": 2.0833,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "drawer-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BLS33",
+        "name": "Base Lazy Susan 33\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "lazy-susan",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "BLS36",
+        "name": "Base Lazy Susan 36\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "lazy-susan",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "SB30",
+        "name": "Sink Base 30\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "sink-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "SB33",
+        "name": "Sink Base 33\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "sink-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "SB36",
+        "name": "Sink Base 36\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "sink-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "SB42",
+        "name": "Sink Base 42\"",
+        "width": 3.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "sink-base",
+        "cabinetHeight": 34.5
+      }
+    ],
+    "accessories": [
+      {
+        "sku": "FD1230",
+        "name": "Filler 12\" x 30\"",
+        "width": 1.0,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 30
+      },
+      {
+        "sku": "FD1236",
+        "name": "Filler 12\" x 36\"",
+        "width": 1.0,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 36
+      },
+      {
+        "sku": "FD1242",
+        "name": "Filler 12\" x 42\"",
+        "width": 1.0,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 42
+      },
+      {
+        "sku": "FD1330",
+        "name": "Filler 13\" x 30\"",
+        "width": 1.0833,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 30
+      },
+      {
+        "sku": "FD1336",
+        "name": "Filler 13\" x 36\"",
+        "width": 1.0833,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 36
+      },
+      {
+        "sku": "FD1342",
+        "name": "Filler 13\" x 42\"",
+        "width": 1.0833,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "cabinetHeight": 42
+      }
+    ],
+    "tall": [
+      {
+        "sku": "PC1884",
+        "name": "Pantry 18\" x 84\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC188424",
+        "name": "Pantry 18\" x 84\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC1890",
+        "name": "Pantry 18\" x 90\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC189024",
+        "name": "Pantry 18\" x 90\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC1896",
+        "name": "Pantry 18\" x 96\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "PC189624",
+        "name": "Pantry 18\" x 96\"",
+        "width": 1.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "PC2484",
+        "name": "Pantry 24\" x 84\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC248424",
+        "name": "Pantry 24\" x 84\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC2490",
+        "name": "Pantry 24\" x 90\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC249024",
+        "name": "Pantry 24\" x 90\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC2496",
+        "name": "Pantry 24\" x 96\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "PC249624",
+        "name": "Pantry 24\" x 96\"",
+        "width": 2.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "PC3084",
+        "name": "Pantry 30\" x 84\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "OC308424",
+        "name": "Oven Cabinet 30\" x 84\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "OC308424-2",
+        "name": "Oven Cabinet 30\" x 84\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC308424",
+        "name": "Pantry 30\" x 84\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "PC3090",
+        "name": "Pantry 30\" x 90\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "OC309024",
+        "name": "Oven Cabinet 30\" x 90\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "OC309024-2",
+        "name": "Oven Cabinet 30\" x 90\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC309024",
+        "name": "Pantry 30\" x 90\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "PC3096",
+        "name": "Pantry 30\" x 96\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "OC309624",
+        "name": "Oven Cabinet 30\" x 96\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "OC309624-2",
+        "name": "Oven Cabinet 30\" x 96\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "PC309624",
+        "name": "Pantry 30\" x 96\"",
+        "width": 2.5,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      },
+      {
+        "sku": "OC3384",
+        "name": "Oven Cabinet 33\" x 84\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 84
+      },
+      {
+        "sku": "OC3390",
+        "name": "Oven Cabinet 33\" x 90\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 90
+      },
+      {
+        "sku": "OC3396",
+        "name": "Oven Cabinet 33\" x 96\"",
+        "width": 2.75,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "tall-cabinet",
+        "cabinetHeight": 96
+      }
+    ],
+    "vanity": [
+      {
+        "sku": "VB12",
+        "name": "Vanity Base 12\"",
+        "width": 1.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VDB12",
+        "name": "Vanity Drawer Base 12\"",
+        "width": 1.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVDB12",
+        "name": "Floating Vanity Drawer Base 12\"",
+        "width": 1.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VB15",
+        "name": "Vanity Base 15\"",
+        "width": 1.25,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VDB15",
+        "name": "Vanity Drawer Base 15\"",
+        "width": 1.25,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVDB15",
+        "name": "Floating Vanity Drawer Base 15\"",
+        "width": 1.25,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VB18",
+        "name": "Vanity Base 18\"",
+        "width": 1.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VDB18",
+        "name": "Vanity Drawer Base 18\"",
+        "width": 1.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVDB18",
+        "name": "Floating Vanity Drawer Base 18\"",
+        "width": 1.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VDB21",
+        "name": "Vanity Drawer Base 21\"",
+        "width": 1.75,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VDB24",
+        "name": "Vanity Drawer Base 24\"",
+        "width": 2.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VSB24",
+        "name": "Vanity Sink Base 24\"",
+        "width": 2.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVB24",
+        "name": "Floating Vanity Base 24\"",
+        "width": 2.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVSD24",
+        "name": "Floating Vanity Sink Base 24\"",
+        "width": 2.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VSB27",
+        "name": "Vanity Sink Base 27\"",
+        "width": 2.25,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VSB30",
+        "name": "Vanity Sink Base 30\"",
+        "width": 2.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVB30",
+        "name": "Floating Vanity Base 30\"",
+        "width": 2.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVSD30",
+        "name": "Floating Vanity Sink Base 30\"",
+        "width": 2.5,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VSB33",
+        "name": "Vanity Sink Base 33\"",
+        "width": 2.75,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "VSB36",
+        "name": "Vanity Sink Base 36\"",
+        "width": 3.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVB36",
+        "name": "Floating Vanity Base 36\"",
+        "width": 3.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      },
+      {
+        "sku": "FVSD36",
+        "name": "Floating Vanity Sink Base 36\"",
+        "width": 3.0,
+        "height": 1.75,
+        "depth": 1.75,
+        "type": "vanity-base",
+        "cabinetHeight": 34.5
+      }
+    ],
+    "wall": [
+      {
+        "sku": "WBC3030",
+        "name": "Wall Blind Corner 30\" x 30\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "blind-corner",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "WBC3036",
+        "name": "Wall Blind Corner 30\" x 36\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "blind-corner",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WBC3042",
+        "name": "Wall Blind Corner 30\" x 42\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "blind-corner",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC2415",
+        "name": "Wall Diagonal Corner 24\" x 15\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC2430",
+        "name": "Wall Diagonal Corner 24\" x 30\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC2436",
+        "name": "Wall Diagonal Corner 24\" x 36\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC2442",
+        "name": "Wall Diagonal Corner 24\" x 42\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC273615",
+        "name": "Wall Diagonal Corner 27\" x 36\"",
+        "width": 2.25,
+        "height": 1.25,
+        "depth": 1.25,
+        "type": "corner-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WDC274215",
+        "name": "Wall Diagonal Corner 27\" x 42\"",
+        "width": 2.25,
+        "height": 1.25,
+        "depth": 1.25,
+        "type": "corner-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "WRC3015",
+        "name": "Wall Radius Corner 30\" x 15\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "WRC3615",
+        "name": "Wall Radius Corner 36\" x 15\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "corner-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "WMC2730",
+        "name": "Wall Microwave Cabinet 27\" x 30\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "microwave-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "WMC2736",
+        "name": "Wall Microwave Cabinet 27\" x 36\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "microwave-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WMC2742",
+        "name": "Wall Microwave Cabinet 27\" x 42\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "microwave-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W0930",
+        "name": "Wall 9\" x 30\"",
+        "width": 0.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W0936",
+        "name": "Wall 9\" x 36\"",
+        "width": 0.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W0942",
+        "name": "Wall 9\" x 42\"",
+        "width": 0.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1230",
+        "name": "Wall 12\" x 30\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "WEC1230",
+        "name": "Wall End Cabinet 12\" x 30\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1236",
+        "name": "Wall 12\" x 36\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WEC1236",
+        "name": "Wall End Cabinet 12\" x 36\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1242",
+        "name": "Wall 12\" x 42\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "WEC1242",
+        "name": "Wall End Cabinet 12\" x 42\"",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1515",
+        "name": "Wall 15\" x 15\"",
+        "width": 1.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1530",
+        "name": "Wall 15\" x 30\"",
+        "width": 1.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1536",
+        "name": "Wall 15\" x 36\"",
+        "width": 1.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1542",
+        "name": "Wall 15\" x 42\"",
+        "width": 1.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1815",
+        "name": "Wall 18\" x 15\"",
+        "width": 1.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1830",
+        "name": "Wall 18\" x 30\"",
+        "width": 1.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1836",
+        "name": "Wall 18\" x 36\"",
+        "width": 1.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W1842",
+        "name": "Wall 18\" x 42\"",
+        "width": 1.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2115",
+        "name": "Wall 21\" x 15\"",
+        "width": 1.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2130",
+        "name": "Wall 21\" x 30\"",
+        "width": 1.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2136",
+        "name": "Wall 21\" x 36\"",
+        "width": 1.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2142",
+        "name": "Wall 21\" x 42\"",
+        "width": 1.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2415",
+        "name": "Wall 24\" x 15\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2430",
+        "name": "Wall 24\" x 30\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "WLS2430",
+        "name": "Wall Cabinet 24\" x 30\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2436",
+        "name": "Wall 24\" x 36\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "WLS2436",
+        "name": "Wall Cabinet 24\" x 36\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2442",
+        "name": "Wall 24\" x 42\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "WLS2442",
+        "name": "Wall Cabinet 24\" x 42\"",
+        "width": 2.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2715",
+        "name": "Wall 27\" x 15\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2730",
+        "name": "Wall 27\" x 30\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2736",
+        "name": "Wall 27\" x 36\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W2742",
+        "name": "Wall 27\" x 42\"",
+        "width": 2.25,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3012",
+        "name": "Wall 30\" x 12\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 12,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3015",
+        "name": "Wall 30\" x 15\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3018",
+        "name": "Wall 30\" x 18\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 18,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3021",
+        "name": "Wall 30\" x 21\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 21,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3024",
+        "name": "Wall 30\" x 24\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 24,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3030",
+        "name": "Wall 30\" x 30\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3036",
+        "name": "Wall 30\" x 36\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3042",
+        "name": "Wall 30\" x 42\"",
+        "width": 2.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3312",
+        "name": "Wall 33\" x 12\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 12,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3315",
+        "name": "Wall 33\" x 15\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3318",
+        "name": "Wall 33\" x 18\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 18,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3321",
+        "name": "Wall 33\" x 21\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 21,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3324",
+        "name": "Wall 33\" x 24\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 24,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3330",
+        "name": "Wall 33\" x 30\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3336",
+        "name": "Wall 33\" x 36\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3342",
+        "name": "Wall 33\" x 42\"",
+        "width": 2.75,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3612",
+        "name": "Wall 36\" x 12\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 12,
+        "mount": "wall"
+      },
+      {
+        "sku": "W361224",
+        "name": "Wall 36\" x 12\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 12,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3615",
+        "name": "Wall 36\" x 15\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W361524",
+        "name": "Wall 36\" x 15\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 15,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3618",
+        "name": "Wall 36\" x 18\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 18,
+        "mount": "wall"
+      },
+      {
+        "sku": "W361824",
+        "name": "Wall 36\" x 18\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 18,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3621",
+        "name": "Wall 36\" x 21\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 21,
+        "mount": "wall"
+      },
+      {
+        "sku": "W362124",
+        "name": "Wall 36\" x 21\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 21,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3624",
+        "name": "Wall 36\" x 24\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 24,
+        "mount": "wall"
+      },
+      {
+        "sku": "W362424",
+        "name": "Wall 36\" x 24\"",
+        "width": 3.0,
+        "height": 2.0,
+        "depth": 2.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 24,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3630",
+        "name": "Wall 36\" x 30\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3636",
+        "name": "Wall 36\" x 36\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W3642",
+        "name": "Wall 36\" x 42\"",
+        "width": 3.0,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      },
+      {
+        "sku": "W4230",
+        "name": "Wall 42\" x 30\"",
+        "width": 3.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 30,
+        "mount": "wall"
+      },
+      {
+        "sku": "W4236",
+        "name": "Wall 42\" x 36\"",
+        "width": 3.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 36,
+        "mount": "wall"
+      },
+      {
+        "sku": "W4242",
+        "name": "Wall 42\" x 42\"",
+        "width": 3.5,
+        "height": 1.0,
+        "depth": 1.0,
+        "type": "wall-cabinet",
+        "cabinetHeight": 42,
+        "mount": "wall"
+      }
+    ]
+  }
+}
