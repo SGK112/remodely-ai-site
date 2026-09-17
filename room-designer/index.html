@@ -43658,6 +43658,15 @@
           });
 
           // Main body
+          /*
+           * Draw the carcass inside-out.
+           *
+           * This was a solid box, so its front face sat between the camera and
+           * everything in the cabinet. The glass could be set to any opacity
+           * you like and the unit still read as a black slab, because what you
+           * were looking at was the outside of the box, not the door.
+           */
+          wcBodyMat.side = THREE.BackSide;
           const wcBody = new THREE.Mesh(
             new THREE.BoxGeometry(w, h, d),
             wcBodyMat
@@ -43665,17 +43674,28 @@
           group.add(wcBody);
 
           // Glass door frame (dark metal)
+          // Stainless, like every beverage centre on the market. Black read as
+          // a picture frame round a dark hole.
           const wcFrameMat = new THREE.MeshStandardMaterial({
-            color: 0x1a1a1a,
-            roughness: 0.3,
-            metalness: 0.6
+            color: wcIsWine ? 0xb9bdc2 : 0x1a1a1a,
+            roughness: 0.28,
+            metalness: 0.85
           });
-          const wcFrame = new THREE.Mesh(
-            new THREE.BoxGeometry(w - 0.04, h - 0.04, 0.04),
-            wcFrameMat
-          );
-          wcFrame.position.set(0, 0, d/2 + 0.02);
-          group.add(wcFrame);
+          /*
+           * An actual frame. This was one filled slab spanning the whole door
+           * opening — a second opaque panel in front of the opaque box.
+           */
+          const wcFrameW = 0.06;
+          [
+            { w: w - 0.04,   h: wcFrameW,   x: 0,                    y:  h/2 - 0.02 - wcFrameW/2 },
+            { w: w - 0.04,   h: wcFrameW,   x: 0,                    y: -h/2 + 0.02 + wcFrameW/2 },
+            { w: wcFrameW,   h: h - 0.04,   x: -w/2 + 0.02 + wcFrameW/2, y: 0 },
+            { w: wcFrameW,   h: h - 0.04,   x:  w/2 - 0.02 - wcFrameW/2, y: 0 }
+          ].forEach(function (bar) {
+            const m = new THREE.Mesh(new THREE.BoxGeometry(bar.w, bar.h, 0.04), wcFrameMat);
+            m.position.set(bar.x, bar.y, d/2 + 0.02);
+            group.add(m);
+          });
 
           // Glass door (tinted, semi-transparent)
           /*
@@ -43687,9 +43707,9 @@
            * kitchen that has to show its contents.
            */
           const wcGlassMat = new THREE.MeshPhysicalMaterial({
-            color: wcIsWine ? 0x2a3550 : 0x24423f,
+            color: wcIsWine ? 0x20242b : 0x24423f,   // smoked charcoal, UV-tinted
             transparent: true,
-            opacity: 0.22,
+            opacity: 0.42,
             roughness: 0.03,
             metalness: 0.05,
             depthWrite: false
@@ -43730,10 +43750,31 @@
               emissive: 0x140a08,
               emissiveIntensity: 0.35
             });
-            // wine coolers are lit inside; without it the rack stays in shadow
-            const wcLamp = new THREE.PointLight(0xffd9a0, 0.5, Math.max(w, h) * 1.6);
-            wcLamp.position.set(0, h / 2 - 0.15, 0);
+            /*
+             * Wine coolers are lit blue, not warm. The LED strip runs up the
+             * inside of the door frame and is the single thing that makes one
+             * of these read as a wine fridge rather than a dark cupboard.
+             */
+            const wcLamp = new THREE.PointLight(0x5a74ff, 1.35, Math.max(w, h) * 2.2);
+            wcLamp.position.set(0, h / 2 - 0.15, d / 4);
             group.add(wcLamp);
+            const wcLamp2 = new THREE.PointLight(0x4a64ee, 0.8, Math.max(w, h) * 2.0);
+            wcLamp2.position.set(0, -h / 4, d / 4);
+            group.add(wcLamp2);
+            // LED strips up each side of the opening
+            const ledMat = new THREE.MeshStandardMaterial({
+              color: 0x7f93ff, emissive: 0x4a64ee, emissiveIntensity: 2.2, roughness: 0.4
+            });
+            [-1, 1].forEach(function (sx) {
+              const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, h - 0.3, 0.02), ledMat);
+              led.position.set(sx * (w / 2 - 0.1), 0, d / 2 - 0.06);
+              group.add(led);
+            });
+            // stainless vent grille along the bottom
+            const ventMat = new THREE.MeshStandardMaterial({ color: 0xa9adb2, roughness: 0.35, metalness: 0.8 });
+            const vent = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, 0.14, 0.03), ventMat);
+            vent.position.set(0, -h / 2 + 0.09, d / 2 + 0.04);
+            group.add(vent);
             for (let row = 0; row < Math.min(4, shelfCount - 1); row++) {
               const bottlesInRow = Math.floor((w - 0.2) / 0.12);
               for (let b = 0; b < bottlesInRow; b++) {
