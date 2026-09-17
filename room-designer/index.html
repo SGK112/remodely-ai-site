@@ -12577,7 +12577,19 @@
         { type: 'tall-cabinet-18', width: 1.5, height: 2, color: '#8B7355', label: 'Tall Cabinet 18"' },
         { type: 'tall-cabinet-24', width: 2, height: 2, color: '#8B7355', label: 'Tall Cabinet 24"' },
         { type: 'tall-cabinet-30', width: 2.5, height: 2, color: '#8B7355', label: 'Tall Cabinet 30"' },
-        { type: 'tall-cabinet-36', width: 3, height: 2, color: '#8B7355', label: 'Tall Cabinet 36"' }
+        { type: 'tall-cabinet-36', width: 3, height: 2, color: '#8B7355', label: 'Tall Cabinet 36"' },
+        /*
+         * Fillers, scribes and finished panels.
+         *
+         * Both already had 3D meshes and both were in every catalog — SOLLiD
+         * and Highland ship 136 of them between them — but neither type was
+         * ever listed here, and createElement only builds a type it finds in
+         * ELEMENT_TYPES. So a filler could be quoted and never placed, and any
+         * script that asked for one got nothing back. They had to be faked as
+         * tall cabinets, which drew a 2" scribe with a door and a handle.
+         */
+        { type: 'filler', width: 0.25, height: 2, color: '#8B7355', label: 'Filler / Panel' },
+        { type: 'scribe', width: 0.125, height: 2, color: '#8B7355', label: 'Scribe Molding' }
       ],
       surfaces: [
         // Standard countertop: 25.5" depth (2.125') with 1.5" overhang = 2.17' total
@@ -29427,7 +29439,12 @@
         if (found) defaults = found;
       });
 
-      if (!defaults) return;
+      if (!defaults) {
+        // Silently returning left the caller holding the PREVIOUS element and
+        // overwriting it, which is how a sink ended up labelled as a filler.
+        console.warn('createElement: unknown element type "' + type + '" — nothing created');
+        return;
+      }
 
       const gridSnap = pixelsPerFoot / CONFIG.GRID_SUBDIVISIONS;
       // base-1drawer-XX is a UI variant that's stored as a regular base-cabinet
@@ -35054,6 +35071,25 @@
         type = 'wall-cabinet';
       }
 
+      /*
+       * A stated mount height wins, for ANY element — not just wall cabinets.
+       *
+       * This rule used to live inside case 'wall-cabinet', so it reached the
+       * one type that already knew how to hang. Everything else with a real
+       * mount height fell through to a case that assumes the floor: a wall
+       * filler between the last upper and a fridge panel dropped to the floor,
+       * and so did a light rail, a finished panel, or any part a catalog
+       * places by height. That is why wall fillers had to be smuggled in as
+       * tall cabinets, which drew them with doors and handles — the "why are
+       * there cabinets behind the fridge" report.
+       *
+       * mountHeight is never written by the app; it only ever arrives from
+       * catalog data, so when it is there it is a measurement, not a guess.
+       */
+      if (el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0) {
+        return el.mountHeight + height / 2;
+      }
+
       switch(type) {
         // Ground level surfaces (slightly above floor to prevent Z-fighting)
         case 'flooring':
@@ -35191,9 +35227,7 @@
            * same 54" line, so the stacker rendered *inside* the cabinet it sits
            * on. Every 9- and 10-foot kitchen was unbuildable in 3D.
            */
-          if (el.mountHeight !== undefined && isFinite(el.mountHeight)) {
-            return el.mountHeight + height / 2;
-          }
+          // An explicit mountHeight was already handled above, for every type.
           // NKBA Standard: Wall cabinet bottom at 54" (4.5 ft) from floor
           // Uses recursive stacking to find actual counter/backsplash surface
           const wcLeft = el.x / pixelsPerFoot;
@@ -37798,7 +37832,8 @@
 
         case 'filler': {
           // FILLER STRIP - Solid wood strip to fill gaps between cabinets and walls
-          const fillerToeKickH = 0.33;
+          const fillerStandsOnFloor = !(el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0);
+          const fillerToeKickH = fillerStandsOnFloor ? 0.33 : 0;
           const fillerBodyH = h - fillerToeKickH;
 
           // Create wood grain material
@@ -37816,14 +37851,18 @@
           fillerBody.position.y = fillerToeKickH / 2;
           group.add(fillerBody);
 
-          // Toe kick void
-          const tkMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
-          const toeKick = new THREE.Mesh(
-            new THREE.BoxGeometry(w * 0.7, fillerToeKickH, d * 0.6),
-            tkMat
-          );
-          toeKick.position.set(0, -h/2 + fillerToeKickH/2, d * 0.15);
-          group.add(toeKick);
+          // Toe kick void — only on a filler that stands on the floor. A wall
+          // filler hanging at 54" was drawing a black notch in mid air.
+          const fillerHangs = el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0;
+          if (!fillerHangs) {
+            const tkMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
+            const toeKick = new THREE.Mesh(
+              new THREE.BoxGeometry(w * 0.7, fillerToeKickH, d * 0.6),
+              tkMat
+            );
+            toeKick.position.set(0, -h/2 + fillerToeKickH/2, d * 0.15);
+            group.add(toeKick);
+          }
 
           break;
         }
