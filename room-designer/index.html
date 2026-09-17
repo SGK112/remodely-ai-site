@@ -38767,12 +38767,45 @@
           sidePanel.position.set(-w/2 + armDepth - panelThickness/2, bodyYOffset, armDepth/2);
           group.add(sidePanel);
 
-          // INTERIOR SHELVES - triangular/pie-shaped shelves visible through door
+          /*
+           * INTERIOR SHELVES.
+           *
+           * These were always round turntables, whether the box stood on the
+           * floor or hung on the wall — so a 24"x42" diagonal WALL corner
+           * rendered with a lazy susan inside it. Josh's words looking at the
+           * Bales kitchen: "you have a lazy suzan as an upper cabinet topper??
+           * That makes no sense."
+           *
+           * It doesn't. Turntables are a base-cabinet fitting. A wall corner
+           * gets flat L-shaped shelves following the carcass.
+           */
+          const ccHangs = el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE);
           const shelfRadius = Math.min(w, d) * 0.4;
           const shelfCenterX = 0;
           const shelfCenterZ = 0;
           const numShelves = 2;
 
+          if (ccHangs) {
+            for (let s = 0; s < numShelves; s++) {
+              const shelfY = bodyYOffset - cabinetBodyHeight/2 + 0.4 + s * (cabinetBodyHeight * 0.35);
+              const lsh = new THREE.Shape();
+              const inset = 0.06;
+              lsh.moveTo(-w/2 + inset,            d/2 - inset);
+              lsh.lineTo(-w/2 + inset,           -d/2 + inset);
+              lsh.lineTo(-w/2 + armDepth - inset,-d/2 + inset);
+              lsh.lineTo(-w/2 + armDepth - inset, d/2 - armDepth + inset);
+              lsh.lineTo( w/2 - inset,            d/2 - armDepth + inset);
+              lsh.lineTo( w/2 - inset,            d/2 - inset);
+              lsh.closePath();
+              const sg = new THREE.ExtrudeGeometry(lsh, { depth: 0.025, bevelEnabled: false });
+              sg.rotateX(-Math.PI / 2);
+              const sm = new THREE.Mesh(sg, shelfMat);
+              sm.position.set(0, shelfY, 0);
+              sm.castShadow = true;
+              group.add(sm);
+            }
+          } else
           for (let s = 0; s < numShelves; s++) {
             const shelfY = bodyYOffset - cabinetBodyHeight/2 + 0.4 + s * (cabinetBodyHeight * 0.35);
 
@@ -48010,30 +48043,47 @@
           // Create crown molding profile shape
           const crownShape = new THREE.Shape();
           const mh = (typeof h === 'number' && h > 0) ? h : 0.25; // molding height
-          const md = Math.min(typeof d === 'number' && d > 0 ? d : 0.2, mh * 0.6); // projection
+          const md = Math.min(Math.min(w, d) > 0 ? Math.min(w, d) : 0.2, mh * 0.6); // projection
 
-          // Ornate crown profile
-          crownShape.moveTo(0, 0);
-          crownShape.lineTo(md, 0);
-          crownShape.lineTo(md, mh * 0.1);
-          crownShape.quadraticCurveTo(md * 0.9, mh * 0.2, md * 0.85, mh * 0.3);
-          crownShape.quadraticCurveTo(md * 0.75, mh * 0.5, md * 0.6, mh * 0.6);
-          crownShape.bezierCurveTo(md * 0.4, mh * 0.75, md * 0.2, mh * 0.9, 0, mh);
-          crownShape.lineTo(0, 0);
+          /*
+           * The profile was upside down: widest at the bottom, tapering to
+           * nothing at the top. A crown does the opposite — it springs narrow
+           * off the cabinet face and flares OUT and UP to meet the ceiling.
+           * Drawn the old way it read as a chamfer under the cabinets rather
+           * than a cornice above them.
+           */
+          crownShape.moveTo(0, mh);
+          crownShape.lineTo(md, mh);
+          crownShape.lineTo(md, mh - mh * 0.1);
+          crownShape.quadraticCurveTo(md * 0.9, mh - mh * 0.2, md * 0.85, mh - mh * 0.3);
+          crownShape.quadraticCurveTo(md * 0.75, mh - mh * 0.5, md * 0.6, mh - mh * 0.6);
+          crownShape.bezierCurveTo(md * 0.4, mh - mh * 0.75, md * 0.2, mh - mh * 0.9, 0, 0);
+          crownShape.lineTo(0, mh);
 
-          const extrudeSettings = { steps: 1, depth: w, bevelEnabled: false };
+          /*
+           * Extrude along the RUN, not blindly along the width field.
+           *
+           * Elements on a left/right wall carry depth in width and the run in
+           * height — that is how their 2D footprint stays correct. Crown alone
+           * read w as its length, so a run down a side wall came out as a
+           * 12"-long stub whose footprint lay along the BACK wall instead,
+           * landing on top of the other crown. A side wall simply could not
+           * be trimmed.
+           */
+          const crownRun = Math.max(w, d);
+          const extrudeSettings = { steps: 1, depth: crownRun, bevelEnabled: false };
           const crownGeom = new THREE.ExtrudeGeometry(crownShape, extrudeSettings);
           crownGeom.rotateY(-Math.PI / 2);
           // Centre on the group origin so the band runs cabinet-top to ceiling.
-          crownGeom.translate(w/2, -mh/2, 0);
+          crownGeom.translate(crownRun/2, -mh/2, 0);
 
           const crown = new THREE.Mesh(crownGeom, moldMat);
           group.add(crown);
 
           // Shadow line detail
           const shadowMat = new THREE.MeshStandardMaterial({ color: 0xDDDDDD, roughness: 0.5 });
-          const shadowLine = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, 0.02), shadowMat);
-          shadowLine.position.set(0, -mh/2 + mh * 0.3, md * 0.7);
+          const shadowLine = new THREE.Mesh(new THREE.BoxGeometry(crownRun, 0.02, 0.02), shadowMat);
+          shadowLine.position.set(0, mh/2 - mh * 0.3, md * 0.7);
           group.add(shadowLine);
           break;
         }
@@ -52481,6 +52531,26 @@
         const visualHeight = posIsRotated90 ? el.width : el.height;
         let xPos = (el.x / pixelsPerFoot) + visualWidth / 2;
         let zPos = (el.y / pixelsPerFoot) + visualHeight / 2;
+
+        /*
+         * Linear trim hugs a wall; it is not centred in both axes.
+         *
+         * Crown, baseboard and chair rail are extruded along their RUN and
+         * built outward from the wall on the other axis. Centring both put a
+         * run of crown half its own length away from the wall — a 102" run
+         * down the left wall floated four feet into the room, and the back
+         * wall run stood 6" proud of the cabinets it belongs on. Centre along
+         * the run, sit on the wall line across it.
+         */
+        if (el.type === 'crown-molding' || el.type === 'baseboard' || el.type === 'chair-rail') {
+          if (posIsRotated90) {
+            xPos = el.x / pixelsPerFoot;                              // against the wall
+            zPos = (el.y / pixelsPerFoot) + (el.height || 0) / 2;     // centred on the run
+          } else {
+            xPos = (el.x / pixelsPerFoot) + (el.width || 0) / 2;      // centred on the run
+            zPos = el.y / pixelsPerFoot;                              // against the wall
+          }
+        }
         let yPos = get3DYPosition(el, height);
 
         // Windows and doors snap to wall surface
