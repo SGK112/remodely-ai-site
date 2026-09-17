@@ -34602,6 +34602,44 @@
     const STD_WALL_CAB_BOTTOM = BUILDING_STANDARDS?.HEIGHTS?.wallCabBottom || 4.5; // 54" from floor
     const STD_BACKSPLASH_HEIGHT = BUILDING_STANDARDS?.BACKSPLASH?.full || 1.5; // 18"
 
+    /*
+     * Countertop thickness is stored as a STRING off the picker ('3cm', '2cm',
+     * '1.5"'), but both stacking paths did `supportHeight + el.thickness`,
+     * which concatenates instead of adding and poisons every height computed
+     * off it. Parse to feet, and fall back to the standard when it is a value
+     * we do not recognise.
+     */
+    function counterThicknessFt(value) {
+      if (typeof value === 'number' && isFinite(value)) return value;
+      if (typeof value !== 'string') return STD_COUNTER_THICKNESS;
+      const m = value.match(/([\d.]+)\s*(cm|mm|in|")?/i);
+      if (!m) return STD_COUNTER_THICKNESS;
+      const n = parseFloat(m[1]);
+      if (!isFinite(n)) return STD_COUNTER_THICKNESS;
+      const unit = (m[2] || 'in').toLowerCase();
+      if (unit === 'cm') return n / 2.54 / 12;
+      if (unit === 'mm') return n / 25.4 / 12;
+      return n / 12; // inches
+    }
+
+    /*
+     * The palette creates SIZED variants — 'drawer-base-36', 'sink-base-36',
+     * 'wall-cabinet-30-xtall' — but several lookups only ever matched the base
+     * names. Normalise in one place so support detection and vertical placement
+     * agree about what a cabinet is.
+     */
+    function normalizeCabinetType(type) {
+      if (typeof type !== 'string') return type;
+      if (type.startsWith('base-cabinet-')) return 'base-cabinet';
+      if (type.startsWith('wall-cabinet-')) return 'wall-cabinet';
+      if (type.startsWith('tall-cabinet-')) return 'tall-cabinet';
+      if (type.startsWith('drawer-base-')) return 'drawer-base';
+      if (type.startsWith('sink-base-apron-')) return 'sink-base-apron';
+      if (type.startsWith('sink-base-')) return 'sink-base';
+      if (type.startsWith('corner-cabinet-')) return 'corner-cabinet';
+      return type;
+    }
+
     // Get proper 3D height for element types
     // Can accept element object to use custom heights
     function get3DHeight(typeOrElement) {
@@ -34880,7 +34918,10 @@
 
       elements.forEach(other => {
         if (other.id === countertopEl.id) return;
-        const oType = other.type || '';
+        // Sized variants ('drawer-base-36') never matched the whitelist below,
+        // so a countertop over them found no support and fell back to the
+        // default height — the "floating countertop" report.
+        const oType = normalizeCabinetType(other.type || '');
 
         const otherLeft = other.x / pixelsPerFoot;
         const otherRight = otherLeft + other.width;
@@ -34892,6 +34933,18 @@
         const overlapArea = overlapX * overlapY;
 
         if (ctArea > 0 && overlapArea / ctArea < 0.15) return;
+
+        /*
+         * Nothing that hangs can hold up a countertop. Corner boxes, microwave
+         * and fridge cabinets appear in the whitelist below and also exist as
+         * wall-mounted units, so a diagonal wall corner directly above a lazy
+         * susan was being read as the susan's support and lifted the corner of
+         * the counter to the wall cabinet's height.
+         */
+        const otherHangs = other.mount === 'wall' ||
+          (other.mountHeight !== undefined && other.mountHeight >= STD_COUNTER_SURFACE) ||
+          normalizeCabinetType(oType) === 'wall-cabinet';
+        if (otherHangs) return;
 
         if (ponyWallTypes.includes(oType)) {
           const wh = other.wallHeight || (oType === 'knee-wall' ? 2.5 : 3.5);
@@ -34936,7 +34989,7 @@
         if (overlapX > 0.1 && (overlapY > 0 || adjacentY)) {
           // Found a countertop — compute its ACTUAL surface by walking the chain
           const supportH = findSupportSurfaceHeight(other);
-          const thickness = other.thickness || STD_COUNTER_THICKNESS;
+          const thickness = counterThicknessFt(other.thickness);
           const surface = supportH + thickness;
           if (surface > bestSurface) bestSurface = surface;
         }
@@ -34958,13 +35011,7 @@
       // Proper stacking heights for kitchen elements
       // All heights in feet, Y = center of object
       // Normalize sized cabinet types to base types for proper positioning
-      let type = el.type;
-      if (type.startsWith('base-cabinet-')) type = 'base-cabinet';
-      else if (type.startsWith('wall-cabinet-')) type = 'wall-cabinet';
-      else if (type.startsWith('tall-cabinet-')) type = 'tall-cabinet';
-      else if (type.startsWith('drawer-base-')) type = 'drawer-base';
-      else if (type.startsWith('sink-base-')) type = 'sink-base';
-      else if (type.startsWith('corner-cabinet-')) type = 'corner-cabinet';
+      let type = normalizeCabinetType(el.type);
 
       /*
        * A catalog can state where a cabinet mounts, and when it does that beats
@@ -34978,6 +35025,17 @@
        */
       if (el.mount === 'wall') type = 'wall-cabinet';
       else if (el.mount === 'floor' && type === 'wall-cabinet') type = 'base-cabinet';
+      /*
+       * Corner boxes come in both heights too — a 36" lazy susan on the floor
+       * and a 24"x42" diagonal wall corner above it. Both carry a corner type,
+       * and the switch below sends every one of them to the floor, so a wall
+       * corner landed on top of the base corner. A stated mount height above
+       * the countertop is what distinguishes them.
+       */
+      else if (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE &&
+               (type === 'corner-cabinet' || type === 'lazy-susan' || type === 'blind-corner')) {
+        type = 'wall-cabinet';
+      }
       /*
        * Anything the app itself calls a wall cabinet hangs on the wall line.
        *
@@ -35124,6 +35182,17 @@
 
         // Wall mounted (54" from floor is typical bottom edge per NKBA)
         case 'wall-cabinet': {
+          /*
+           * An explicit mount height wins over the NKBA guess.
+           *
+           * Without this there is no way to draw a run stacked to the ceiling:
+           * a 42" upper at 54" and a 15" stacker at 96" both got forced to the
+           * same 54" line, so the stacker rendered *inside* the cabinet it sits
+           * on. Every 9- and 10-foot kitchen was unbuildable in 3D.
+           */
+          if (el.mountHeight !== undefined && isFinite(el.mountHeight)) {
+            return el.mountHeight + height / 2;
+          }
           // NKBA Standard: Wall cabinet bottom at 54" (4.5 ft) from floor
           // Uses recursive stacking to find actual counter/backsplash surface
           const wcLeft = el.x / pixelsPerFoot;
@@ -35165,7 +35234,7 @@
             } else if (other.type === 'countertop' || other.type === 'countertop-l' || other.type === 'countertop-corner' || other.type === 'countertop-u') {
               // Countertop found — compute surface height from its support
               const supportH = findSupportSurfaceHeight(other);
-              const counterSurface = supportH + (other.thickness || STD_COUNTER_THICKNESS);
+              const counterSurface = supportH + counterThicknessFt(other.thickness);
               if (counterSurface > surfaceBelowTop && !hasBacksplash) {
                 surfaceBelowTop = counterSurface;
               }
