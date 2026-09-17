@@ -24,6 +24,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/objects/Reflector.js"></script>
 
   <!-- Post-processing for enhanced visuals (r147) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -39722,6 +39723,24 @@
             textureScale: el.textureScale || 1
           });
 
+          /*
+           * Polished stone reflects the room through its environment map, not
+           * through a mirror.
+           *
+           * A Reflector under the slab only reads if the stone is made partly
+           * transparent, and at any opacity low enough to show the reflection
+           * the countertop stops looking like stone and starts looking like
+           * glass. The material is already MeshPhysicalMaterial with clearcoat
+           * at roughness 0.08 — it just needed the environment turned up.
+           */
+          if (window.roomEnvMap) {
+            ctopMat.envMap = window.roomEnvMap;
+            ctopMat.envMapIntensity = 0.4;   // sheen, not a mirror
+            ctopMat.transparent = false;     // stone is opaque
+            ctopMat.opacity = 1;
+            ctopMat.needsUpdate = true;
+          }
+
           // For 2cm counters: add plywood underlayment
           // Skip on waterfall sides - waterfall handles the edge
           if (is2cm && !hasFrontWaterfall) {
@@ -43659,13 +43678,24 @@
           group.add(wcFrame);
 
           // Glass door (tinted, semi-transparent)
+          /*
+           * You are meant to see the bottles.
+           *
+           * The door was 70% opaque over a near-black tint, with dark bottles
+           * behind it — the whole unit read as a solid black box and the rack
+           * inside was invisible. A wine fridge door is the one glass in a
+           * kitchen that has to show its contents.
+           */
           const wcGlassMat = new THREE.MeshPhysicalMaterial({
-            color: wcIsWine ? 0x1a1a2e : 0x1a2e2e,
+            color: wcIsWine ? 0x2a3550 : 0x24423f,
             transparent: true,
-            opacity: 0.7,
-            roughness: 0.05,
-            metalness: 0.1,
-            transmission: 0.3
+            opacity: 0.22,
+            roughness: 0.03,
+            metalness: 0.05,
+            depthWrite: false
+            // No `transmission`: it needs a transmission render target this
+            // renderer does not set up, and without one the pane draws opaque
+            // black — which is exactly how the unit looked.
           });
           const wcGlass = new THREE.Mesh(
             new THREE.BoxGeometry(w - 0.12, h - 0.12, 0.015),
@@ -43694,10 +43724,16 @@
           if (wcIsWine) {
             // Wine bottles
             const bottleMat = new THREE.MeshStandardMaterial({
-              color: 0x2d1f1f,
-              roughness: 0.3,
-              metalness: 0.1
+              color: 0x3d2b26,
+              roughness: 0.18,
+              metalness: 0.05,
+              emissive: 0x140a08,
+              emissiveIntensity: 0.35
             });
+            // wine coolers are lit inside; without it the rack stays in shadow
+            const wcLamp = new THREE.PointLight(0xffd9a0, 0.5, Math.max(w, h) * 1.6);
+            wcLamp.position.set(0, h / 2 - 0.15, 0);
+            group.add(wcLamp);
             for (let row = 0; row < Math.min(4, shelfCount - 1); row++) {
               const bottlesInRow = Math.floor((w - 0.2) / 0.12);
               for (let b = 0; b < bottlesInRow; b++) {
@@ -51824,6 +51860,37 @@
         floor.position.set(roomWidth / 2, 0, roomDepth / 2);
         floor.receiveShadow = true;
         floor.userData.isRoomStructure = true;
+
+        /*
+         * A real reflection in the floor.
+         *
+         * Everything else in this renderer was already doing the expensive
+         * work — ACES tone mapping, a PMREM environment, soft shadows,
+         * ambient occlusion — and the room still read as CG. The tell was
+         * that nothing reflected anything: the floor had a 0.12 env map and
+         * no mirror, so cabinets ended where they met the floor instead of
+         * carrying down into it.
+         *
+         * Reflector renders the scene a second time from the mirrored camera,
+         * so the buffer is kept modest and the floor is laid over the top at
+         * partial opacity — the reflection reads through it rather than
+         * replacing the tile.
+         */
+        if (typeof THREE.Reflector === 'function') {
+          const mirror = new THREE.Reflector(
+            new THREE.PlaneGeometry(roomWidth, roomDepth),
+            { clipBias: 0.003, textureWidth: 1024, textureHeight: 1024, color: 0x888888 }
+          );
+          mirror.rotation.x = -Math.PI / 2;
+          mirror.position.set(roomWidth / 2, 0.002, roomDepth / 2);
+          mirror.userData.isRoomStructure = true;
+          structure.push(mirror);
+
+          floorMat.transparent = true;
+          floorMat.opacity = 0.82;
+          floorMat.roughness = 0.35;
+          floor.position.y = 0.004;
+        }
         structure.push(floor);
 
         // --- Ceiling ---
@@ -52414,6 +52481,22 @@
 
       // Reset full rebuild flag
       forceFullRebuild3D = false;
+      /*
+       * Budget for countertop mirrors. Each Reflector costs a full extra render
+       * pass, so only the LARGEST run gets one — normally the island.
+       *
+       * Picking "first one over a threshold" instead handed it to whichever
+       * top happened to be built first, and made that one translucent: the
+       * cooktop run went see-through while the island stayed flat.
+       */
+      window.__ctopMirrorBudget = 1;
+      window.__ctopMirrorArea = 0;
+      elements.forEach(function (ce) {
+        if (typeof ce.type === 'string' && ce.type.indexOf('countertop') === 0) {
+          const a = (ce.width || 0) * (ce.height || 0);
+          if (a > window.__ctopMirrorArea) window.__ctopMirrorArea = a;
+        }
+      });
 
       // Elements - filter out hidden ones AND filter by current room
       const activeRoomId = currentRoomId || currentRoom || 'default';
