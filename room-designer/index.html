@@ -48129,24 +48129,31 @@
            * Drawn the old way it read as a chamfer under the cabinets rather
            * than a cornice above them.
            */
-          crownShape.moveTo(0, mh);
-          crownShape.lineTo(md, mh);
-          crownShape.lineTo(md, mh - mh * 0.1);
-          crownShape.quadraticCurveTo(md * 0.9, mh - mh * 0.2, md * 0.85, mh - mh * 0.3);
-          crownShape.quadraticCurveTo(md * 0.75, mh - mh * 0.5, md * 0.6, mh - mh * 0.6);
-          crownShape.bezierCurveTo(md * 0.4, mh - mh * 0.75, md * 0.2, mh - mh * 0.9, 0, 0);
-          crownShape.lineTo(0, mh);
-
           /*
-           * Extrude along the RUN, not blindly along the width field.
+           * A real crown section, not a single curve.
            *
-           * Elements on a left/right wall carry depth in width and the run in
-           * height — that is how their 2D footprint stays correct. Crown alone
-           * read w as its length, so a run down a side wall came out as a
-           * 12"-long stub whose footprint lay along the BACK wall instead,
-           * landing on top of the other crown. A side wall simply could not
-           * be trimmed.
+           * Standard profiles (WM 49 and friends) are specified as wall-rise x
+           * ceiling-projection — 3" x 2" for the sample Josh sent. The section
+           * is a right triangle: the back runs up the wall, the top runs out
+           * along the ceiling, and the visible face drops between them through
+           * a fillet, a cove, a bead and an ogee. Drawn as one bezier it read
+           * as a plain chamfer.
            */
+          crownShape.moveTo(0, 0);                                  // bottom, on the cabinet face
+          crownShape.lineTo(0, mh);                                 // back, up the wall
+          crownShape.lineTo(md, mh);                                // top, out along the ceiling
+          crownShape.lineTo(md * 0.92, mh * 0.965);                 // fillet
+          crownShape.lineTo(md * 0.86, mh * 0.90);                  // step
+          crownShape.quadraticCurveTo(md * 0.74, mh * 0.80,         // cove
+                                      md * 0.56, mh * 0.63);
+          crownShape.lineTo(md * 0.49, mh * 0.53);                  // bead
+          crownShape.lineTo(md * 0.42, mh * 0.47);
+          crownShape.bezierCurveTo(md * 0.34, mh * 0.36,            // ogee
+                                   md * 0.24, mh * 0.30,
+                                   md * 0.16, mh * 0.18);
+          crownShape.lineTo(md * 0.09, mh * 0.09);                  // lower fillet
+          crownShape.lineTo(0, 0);
+
           const crownRun = Math.max(w, d);
           const extrudeSettings = { steps: 1, depth: crownRun, bevelEnabled: false };
           const crownGeom = new THREE.ExtrudeGeometry(crownShape, extrudeSettings);
