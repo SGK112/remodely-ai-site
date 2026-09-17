@@ -38415,7 +38415,15 @@
           const toeKickHeight = 0.33;
           const toeKickRecess = 0.25;
           const cabinetBodyHeight = h - toeKickHeight;
-          const armDepth = 2; // Standard 24" arm depth
+          /*
+           * A corner cabinet's arms are as deep as the run it belongs to. This
+           * was pinned at 24", which is right on the floor and wrong on the
+           * wall: a diagonal wall corner projected a foot further into the room
+           * than the 12"-deep uppers beside it, so the run stepped at the
+           * corner and read as a gap.
+           */
+          const armDepth = (el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE)) ? 1 : 2;
           const panelThickness = 0.06;
 
           const bodyYOffset = toeKickHeight / 2;
@@ -38532,6 +38540,80 @@
           diagFrameBottom.position.y = bodyYOffset - cabinetBodyHeight/2 + frameThickness/2 + 0.02;
           group.add(diagFrameBottom);
 
+          /*
+           * BI-FOLD DIAGONAL DOORS.
+           *
+           * This mesh built a carcass, a centre pole, pie shelves and the
+           * diagonal frame — and then stopped. doorMat and handleMat were
+           * declared and never used, so every lazy susan rendered as an open
+           * black carcass with bare turntables showing. In a run of white
+           * shaker uppers it reads as a hole in the cabinetry, which is
+           * exactly how Josh described it on the Bales kitchen.
+           *
+           * A real susan closes with a pair of doors hinged on the diagonal,
+           * so that is what gets drawn: two leaves across the same opening the
+           * diagonal frame already spans.
+           */
+          const lsDoorStyle = el.doorStyle || 'shaker';
+          const lsHandleFinish = el.handleFinish || 'brushed-nickel';
+          const lsDoorH = cabinetBodyHeight - 0.15;
+          const lsLeafW = (diagLength - 0.10) / 2;
+          const lsGrooveMat = new THREE.MeshStandardMaterial({
+            color: adjustColorBrightness(color, -30), roughness: 0.7
+          });
+          const lsInsetMat = new THREE.MeshStandardMaterial({
+            color: adjustColorBrightness(color, -10), roughness: 0.5, map: lsWoodTexture
+          });
+
+          function buildSusanLeaf(leafW, leafH) {
+            const lg = new THREE.Group();
+            const slab = new THREE.Mesh(
+              new THREE.BoxGeometry(leafW, leafH, panelThickness), doorMat
+            );
+            slab.castShadow = true;
+            lg.add(slab);
+            if (lsDoorStyle !== 'slab') {
+              const iW = Math.max(leafW - 0.18, 0.05);
+              const iH = Math.max(leafH - 0.22, 0.05);
+              const inset = new THREE.Mesh(new THREE.BoxGeometry(iW, iH, 0.025), lsInsetMat);
+              inset.position.z = panelThickness / 2 + 0.012;
+              lg.add(inset);
+              const gt = 0.015;
+              [
+                { w: iW + 0.04, h: gt,        x: 0,             y:  iH / 2 + 0.02 },
+                { w: iW + 0.04, h: gt,        x: 0,             y: -iH / 2 - 0.02 },
+                { w: gt,        h: iH + 0.04, x: -iW / 2 - 0.02, y: 0 },
+                { w: gt,        h: iH + 0.04, x:  iW / 2 + 0.02, y: 0 }
+              ].forEach(function (fr) {
+                const fm = new THREE.Mesh(new THREE.BoxGeometry(fr.w, fr.h, 0.008), lsGrooveMat);
+                fm.position.set(fr.x, fr.y, panelThickness / 2 + 0.02);
+                lg.add(fm);
+              });
+            }
+            return lg;
+          }
+
+          // Both leaves sit on the 45-degree opening the frame already spans,
+          // meeting in the middle where a bi-fold pair hinges.
+          [-1, 1].forEach(function (side) {
+            const leaf = buildSusanLeaf(lsLeafW, lsDoorH);
+            if (typeof createModernBarHandle === 'function') {
+              const hl = Math.min(lsDoorH * 0.25, 0.18);
+              const handle = createModernBarHandle(hl, lsHandleFinish);
+              handle.position.set(side * (lsLeafW / 2 - 0.08), 0, panelThickness / 2 + 0.045);
+              handle.rotation.z = Math.PI / 2;
+              leaf.add(handle);
+            }
+            leaf.rotation.y = Math.PI / 4;
+            const off = side * (lsLeafW / 2 + 0.025);
+            leaf.position.set(
+              Math.cos(Math.PI / 4) * off,
+              bodyYOffset,
+              -Math.sin(Math.PI / 4) * off
+            );
+            group.add(leaf);
+          });
+
           // TOE KICK (same orientation as body, inset by recess)
           const tkMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.95 });
           const tkHeight = toeKickHeight - 0.02;
@@ -38629,7 +38711,15 @@
           const toeKickHeight = 0.33; // 4" toe kick
           const toeKickRecess = 0.25; // 3" recess
           const cabinetBodyHeight = h - toeKickHeight;
-          const armDepth = 2; // Standard 24" arm depth
+          /*
+           * A corner cabinet's arms are as deep as the run it belongs to. This
+           * was pinned at 24", which is right on the floor and wrong on the
+           * wall: a diagonal wall corner projected a foot further into the room
+           * than the 12"-deep uppers beside it, so the run stepped at the
+           * corner and read as a gap.
+           */
+          const armDepth = (el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE)) ? 1 : 2;
           const panelThickness = 0.06; // 3/4" panels
 
           // Y offset for body (centered on cabinet body, not including toe kick)
@@ -47904,10 +47994,23 @@
           const moldColor = el.color ? parseInt(el.color.replace('#', '0x')) : 0xF5F5F5;
           const moldMat = new THREE.MeshStandardMaterial({ color: moldColor, roughness: 0.4 });
 
+          /*
+           * The profile used to be a fixed 3" tall and 2.4" deep whatever the
+           * element said, and it was extruded upward from the group origin
+           * rather than centred on it. get3DYPosition centres a crown on
+           * (ceiling - height/2), so a 9" crown drew a 3" squiggle floating in
+           * the middle of the band: not touching the wall cabinets below and
+           * not reaching the ceiling above. That is the "crown is not even on
+           * the upper cabinets" report.
+           *
+           * Follow the element's real height, project proportionally, and
+           * centre the extrusion so it spans from the cabinet tops to the
+           * ceiling.
+           */
           // Create crown molding profile shape
           const crownShape = new THREE.Shape();
-          const mh = 0.25; // molding height
-          const md = 0.2;  // molding depth
+          const mh = (typeof h === 'number' && h > 0) ? h : 0.25; // molding height
+          const md = Math.min(typeof d === 'number' && d > 0 ? d : 0.2, mh * 0.6); // projection
 
           // Ornate crown profile
           crownShape.moveTo(0, 0);
@@ -47921,7 +48024,8 @@
           const extrudeSettings = { steps: 1, depth: w, bevelEnabled: false };
           const crownGeom = new THREE.ExtrudeGeometry(crownShape, extrudeSettings);
           crownGeom.rotateY(-Math.PI / 2);
-          crownGeom.translate(w/2, 0, 0);
+          // Centre on the group origin so the band runs cabinet-top to ceiling.
+          crownGeom.translate(w/2, -mh/2, 0);
 
           const crown = new THREE.Mesh(crownGeom, moldMat);
           group.add(crown);
@@ -47929,7 +48033,7 @@
           // Shadow line detail
           const shadowMat = new THREE.MeshStandardMaterial({ color: 0xDDDDDD, roughness: 0.5 });
           const shadowLine = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, 0.02), shadowMat);
-          shadowLine.position.set(0, mh * 0.3, md * 0.7);
+          shadowLine.position.set(0, -mh/2 + mh * 0.3, md * 0.7);
           group.add(shadowLine);
           break;
         }
