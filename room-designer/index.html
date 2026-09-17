@@ -24,6 +24,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/objects/Reflector.js"></script>
 
   <!-- Post-processing for enhanced visuals (r147) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -12576,7 +12577,19 @@
         { type: 'tall-cabinet-18', width: 1.5, height: 2, color: '#8B7355', label: 'Tall Cabinet 18"' },
         { type: 'tall-cabinet-24', width: 2, height: 2, color: '#8B7355', label: 'Tall Cabinet 24"' },
         { type: 'tall-cabinet-30', width: 2.5, height: 2, color: '#8B7355', label: 'Tall Cabinet 30"' },
-        { type: 'tall-cabinet-36', width: 3, height: 2, color: '#8B7355', label: 'Tall Cabinet 36"' }
+        { type: 'tall-cabinet-36', width: 3, height: 2, color: '#8B7355', label: 'Tall Cabinet 36"' },
+        /*
+         * Fillers, scribes and finished panels.
+         *
+         * Both already had 3D meshes and both were in every catalog — SOLLiD
+         * and Highland ship 136 of them between them — but neither type was
+         * ever listed here, and createElement only builds a type it finds in
+         * ELEMENT_TYPES. So a filler could be quoted and never placed, and any
+         * script that asked for one got nothing back. They had to be faked as
+         * tall cabinets, which drew a 2" scribe with a door and a handle.
+         */
+        { type: 'filler', width: 0.25, height: 2, color: '#8B7355', label: 'Filler / Panel' },
+        { type: 'scribe', width: 0.125, height: 2, color: '#8B7355', label: 'Scribe Molding' }
       ],
       surfaces: [
         // Standard countertop: 25.5" depth (2.125') with 1.5" overhang = 2.17' total
@@ -29426,7 +29439,12 @@
         if (found) defaults = found;
       });
 
-      if (!defaults) return;
+      if (!defaults) {
+        // Silently returning left the caller holding the PREVIOUS element and
+        // overwriting it, which is how a sink ended up labelled as a filler.
+        console.warn('createElement: unknown element type "' + type + '" — nothing created');
+        return;
+      }
 
       const gridSnap = pixelsPerFoot / CONFIG.GRID_SUBDIVISIONS;
       // base-1drawer-XX is a UI variant that's stored as a regular base-cabinet
@@ -34602,6 +34620,44 @@
     const STD_WALL_CAB_BOTTOM = BUILDING_STANDARDS?.HEIGHTS?.wallCabBottom || 4.5; // 54" from floor
     const STD_BACKSPLASH_HEIGHT = BUILDING_STANDARDS?.BACKSPLASH?.full || 1.5; // 18"
 
+    /*
+     * Countertop thickness is stored as a STRING off the picker ('3cm', '2cm',
+     * '1.5"'), but both stacking paths did `supportHeight + el.thickness`,
+     * which concatenates instead of adding and poisons every height computed
+     * off it. Parse to feet, and fall back to the standard when it is a value
+     * we do not recognise.
+     */
+    function counterThicknessFt(value) {
+      if (typeof value === 'number' && isFinite(value)) return value;
+      if (typeof value !== 'string') return STD_COUNTER_THICKNESS;
+      const m = value.match(/([\d.]+)\s*(cm|mm|in|")?/i);
+      if (!m) return STD_COUNTER_THICKNESS;
+      const n = parseFloat(m[1]);
+      if (!isFinite(n)) return STD_COUNTER_THICKNESS;
+      const unit = (m[2] || 'in').toLowerCase();
+      if (unit === 'cm') return n / 2.54 / 12;
+      if (unit === 'mm') return n / 25.4 / 12;
+      return n / 12; // inches
+    }
+
+    /*
+     * The palette creates SIZED variants — 'drawer-base-36', 'sink-base-36',
+     * 'wall-cabinet-30-xtall' — but several lookups only ever matched the base
+     * names. Normalise in one place so support detection and vertical placement
+     * agree about what a cabinet is.
+     */
+    function normalizeCabinetType(type) {
+      if (typeof type !== 'string') return type;
+      if (type.startsWith('base-cabinet-')) return 'base-cabinet';
+      if (type.startsWith('wall-cabinet-')) return 'wall-cabinet';
+      if (type.startsWith('tall-cabinet-')) return 'tall-cabinet';
+      if (type.startsWith('drawer-base-')) return 'drawer-base';
+      if (type.startsWith('sink-base-apron-')) return 'sink-base-apron';
+      if (type.startsWith('sink-base-')) return 'sink-base';
+      if (type.startsWith('corner-cabinet-')) return 'corner-cabinet';
+      return type;
+    }
+
     // Get proper 3D height for element types
     // Can accept element object to use custom heights
     function get3DHeight(typeOrElement) {
@@ -34880,7 +34936,10 @@
 
       elements.forEach(other => {
         if (other.id === countertopEl.id) return;
-        const oType = other.type || '';
+        // Sized variants ('drawer-base-36') never matched the whitelist below,
+        // so a countertop over them found no support and fell back to the
+        // default height — the "floating countertop" report.
+        const oType = normalizeCabinetType(other.type || '');
 
         const otherLeft = other.x / pixelsPerFoot;
         const otherRight = otherLeft + other.width;
@@ -34892,6 +34951,18 @@
         const overlapArea = overlapX * overlapY;
 
         if (ctArea > 0 && overlapArea / ctArea < 0.15) return;
+
+        /*
+         * Nothing that hangs can hold up a countertop. Corner boxes, microwave
+         * and fridge cabinets appear in the whitelist below and also exist as
+         * wall-mounted units, so a diagonal wall corner directly above a lazy
+         * susan was being read as the susan's support and lifted the corner of
+         * the counter to the wall cabinet's height.
+         */
+        const otherHangs = other.mount === 'wall' ||
+          (other.mountHeight !== undefined && other.mountHeight >= STD_COUNTER_SURFACE) ||
+          normalizeCabinetType(oType) === 'wall-cabinet';
+        if (otherHangs) return;
 
         if (ponyWallTypes.includes(oType)) {
           const wh = other.wallHeight || (oType === 'knee-wall' ? 2.5 : 3.5);
@@ -34936,7 +35007,7 @@
         if (overlapX > 0.1 && (overlapY > 0 || adjacentY)) {
           // Found a countertop — compute its ACTUAL surface by walking the chain
           const supportH = findSupportSurfaceHeight(other);
-          const thickness = other.thickness || STD_COUNTER_THICKNESS;
+          const thickness = counterThicknessFt(other.thickness);
           const surface = supportH + thickness;
           if (surface > bestSurface) bestSurface = surface;
         }
@@ -34958,13 +35029,7 @@
       // Proper stacking heights for kitchen elements
       // All heights in feet, Y = center of object
       // Normalize sized cabinet types to base types for proper positioning
-      let type = el.type;
-      if (type.startsWith('base-cabinet-')) type = 'base-cabinet';
-      else if (type.startsWith('wall-cabinet-')) type = 'wall-cabinet';
-      else if (type.startsWith('tall-cabinet-')) type = 'tall-cabinet';
-      else if (type.startsWith('drawer-base-')) type = 'drawer-base';
-      else if (type.startsWith('sink-base-')) type = 'sink-base';
-      else if (type.startsWith('corner-cabinet-')) type = 'corner-cabinet';
+      let type = normalizeCabinetType(el.type);
 
       /*
        * A catalog can state where a cabinet mounts, and when it does that beats
@@ -34978,6 +35043,17 @@
        */
       if (el.mount === 'wall') type = 'wall-cabinet';
       else if (el.mount === 'floor' && type === 'wall-cabinet') type = 'base-cabinet';
+      /*
+       * Corner boxes come in both heights too — a 36" lazy susan on the floor
+       * and a 24"x42" diagonal wall corner above it. Both carry a corner type,
+       * and the switch below sends every one of them to the floor, so a wall
+       * corner landed on top of the base corner. A stated mount height above
+       * the countertop is what distinguishes them.
+       */
+      else if (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE &&
+               (type === 'corner-cabinet' || type === 'lazy-susan' || type === 'blind-corner')) {
+        type = 'wall-cabinet';
+      }
       /*
        * Anything the app itself calls a wall cabinet hangs on the wall line.
        *
@@ -34993,6 +35069,25 @@
       else if (type !== 'above-microwave-cabinet' &&
                ELEMENT_CATEGORIES.wallCabinets.includes(type)) {
         type = 'wall-cabinet';
+      }
+
+      /*
+       * A stated mount height wins, for ANY element — not just wall cabinets.
+       *
+       * This rule used to live inside case 'wall-cabinet', so it reached the
+       * one type that already knew how to hang. Everything else with a real
+       * mount height fell through to a case that assumes the floor: a wall
+       * filler between the last upper and a fridge panel dropped to the floor,
+       * and so did a light rail, a finished panel, or any part a catalog
+       * places by height. That is why wall fillers had to be smuggled in as
+       * tall cabinets, which drew them with doors and handles — the "why are
+       * there cabinets behind the fridge" report.
+       *
+       * mountHeight is never written by the app; it only ever arrives from
+       * catalog data, so when it is there it is a measurement, not a guess.
+       */
+      if (el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0) {
+        return el.mountHeight + height / 2;
       }
 
       switch(type) {
@@ -35124,6 +35219,15 @@
 
         // Wall mounted (54" from floor is typical bottom edge per NKBA)
         case 'wall-cabinet': {
+          /*
+           * An explicit mount height wins over the NKBA guess.
+           *
+           * Without this there is no way to draw a run stacked to the ceiling:
+           * a 42" upper at 54" and a 15" stacker at 96" both got forced to the
+           * same 54" line, so the stacker rendered *inside* the cabinet it sits
+           * on. Every 9- and 10-foot kitchen was unbuildable in 3D.
+           */
+          // An explicit mountHeight was already handled above, for every type.
           // NKBA Standard: Wall cabinet bottom at 54" (4.5 ft) from floor
           // Uses recursive stacking to find actual counter/backsplash surface
           const wcLeft = el.x / pixelsPerFoot;
@@ -35165,7 +35269,7 @@
             } else if (other.type === 'countertop' || other.type === 'countertop-l' || other.type === 'countertop-corner' || other.type === 'countertop-u') {
               // Countertop found — compute surface height from its support
               const supportH = findSupportSurfaceHeight(other);
-              const counterSurface = supportH + (other.thickness || STD_COUNTER_THICKNESS);
+              const counterSurface = supportH + counterThicknessFt(other.thickness);
               if (counterSurface > surfaceBelowTop && !hasBacksplash) {
                 surfaceBelowTop = counterSurface;
               }
@@ -35515,6 +35619,18 @@
 
         // Trim & Molding
         case 'crown-molding': {
+          /*
+           * Crown does not always sit at the ceiling.
+           *
+           * When wall cabinets stop short — 30" boxes ending at 84" under a
+           * 96" ceiling — the crown caps the CABINETS and the wall is open
+           * above. Pinned to the ceiling it floated a foot over the run it is
+           * supposed to be nailed to. An explicit mountHeight is the cabinet
+           * top; without one, fall back to the ceiling.
+           */
+          if (el.mountHeight !== undefined && isFinite(el.mountHeight)) {
+            return el.mountHeight + height / 2;
+          }
           const ceilingH = roomHeight || 8;
           return ceilingH - height / 2; // At ceiling level
         }
@@ -37716,7 +37832,8 @@
 
         case 'filler': {
           // FILLER STRIP - Solid wood strip to fill gaps between cabinets and walls
-          const fillerToeKickH = 0.33;
+          const fillerStandsOnFloor = !(el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0);
+          const fillerToeKickH = fillerStandsOnFloor ? 0.33 : 0;
           const fillerBodyH = h - fillerToeKickH;
 
           // Create wood grain material
@@ -37734,14 +37851,18 @@
           fillerBody.position.y = fillerToeKickH / 2;
           group.add(fillerBody);
 
-          // Toe kick void
-          const tkMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
-          const toeKick = new THREE.Mesh(
-            new THREE.BoxGeometry(w * 0.7, fillerToeKickH, d * 0.6),
-            tkMat
-          );
-          toeKick.position.set(0, -h/2 + fillerToeKickH/2, d * 0.15);
-          group.add(toeKick);
+          // Toe kick void — only on a filler that stands on the floor. A wall
+          // filler hanging at 54" was drawing a black notch in mid air.
+          const fillerHangs = el.mountHeight !== undefined && isFinite(el.mountHeight) && el.mountHeight > 0;
+          if (!fillerHangs) {
+            const tkMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
+            const toeKick = new THREE.Mesh(
+              new THREE.BoxGeometry(w * 0.7, fillerToeKickH, d * 0.6),
+              tkMat
+            );
+            toeKick.position.set(0, -h/2 + fillerToeKickH/2, d * 0.15);
+            group.add(toeKick);
+          }
 
           break;
         }
@@ -38346,7 +38467,15 @@
           const toeKickHeight = 0.33;
           const toeKickRecess = 0.25;
           const cabinetBodyHeight = h - toeKickHeight;
-          const armDepth = 2; // Standard 24" arm depth
+          /*
+           * A corner cabinet's arms are as deep as the run it belongs to. This
+           * was pinned at 24", which is right on the floor and wrong on the
+           * wall: a diagonal wall corner projected a foot further into the room
+           * than the 12"-deep uppers beside it, so the run stepped at the
+           * corner and read as a gap.
+           */
+          const armDepth = (el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE)) ? 1 : 2;
           const panelThickness = 0.06;
 
           const bodyYOffset = toeKickHeight / 2;
@@ -38463,6 +38592,80 @@
           diagFrameBottom.position.y = bodyYOffset - cabinetBodyHeight/2 + frameThickness/2 + 0.02;
           group.add(diagFrameBottom);
 
+          /*
+           * BI-FOLD DIAGONAL DOORS.
+           *
+           * This mesh built a carcass, a centre pole, pie shelves and the
+           * diagonal frame — and then stopped. doorMat and handleMat were
+           * declared and never used, so every lazy susan rendered as an open
+           * black carcass with bare turntables showing. In a run of white
+           * shaker uppers it reads as a hole in the cabinetry, which is
+           * exactly how Josh described it on the Bales kitchen.
+           *
+           * A real susan closes with a pair of doors hinged on the diagonal,
+           * so that is what gets drawn: two leaves across the same opening the
+           * diagonal frame already spans.
+           */
+          const lsDoorStyle = el.doorStyle || 'shaker';
+          const lsHandleFinish = el.handleFinish || 'brushed-nickel';
+          const lsDoorH = cabinetBodyHeight - 0.15;
+          const lsLeafW = (diagLength - 0.10) / 2;
+          const lsGrooveMat = new THREE.MeshStandardMaterial({
+            color: adjustColorBrightness(color, -30), roughness: 0.7
+          });
+          const lsInsetMat = new THREE.MeshStandardMaterial({
+            color: adjustColorBrightness(color, -10), roughness: 0.5, map: lsWoodTexture
+          });
+
+          function buildSusanLeaf(leafW, leafH) {
+            const lg = new THREE.Group();
+            const slab = new THREE.Mesh(
+              new THREE.BoxGeometry(leafW, leafH, panelThickness), doorMat
+            );
+            slab.castShadow = true;
+            lg.add(slab);
+            if (lsDoorStyle !== 'slab') {
+              const iW = Math.max(leafW - 0.18, 0.05);
+              const iH = Math.max(leafH - 0.22, 0.05);
+              const inset = new THREE.Mesh(new THREE.BoxGeometry(iW, iH, 0.025), lsInsetMat);
+              inset.position.z = panelThickness / 2 + 0.012;
+              lg.add(inset);
+              const gt = 0.015;
+              [
+                { w: iW + 0.04, h: gt,        x: 0,             y:  iH / 2 + 0.02 },
+                { w: iW + 0.04, h: gt,        x: 0,             y: -iH / 2 - 0.02 },
+                { w: gt,        h: iH + 0.04, x: -iW / 2 - 0.02, y: 0 },
+                { w: gt,        h: iH + 0.04, x:  iW / 2 + 0.02, y: 0 }
+              ].forEach(function (fr) {
+                const fm = new THREE.Mesh(new THREE.BoxGeometry(fr.w, fr.h, 0.008), lsGrooveMat);
+                fm.position.set(fr.x, fr.y, panelThickness / 2 + 0.02);
+                lg.add(fm);
+              });
+            }
+            return lg;
+          }
+
+          // Both leaves sit on the 45-degree opening the frame already spans,
+          // meeting in the middle where a bi-fold pair hinges.
+          [-1, 1].forEach(function (side) {
+            const leaf = buildSusanLeaf(lsLeafW, lsDoorH);
+            if (typeof createModernBarHandle === 'function') {
+              const hl = Math.min(lsDoorH * 0.25, 0.18);
+              const handle = createModernBarHandle(hl, lsHandleFinish);
+              handle.position.set(side * (lsLeafW / 2 - 0.08), 0, panelThickness / 2 + 0.045);
+              handle.rotation.z = Math.PI / 2;
+              leaf.add(handle);
+            }
+            leaf.rotation.y = Math.PI / 4;
+            const off = side * (lsLeafW / 2 + 0.025);
+            leaf.position.set(
+              Math.cos(Math.PI / 4) * off,
+              bodyYOffset,
+              -Math.sin(Math.PI / 4) * off
+            );
+            group.add(leaf);
+          });
+
           // TOE KICK (same orientation as body, inset by recess)
           const tkMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.95 });
           const tkHeight = toeKickHeight - 0.02;
@@ -38560,7 +38763,15 @@
           const toeKickHeight = 0.33; // 4" toe kick
           const toeKickRecess = 0.25; // 3" recess
           const cabinetBodyHeight = h - toeKickHeight;
-          const armDepth = 2; // Standard 24" arm depth
+          /*
+           * A corner cabinet's arms are as deep as the run it belongs to. This
+           * was pinned at 24", which is right on the floor and wrong on the
+           * wall: a diagonal wall corner projected a foot further into the room
+           * than the 12"-deep uppers beside it, so the run stepped at the
+           * corner and read as a gap.
+           */
+          const armDepth = (el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE)) ? 1 : 2;
           const panelThickness = 0.06; // 3/4" panels
 
           // Y offset for body (centered on cabinet body, not including toe kick)
@@ -38608,12 +38819,45 @@
           sidePanel.position.set(-w/2 + armDepth - panelThickness/2, bodyYOffset, armDepth/2);
           group.add(sidePanel);
 
-          // INTERIOR SHELVES - triangular/pie-shaped shelves visible through door
+          /*
+           * INTERIOR SHELVES.
+           *
+           * These were always round turntables, whether the box stood on the
+           * floor or hung on the wall — so a 24"x42" diagonal WALL corner
+           * rendered with a lazy susan inside it. Josh's words looking at the
+           * Bales kitchen: "you have a lazy suzan as an upper cabinet topper??
+           * That makes no sense."
+           *
+           * It doesn't. Turntables are a base-cabinet fitting. A wall corner
+           * gets flat L-shaped shelves following the carcass.
+           */
+          const ccHangs = el.mount === 'wall' ||
+            (el.mountHeight !== undefined && el.mountHeight >= STD_COUNTER_SURFACE);
           const shelfRadius = Math.min(w, d) * 0.4;
           const shelfCenterX = 0;
           const shelfCenterZ = 0;
           const numShelves = 2;
 
+          if (ccHangs) {
+            for (let s = 0; s < numShelves; s++) {
+              const shelfY = bodyYOffset - cabinetBodyHeight/2 + 0.4 + s * (cabinetBodyHeight * 0.35);
+              const lsh = new THREE.Shape();
+              const inset = 0.06;
+              lsh.moveTo(-w/2 + inset,            d/2 - inset);
+              lsh.lineTo(-w/2 + inset,           -d/2 + inset);
+              lsh.lineTo(-w/2 + armDepth - inset,-d/2 + inset);
+              lsh.lineTo(-w/2 + armDepth - inset, d/2 - armDepth + inset);
+              lsh.lineTo( w/2 - inset,            d/2 - armDepth + inset);
+              lsh.lineTo( w/2 - inset,            d/2 - inset);
+              lsh.closePath();
+              const sg = new THREE.ExtrudeGeometry(lsh, { depth: 0.025, bevelEnabled: false });
+              sg.rotateX(-Math.PI / 2);
+              const sm = new THREE.Mesh(sg, shelfMat);
+              sm.position.set(0, shelfY, 0);
+              sm.castShadow = true;
+              group.add(sm);
+            }
+          } else
           for (let s = 0; s < numShelves; s++) {
             const shelfY = bodyYOffset - cabinetBodyHeight/2 + 0.4 + s * (cabinetBodyHeight * 0.35);
 
@@ -39529,6 +39773,24 @@
             textureOffsetY: el.textureOffsetY || 0,
             textureScale: el.textureScale || 1
           });
+
+          /*
+           * Polished stone reflects the room through its environment map, not
+           * through a mirror.
+           *
+           * A Reflector under the slab only reads if the stone is made partly
+           * transparent, and at any opacity low enough to show the reflection
+           * the countertop stops looking like stone and starts looking like
+           * glass. The material is already MeshPhysicalMaterial with clearcoat
+           * at roughness 0.08 — it just needed the environment turned up.
+           */
+          if (window.roomEnvMap) {
+            ctopMat.envMap = window.roomEnvMap;
+            ctopMat.envMapIntensity = 0.4;   // sheen, not a mirror
+            ctopMat.transparent = false;     // stone is opaque
+            ctopMat.opacity = 1;
+            ctopMat.needsUpdate = true;
+          }
 
           // For 2cm counters: add plywood underlayment
           // Skip on waterfall sides - waterfall handles the edge
@@ -43447,6 +43709,15 @@
           });
 
           // Main body
+          /*
+           * Draw the carcass inside-out.
+           *
+           * This was a solid box, so its front face sat between the camera and
+           * everything in the cabinet. The glass could be set to any opacity
+           * you like and the unit still read as a black slab, because what you
+           * were looking at was the outside of the box, not the door.
+           */
+          wcBodyMat.side = THREE.BackSide;
           const wcBody = new THREE.Mesh(
             new THREE.BoxGeometry(w, h, d),
             wcBodyMat
@@ -43454,26 +43725,48 @@
           group.add(wcBody);
 
           // Glass door frame (dark metal)
+          // Stainless, like every beverage centre on the market. Black read as
+          // a picture frame round a dark hole.
           const wcFrameMat = new THREE.MeshStandardMaterial({
-            color: 0x1a1a1a,
-            roughness: 0.3,
-            metalness: 0.6
+            color: wcIsWine ? 0xb9bdc2 : 0x1a1a1a,
+            roughness: 0.28,
+            metalness: 0.85
           });
-          const wcFrame = new THREE.Mesh(
-            new THREE.BoxGeometry(w - 0.04, h - 0.04, 0.04),
-            wcFrameMat
-          );
-          wcFrame.position.set(0, 0, d/2 + 0.02);
-          group.add(wcFrame);
+          /*
+           * An actual frame. This was one filled slab spanning the whole door
+           * opening — a second opaque panel in front of the opaque box.
+           */
+          const wcFrameW = 0.06;
+          [
+            { w: w - 0.04,   h: wcFrameW,   x: 0,                    y:  h/2 - 0.02 - wcFrameW/2 },
+            { w: w - 0.04,   h: wcFrameW,   x: 0,                    y: -h/2 + 0.02 + wcFrameW/2 },
+            { w: wcFrameW,   h: h - 0.04,   x: -w/2 + 0.02 + wcFrameW/2, y: 0 },
+            { w: wcFrameW,   h: h - 0.04,   x:  w/2 - 0.02 - wcFrameW/2, y: 0 }
+          ].forEach(function (bar) {
+            const m = new THREE.Mesh(new THREE.BoxGeometry(bar.w, bar.h, 0.04), wcFrameMat);
+            m.position.set(bar.x, bar.y, d/2 + 0.02);
+            group.add(m);
+          });
 
           // Glass door (tinted, semi-transparent)
+          /*
+           * You are meant to see the bottles.
+           *
+           * The door was 70% opaque over a near-black tint, with dark bottles
+           * behind it — the whole unit read as a solid black box and the rack
+           * inside was invisible. A wine fridge door is the one glass in a
+           * kitchen that has to show its contents.
+           */
           const wcGlassMat = new THREE.MeshPhysicalMaterial({
-            color: wcIsWine ? 0x1a1a2e : 0x1a2e2e,
+            color: wcIsWine ? 0x20242b : 0x24423f,   // smoked charcoal, UV-tinted
             transparent: true,
-            opacity: 0.7,
-            roughness: 0.05,
-            metalness: 0.1,
-            transmission: 0.3
+            opacity: 0.42,
+            roughness: 0.03,
+            metalness: 0.05,
+            depthWrite: false
+            // No `transmission`: it needs a transmission render target this
+            // renderer does not set up, and without one the pane draws opaque
+            // black — which is exactly how the unit looked.
           });
           const wcGlass = new THREE.Mesh(
             new THREE.BoxGeometry(w - 0.12, h - 0.12, 0.015),
@@ -43502,10 +43795,37 @@
           if (wcIsWine) {
             // Wine bottles
             const bottleMat = new THREE.MeshStandardMaterial({
-              color: 0x2d1f1f,
-              roughness: 0.3,
-              metalness: 0.1
+              color: 0x3d2b26,
+              roughness: 0.18,
+              metalness: 0.05,
+              emissive: 0x140a08,
+              emissiveIntensity: 0.35
             });
+            /*
+             * Wine coolers are lit blue, not warm. The LED strip runs up the
+             * inside of the door frame and is the single thing that makes one
+             * of these read as a wine fridge rather than a dark cupboard.
+             */
+            const wcLamp = new THREE.PointLight(0x5a74ff, 1.35, Math.max(w, h) * 2.2);
+            wcLamp.position.set(0, h / 2 - 0.15, d / 4);
+            group.add(wcLamp);
+            const wcLamp2 = new THREE.PointLight(0x4a64ee, 0.8, Math.max(w, h) * 2.0);
+            wcLamp2.position.set(0, -h / 4, d / 4);
+            group.add(wcLamp2);
+            // LED strips up each side of the opening
+            const ledMat = new THREE.MeshStandardMaterial({
+              color: 0x7f93ff, emissive: 0x4a64ee, emissiveIntensity: 2.2, roughness: 0.4
+            });
+            [-1, 1].forEach(function (sx) {
+              const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, h - 0.3, 0.02), ledMat);
+              led.position.set(sx * (w / 2 - 0.1), 0, d / 2 - 0.06);
+              group.add(led);
+            });
+            // stainless vent grille along the bottom
+            const ventMat = new THREE.MeshStandardMaterial({ color: 0xa9adb2, roughness: 0.35, metalness: 0.8 });
+            const vent = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, 0.14, 0.03), ventMat);
+            vent.position.set(0, -h / 2 + 0.09, d / 2 + 0.04);
+            group.add(vent);
             for (let row = 0; row < Math.min(4, shelfCount - 1); row++) {
               const bottlesInRow = Math.floor((w - 0.2) / 0.12);
               for (let b = 0; b < bottlesInRow; b++) {
@@ -47835,32 +48155,70 @@
           const moldColor = el.color ? parseInt(el.color.replace('#', '0x')) : 0xF5F5F5;
           const moldMat = new THREE.MeshStandardMaterial({ color: moldColor, roughness: 0.4 });
 
+          /*
+           * The profile used to be a fixed 3" tall and 2.4" deep whatever the
+           * element said, and it was extruded upward from the group origin
+           * rather than centred on it. get3DYPosition centres a crown on
+           * (ceiling - height/2), so a 9" crown drew a 3" squiggle floating in
+           * the middle of the band: not touching the wall cabinets below and
+           * not reaching the ceiling above. That is the "crown is not even on
+           * the upper cabinets" report.
+           *
+           * Follow the element's real height, project proportionally, and
+           * centre the extrusion so it spans from the cabinet tops to the
+           * ceiling.
+           */
           // Create crown molding profile shape
           const crownShape = new THREE.Shape();
-          const mh = 0.25; // molding height
-          const md = 0.2;  // molding depth
+          const mh = (typeof h === 'number' && h > 0) ? h : 0.25; // molding height
+          const md = Math.min(Math.min(w, d) > 0 ? Math.min(w, d) : 0.2, mh * 0.6); // projection
 
-          // Ornate crown profile
-          crownShape.moveTo(0, 0);
-          crownShape.lineTo(md, 0);
-          crownShape.lineTo(md, mh * 0.1);
-          crownShape.quadraticCurveTo(md * 0.9, mh * 0.2, md * 0.85, mh * 0.3);
-          crownShape.quadraticCurveTo(md * 0.75, mh * 0.5, md * 0.6, mh * 0.6);
-          crownShape.bezierCurveTo(md * 0.4, mh * 0.75, md * 0.2, mh * 0.9, 0, mh);
+          /*
+           * The profile was upside down: widest at the bottom, tapering to
+           * nothing at the top. A crown does the opposite — it springs narrow
+           * off the cabinet face and flares OUT and UP to meet the ceiling.
+           * Drawn the old way it read as a chamfer under the cabinets rather
+           * than a cornice above them.
+           */
+          /*
+           * A real crown section, not a single curve.
+           *
+           * Standard profiles (WM 49 and friends) are specified as wall-rise x
+           * ceiling-projection — 3" x 2" for the sample Josh sent. The section
+           * is a right triangle: the back runs up the wall, the top runs out
+           * along the ceiling, and the visible face drops between them through
+           * a fillet, a cove, a bead and an ogee. Drawn as one bezier it read
+           * as a plain chamfer.
+           */
+          crownShape.moveTo(0, 0);                                  // bottom, on the cabinet face
+          crownShape.lineTo(0, mh);                                 // back, up the wall
+          crownShape.lineTo(md, mh);                                // top, out along the ceiling
+          crownShape.lineTo(md * 0.92, mh * 0.965);                 // fillet
+          crownShape.lineTo(md * 0.86, mh * 0.90);                  // step
+          crownShape.quadraticCurveTo(md * 0.74, mh * 0.80,         // cove
+                                      md * 0.56, mh * 0.63);
+          crownShape.lineTo(md * 0.49, mh * 0.53);                  // bead
+          crownShape.lineTo(md * 0.42, mh * 0.47);
+          crownShape.bezierCurveTo(md * 0.34, mh * 0.36,            // ogee
+                                   md * 0.24, mh * 0.30,
+                                   md * 0.16, mh * 0.18);
+          crownShape.lineTo(md * 0.09, mh * 0.09);                  // lower fillet
           crownShape.lineTo(0, 0);
 
-          const extrudeSettings = { steps: 1, depth: w, bevelEnabled: false };
+          const crownRun = Math.max(w, d);
+          const extrudeSettings = { steps: 1, depth: crownRun, bevelEnabled: false };
           const crownGeom = new THREE.ExtrudeGeometry(crownShape, extrudeSettings);
           crownGeom.rotateY(-Math.PI / 2);
-          crownGeom.translate(w/2, 0, 0);
+          // Centre on the group origin so the band runs cabinet-top to ceiling.
+          crownGeom.translate(crownRun/2, -mh/2, 0);
 
           const crown = new THREE.Mesh(crownGeom, moldMat);
           group.add(crown);
 
           // Shadow line detail
           const shadowMat = new THREE.MeshStandardMaterial({ color: 0xDDDDDD, roughness: 0.5 });
-          const shadowLine = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, 0.02), shadowMat);
-          shadowLine.position.set(0, mh * 0.3, md * 0.7);
+          const shadowLine = new THREE.Mesh(new THREE.BoxGeometry(crownRun, 0.02, 0.02), shadowMat);
+          shadowLine.position.set(0, mh/2 - mh * 0.3, md * 0.7);
           group.add(shadowLine);
           break;
         }
@@ -51601,6 +51959,37 @@
         floor.position.set(roomWidth / 2, 0, roomDepth / 2);
         floor.receiveShadow = true;
         floor.userData.isRoomStructure = true;
+
+        /*
+         * A real reflection in the floor.
+         *
+         * Everything else in this renderer was already doing the expensive
+         * work — ACES tone mapping, a PMREM environment, soft shadows,
+         * ambient occlusion — and the room still read as CG. The tell was
+         * that nothing reflected anything: the floor had a 0.12 env map and
+         * no mirror, so cabinets ended where they met the floor instead of
+         * carrying down into it.
+         *
+         * Reflector renders the scene a second time from the mirrored camera,
+         * so the buffer is kept modest and the floor is laid over the top at
+         * partial opacity — the reflection reads through it rather than
+         * replacing the tile.
+         */
+        if (typeof THREE.Reflector === 'function') {
+          const mirror = new THREE.Reflector(
+            new THREE.PlaneGeometry(roomWidth, roomDepth),
+            { clipBias: 0.003, textureWidth: 1024, textureHeight: 1024, color: 0x888888 }
+          );
+          mirror.rotation.x = -Math.PI / 2;
+          mirror.position.set(roomWidth / 2, 0.002, roomDepth / 2);
+          mirror.userData.isRoomStructure = true;
+          structure.push(mirror);
+
+          floorMat.transparent = true;
+          floorMat.opacity = 0.82;
+          floorMat.roughness = 0.35;
+          floor.position.y = 0.004;
+        }
         structure.push(floor);
 
         // --- Ceiling ---
@@ -52191,6 +52580,22 @@
 
       // Reset full rebuild flag
       forceFullRebuild3D = false;
+      /*
+       * Budget for countertop mirrors. Each Reflector costs a full extra render
+       * pass, so only the LARGEST run gets one — normally the island.
+       *
+       * Picking "first one over a threshold" instead handed it to whichever
+       * top happened to be built first, and made that one translucent: the
+       * cooktop run went see-through while the island stayed flat.
+       */
+      window.__ctopMirrorBudget = 1;
+      window.__ctopMirrorArea = 0;
+      elements.forEach(function (ce) {
+        if (typeof ce.type === 'string' && ce.type.indexOf('countertop') === 0) {
+          const a = (ce.width || 0) * (ce.height || 0);
+          if (a > window.__ctopMirrorArea) window.__ctopMirrorArea = a;
+        }
+      });
 
       // Elements - filter out hidden ones AND filter by current room
       const activeRoomId = currentRoomId || currentRoom || 'default';
@@ -52303,11 +52708,76 @@
         // Account for rotation when calculating center position
         const posRotation = (el.rotation || 0) % 360;
         const posIsRotated90 = (posRotation === 90 || posRotation === 270 || posRotation === -90 || posRotation === -270);
+        /*
+         * The room this element belongs to, hoisted here because the trim
+         * placement below needs to know which wall it is near, and so does
+         * every flush adjustment further down. In the whole-house view a room
+         * is offset inside the scene, so "the wall" is never 0 or roomWidth.
+         */
+        const rb = el._roomBounds || { x: 0, y: 0, w: roomWidth, d: roomDepth };
+        const rbRight = rb.x + rb.w, rbBottom = rb.y + rb.d;
         // When rotated 90/270, the visual width in 2D is el.height and vice versa
         const visualWidth = posIsRotated90 ? el.height : el.width;
         const visualHeight = posIsRotated90 ? el.width : el.height;
         let xPos = (el.x / pixelsPerFoot) + visualWidth / 2;
         let zPos = (el.y / pixelsPerFoot) + visualHeight / 2;
+
+        /*
+         * Linear trim hugs a wall; it is not centred in both axes.
+         *
+         * Crown, baseboard and chair rail are extruded along their RUN and
+         * built outward from the wall on the other axis. Centring both put a
+         * run of crown half its own length away from the wall — a 102" run
+         * down the left wall floated four feet into the room, and the back
+         * wall run stood 6" proud of the cabinets it belongs on. Centre along
+         * the run, sit on the wall line across it.
+         */
+        if (el.type === 'crown-molding' || el.type === 'baseboard' || el.type === 'chair-rail') {
+          /*
+           * Which of the two facing walls it belongs to, not just "the near
+           * edge of its own box".
+           *
+           * Sitting the run at el.x (rotated) or el.y (not rotated) puts it on
+           * the LEFT wall and the BACK wall respectively, whichever wall it was
+           * actually drawn against. A run down the right wall ended up one
+           * box-depth inside the room, and a run along the front wall stood off
+           * the front wall by the same amount — the two walls nobody had tried
+           * until a full four-wall kitchen went in.
+           *
+           * Centre along the run, and across the run sit on whichever of the
+           * two parallel walls is nearer.
+           */
+          /*
+           * Across the run, the moulding sits on the CABINET FACE, not on the
+           * wall behind it.
+           *
+           * The profile is drawn back-plane-first — (0,0) is the wall side and
+           * it flares out to `md` on the room side — so the group origin is
+           * that back plane. Parking the origin on the wall line buried a 4"
+           * crown in the back 2-1/2" of a 12"-deep cabinet top: from the room
+           * it read as a thin strip floating behind the doors. A cabinet run
+           * that stops below the ceiling carries its crown on the door face,
+           * projecting forward. So the origin goes on the element box's
+           * room-facing edge and the flare runs into the room from there.
+           *
+           * Rotation already points local +z away from the wall (0 back, 90
+           * right, 180 front, 270 left), so this one rule covers all four
+           * walls — the two that were never exercised included.
+           */
+          const runLen = posIsRotated90 ? (el.height || 0) : (el.width || 0);
+          const acrossLen = posIsRotated90 ? (el.width || 0) : (el.height || 0);
+          const rot = ((posRotation % 360) + 360) % 360;
+          if (posIsRotated90) {
+            // Run goes front-to-back; the face is the +x or -x edge of the box.
+            xPos = (rot === 90) ? (el.x / pixelsPerFoot)                       // right wall, faces -x
+                                : (el.x / pixelsPerFoot) + acrossLen;          // left wall, faces +x
+            zPos = (el.y / pixelsPerFoot) + runLen / 2;                        // centred on the run
+          } else {
+            xPos = (el.x / pixelsPerFoot) + runLen / 2;                        // centred on the run
+            zPos = (rot === 180) ? (el.y / pixelsPerFoot)                      // front wall, faces -z
+                                 : (el.y / pixelsPerFoot) + acrossLen;         // back wall, faces +z
+          }
+        }
         let yPos = get3DYPosition(el, height);
 
         // Windows and doors snap to wall surface
@@ -52424,8 +52894,6 @@
          * larger layout. Everything else keeps the single-room bounds, so the
          * normal path is unchanged.
          */
-        const rb = el._roomBounds || { x: 0, y: 0, w: roomWidth, d: roomDepth };
-        const rbRight = rb.x + rb.w, rbBottom = rb.y + rb.d;
 
         // Detect which wall the element is against (use <= so elements exactly at threshold are included)
         const isAgainstRightWall = (rbRight - elRightEdge) <= wallThreshold;
@@ -52557,8 +53025,8 @@
           zPos = (el.y / pixelsPerFoot) + el.height / 2 - depthDifference / 2;
 
           // Ensure minimum distance from wall (wall cabinets should be at wall, not inside it)
-          if (zPos < wallCabinetDepth / 2) {
-            zPos = wallCabinetDepth / 2;
+          if (zPos < rb.y + wallCabinetDepth / 2) {
+            zPos = rb.y + wallCabinetDepth / 2;
           }
         } else if (isWallCabinet && autoRotated) {
           // Wall cabinet was auto-rotated to face a side or front wall
@@ -52567,15 +53035,16 @@
           const wallCabinetDepth = BUILDING_STANDARDS.CABINETS.WALL?.depth || 1;
           const depthDifference = baseCabinetDepth - wallCabinetDepth;
 
+          // Room-relative, not scene-relative: see the _roomBounds note above.
           if (isAgainstRightWall) {
             // Cabinet faces left, adjust X position closer to right wall
-            xPos = roomWidth - wallCabinetDepth / 2;
+            xPos = rbRight - wallCabinetDepth / 2;
           } else if (isAgainstLeftWall) {
             // Cabinet faces right, adjust X position closer to left wall
-            xPos = wallCabinetDepth / 2;
+            xPos = rb.x + wallCabinetDepth / 2;
           } else if (isAgainstFrontWall) {
             // Cabinet faces back, adjust Z position closer to front wall
-            zPos = roomDepth - wallCabinetDepth / 2;
+            zPos = rbBottom - wallCabinetDepth / 2;
           }
         }
 
@@ -52594,16 +53063,16 @@
           if (!autoRotated) {
             // Back wall (no rotation) - position so cabinet back is at wall
             if (isAgainstBackWall) {
-              zPos = baseCabinetDepth / 2;
+              zPos = rb.y + baseCabinetDepth / 2;
             }
           } else {
             // Auto-rotated cabinet - align to the wall it faces
             if (isAgainstRightWall) {
-              xPos = roomWidth - baseCabinetDepth / 2;
+              xPos = rbRight - baseCabinetDepth / 2;
             } else if (isAgainstLeftWall) {
-              xPos = baseCabinetDepth / 2;
+              xPos = rb.x + baseCabinetDepth / 2;
             } else if (isAgainstFrontWall) {
-              zPos = roomDepth - baseCabinetDepth / 2;
+              zPos = rbBottom - baseCabinetDepth / 2;
             }
           }
         }
@@ -52740,11 +53209,24 @@
         // Clamp positions to room boundaries — skip for wall-positioned and autoRotated elements
         // whose positions were already carefully set by the wall-snap code above
         const isWallPositioned = isWindowDoor || isNiche || isGrabBar || isBacksplash || isWallMountedShelf || isWallAccessory || isRangeHood || isWallPanel;
-        if (!isWallPositioned && !autoRotated) {
+        /*
+         * Linear trim is deliberately sat ON the wall line, so the clamp that
+         * keeps a box inside the room was undoing it: crown and baseboard were
+         * pushed in by half their own stated depth — a 12"-deep crown element
+         * ended up 6" back from the wall, floating over the middle of the
+         * cabinet tops instead of capping their faces. The trim block above
+         * already places it against a wall; nothing left to clamp.
+         *
+         * The bounds are the ROOM's, not the scene's, for the same reason the
+         * wall tests use _roomBounds — in the whole-house view a room sits at
+         * an offset and roomWidth/roomDepth are the building.
+         */
+        const isLinearTrim = el.type === 'crown-molding' || el.type === 'baseboard' || el.type === 'chair-rail';
+        if (!isWallPositioned && !autoRotated && !isLinearTrim) {
           const halfW = el.width / 2;
           const halfD = el.height / 2;
-          xPos = Math.max(halfW, Math.min(xPos, roomWidth - halfW));
-          zPos = Math.max(halfD, Math.min(zPos, roomDepth - halfD));
+          xPos = Math.max(rb.x + halfW, Math.min(xPos, rbRight - halfW));
+          zPos = Math.max(rb.y + halfD, Math.min(zPos, rbBottom - halfD));
         }
         yPos = Math.max(0, yPos);
 
