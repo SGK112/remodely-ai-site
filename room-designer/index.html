@@ -35585,6 +35585,18 @@
 
         // Trim & Molding
         case 'crown-molding': {
+          /*
+           * Crown does not always sit at the ceiling.
+           *
+           * When wall cabinets stop short — 30" boxes ending at 84" under a
+           * 96" ceiling — the crown caps the CABINETS and the wall is open
+           * above. Pinned to the ceiling it floated a foot over the run it is
+           * supposed to be nailed to. An explicit mountHeight is the cabinet
+           * top; without one, fall back to the ceiling.
+           */
+          if (el.mountHeight !== undefined && isFinite(el.mountHeight)) {
+            return el.mountHeight + height / 2;
+          }
           const ceilingH = roomHeight || 8;
           return ceilingH - height / 2; // At ceiling level
         }
@@ -52657,6 +52669,14 @@
         // Account for rotation when calculating center position
         const posRotation = (el.rotation || 0) % 360;
         const posIsRotated90 = (posRotation === 90 || posRotation === 270 || posRotation === -90 || posRotation === -270);
+        /*
+         * The room this element belongs to, hoisted here because the trim
+         * placement below needs to know which wall it is near, and so does
+         * every flush adjustment further down. In the whole-house view a room
+         * is offset inside the scene, so "the wall" is never 0 or roomWidth.
+         */
+        const rb = el._roomBounds || { x: 0, y: 0, w: roomWidth, d: roomDepth };
+        const rbRight = rb.x + rb.w, rbBottom = rb.y + rb.d;
         // When rotated 90/270, the visual width in 2D is el.height and vice versa
         const visualWidth = posIsRotated90 ? el.height : el.width;
         const visualHeight = posIsRotated90 ? el.width : el.height;
@@ -52674,12 +52694,49 @@
          * the run, sit on the wall line across it.
          */
         if (el.type === 'crown-molding' || el.type === 'baseboard' || el.type === 'chair-rail') {
+          /*
+           * Which of the two facing walls it belongs to, not just "the near
+           * edge of its own box".
+           *
+           * Sitting the run at el.x (rotated) or el.y (not rotated) puts it on
+           * the LEFT wall and the BACK wall respectively, whichever wall it was
+           * actually drawn against. A run down the right wall ended up one
+           * box-depth inside the room, and a run along the front wall stood off
+           * the front wall by the same amount — the two walls nobody had tried
+           * until a full four-wall kitchen went in.
+           *
+           * Centre along the run, and across the run sit on whichever of the
+           * two parallel walls is nearer.
+           */
+          /*
+           * Across the run, the moulding sits on the CABINET FACE, not on the
+           * wall behind it.
+           *
+           * The profile is drawn back-plane-first — (0,0) is the wall side and
+           * it flares out to `md` on the room side — so the group origin is
+           * that back plane. Parking the origin on the wall line buried a 4"
+           * crown in the back 2-1/2" of a 12"-deep cabinet top: from the room
+           * it read as a thin strip floating behind the doors. A cabinet run
+           * that stops below the ceiling carries its crown on the door face,
+           * projecting forward. So the origin goes on the element box's
+           * room-facing edge and the flare runs into the room from there.
+           *
+           * Rotation already points local +z away from the wall (0 back, 90
+           * right, 180 front, 270 left), so this one rule covers all four
+           * walls — the two that were never exercised included.
+           */
+          const runLen = posIsRotated90 ? (el.height || 0) : (el.width || 0);
+          const acrossLen = posIsRotated90 ? (el.width || 0) : (el.height || 0);
+          const rot = ((posRotation % 360) + 360) % 360;
           if (posIsRotated90) {
-            xPos = el.x / pixelsPerFoot;                              // against the wall
-            zPos = (el.y / pixelsPerFoot) + (el.height || 0) / 2;     // centred on the run
+            // Run goes front-to-back; the face is the +x or -x edge of the box.
+            xPos = (rot === 90) ? (el.x / pixelsPerFoot)                       // right wall, faces -x
+                                : (el.x / pixelsPerFoot) + acrossLen;          // left wall, faces +x
+            zPos = (el.y / pixelsPerFoot) + runLen / 2;                        // centred on the run
           } else {
-            xPos = (el.x / pixelsPerFoot) + (el.width || 0) / 2;      // centred on the run
-            zPos = el.y / pixelsPerFoot;                              // against the wall
+            xPos = (el.x / pixelsPerFoot) + runLen / 2;                        // centred on the run
+            zPos = (rot === 180) ? (el.y / pixelsPerFoot)                      // front wall, faces -z
+                                 : (el.y / pixelsPerFoot) + acrossLen;         // back wall, faces +z
           }
         }
         let yPos = get3DYPosition(el, height);
@@ -52798,8 +52855,6 @@
          * larger layout. Everything else keeps the single-room bounds, so the
          * normal path is unchanged.
          */
-        const rb = el._roomBounds || { x: 0, y: 0, w: roomWidth, d: roomDepth };
-        const rbRight = rb.x + rb.w, rbBottom = rb.y + rb.d;
 
         // Detect which wall the element is against (use <= so elements exactly at threshold are included)
         const isAgainstRightWall = (rbRight - elRightEdge) <= wallThreshold;
@@ -52931,8 +52986,8 @@
           zPos = (el.y / pixelsPerFoot) + el.height / 2 - depthDifference / 2;
 
           // Ensure minimum distance from wall (wall cabinets should be at wall, not inside it)
-          if (zPos < wallCabinetDepth / 2) {
-            zPos = wallCabinetDepth / 2;
+          if (zPos < rb.y + wallCabinetDepth / 2) {
+            zPos = rb.y + wallCabinetDepth / 2;
           }
         } else if (isWallCabinet && autoRotated) {
           // Wall cabinet was auto-rotated to face a side or front wall
@@ -52941,15 +52996,16 @@
           const wallCabinetDepth = BUILDING_STANDARDS.CABINETS.WALL?.depth || 1;
           const depthDifference = baseCabinetDepth - wallCabinetDepth;
 
+          // Room-relative, not scene-relative: see the _roomBounds note above.
           if (isAgainstRightWall) {
             // Cabinet faces left, adjust X position closer to right wall
-            xPos = roomWidth - wallCabinetDepth / 2;
+            xPos = rbRight - wallCabinetDepth / 2;
           } else if (isAgainstLeftWall) {
             // Cabinet faces right, adjust X position closer to left wall
-            xPos = wallCabinetDepth / 2;
+            xPos = rb.x + wallCabinetDepth / 2;
           } else if (isAgainstFrontWall) {
             // Cabinet faces back, adjust Z position closer to front wall
-            zPos = roomDepth - wallCabinetDepth / 2;
+            zPos = rbBottom - wallCabinetDepth / 2;
           }
         }
 
@@ -52968,16 +53024,16 @@
           if (!autoRotated) {
             // Back wall (no rotation) - position so cabinet back is at wall
             if (isAgainstBackWall) {
-              zPos = baseCabinetDepth / 2;
+              zPos = rb.y + baseCabinetDepth / 2;
             }
           } else {
             // Auto-rotated cabinet - align to the wall it faces
             if (isAgainstRightWall) {
-              xPos = roomWidth - baseCabinetDepth / 2;
+              xPos = rbRight - baseCabinetDepth / 2;
             } else if (isAgainstLeftWall) {
-              xPos = baseCabinetDepth / 2;
+              xPos = rb.x + baseCabinetDepth / 2;
             } else if (isAgainstFrontWall) {
-              zPos = roomDepth - baseCabinetDepth / 2;
+              zPos = rbBottom - baseCabinetDepth / 2;
             }
           }
         }
@@ -53114,11 +53170,24 @@
         // Clamp positions to room boundaries — skip for wall-positioned and autoRotated elements
         // whose positions were already carefully set by the wall-snap code above
         const isWallPositioned = isWindowDoor || isNiche || isGrabBar || isBacksplash || isWallMountedShelf || isWallAccessory || isRangeHood || isWallPanel;
-        if (!isWallPositioned && !autoRotated) {
+        /*
+         * Linear trim is deliberately sat ON the wall line, so the clamp that
+         * keeps a box inside the room was undoing it: crown and baseboard were
+         * pushed in by half their own stated depth — a 12"-deep crown element
+         * ended up 6" back from the wall, floating over the middle of the
+         * cabinet tops instead of capping their faces. The trim block above
+         * already places it against a wall; nothing left to clamp.
+         *
+         * The bounds are the ROOM's, not the scene's, for the same reason the
+         * wall tests use _roomBounds — in the whole-house view a room sits at
+         * an offset and roomWidth/roomDepth are the building.
+         */
+        const isLinearTrim = el.type === 'crown-molding' || el.type === 'baseboard' || el.type === 'chair-rail';
+        if (!isWallPositioned && !autoRotated && !isLinearTrim) {
           const halfW = el.width / 2;
           const halfD = el.height / 2;
-          xPos = Math.max(halfW, Math.min(xPos, roomWidth - halfW));
-          zPos = Math.max(halfD, Math.min(zPos, roomDepth - halfD));
+          xPos = Math.max(rb.x + halfW, Math.min(xPos, rbRight - halfW));
+          zPos = Math.max(rb.y + halfD, Math.min(zPos, rbBottom - halfD));
         }
         yPos = Math.max(0, yPos);
 
