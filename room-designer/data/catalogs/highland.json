@@ -2437,9 +2437,51 @@
   },
   "fees": {
     "assemblyPerBox": 22.5,
-    "deliveryFlat": 300.0,
-    "tariffPct": 6.0,
+    "assemblyAppliesTo": "assembled cabinets only \u2014 accessories are not assembled and are not charged",
+    "deliveryFlat": 0.0,
+    "deliveryNote": "Not automatic. SO95599 carried a \"Customer Pickup $0.00\" line; the $300 figure is for delivery and should be added deliberately, not assumed.",
+    "tariffPct": 8.0,
     "cardFeePct": 2.0,
-    "note": "Highland publishes no dealer price list \u2014 per-SKU prices appear only inside a portal draft at portal.highlandcabinetry.com (account CM1013884), so listPrice is absent here until someone captures them. These charges are separate from the box price and were confirmed on real invoices: assembly is per box, delivery is flat, the tariff line runs about 6% and the card fee 2% if paid by card. Twenty boxes is $450 of assembly alone, which comes straight off margin if a quote ignores it."
+    "salesTaxPct": 0.0,
+    "note": "Read off sales order SO95599 / invoice INV103117 in the Highland portal on 17 Sep 2026 (account CM1013884), not from memory. The tariff line states itself: \"8% tariff surcharge on 1027.09 of eligible items\" = $82.17 \u2014 it is 8%, not the 6% previously recorded. Assembly billed 3 x $22.50 on an order of 6 units, because the two accessory lines are not assembled. Tax was $0, presumably the resale exemption. UNRECONCILED: the priced lines sum to $1,176.76 and the portal shows a subtotal of $1,308.29 \u2014 a gap of $131.53 (11.2%) with nothing on the order page to explain it. Worth asking Dana or Jesse before trusting a computed total."
+  },
+  "pricingModel": {
+    "skuShape": "<line>-<colour>-<size>-<AS|D>",
+    "note": "Prices attach to the FULL portal SKU, not the bare size code. E-WO-FVSD30-AS is Euro / White Oak / floating vanity 30\" / assembled at $332.33; the same size in another line or colour is a different price. So a bare size code in this catalog cannot carry one price, and per-SKU pricing needs capturing per line and colour.",
+    "observed": [
+      {
+        "portalSku": "E-WO-FVSD30-AS",
+        "sizeCode": "FVSD30",
+        "line": "Euro",
+        "colour": "White Oak",
+        "assembled": true,
+        "priceEa": 332.33
+      },
+      {
+        "portalSku": "E-WO-FVDB15-AS",
+        "sizeCode": "FVDB15",
+        "line": "Euro",
+        "colour": "White Oak",
+        "assembled": true,
+        "priceEa": 210.67
+      },
+      {
+        "portalSku": "E-WO-FBFD22",
+        "sizeCode": "FBFD22",
+        "line": "Euro",
+        "colour": "White Oak",
+        "assembled": false,
+        "priceEa": 69.05
+      },
+      {
+        "portalSku": "E-WO-WF330",
+        "sizeCode": "WF330",
+        "line": "Euro",
+        "colour": "White Oak",
+        "assembled": false,
+        "priceEa": 13.66
+      }
+    ],
+    "source": "SO95599, 4 Sep 2026"
   }
 }

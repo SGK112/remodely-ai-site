@@ -61234,6 +61234,8 @@
         lines.push({ label: `Assembly — ${boxes.length} boxes @ $${f.assemblyPerBox.toFixed(2)}`, amount: v });
         cost += v;
       }
+      // Delivery is not automatic — Highland's own order carried a
+      // "Customer Pickup $0.00" line. It is added deliberately, not assumed.
       if (f.deliveryFlat) { lines.push({ label: 'Delivery', amount: f.deliveryFlat }); cost += f.deliveryFlat; }
       if (f.tariffPct && cabinetCost) {
         const v = cabinetCost * f.tariffPct / 100;
