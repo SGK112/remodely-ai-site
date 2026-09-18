@@ -11955,28 +11955,48 @@
        * other, and no clearance rule in the file was ever going to notice,
        * because the parts are not near each other — they are inside each other.
        */
+      /*
+       * Measured on the plan footprint rather than along one run, so it sees
+       * a corner.
+       *
+       * The first version compared two parts only when they shared a run axis,
+       * which made every perpendicular collision invisible — and a corner is
+       * exactly where two runs meet and fight over the same square foot. The
+       * last cabinet of one wall and the first of the next is the oldest
+       * mistake in the trade; it is why blind corners exist.
+       *
+       * A stored box IS the footprint, turned or not, so an axis-aligned
+       * overlap in plan plus an overlap in height is a collision whatever
+       * direction either part faces.
+       */
+      const foot = (el) => ({
+        x0: el.x / ppf, x1: el.x / ppf + (el.width || 0),
+        y0: el.y / ppf, y1: el.y / ppf + (el.height || 0)
+      });
       for (let i = 0; i < boxes.length; i++) {
         for (let j = i + 1; j < boxes.length; j++) {
           const a = boxes[i], b = boxes[j];
-          if (runAxis(a) !== runAxis(b)) continue;
           const tol = 0.125 / 12;                       // 1/8"
-          const a0 = start(a), a1 = a0 + span(a);
-          const b0 = start(b), b1 = b0 + span(b);
-          const alongOverlap = Math.min(a1, b1) - Math.max(a0, b0);
-          if (alongOverlap <= tol) continue;
+          const fa = foot(a), fb = foot(b);
+          const dx = Math.min(fa.x1, fb.x1) - Math.max(fa.x0, fb.x0);
+          if (dx <= tol) continue;
+          const dy = Math.min(fa.y1, fb.y1) - Math.max(fa.y0, fb.y0);
+          if (dy <= tol) continue;
           const ab = band(a), bb = band(b);
-          const heightOverlap = Math.min(ab.hi, bb.hi) - Math.max(ab.lo, bb.lo);
-          if (heightOverlap <= tol) continue;
-          const ax = runAxis(a);
-          const aOff = ax === 'x' ? a.y / ppf : a.x / ppf;
-          const bOff = ax === 'x' ? b.y / ppf : b.x / ppf;
-          const depthOverlap = Math.min(aOff + depth(a), bOff + depth(b)) - Math.max(aOff, bOff);
-          if (depthOverlap <= tol) continue;
+          const dh = Math.min(ab.hi, bb.hi) - Math.max(ab.lo, bb.lo);
+          if (dh <= tol) continue;
+
+          const perpendicular = runAxis(a) !== runAxis(b);
           issues.push({
             type: 'error',
-            message: `${label(a)} and ${label(b)} occupy the same space — ` +
-                     `${formatDimension(alongOverlap)} along the wall by ` +
-                     `${formatDimension(heightOverlap)} high. One of them cannot be built.`,
+            message: perpendicular
+              ? `${label(a)} and ${label(b)} fight over the corner — ` +
+                `${formatDimension(dx)} by ${formatDimension(dy)} in plan, ` +
+                `${formatDimension(dh)} high. Two runs cannot both have it; ` +
+                `that space wants a corner cabinet or a blind corner and a filler.`
+              : `${label(a)} and ${label(b)} occupy the same space — ` +
+                `${formatDimension(Math.max(dx, dy))} along the wall by ` +
+                `${formatDimension(dh)} high. One of them cannot be built.`,
             elements: [a, b]
           });
         }
