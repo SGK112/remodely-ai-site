@@ -11839,8 +11839,23 @@
 
       // Things that occupy space in a run. Trim and countertops are measured
       // against runs rather than being part of one.
+      /*
+       * A backsplash is a skin on the wall behind the run, not a part of it.
+       * Left in, it reported as overlapping every wall cabinet above it and as
+       * a depth step against its own neighbours — four findings on the shipped
+       * L and U templates, none of them real.
+       */
       const TRIM = ['crown-molding', 'baseboard', 'chair-rail', 'countertop',
-                    'countertop-l', 'countertop-u', 'countertop-corner'];
+                    'countertop-l', 'countertop-u', 'countertop-corner',
+                    'backsplash', 'wall-tile', 'accent-wall', 'shower-wall',
+                    'flooring', 'tile', 'area-rug',
+                    /*
+                     * Free-standing furniture is not cabinetry. Bar stools are
+                     * meant to sit apart from each other, so measuring the space
+                     * between them reported every one as a gap needing a filler.
+                     */
+                    'bar-stool', 'stool', 'chair', 'dining-chair', 'table',
+                    'kitchen-table', 'dining-table', 'bench', 'plant', 'rug'];
       /*
        * A sink sits in its base, a microwave hangs under the cabinet above it,
        * a cooktop drops into the counter. They occupy the same plan footprint
@@ -54947,14 +54962,14 @@
           { type: 'wall-cabinet-12', x: 9, y: 0, width: 1, height: 1, label: 'Wall 12"', rotation: 0 },
           { type: 'backsplash', x: 3, y: 0, width: 7, height: 0.08, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
           // Left wall (y=3→10, 7ft): Fridge + B18 + Range
-          { type: 'refrigerator', x: 0, y: 3, width: 2.5, height: 3, label: 'Refrigerator 36"', rotation: 270 },
+          { type: 'refrigerator', x: 0, y: 3, width: 2.5, height: 3, label: 'Refrigerator 36"', rotation: 270, cabinetHeight: 5.833 },
           { type: 'base-cabinet-18', x: 0, y: 6, width: 2, height: 1.5, label: 'Base 18"', rotation: 270 },
           { type: 'range', x: 0, y: 7.5, width: 2.17, height: 2.5, label: 'Range 30"', rotation: 270 },
           { type: 'range-hood', x: 0, y: 7.75, width: 1, height: 2, label: 'Range Hood', rotation: 270 },
           // Left wall counter (between fridge and range)
           { type: 'countertop', x: -0.04, y: 5.875, width: 2.165, height: 1.75, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0, overhangRight: 0.125 },
           // Left wall uppers
-          { type: 'wall-cabinet', x: 0, y: 3, width: 1, height: 3, label: 'Above Fridge', rotation: 270 },
+          { type: 'wall-cabinet', x: 0, y: 3, width: 2, height: 3, label: 'Above Fridge', rotation: 270, mountHeight: 6, cabinetHeight: 1.5 },
           { type: 'wall-cabinet-18', x: 0, y: 6, width: 1, height: 1.5, label: 'Wall 18"', rotation: 270 },
           { type: 'backsplash', x: 0, y: 3, width: 0.08, height: 7, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
         ]
@@ -55092,14 +55107,14 @@
           { type: 'wall-cabinet-18', x: 13.5, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
           { type: 'backsplash', x: 3, y: 0, width: 12, height: 0.08, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
           // Left wall (y=3→16, 13ft): Fridge + pantry + storage
-          { type: 'refrigerator', x: 0, y: 3, width: 2.5, height: 3, label: 'Refrigerator 36"', rotation: 270 },
+          { type: 'refrigerator', x: 0, y: 3, width: 2.5, height: 3, label: 'Refrigerator 36"', rotation: 270, cabinetHeight: 5.833 },
           { type: 'tall-cabinet', x: 0, y: 6, width: 2, height: 2, label: 'Pantry 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 8, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 10, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 12, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 14, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'countertop', x: -0.04, y: 7.875, width: 2.165, height: 8.25, label: 'Left Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0, overhangRight: 0.125 },
-          { type: 'wall-cabinet', x: 0, y: 3, width: 1, height: 3, label: 'Above Fridge', rotation: 270 },
+          { type: 'wall-cabinet', x: 0, y: 3, width: 2, height: 3, label: 'Above Fridge', rotation: 270, mountHeight: 6, cabinetHeight: 1.5 },
           { type: 'wall-cabinet', x: 0, y: 8, width: 1, height: 8, label: 'Left Uppers', rotation: 270 },
           { type: 'backsplash', x: 0, y: 3, width: 0.08, height: 13, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
           // Right wall (y=3→16, 13ft): Range + storage
