@@ -61594,9 +61594,22 @@
         : DEFAULT_RATE_PER_FT[element.type];
       if (rate === undefined) return CONFIG.PRICING?.[element.type] || 0;
 
-      // Linear parts are sold by the run; boxes by their width.
-      const linear = ['countertop', 'backsplash', 'flooring', 'tile',
-                      'crown-molding', 'baseboard', 'chair-rail'].includes(type);
+      /*
+       * Area items return the RATE, not a total.
+       *
+       * calculateQuoteTotal and the review panel both multiply countertop,
+       * backsplash, flooring and tile by width x height themselves, so
+       * returning a computed total here multiplied it twice — a countertop
+       * came out at $503 a square foot and a dressed kitchen quoted $131,071.
+       * These four stay per square foot and the caller does the area.
+       */
+      const AREA_PRICED = ['countertop', 'backsplash', 'flooring', 'tile'];
+      if (AREA_PRICED.includes(type) || AREA_PRICED.some(t => type.indexOf(t) === 0)) {
+        return rate;
+      }
+
+      // Linear trim is sold by the run; boxes by their width.
+      const linear = ['crown-molding', 'baseboard', 'chair-rail'].includes(type);
       const feet = linear
         ? Math.max(element.width || 0, element.height || 0)
         : (element.width || 0);
