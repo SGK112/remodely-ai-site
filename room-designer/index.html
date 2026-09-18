@@ -13391,6 +13391,38 @@
      *
      * These are the same images at 1024px, served from our own origin.
      */
+    /*
+     * Floor finishes.
+     *
+     * buildRoomStructure drew procedural wood planks and nothing else, so every
+     * render in every room came out on the same oak floor whatever the design
+     * said. These are real tile photographs out of the Surprise Granite library,
+     * cached here at 1024px. The plank generator stays as the fallback when no
+     * finish is chosen.
+     */
+    const FLOOR_FINISHES = [
+      { id: 'floor-adella-calacatta-ceramic-marble-tile', name: 'Adella Calacatta Ceramic Marble Tile', file: 'adella-calacatta-ceramic-marble-tile.jpg' },
+      { id: 'floor-adella-gris-ceramic-marble-tile', name: 'Adella Gris Ceramic Marble Tile', file: 'adella-gris-ceramic-marble-tile.jpg' },
+      { id: 'floor-adella-viso-calacatta-ceramic-marble-tile', name: 'Adella Viso Calacatta Ceramic Marble Tile', file: 'adella-viso-calacatta-ceramic-marble-tile.jpg' },
+      { id: 'floor-adella-viso-gris-ceramic-marble-tile', name: 'Adella Viso Gris Ceramic Marble Tile', file: 'adella-viso-gris-ceramic-marble-tile.jpg' },
+      { id: 'floor-adella-viso-white-ceramic-marble-tile', name: 'Adella Viso White Ceramic Marble Tile', file: 'adella-viso-white-ceramic-marble-tile.jpg' },
+      { id: 'floor-alaska-gray-mini-marble-tile', name: 'Alaska Gray Mini Marble Tile', file: 'alaska-gray-mini-marble-tile.jpg' },
+      { id: 'floor-alaska-gray-multi-finish-marble-tile', name: 'Alaska Gray Multi Finish Marble Tile', file: 'alaska-gray-multi-finish-marble-tile.jpg' },
+      { id: 'floor-anya-blanco-porcelain-tile', name: 'Anya Blanco Porcelain Tile', file: 'anya-blanco-porcelain-tile.jpg' },
+      { id: 'floor-anya-charcoal-porcelain-tile', name: 'Anya Charcoal Porcelain Tile', file: 'anya-charcoal-porcelain-tile.jpg' },
+      { id: 'floor-arabescato-carrara-marble-tile', name: 'Arabescato Carrara Marble Tile', file: 'arabescato-carrara-marble-tile.jpg' },
+      { id: 'floor-arabescato-venato-white-argyle-marble-tile', name: 'Arabescato Venato White Argyle Marble Tile', file: 'arabescato-venato-white-argyle-marble-tile.jpg' },
+      { id: 'floor-arabescato-venato-white-cube-marble-tile', name: 'Arabescato Venato White Cube Marble Tile', file: 'arabescato-venato-white-cube-marble-tile.jpg' },
+      { id: 'floor-ardesia-black-porcelain-slate-tile', name: 'Ardesia Black Porcelain Slate Tile', file: 'ardesia-black-porcelain-slate-tile.jpg' },
+      { id: 'floor-aria-ice-porcelain-marble-tile', name: 'Aria Ice Porcelain Marble Tile', file: 'aria-ice-porcelain-marble-tile.jpg' }
+    ];
+    function floorFinishUrl(id) {
+      const f = FLOOR_FINISHES.find(x => x.id === id);
+      if (!f) return null;
+      return (window.location.protocol === 'file:' ? '' : '/room-designer/') +
+             'assets/textures/floor/' + f.file;
+    }
+
     const STONE_TEXTURES = new Set([
       'alabaster-white-quartz.jpg',
       'arctic-white-quartz.jpg',
@@ -15486,6 +15518,7 @@
     let roomWidth = 20;
     let roomDepth = 16;
     let roomHeight = 8; // Ceiling height in feet (8', 9', 10', 12')
+    let currentFloorFinish = null; // id from FLOOR_FINISHES, null = generated planks
     let currentFloorPlan = 'empty';
     let contextMenuElement = null;
     let elementTextures = {}; // Store custom textures for element types
@@ -52456,6 +52489,41 @@
           metalness: 0.05,
           side: THREE.FrontSide
         });
+
+        /*
+         * A chosen finish replaces the generated planks.
+         *
+         * The plank canvas above is the fallback, not the answer — it ran
+         * unconditionally, so a tiled bathroom and an oak kitchen rendered on
+         * the same floor. Tile photographs are square and shot flat, so they
+         * repeat on the real tile size rather than the planks' 4ft block.
+         */
+        const chosenFloor = (typeof currentFloorFinish !== 'undefined' && currentFloorFinish)
+          || (window.__floorFinish || null);
+        if (chosenFloor && typeof floorFinishUrl === 'function') {
+          const url = floorFinishUrl(chosenFloor);
+          if (url) {
+            const tileFt = (window.__floorTileInches || 12) / 12;
+            const cached = typeof getTextureFromCache === 'function' ? getTextureFromCache(url) : null;
+            const dress = (tex) => {
+              tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+              tex.encoding = THREE.sRGBEncoding;
+              tex.repeat.set(roomWidth / tileFt, roomDepth / tileFt);
+              tex.anisotropy = renderer ? renderer.capabilities.getMaxAnisotropy() : 16;
+              floorMat.map = tex;
+              floorMat.color.setHex(0xFFFFFF);
+              floorMat.normalScale = new THREE.Vector2(0.12, 0.12);
+              floorMat.roughness = 0.4;
+              floorMat.needsUpdate = true;
+            };
+            if (cached) dress(cached);
+            else textureLoader.load(url, (tex) => {
+              if (typeof addTextureToCache === 'function') addTextureToCache(url, tex);
+              dress(tex);
+              if (typeof render3D === 'function' && currentView === '3d') render3D();
+            });
+          }
+        }
         // Apply env map for subtle floor reflections
         if (window.roomEnvMap) {
           floorMat.envMap = window.roomEnvMap;
