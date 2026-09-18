@@ -34851,7 +34851,7 @@
       scene.background = new THREE.Color(bgColors[timeOfDay] || 0xF5F8FA);
 
       // Camera - positioned for optimal room viewing
-      if (typeof restoreCameraLens === 'function') { try { restoreCameraLens(); } catch (e) {} }
+      if (typeof restoreSceneSettings === 'function') { try { restoreSceneSettings(); } catch (e) {} }
       camera = new THREE.PerspectiveCamera(
         (sceneSettings && sceneSettings.cameraFov) || 42, width / height, 0.5, 150);
       const roomDiag = Math.sqrt(roomWidth * roomWidth + roomDepth * roomDepth);
@@ -57270,6 +57270,10 @@
       const next = parseFloat(sel && sel.value) || 42;
       const prev = (sceneSettings && sceneSettings.cameraFov) || 42;
       sceneSettings.cameraFov = next;
+      // Persist before the early return. The camera only exists once the 3D
+      // view has been opened, and a lens chosen from the 2D plan was being
+      // set in memory and then dropped on reload.
+      saveSceneSettings();
       if (!camera) return;
 
       if (controls && controls.target && prev !== next) {
@@ -57282,37 +57286,77 @@
       camera.updateProjectionMatrix();
       if (controls) controls.update();
       if (typeof render3D === 'function' && currentView === '3d') render3D();
-      // sceneSettings is a plain default object that nothing restores, so this
-      // one keeps itself. A lens you have to re-pick every reload is not a
-      // setting, it is a nuisance.
-      try { localStorage.setItem('room_designer_camera_fov', String(next)); } catch (e) {}
+      saveSceneSettings();
     }
 
     /*
-     * Restore the chosen lens before the camera is built, and point the control
-     * at it so the two never disagree.
+     * Scene settings survive a reload.
+     *
+     * sceneSettings was a plain default object that nothing ever wrote out or
+     * read back, so Time of Day and the lens both reset on every load — you
+     * picked Evening, refreshed, and were back at Noon with nothing to say
+     * why. One store for the lot rather than a key per setting, so the next
+     * one added persists without anyone remembering to wire it.
      */
-    function restoreCameraLens() {
+    const SCENE_SETTINGS_KEY = 'room_designer_scene_settings';
+
+    function saveSceneSettings() {
+      try { localStorage.setItem(SCENE_SETTINGS_KEY, JSON.stringify(sceneSettings)); }
+      catch (e) { /* private window, blocked storage — not worth a warning */ }
+    }
+
+    function restoreSceneSettings() {
       let saved = null;
-      try { saved = parseFloat(localStorage.getItem('room_designer_camera_fov')); } catch (e) {}
-      if (saved && isFinite(saved) && saved >= 20 && saved <= 70) {
-        sceneSettings.cameraFov = saved;
+      try { saved = JSON.parse(localStorage.getItem(SCENE_SETTINGS_KEY) || 'null'); }
+      catch (e) { saved = null; }
+
+      // Migrate the lens, which shipped with its own key before this existed.
+      if (!saved || saved.cameraFov === undefined) {
+        try {
+          const legacy = parseFloat(localStorage.getItem('room_designer_camera_fov'));
+          if (isFinite(legacy)) { saved = saved || {}; saved.cameraFov = legacy; }
+        } catch (e) {}
       }
-      const sel = document.getElementById('cameraLens');
-      if (sel) {
-        const v = String(sceneSettings.cameraFov);
-        if ([].some.call(sel.options, o => o.value === v)) sel.value = v;
+
+      // Merge over the defaults rather than replacing them, so a setting added
+      // later still has a value when an old payload comes back without it.
+      if (saved && typeof saved === 'object') {
+        Object.keys(sceneSettings).forEach(k => {
+          if (saved[k] !== undefined && saved[k] !== null) sceneSettings[k] = saved[k];
+        });
       }
+      if (!(sceneSettings.cameraFov >= 20 && sceneSettings.cameraFov <= 70)) {
+        sceneSettings.cameraFov = 42;
+      }
+      syncSceneSettingControls();
+    }
+
+    function syncSceneSettingControls() {
+      const pick = (id, value) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const v = String(value);
+        if ([].some.call(el.options || [], o => o.value === v)) el.value = v;
+      };
+      pick('cameraLens', sceneSettings.cameraFov);
+      pick('timeOfDay', sceneSettings.timeOfDay);
       if (camera && camera.isPerspectiveCamera && camera.fov !== sceneSettings.cameraFov) {
         camera.fov = sceneSettings.cameraFov;
         camera.updateProjectionMatrix();
       }
     }
-    document.addEventListener('DOMContentLoaded', restoreCameraLens);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      restoreSceneSettings();
+      // Time of day paints the lights and the sky, so a restored value has to
+      // be applied, not just shown in the dropdown.
+      if (typeof updateTimeOfDay === 'function') { try { updateTimeOfDay(); } catch (e) {} }
+    });
 
     function updateTimeOfDay() {
       const timeSelect = document.getElementById('timeOfDay');
-      sceneSettings.timeOfDay = timeSelect.value;
+      if (timeSelect) sceneSettings.timeOfDay = timeSelect.value;
+      saveSceneSettings();
 
       // Lighting presets matching init3D - balanced for color accuracy
       const lightingPresets = {
