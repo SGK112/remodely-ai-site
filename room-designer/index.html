@@ -2131,6 +2131,15 @@
                   <option value="night">Night</option>
                 </select>
               </div>
+              <div class="input-group">
+                <label class="input-label" title="Wider sees more of a small room; narrower looks like a photograph">Lens</label>
+                <select class="input-field" id="cameraLens" onchange="updateCameraLens()">
+                  <option value="50">Wide — 20mm, fits a small room</option>
+                  <option value="42" selected>Natural — 28mm</option>
+                  <option value="34">Architectural — 35mm</option>
+                  <option value="28">Long — 50mm, tight spaces only</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -16862,7 +16871,21 @@
       timeOfDay: 'noon', // 'morning', 'noon', 'evening', 'night'
       showOutdoorView: true,
       showFrontWall: false, // Show 4th wall (front wall) - useful for enclosed rooms
-      wallTransparency: 0.3 // Transparency for front wall when shown
+      wallTransparency: 0.3, // Transparency for front wall when shown
+      /*
+       * Vertical field of view, in degrees.
+       *
+       * This was pinned at 50, which on a 16:9 frame is about 78 degrees
+       * across — roughly a 20mm lens. It is why a room reads slightly
+       * fisheyed and why a cabinet at the edge of frame stretches.
+       * Architectural photography sits nearer 28-35mm.
+       *
+       * It is a real trade, which is why it is a setting and not a fix:
+       * narrow the lens and you have to stand further back, and in a ten-foot
+       * kitchen there is nowhere to stand. Wide stays available for exactly
+       * that case.
+       */
+      cameraFov: 42
     };
 
     // Outdoor view colors based on time of day
@@ -34828,7 +34851,9 @@
       scene.background = new THREE.Color(bgColors[timeOfDay] || 0xF5F8FA);
 
       // Camera - positioned for optimal room viewing
-      camera = new THREE.PerspectiveCamera(50, width / height, 0.5, 150);
+      if (typeof restoreCameraLens === 'function') { try { restoreCameraLens(); } catch (e) {} }
+      camera = new THREE.PerspectiveCamera(
+        (sceneSettings && sceneSettings.cameraFov) || 42, width / height, 0.5, 150);
       const roomDiag = Math.sqrt(roomWidth * roomWidth + roomDepth * roomDepth);
       const camDist = Math.max(roomDiag * 0.8, 10);
       const camHeight = Math.max(6, (roomHeight || 8) * 0.7);
@@ -57230,6 +57255,60 @@
         render3D();
       }
     }
+
+    /*
+     * Change the lens without moving the tripod.
+     *
+     * Narrowing the field of view alone would appear to zoom in, because the
+     * camera stays where it is and simply sees less. A photographer changing
+     * lens steps back to keep the same framing, so do the same: scale the
+     * distance from the orbit target by the ratio of the half-angle tangents
+     * and the subject stays the size it was.
+     */
+    function updateCameraLens() {
+      const sel = document.getElementById('cameraLens');
+      const next = parseFloat(sel && sel.value) || 42;
+      const prev = (sceneSettings && sceneSettings.cameraFov) || 42;
+      sceneSettings.cameraFov = next;
+      if (!camera) return;
+
+      if (controls && controls.target && prev !== next) {
+        const half = (d) => Math.tan((d * Math.PI / 180) / 2);
+        const scale = half(prev) / half(next);
+        const off = camera.position.clone().sub(controls.target);
+        camera.position.copy(controls.target).add(off.multiplyScalar(scale));
+      }
+      camera.fov = next;
+      camera.updateProjectionMatrix();
+      if (controls) controls.update();
+      if (typeof render3D === 'function' && currentView === '3d') render3D();
+      // sceneSettings is a plain default object that nothing restores, so this
+      // one keeps itself. A lens you have to re-pick every reload is not a
+      // setting, it is a nuisance.
+      try { localStorage.setItem('room_designer_camera_fov', String(next)); } catch (e) {}
+    }
+
+    /*
+     * Restore the chosen lens before the camera is built, and point the control
+     * at it so the two never disagree.
+     */
+    function restoreCameraLens() {
+      let saved = null;
+      try { saved = parseFloat(localStorage.getItem('room_designer_camera_fov')); } catch (e) {}
+      if (saved && isFinite(saved) && saved >= 20 && saved <= 70) {
+        sceneSettings.cameraFov = saved;
+      }
+      const sel = document.getElementById('cameraLens');
+      if (sel) {
+        const v = String(sceneSettings.cameraFov);
+        if ([].some.call(sel.options, o => o.value === v)) sel.value = v;
+      }
+      if (camera && camera.isPerspectiveCamera && camera.fov !== sceneSettings.cameraFov) {
+        camera.fov = sceneSettings.cameraFov;
+        camera.updateProjectionMatrix();
+      }
+    }
+    document.addEventListener('DOMContentLoaded', restoreCameraLens);
 
     function updateTimeOfDay() {
       const timeSelect = document.getElementById('timeOfDay');
