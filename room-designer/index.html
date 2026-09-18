@@ -56037,16 +56037,31 @@
         elements: [
           // Back wall: washer and dryer side by side under a folding counter,
           // then a sink. Front-loaders need 36" to open and unload into.
-          { type: 'washer', x: 0.5, y: 0, width: 2.33, height: 2.33, label: 'Washer 28"', rotation: 0 },
-          { type: 'dryer', x: 2.83, y: 0, width: 2.33, height: 2.33, label: 'Dryer 28"', rotation: 0 },
-          { type: 'utility-sink', x: 5.5, y: 0, width: 2, height: 2, label: 'Utility Sink 24"', rotation: 0 },
-          { type: 'base-cabinet-18', x: 7.5, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
-          { type: 'countertop', x: 0.4, y: -0.04, width: 8.6, height: 2.2, label: 'Folding Counter', rotation: 0 },
+          /*
+           * Machines at their real height, with the counter ON them.
+           *
+           * They were 36" tall and the folding counter ran at 35-36", so the
+           * worktop cut through the top inch of both of them. A front-loading
+           * washer or dryer is 38-39"; the counter goes over the pair at that
+           * height and the base run keeps its own at 36", which is why a real
+           * laundry has two worktop levels rather than one.
+           */
+          { type: 'washer', x: 0.5, y: 0, width: 2.33, height: 2.33, label: 'Washer 28"', rotation: 0, cabinetHeight: 3.167 },
+          { type: 'dryer', x: 2.83, y: 0, width: 2.33, height: 2.33, label: 'Dryer 28"', rotation: 0, cabinetHeight: 3.167 },
+          { type: 'sink-base-apron', x: 5.5, y: 0, width: 2.5, height: 2, label: 'Apron Sink Base 30"', rotation: 0 },
+          { type: 'sink-farmhouse', x: 5.7, y: 0.1, width: 2.1, height: 1.7, label: 'Farmhouse Sink 27"', rotation: 0 },
+          { type: 'base-cabinet-12', x: 8, y: 0, width: 1, height: 2, label: 'Base 12"', rotation: 0 },
+          // Over the machines, sitting on them at 38".
+          { type: 'countertop', x: 0.4, y: -0.04, width: 4.9, height: 2.2, label: 'Folding Counter', rotation: 0, mountHeight: 3.167 },
+          // Over the base run, at the normal 36".
+          { type: 'countertop', x: 5.4, y: -0.04, width: 3.6, height: 2.2, label: 'Sink Counter', rotation: 0 },
 
           // Uppers over the machines, hung at 54" so the lids clear
           { type: 'wall-cabinet-30', x: 0.5, y: 0, width: 2.5, height: 1, label: 'Wall 30"', rotation: 0, mountHeight: 4.5 },
           { type: 'wall-cabinet-30', x: 3, y: 0, width: 2.5, height: 1, label: 'Wall 30"', rotation: 0, mountHeight: 4.5 },
-          { type: 'wall-cabinet-24', x: 5.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0, mountHeight: 4.5 },
+          { type: 'wall-cabinet-30', x: 5.5, y: 0, width: 2.5, height: 1, label: 'Wall 30"', rotation: 0, mountHeight: 4.5 },
+          // The last bay had nothing over it.
+          { type: 'wall-cabinet-12', x: 8, y: 0, width: 1, height: 1, label: 'Wall 12"', rotation: 0, mountHeight: 4.5 },
 
           // Left wall: tall broom storage
           { type: 'tall-cabinet', x: 0, y: 3, width: 2, height: 2, label: 'Broom Cabinet 24"', rotation: 270, cabinetHeight: 7 },
