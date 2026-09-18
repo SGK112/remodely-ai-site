@@ -12375,6 +12375,68 @@
         });
       });
 
+      // ---- 5c. Countertop with nothing holding it up -------------------------
+      /*
+       * The most visible defect there is, and the checker could not see it,
+       * because countertops are excluded from run membership — they sit ACROSS
+       * cabinets rather than beside them, so every other rule here would have
+       * reported a slab as colliding with the boxes it rests on.
+       *
+       * They still have to rest on something. The shipped U-shape template has
+       * 92 square feet of countertop with about five square feet of cabinet
+       * under it — the slabs hang in the air, and because countertops price by
+       * the square foot it also inflates the quote.
+       *
+       * An overhang is normal: 1-1/2" at the front, 10-15" on a seating side.
+       * Unsupported MAJORITY is not.
+       */
+      const SUPPORTS_TOP = ['base-cabinet', 'sink-base', 'sink-base-apron', 'drawer-base',
+                            'corner-cabinet', 'lazy-susan', 'blind-corner', 'island',
+                            'dishwasher', 'range', 'stove', 'slide-in-range', 'pony-wall',
+                            'knee-wall', 'trash-compactor', 'warming-drawer', 'wine-cooler',
+                            'beverage-center', 'washer', 'dryer', 'vanity-24'];
+      const supporters = elements.filter(el => {
+        if (!el || el.hidden) return false;
+        const t = (typeof normalizeCabinetType === 'function') ? normalizeCabinetType(el.type) : el.type;
+        return SUPPORTS_TOP.includes(t) || SUPPORTS_TOP.includes(el.type);
+      });
+      const plan = (el) => ({
+        x0: el.x / ppf, x1: el.x / ppf + (el.width || 0),
+        y0: el.y / ppf, y1: el.y / ppf + (el.height || 0)
+      });
+
+      elements.forEach(el => {
+        if (!el || el.hidden || typeof el.type !== 'string') return;
+        if (el.type.indexOf('countertop') !== 0) return;
+        const t = plan(el);
+        const area = (t.x1 - t.x0) * (t.y1 - t.y0);
+        if (area <= 0.5) return;
+        let covered = 0;
+        supporters.forEach(b => {
+          const f = plan(b);
+          const dx = Math.min(t.x1, f.x1) - Math.max(t.x0, f.x0);
+          const dy = Math.min(t.y1, f.y1) - Math.max(t.y0, f.y0);
+          if (dx > 0 && dy > 0) covered += dx * dy;
+        });
+        const pct = Math.min(covered, area) / area;
+        if (pct < 0.5) {
+          issues.push({
+            type: 'error',
+            message: `${label(el)} is ${area.toFixed(1)} sq ft with ` +
+                     `${Math.round(pct * 100)}% of a cabinet under it — ` +
+                     `${(area * (1 - pct)).toFixed(1)} sq ft of it rests on nothing`,
+            elements: [el]
+          });
+        } else if (pct < 0.8) {
+          issues.push({
+            type: 'warning',
+            message: `${label(el)} overhangs ${Math.round((1 - pct) * 100)}% of its area — ` +
+                     `fine on a seating side, not on three`,
+            elements: [el]
+          });
+        }
+      });
+
       // ---- 6. Standing on the floor, or hanging off the wall, or neither ----
       /*
        * Two different reports, same cause: nothing checks an element's height
