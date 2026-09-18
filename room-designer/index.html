@@ -2988,17 +2988,22 @@
           </div>
         </div>
 
-        <!-- Building Code Validation -->
+        <!-- Building Code Validation.
+             The checks ran only when someone clicked the tick, so every rule in
+             here — NKBA clearances, NEC, ADA and the fit checker — was invisible
+             by default. They run on a debounce now and the badge carries the
+             count, because a rule nobody sees is a rule nobody uses. -->
         <div class="validation-section" id="validationPanel">
           <div class="panel-section">
             <div class="panel-title">
               Building Standards
+              <span id="validationBadge" class="validation-badge" style="display:none"></span>
               <button class="validation-toggle" onclick="toggleWorkTriangle()" title="Toggle work triangle">△</button>
-              <button class="validation-refresh" onclick="runValidation()" title="Check design">✓</button>
+              <button class="validation-refresh" onclick="runValidation()" title="Re-check now">✓</button>
             </div>
           </div>
           <div class="validation-content" id="validationContent">
-            <div class="validation-hint">Click ✓ to validate your design</div>
+            <div class="validation-hint">Checking as you design…</div>
           </div>
         </div>
 
@@ -5738,6 +5743,14 @@
           </div>
         </div>
         <style>
+    .validation-badge{
+      display:inline-block; margin-left:6px; padding:1px 7px; border-radius:9px;
+      font-size:10.5px; font-weight:700; letter-spacing:.02em; vertical-align:1px;
+    }
+    .validation-badge.err{ background:#B4231F; color:#fff }
+    .validation-badge.warn{ background:#9A6A05; color:#fff }
+    .validation-badge.ok{ background:#2F6B45; color:#fff }
+
           @keyframes spin { to { transform: rotate(360deg); } }
           #blueprintDropZone:hover, #blueprintDropZone.dragover {
             border-color: var(--primary);
@@ -12573,6 +12586,28 @@
     }
 
     // Run all validations
+    /*
+     * Validate as the design changes.
+     *
+     * runValidation was reachable two ways: clicking the tick in a panel that
+     * is collapsed by default, or toggling the work triangle. So every rule in
+     * the file — the NKBA clearances, the NEC receptacle checks, ADA, and the
+     * fit checker — sat there doing nothing unless somebody went looking. A
+     * rule nobody sees is a rule nobody uses, and the whole point is to catch
+     * a cabinet that cannot be built before it reaches an order.
+     *
+     * Debounced, because element edits arrive in bursts while dragging and the
+     * checks walk every pair of elements. One run after things settle.
+     */
+    let validationTimer = null;
+    function scheduleValidation(delay = 450) {
+      if (validationTimer) clearTimeout(validationTimer);
+      validationTimer = setTimeout(() => {
+        validationTimer = null;
+        try { runValidation(); } catch (e) { console.warn('Validation failed:', e); }
+      }, delay);
+    }
+
     function runValidation() {
       validationIssues = [];
 
@@ -12645,6 +12680,17 @@
 
       const content = document.getElementById('validationContent');
       if (!content) return;
+
+      const badge = document.getElementById('validationBadge');
+      if (badge) {
+        const errs = validationIssues.filter(i => i.type === 'error').length;
+        const warns = validationIssues.filter(i => i.type === 'warning').length;
+        badge.style.display = '';
+        if (errs)        { badge.className = 'validation-badge err';  badge.textContent = errs + (errs === 1 ? ' problem' : ' problems'); }
+        else if (warns)  { badge.className = 'validation-badge warn'; badge.textContent = warns + ' to check'; }
+        else             { badge.className = 'validation-badge ok';   badge.textContent = 'OK'; }
+        badge.title = errs ? 'Something in this design cannot be built' : '';
+      }
 
       if (validationIssues.length === 0) {
         content.innerHTML = '<div class="validation-ok">✓ No issues found</div>';
@@ -21184,6 +21230,25 @@
     // ===== DRAWING =====
     function draw() {
       if (!ctx) return;
+
+      /*
+       * draw() also fires on pan and zoom, which change nothing about whether
+       * the design is buildable, so take a cheap signature of the elements and
+       * only re-check when it moves. Without this every scroll wheel tick
+       * would walk every pair of elements.
+       */
+      try {
+        let sig = elements.length + '|' + roomWidth + 'x' + roomDepth + 'x' + roomHeight;
+        for (let i = 0; i < elements.length; i++) {
+          const e = elements[i];
+          sig += '|' + e.type + ',' + e.x + ',' + e.y + ',' + e.width + ',' + e.height +
+                 ',' + (e.rotation || 0) + ',' + (e.mountHeight ?? '') + ',' + (e.cabinetHeight ?? '');
+        }
+        if (sig !== window.__lastDesignSignature) {
+          window.__lastDesignSignature = sig;
+          if (typeof scheduleValidation === 'function') scheduleValidation();
+        }
+      } catch (e) { /* never let a check stop the canvas drawing */ }
 
       // Clear entire canvas with dark background
       ctx.fillStyle = '#0d0d15';
