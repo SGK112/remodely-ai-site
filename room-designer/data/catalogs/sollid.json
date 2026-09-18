@@ -12423,5 +12423,13 @@
     }
   ],
   "dealerFactor": 0.446,
-  "priceNote": "listPrice is SOLLiD list for price GROUP C (Miami Dew), read off order 474386 in ePic on 17 Sep 2026. price is the dealer cost at list x 0.446, which is the number getElementPrice treats as cost before margin. Only SKUs actually seen on an order carry priceVerified; everything else falls back to the per-linear-foot estimate. Other finishes sit in other price groups (A-J) and these figures do not apply to them \u2014 the group chart is on page 25 of the SOLLiD spec book and is not in here yet."
+  "priceNote": "listPrice is SOLLiD list for price GROUP C (Miami Dew), read off order 474386 in ePic on 17 Sep 2026. price is the dealer cost at list x 0.446, which is the number getElementPrice treats as cost before margin. Only SKUs actually seen on an order carry priceVerified; everything else falls back to the per-linear-foot estimate. Other finishes sit in other price groups (A-J) and these figures do not apply to them \u2014 the group chart is on page 25 of the SOLLiD spec book and is not in here yet.",
+  "fees": {
+    "assemblyPerBox": 0.0,
+    "deliveryFlat": 0.0,
+    "tariffPct": 0.0,
+    "cardFeePct": 0.0,
+    "salesTaxPct": 9.1,
+    "note": "THREE series ships assembled, so there is no per-box assembly charge. Will call at Chandler is free; SOLLiD delivery is quoted per order and is not a flat rate, so it is left at zero rather than guessed. Sales tax of 9.1% is what Dutch Design charged on invoice 3866; it applies to the dealer cost, not the retail price."
+  }
 }

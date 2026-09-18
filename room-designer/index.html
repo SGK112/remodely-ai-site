@@ -61201,6 +61201,61 @@
     // ===== PRICING FUNCTIONS =====
 
     // Calculate total quote from all elements
+    /*
+     * What the manufacturer adds on top of the boxes.
+     *
+     * Returns both the raw cost and the marked-up figure, because the two are
+     * different conversations: the cost is what leaves the bank, the retail is
+     * what the customer is quoted.
+     */
+    function calculateVendorFees(catalogId) {
+      const id = catalogId || (typeof currentCatalog !== 'undefined' ? currentCatalog : null);
+      const cat = id && typeof CABINET_CATALOGS === 'object' && CABINET_CATALOGS[id];
+      const f = (cat && cat.fees) || null;
+      const empty = { cost: 0, retail: 0, lines: [], catalog: id };
+      if (!f) return empty;
+
+      // A "box" is a cabinet, not a filler, a panel or a length of moulding.
+      const BOXY = ['base-cabinet', 'wall-cabinet', 'tall-cabinet', 'sink-base',
+                    'sink-base-apron', 'drawer-base', 'corner-cabinet', 'lazy-susan',
+                    'blind-corner', 'microwave-cabinet', 'above-microwave-cabinet',
+                    'fridge-cabinet', 'single-oven-cabinet', 'tall-oven',
+                    'double-oven-cabinet', 'pantry', 'linen-closet', 'island'];
+      const norm = (t) => (typeof normalizeCabinetType === 'function') ? normalizeCabinetType(t) : t;
+      const boxes = elements.filter(el => el && !el.hidden && BOXY.includes(norm(el.type)));
+
+      let cabinetCost = 0;
+      boxes.forEach(el => { cabinetCost += (getElementPrice(el)?.price || 0); });
+
+      const lines = [];
+      let cost = 0;
+      if (f.assemblyPerBox && boxes.length) {
+        const v = f.assemblyPerBox * boxes.length;
+        lines.push({ label: `Assembly — ${boxes.length} boxes @ $${f.assemblyPerBox.toFixed(2)}`, amount: v });
+        cost += v;
+      }
+      if (f.deliveryFlat) { lines.push({ label: 'Delivery', amount: f.deliveryFlat }); cost += f.deliveryFlat; }
+      if (f.tariffPct && cabinetCost) {
+        const v = cabinetCost * f.tariffPct / 100;
+        lines.push({ label: `Tariff — ${f.tariffPct}%`, amount: v });
+        cost += v;
+      }
+      if (f.salesTaxPct && cabinetCost) {
+        const v = (cabinetCost + cost) * f.salesTaxPct / 100;
+        lines.push({ label: `Sales tax — ${f.salesTaxPct}%`, amount: v });
+        cost += v;
+      }
+      // Card fee applies to the whole vendor invoice, so it goes on last.
+      if (f.cardFeePct && (cabinetCost + cost)) {
+        const v = (cabinetCost + cost) * f.cardFeePct / 100;
+        lines.push({ label: `Card fee — ${f.cardFeePct}% (only if paid by card)`, amount: v });
+        cost += v;
+      }
+
+      const margin = (typeof PRICING_STATE === 'object' && PRICING_STATE.globalMargin) || 30;
+      return { cost, retail: cost * (1 + margin / 100), lines, catalog: id };
+    }
+
     function calculateQuoteTotal() {
       // Cache is valid for 2 seconds and only if element count unchanged
       const now = Date.now();
@@ -61224,6 +61279,18 @@
         // Add margin to get retail price
         total += cost * (1 + margin / 100);
       });
+
+      /*
+       * The vendor's own charges, which are cost and were simply absent.
+       *
+       * The quote was cabinet price plus margin and nothing else. Highland
+       * bills assembly per box, a flat delivery, a tariff line around 6% and a
+       * card fee — on a twenty-box kitchen that is roughly a thousand dollars,
+       * all of it cost, all of it coming straight off margin if the quote does
+       * not carry it. Held as data on the catalog so a different manufacturer
+       * is a data change, not an edit here.
+       */
+      total += calculateVendorFees().retail;
 
       window.currentQuoteTotal = total;
       window._quoteCacheElementCount = elements.length;

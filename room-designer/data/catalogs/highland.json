@@ -2434,5 +2434,12 @@
         "portalVerified": false
       }
     ]
+  },
+  "fees": {
+    "assemblyPerBox": 22.5,
+    "deliveryFlat": 300.0,
+    "tariffPct": 6.0,
+    "cardFeePct": 2.0,
+    "note": "Highland publishes no dealer price list \u2014 per-SKU prices appear only inside a portal draft at portal.highlandcabinetry.com (account CM1013884), so listPrice is absent here until someone captures them. These charges are separate from the box price and were confirmed on real invoices: assembly is per box, delivery is flat, the tariff line runs about 6% and the card fee 2% if paid by card. Twenty boxes is $450 of assembly alone, which comes straight off margin if a quote ignores it."
   }
 }
