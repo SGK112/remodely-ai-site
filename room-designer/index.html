@@ -37838,6 +37838,34 @@
               metalness: 0.02
             });
             const tkVoidMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
+
+            /*
+             * The cabinet has to reach the floor everywhere except the notch.
+             *
+             * Only the recess was ever built — a thin back board, a floor and
+             * two returns — so beneath the body there was open air from the
+             * back of the notch all the way to the back of the cabinet. In a
+             * run you never see it, because the neighbour's box is in the way.
+             * On an island, or any finished end, you see straight under it:
+             * the cabinet appears to hover on a plinth, which is the first
+             * thing a customer asks about.
+             *
+             * A real base cabinet's gables run to the floor and the toe notch
+             * is cut out of the front only. So fill everything behind the
+             * recess line, full width, in the cabinet's own finish — the
+             * returns and floor of the notch stay dark so the recess still
+             * reads as depth from the front.
+             */
+            const subBaseDepth = Math.max(d - toeKickRecess, 0.02);
+            const subBase = new THREE.Mesh(
+              new THREE.BoxGeometry(w, toeKickHeight, subBaseDepth),
+              tkBackMat
+            );
+            subBase.position.set(0, -h / 2 + toeKickHeight / 2, -d / 2 + subBaseDepth / 2);
+            subBase.castShadow = true;
+            subBase.receiveShadow = true;
+            group.add(subBase);
+
             const tkBack = new THREE.Mesh(
               new THREE.BoxGeometry(w - 0.1, toeKickHeight - 0.02, 0.02),
               tkBackMat
@@ -40168,47 +40196,50 @@
             group.add(door);
           }
 
-          // Toe kick void on all four sides (island is free-standing)
-          const tkBackMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
+          /*
+           * An island is notched on the working side only.
+           *
+           * This built a recess on all four sides, which meant nothing solid
+           * under the box anywhere: the island floated on a dark plinth and
+           * you could see straight beneath it from the seating side. That is
+           * not how one is made. The gables and the back are finished panels
+           * that run to the floor — on an island they are the most visible
+           * cabinetry in the room — and the toe notch is cut into the door
+           * side alone.
+           *
+           * So: solid to the floor in the cabinet's own finish everywhere
+           * except a notch across the front, with the floor and the back board
+           * of that notch left dark so it still reads as depth.
+           */
+          const tkVoidMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.95 });
+          const plinthMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.45 });
 
-          // Front toe kick
-          const tkFront = new THREE.Mesh(
-            new THREE.BoxGeometry(w - 0.5, toeKickHeight - 0.02, 0.02),
-            tkBackMat
+          // Everything behind the notch line, full width, down to the floor.
+          const notchFrontZ = d / 2;
+          const notchBackZ = d / 2 - 0.2 - toeKickRecess;
+          const solidDepth = Math.max((notchBackZ) - (-d / 2), 0.02);
+          const islandPlinth = new THREE.Mesh(
+            new THREE.BoxGeometry(w, toeKickHeight, solidDepth),
+            plinthMat
           );
-          tkFront.position.set(0, -h/2 + toeKickHeight/2, d/2 - 0.2 - toeKickRecess);
+          islandPlinth.position.set(0, -h / 2 + toeKickHeight / 2, -d / 2 + solidDepth / 2);
+          islandPlinth.castShadow = true;
+          islandPlinth.receiveShadow = true;
+          group.add(islandPlinth);
+
+          // The notch itself: dark back board and floor, front open.
+          const tkFront = new THREE.Mesh(
+            new THREE.BoxGeometry(w - 0.04, toeKickHeight - 0.02, 0.02),
+            tkVoidMat
+          );
+          tkFront.position.set(0, -h / 2 + toeKickHeight / 2, notchBackZ + 0.01);
           group.add(tkFront);
 
-          // Back toe kick
-          const tkBackPanel = new THREE.Mesh(
-            new THREE.BoxGeometry(w - 0.5, toeKickHeight - 0.02, 0.02),
-            tkBackMat
-          );
-          tkBackPanel.position.set(0, -h/2 + toeKickHeight/2, -d/2 + 0.2 + toeKickRecess);
-          group.add(tkBackPanel);
-
-          // Left toe kick
-          const tkLeftPanel = new THREE.Mesh(
-            new THREE.BoxGeometry(0.02, toeKickHeight - 0.02, d - 0.5),
-            tkBackMat
-          );
-          tkLeftPanel.position.set(-w/2 + 0.2 + toeKickRecess, -h/2 + toeKickHeight/2, 0);
-          group.add(tkLeftPanel);
-
-          // Right toe kick
-          const tkRightPanel = new THREE.Mesh(
-            new THREE.BoxGeometry(0.02, toeKickHeight - 0.02, d - 0.5),
-            tkBackMat
-          );
-          tkRightPanel.position.set(w/2 - 0.2 - toeKickRecess, -h/2 + toeKickHeight/2, 0);
-          group.add(tkRightPanel);
-
-          // Toe kick floor
           const tkFloor = new THREE.Mesh(
-            new THREE.BoxGeometry(w - 0.5, 0.02, d - 0.5),
-            tkBackMat
+            new THREE.BoxGeometry(w - 0.04, 0.02, notchFrontZ - notchBackZ),
+            tkVoidMat
           );
-          tkFloor.position.set(0, -h/2 + 0.01, 0);
+          tkFloor.position.set(0, -h / 2 + 0.01, (notchFrontZ + notchBackZ) / 2);
           group.add(tkFloor);
 
           // Cabinet overhang lip (all around)
