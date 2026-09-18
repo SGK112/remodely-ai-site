@@ -12173,12 +12173,25 @@
         Object.values(catalog.cabinets).forEach(list => {
           if (Array.isArray(list) && !entry) entry = list.find(c => c && c.sku === el.sku) || null;
         });
-        if (!entry || entry.epicVerified !== false) return;   // absent or confirmed
+        if (!entry) return;
+        /*
+         * Each book records confirmation under its own name, because each was
+         * checked against a different system — SOLLiD against ePic, Highland
+         * against the dealer portal. Absent means nobody has audited that
+         * catalog yet, which is not the same as failing, so it stays quiet.
+         */
+        const confirmed = entry.epicVerified !== undefined ? entry.epicVerified
+                        : entry.portalVerified !== undefined ? entry.portalVerified
+                        : null;
+        if (confirmed !== false) return;
         issues.push({
           type: 'warning',
-          message: `${el.sku} has not been confirmed against ${catalog.name || el.catalog} — ` +
-                   `it is in the catalog by naming pattern, not because anyone checked the ` +
-                   `factory builds it. Verify before quoting.`,
+          // Say what is true for both books. SOLLiD's strays were enumerated
+          // from the naming pattern; Highland's came off the printed catalog
+          // and are simply not on the portal. Either way nobody has confirmed
+          // the factory builds it, and that is the claim worth making.
+          message: `${el.sku} is in the ${catalog.name || el.catalog} list but has not been ` +
+                   `confirmed against the factory. Check it can be ordered before quoting.`,
           elements: [el]
         });
       });
