@@ -25,6 +25,9 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/objects/Reflector.js"></script>
+  <!-- RectAreaLight needs its uniforms table loaded before any is created;
+       without it the light exists but contributes nothing. -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lights/RectAreaLightUniformsLib.js"></script>
 
   <!-- Post-processing for enhanced visuals (r147) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -45469,6 +45472,55 @@
               const moon = new THREE.Mesh(new THREE.CircleGeometry(0.1, 16), moonMat);
               moon.position.set(openingWidth * 0.3, h/2 - frameWidth - openingHeight * 0.25, outdoorZ + 0.004);
               group.add(moon);
+            }
+          }
+
+          /*
+           * A window that admits no light is a painting of a window.
+           *
+           * Everything was here — jambs, a sill with a nose, glass, even a
+           * painted sky with trees and a sun behind it — and the room stayed
+           * lit by a single directional key wherever the windows were. So a
+           * kitchen with a bank of windows over the sink rendered exactly as
+           * flat as one on an interior wall, and the whole point of putting a
+           * window in a design is the light it throws.
+           *
+           * A RectAreaLight is the honest shape for this: it is an emitting
+           * rectangle, so it falls off and wraps the way an opening does,
+           * rather than a point pretending to be one. It needs its uniforms
+           * table loaded first — without that the light exists and contributes
+           * nothing, which is a silent failure worth guarding.
+           */
+          // The legacy examples/js build exposes RectAreaLightUniformsLib as a
+          // class, so it types as 'function'; the module build gives an object.
+          // Accept either and let the init() call be the real test.
+          if (typeof THREE.RectAreaLight === 'function' &&
+              THREE.RectAreaLightUniformsLib &&
+              typeof THREE.RectAreaLightUniformsLib.init === 'function' &&
+              !window.__rectAreaLightsUnavailable) {
+            if (!window.__rectAreaLightsReady) {
+              try {
+                THREE.RectAreaLightUniformsLib.init();
+                window.__rectAreaLightsReady = true;
+              } catch (e) {
+                window.__rectAreaLightsUnavailable = true;
+              }
+            }
+            if (window.__rectAreaLightsReady) {
+              const daylight = (typeof lightingPreset === 'string' && lightingPreset === 'night')
+                ? { color: 0x9FB6D4, intensity: 1.2 }   // moonlight, cool and weak
+                : { color: 0xFFF6E8, intensity: 9 };    // daylight, warm-white
+              const glow = new THREE.RectAreaLight(
+                daylight.color, daylight.intensity,
+                Math.max(openingWidth * 0.95, 0.2),
+                Math.max(openingHeight * 0.95, 0.2)
+              );
+              // Sit just inside the glass and face into the room. The window
+              // group is already rotated onto its wall, so local -Z is inward.
+              glow.position.set(0, (openingHeight - h) / 2 + sillHeight / 2, -0.05);
+              glow.lookAt(0, (openingHeight - h) / 2 + sillHeight / 2, -4);
+              glow.userData.isWindowLight = true;
+              group.add(glow);
             }
           }
 
