@@ -56081,8 +56081,23 @@
            * 18" between fridge and dishwasher, 24" between sink and range,
            * and the range has the corner run to its right.
            */
-          { type: 'refrigerator', x: 3, y: 0, width: 3, height: 2.5, label: 'Refrigerator 36"', rotation: 0, cabinetHeight: 5.833 },
-          { type: 'base-cabinet-18', x: 6, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
+          /*
+           * The refrigerator is enclosed, not parked in the run.
+           *
+           * It used to sit in the line of base cabinets with a shallow box
+           * hovering over it, which is not how one is built and does not read
+           * as one. A real surround is a full-height finished panel each side
+           * and a deep box above, all 24" so the faces line up with the
+           * appliance — the fridge lands in a recess instead of standing proud
+           * of everything around it.
+           *
+           * The 3" this costs comes off the base beside it: Base 18" becomes a
+           * Base 15", and the rest of the wall keeps its lines.
+           */
+          { type: 'filler', x: 3, y: 0, width: 0.125, height: 2, label: 'Fridge Panel 24x96', rotation: 0, cabinetHeight: 8 },
+          { type: 'refrigerator', x: 3.125, y: 0, width: 3, height: 2.5, label: 'Refrigerator 36"', rotation: 0, cabinetHeight: 5.833 },
+          { type: 'filler', x: 6.125, y: 0, width: 0.125, height: 2, label: 'Fridge Panel 24x96', rotation: 0, cabinetHeight: 8 },
+          { type: 'base-cabinet-15', x: 6.25, y: 0, width: 1.25, height: 2, label: 'Base 15"', rotation: 0 },
           { type: 'sink-base-36', x: 7.5, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
           { type: 'dishwasher', x: 10.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'range', x: 12.5, y: 0, width: 2.5, height: 2.17, label: 'Range 30"', rotation: 0 },
@@ -56097,8 +56112,10 @@
           // Uppers break on the cabinets below them. Nothing over the hood,
           // and the box over the fridge is 24" deep so its face meets the
           // appliance rather than sitting a foot behind it.
-          { type: 'wall-cabinet', x: 3, y: 0, width: 3, height: 2, label: 'Above Fridge 36"', rotation: 0, mountHeight: 6, cabinetHeight: 1.5 },
-          { type: 'wall-cabinet-18', x: 6, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
+          // 24" deep and carried to the 8ft ceiling, so it closes the top of
+          // the recess rather than leaving a 6" gap over the appliance.
+          { type: 'wall-cabinet', x: 3.125, y: 0, width: 3, height: 2, label: 'Above Fridge 36"', rotation: 0, mountHeight: 6, cabinetHeight: 2 },
+          { type: 'wall-cabinet-18', x: 6.25, y: 0, width: 1.25, height: 1, label: 'Wall 15"', rotation: 0 },
           { type: 'wall-cabinet-36', x: 7.5, y: 0, width: 3, height: 1, label: 'Wall 36"', rotation: 0 },
           { type: 'wall-cabinet-24', x: 10.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
           { type: 'backsplash', x: 3, y: 0, width: 12, height: 0.08, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
@@ -56131,7 +56148,19 @@
           { type: 'base-cabinet-36', x: 5, y: 8, width: 3, height: 2, label: 'Island Base 36"', rotation: 180 },
           { type: 'drawer-base-24', x: 8, y: 8, width: 2, height: 2, label: 'Island Drawers 24"', rotation: 180 },
           { type: 'base-cabinet-36', x: 10, y: 8, width: 3, height: 2, label: 'Island Base 36"', rotation: 180 },
-          { type: 'countertop', x: 4.875, y: 7.835, width: 8.25, height: 2.958, label: 'Island w/ Seating', rotation: 0, overhangFront: 0.125, overhangBack: 0.833, overhangLeft: 0.125, overhangRight: 0.125 },
+          /*
+           * Seating overhang taken to 15", and stools put under it.
+           *
+           * The island read as a slab floating in the room, and it was 9-1/2"
+           * of overhang with nothing beneath it — NKBA wants 15" for knees,
+           * and the template was labelled "w/ Seating" without a stool in it.
+           * An overhang with nobody sitting at it looks like a mistake whether
+           * or not the arithmetic is right.
+           */
+          { type: 'bar-stool', x: 5.9, y: 11.6, width: 1.3, height: 1.3, label: 'Stool', rotation: 0 },
+          { type: 'bar-stool', x: 8.35, y: 11.6, width: 1.3, height: 1.3, label: 'Stool', rotation: 0 },
+          { type: 'bar-stool', x: 10.8, y: 11.6, width: 1.3, height: 1.3, label: 'Stool', rotation: 0 },
+          { type: 'countertop', x: 4.875, y: 7.835, width: 8.25, height: 3.415, label: 'Island w/ Seating', rotation: 0, overhangFront: 0.125, overhangBack: 0.833, overhangLeft: 0.125, overhangRight: 0.125 },
         ]
       },
 
