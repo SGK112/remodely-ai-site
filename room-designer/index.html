@@ -56014,7 +56014,7 @@
           // Left wall counter (between fridge and range)
           { type: 'countertop', x: -0.04, y: 5.875, width: 2.165, height: 1.75, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0, overhangRight: 0.125 },
           // Left wall uppers
-          { type: 'wall-cabinet', x: 0, y: 3, width: 2, height: 3, label: 'Above Fridge', rotation: 270, mountHeight: 6, cabinetHeight: 1.5 },
+          // The pantry runs to 84", so nothing hangs above it.
           { type: 'wall-cabinet-18', x: 0, y: 6, width: 1, height: 1.5, label: 'Wall 18"', rotation: 270 },
           { type: 'backsplash', x: 0, y: 3, width: 0.08, height: 7, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
         ]
@@ -56135,31 +56135,48 @@
           // Corner cabinets at both upper corners
           { type: 'lazy-susan', x: 0, y: 0, width: 3, height: 3, label: 'Lazy Susan', rotation: 0 },
           { type: 'lazy-susan', x: 15, y: 0, width: 3, height: 3, label: 'Lazy Susan', rotation: 0 },
-          // Back wall (x=3→15, 12ft): sink centered
-          { type: 'base-cabinet-24', x: 3, y: 0, width: 2, height: 2, label: 'Base 24"', rotation: 0 },
-          { type: 'dishwasher', x: 5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
-          { type: 'sink-base-36', x: 7, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
-          { type: 'base-cabinet-24', x: 10, y: 0, width: 2, height: 2, label: 'Base 24"', rotation: 0 },
-          { type: 'base-cabinet-18', x: 12, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
-          { type: 'base-cabinet-18', x: 13.5, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
+          /*
+           * Back wall (x=3→15, 12ft): the working wall — fridge, sink, range.
+           *
+           * The fridge used to sit on the left leg and the range on the right,
+           * which is the textbook U and does not survive an 18ft room: those
+           * two ended up 15'-9" apart and the work triangle came to 33'-8"
+           * against a 26'-0" maximum. Sliding them along the legs cannot help,
+           * because the distance is the width of the room.
+           *
+           * So the three work points come onto the back wall and the legs do
+           * what legs are good at — pantry, storage, landing. Triangle 18'-6",
+           * every leg between 4 and 9 feet.
+           *
+           * Landing space, which is the other thing NKBA cares about here:
+           * 18" between fridge and dishwasher, 24" between sink and range,
+           * and the range has the corner run to its right.
+           */
+          { type: 'refrigerator', x: 3, y: 0, width: 3, height: 2.5, label: 'Refrigerator 36"', rotation: 0, cabinetHeight: 5.833 },
+          { type: 'base-cabinet-18', x: 6, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
+          { type: 'sink-base-36', x: 7.5, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
+          { type: 'dishwasher', x: 10.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
+          { type: 'range', x: 12.5, y: 0, width: 2.5, height: 2.17, label: 'Range 30"', rotation: 0 },
+          { type: 'range-hood', x: 12.5, y: 0, width: 2.5, height: 1, label: 'Range Hood', rotation: 0, mountHeight: 5.5 },
           { type: 'countertop', x: 2.875, y: -0.04, width: 12.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
-          { type: 'sink', x: 7.25, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
-          { type: 'wall-cabinet-24', x: 3, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
-          { type: 'wall-cabinet-24', x: 5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
-          { type: 'wall-cabinet-36', x: 7, y: 0, width: 3, height: 1, label: 'Wall 36"', rotation: 0 },
-          { type: 'wall-cabinet-24', x: 10, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
-          { type: 'wall-cabinet-18', x: 12, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
-          { type: 'wall-cabinet-18', x: 13.5, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
+          { type: 'sink', x: 7.75, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
+          // Uppers break on the cabinets below them. Nothing over the hood,
+          // and the box over the fridge is 24" deep so its face meets the
+          // appliance rather than sitting a foot behind it.
+          { type: 'wall-cabinet', x: 3, y: 0, width: 3, height: 2, label: 'Above Fridge 36"', rotation: 0, mountHeight: 6, cabinetHeight: 1.5 },
+          { type: 'wall-cabinet-18', x: 6, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
+          { type: 'wall-cabinet-36', x: 7.5, y: 0, width: 3, height: 1, label: 'Wall 36"', rotation: 0 },
+          { type: 'wall-cabinet-24', x: 10.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
           { type: 'backsplash', x: 3, y: 0, width: 12, height: 0.08, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
           // Left wall (y=3→16, 13ft): Fridge + pantry + storage
-          { type: 'refrigerator', x: 0, y: 3, width: 2.5, height: 3, label: 'Refrigerator 36"', rotation: 270, cabinetHeight: 5.833 },
-          { type: 'tall-cabinet', x: 0, y: 6, width: 2, height: 2, label: 'Pantry 24"', rotation: 270 },
+          { type: 'tall-cabinet', x: 0, y: 3, width: 2, height: 3, label: 'Pantry 36"', rotation: 270, cabinetHeight: 7 },
+          { type: 'tall-cabinet', x: 0, y: 6, width: 2, height: 2, label: 'Pantry 24"', rotation: 270, cabinetHeight: 7 },
           { type: 'base-cabinet-24', x: 0, y: 8, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 10, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 12, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'base-cabinet-24', x: 0, y: 14, width: 2, height: 2, label: 'Base 24"', rotation: 270 },
           { type: 'countertop', x: -0.04, y: 7.875, width: 2.165, height: 8.25, label: 'Left Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0, overhangRight: 0.125 },
-          { type: 'wall-cabinet', x: 0, y: 3, width: 2, height: 3, label: 'Above Fridge', rotation: 270, mountHeight: 6, cabinetHeight: 1.5 },
+          // The pantry runs to 84", so nothing hangs above it.
           { type: 'wall-cabinet', x: 0, y: 8, width: 1, height: 8, label: 'Left Uppers', rotation: 270 },
           { type: 'backsplash', x: 0, y: 3, width: 0.08, height: 13, verticalHeight: 1.5, label: 'Backsplash', rotation: 0 },
           // Right wall (y=3→16, 13ft): Range + storage
