@@ -13420,6 +13420,48 @@
      * cached here at 1024px. The plank generator stays as the fallback when no
      * finish is chosen.
      */
+    /*
+     * Backsplash tile.
+     *
+     * The backsplash mesh already takes a texture through createTexturedMaterial
+     * — it just had nothing to hand it, so every splash rendered as a flat
+     * colour with procedural grout lines. These are the patterns deliberately
+     * kept OUT of the floor set: subway, hexagon, herringbone, mosaic, picket,
+     * chevron, basketweave, arabesque. Wrong underfoot, right at eye level.
+     */
+    const BACKSPLASH_FINISHES = [
+      { id: 'bs-abani-marble-encaustic-subway-tile', name: 'Abani Marble Encaustic Subway Tile', pattern: 'subway', file: 'abani-marble-encaustic-subway-tile.jpg' },
+      { id: 'bs-akoya-pearl-glass-hexagon-tile', name: 'Akoya Pearl Glass Hexagon Tile', pattern: 'hexagon', file: 'akoya-pearl-glass-hexagon-tile.jpg' },
+      { id: 'bs-almond-ceramic-glossy-subway-tile', name: 'Almond Ceramic Glossy Subway Tile', pattern: 'subway', file: 'almond-ceramic-glossy-subway-tile.jpg' },
+      { id: 'bs-almond-glossy-porcelain-herringbone-tile', name: 'Almond Glossy Porcelain Herringbone Tile', pattern: 'herringbone', file: 'almond-glossy-porcelain-herringbone-tile.jpg' },
+      { id: 'bs-almond-subway-glossy-beveled-tile', name: 'Almond Subway Glossy Beveled Tile', pattern: 'subway', file: 'almond-subway-glossy-beveled-tile.jpg' },
+      { id: 'bs-alpine-white-clay-herringbone-tile', name: 'Alpine White Clay Herringbone Tile', pattern: 'herringbone', file: 'alpine-white-clay-herringbone-tile.jpg' },
+      { id: 'bs-angora-basketweave-marble-tile', name: 'Angora Basketweave Marble Tile', pattern: 'basketweave', file: 'angora-basketweave-marble-tile.jpg' },
+      { id: 'bs-angora-framework-marble-subway-tile', name: 'Angora Framework Marble Subway Tile', pattern: 'subway', file: 'angora-framework-marble-subway-tile.jpg' },
+      { id: 'bs-angora-herringbone-marble-tile', name: 'Angora Herringbone Marble Tile', pattern: 'herringbone', file: 'angora-herringbone-marble-tile.jpg' },
+      { id: 'bs-angora-hexagon-mosaic-marble-tile', name: 'Angora Hexagon Mosaic Marble Tile', pattern: 'hexagon', file: 'angora-hexagon-mosaic-marble-tile.jpg' },
+      { id: 'bs-angora-sazi-marble-hexagon-tile', name: 'Angora Sazi Marble Hexagon Tile', pattern: 'hexagon', file: 'angora-sazi-marble-hexagon-tile.jpg' },
+      { id: 'bs-angora-subway-marble-tile', name: 'Angora Subway Marble Tile', pattern: 'subway', file: 'angora-subway-marble-tile.jpg' },
+      { id: 'bs-angora-tibi-marble-hexagon-tile', name: 'Angora Tibi Marble Hexagon Tile', pattern: 'hexagon', file: 'angora-tibi-marble-hexagon-tile.jpg' },
+      { id: 'bs-antique-white-beveled-ceramic-subway-tile', name: 'Antique White Beveled Ceramic Subway Tile', pattern: 'subway', file: 'antique-white-beveled-ceramic-subway-tile.jpg' },
+      { id: 'bs-antique-white-ceramic-arabesque-tile', name: 'Antique White Ceramic Arabesque Tile', pattern: 'arabesque', file: 'antique-white-ceramic-arabesque-tile.jpg' },
+      { id: 'bs-antique-white-ceramic-picket-tile', name: 'Antique White Ceramic Picket Tile', pattern: 'picket', file: 'antique-white-ceramic-picket-tile.jpg' },
+      { id: 'bs-antique-white-ceramic-subway-tile', name: 'Antique White Ceramic Subway Tile', pattern: 'subway', file: 'antique-white-ceramic-subway-tile.jpg' },
+      { id: 'bs-antique-white-glazed-ceramic-subway-tile', name: 'Antique White Glazed Ceramic Subway Tile', pattern: 'subway', file: 'antique-white-glazed-ceramic-subway-tile.jpg' },
+      { id: 'bs-arabescato-carrara-basketweave-marble-tile', name: 'Arabescato Carrara Basketweave Marble Tile', pattern: 'basketweave', file: 'arabescato-carrara-basketweave-marble-tile.jpg' },
+      { id: 'bs-arabescato-carrara-beveled-marble-subway-tile', name: 'Arabescato Carrara Beveled Marble Subway Tile', pattern: 'subway', file: 'arabescato-carrara-beveled-marble-subway-tile.jpg' },
+      { id: 'bs-arabescato-carrara-marble-herringbone-tile', name: 'Arabescato Carrara Marble Herringbone Tile', pattern: 'herringbone', file: 'arabescato-carrara-marble-herringbone-tile.jpg' },
+      { id: 'bs-arabescato-carrara-marble-hexagon-tile', name: 'Arabescato Carrara Marble Hexagon Tile', pattern: 'hexagon', file: 'arabescato-carrara-marble-hexagon-tile.jpg' },
+      { id: 'bs-arabescato-carrara-marble-picket-tile', name: 'Arabescato Carrara Marble Picket Tile', pattern: 'picket', file: 'arabescato-carrara-marble-picket-tile.jpg' },
+      { id: 'bs-arabescato-carrara-marble-subway-tile', name: 'Arabescato Carrara Marble Subway Tile', pattern: 'subway', file: 'arabescato-carrara-marble-subway-tile.jpg' }
+    ];
+    function backsplashFinishUrl(id) {
+      const f = BACKSPLASH_FINISHES.find(x => x.id === id);
+      if (!f) return null;
+      return (window.location.protocol === 'file:' ? '' : '/room-designer/') +
+             'assets/textures/backsplash/' + f.file;
+    }
+
     const FLOOR_FINISHES = [
       { id: 'floor-adella-calacatta-ceramic-marble-tile', name: 'Adella Calacatta Ceramic Marble Tile', file: 'adella-calacatta-ceramic-marble-tile.jpg' },
       { id: 'floor-adella-gris-ceramic-marble-tile', name: 'Adella Gris Ceramic Marble Tile', file: 'adella-gris-ceramic-marble-tile.jpg' },
