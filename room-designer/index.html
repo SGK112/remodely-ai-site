@@ -55847,7 +55847,11 @@
           { type: 'dishwasher', x: 7, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'base-cabinet-12', x: 9, y: 0, width: 1, height: 2, label: 'Base 12"', rotation: 0 },
           // Back wall countertop
-          { type: 'countertop', x: 2.875, y: -0.04, width: 7.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: -0.04, y: -0.04, width: 10.165, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          // The return arm over the corner box. A corner counter is L-shaped;
+          // only the run along one wall was ever drawn, so the deeper part of a
+          // 36" x 36" corner cabinet sat bare.
+          { type: 'countertop', x: -0.04, y: -0.04, width: 2.165, height: 3.04, label: 'Corner Return', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 4.75, y: 0.12, width: 2, height: 1.75, label: 'Sink 30"', rotation: 0 },
           // Back wall uppers
           { type: 'wall-cabinet-18', x: 3, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
@@ -55889,7 +55893,11 @@
           { type: 'dishwasher', x: 6.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'sink-base-36', x: 8.5, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
           { type: 'base-cabinet-18', x: 11.5, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
-          { type: 'countertop', x: 4.875, y: -0.04, width: 8.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: 4.875, y: -0.04, width: 11.165, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          // The return arm over the corner box. A corner counter is L-shaped;
+          // only the run along one wall was ever drawn, so the deeper part of a
+          // 36" x 36" corner cabinet sat bare.
+          { type: 'countertop', x: 13.835, y: -0.04, width: 2.165, height: 2.915, label: 'Corner Return', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 8.75, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
           { type: 'wall-cabinet-18', x: 5, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
           { type: 'wall-cabinet-24', x: 6.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
@@ -56004,7 +56012,11 @@
           { type: 'shower-wall', x: 8, y: 0, width: 3, height: 0.08, label: 'Shower Wall', rotation: 0 },
 
           // Right wall: toilet, centreline 18" off the wall and 30" clear in front
-          { type: 'toilet', x: 8.75, y: 4.5, width: 1.7, height: 2.4, label: 'Toilet', rotation: 0 },
+          // Rotated onto the right wall so the tank has something to sit against.
+          // Turned, width is the depth off the wall and height is the run along
+          // it. Centreline lands 2'-4" clear of the shower, well past the 15"
+          // NKBA wants, with the whole room in front of it.
+          { type: 'toilet', x: 8.6, y: 4.5, width: 2.4, height: 1.7, label: 'Toilet', rotation: 90 },
 
           // Left wall: freestanding tub under the window
           { type: 'bathtub-freestanding', x: 0.75, y: 5.5, width: 5.5, height: 2.6, label: 'Freestanding Tub 66"', rotation: 0 },
@@ -56075,7 +56087,12 @@
           { type: 'dishwasher', x: 10.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'range', x: 12.5, y: 0, width: 2.5, height: 2.17, label: 'Range 30"', rotation: 0 },
           { type: 'range-hood', x: 12.5, y: 0, width: 2.5, height: 1, label: 'Range Hood', rotation: 0, mountHeight: 5.5 },
-          { type: 'countertop', x: 2.875, y: -0.04, width: 12.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: -0.04, y: -0.04, width: 18.08, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          // The return arm over the corner box. A corner counter is L-shaped;
+          // only the run along one wall was ever drawn, so the deeper part of a
+          // 36" x 36" corner cabinet sat bare.
+          { type: 'countertop', x: -0.04, y: -0.04, width: 2.165, height: 3.04, label: 'Corner Return L', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: 15.835, y: -0.04, width: 2.165, height: 3.04, label: 'Corner Return R', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 7.75, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
           // Uppers break on the cabinets below them. Nothing over the hood,
           // and the box over the fridge is 24" deep so its face meets the
@@ -56139,7 +56156,7 @@
           { type: 'base-cabinet-18', x: 11, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
           { type: 'range', x: 12.5, y: 0, width: 2.5, height: 2.17, label: 'Range 30"', rotation: 0 },
           { type: 'base-cabinet-12', x: 15, y: 0, width: 1, height: 2, label: 'Base 12"', rotation: 0 },
-          { type: 'countertop', x: 4.875, y: -0.04, width: 7.75, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: 4.875, y: -0.04, width: 11.165, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 8.5, y: 0.12, width: 2.25, height: 1.75, label: 'Sink 30"', rotation: 0 },
           { type: 'wall-cabinet-15', x: 5, y: 0, width: 1.25, height: 1, label: 'Wall 15"', rotation: 0 },
           { type: 'wall-cabinet-24', x: 6.25, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
@@ -56174,7 +56191,11 @@
           { type: 'dishwasher', x: 6.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'sink-base-36', x: 8.5, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
           { type: 'base-cabinet-18', x: 11.5, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
-          { type: 'countertop', x: 4.875, y: -0.04, width: 8.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: 4.875, y: -0.04, width: 11.165, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          // The return arm over the corner box. A corner counter is L-shaped;
+          // only the run along one wall was ever drawn, so the deeper part of a
+          // 36" x 36" corner cabinet sat bare.
+          { type: 'countertop', x: 13.835, y: -0.04, width: 2.165, height: 2.915, label: 'Corner Return', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 8.75, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
           { type: 'wall-cabinet-18', x: 5, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
           { type: 'wall-cabinet-24', x: 6.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
@@ -56275,7 +56296,11 @@
           { type: 'dishwasher', x: 6.5, y: 0, width: 2, height: 2, label: 'Dishwasher 24"', rotation: 0 },
           { type: 'sink-base-36', x: 8.5, y: 0, width: 3, height: 2, label: 'Sink Base 36"', rotation: 0 },
           { type: 'base-cabinet-18', x: 11.5, y: 0, width: 1.5, height: 2, label: 'Base 18"', rotation: 0 },
-          { type: 'countertop', x: 4.875, y: -0.04, width: 8.25, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          { type: 'countertop', x: 4.875, y: -0.04, width: 11.165, height: 2.165, label: 'Counter', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
+          // The return arm over the corner box. A corner counter is L-shaped;
+          // only the run along one wall was ever drawn, so the deeper part of a
+          // 36" x 36" corner cabinet sat bare.
+          { type: 'countertop', x: 13.835, y: -0.04, width: 2.165, height: 2.915, label: 'Corner Return', rotation: 0, overhangFront: 0.125, overhangBack: 0, overhangLeft: 0.125, overhangRight: 0.125 },
           { type: 'sink', x: 8.75, y: 0.12, width: 2.5, height: 1.75, label: 'Sink 33"', rotation: 0 },
           { type: 'wall-cabinet-18', x: 5, y: 0, width: 1.5, height: 1, label: 'Wall 18"', rotation: 0 },
           { type: 'wall-cabinet-24', x: 6.5, y: 0, width: 2, height: 1, label: 'Wall 24"', rotation: 0 },
