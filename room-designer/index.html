@@ -5750,6 +5750,14 @@
     .validation-badge.err{ background:#B4231F; color:#fff }
     .validation-badge.warn{ background:#9A6A05; color:#fff }
     .validation-badge.ok{ background:#2F6B45; color:#fff }
+    .review-blocking-banner{
+      margin:0 0 10px; padding:10px 12px; border-radius:4px;
+      background:rgba(180,35,31,.12); border-left:3px solid #B4231F;
+      font-size:12.5px; line-height:1.5;
+    }
+    .review-element-issue{
+      margin-top:4px; font-size:11.5px; line-height:1.45; color:#C9564F;
+    }
 
           @keyframes spin { to { transform: rotate(360deg); } }
           #blueprintDropZone:hover, #blueprintDropZone.dragover {
@@ -67626,14 +67634,41 @@
 
       const canApprove = PERMISSION_LEVELS[SHARE_STATE.permission]?.canApprove || false;
       const canViewPrices = checkPermission('canViewPrices');
-      console.log('canApprove:', canApprove, 'canViewPrices:', canViewPrices);
+
+      /*
+       * Put the fit problems next to the parts they belong to. The customer is
+       * being asked to sign off on a list of cabinets; anything the checker
+       * says about one of them belongs on that line, not in a panel elsewhere
+       * that a shared viewer may not even have open.
+       */
+      const reviewIssuesByElement = new Map();
+      let reviewBlocking = 0;
+      if (typeof validateFitAndAssembly === 'function') {
+        try {
+          validateFitAndAssembly().forEach(issue => {
+            if (issue.type === 'error') reviewBlocking++;
+            if (issue.type === 'info') return;
+            (issue.elements || []).forEach(el => {
+              if (!reviewIssuesByElement.has(el)) reviewIssuesByElement.set(el, []);
+              reviewIssuesByElement.get(el).push(issue.message);
+            });
+          });
+        } catch (e) { /* a failing check must not hide the design */ }
+      }
+
+      const banner = reviewBlocking
+        ? `<div class="review-blocking-banner">
+             <strong>${reviewBlocking} item${reviewBlocking === 1 ? '' : 's'} in this design cannot be built as drawn.</strong>
+             They are marked below. Approval is held until they are resolved.
+           </div>`
+        : '';
 
       if (elements.length === 0) {
         container.innerHTML = '<p class="empty-state">No elements in this design</p>';
         return;
       }
 
-      container.innerHTML = elements.map((el, index) => {
+      container.innerHTML = banner + elements.map((el, index) => {
         const priceInfo = getElementPrice(el);
         const margin = getElementMargin(el) || 30;
         let cost = priceInfo?.price || 0;
@@ -67656,6 +67691,9 @@
               <span>${formatDimension(el.width)} × ${formatDimension(el.height)}</span>
               ${el.material ? `<span class="review-element-material">${el.material}</span>` : ''}
             </div>
+            ${(reviewIssuesByElement.get(el) || []).map(msg => `
+              <div class="review-element-issue">⚠ ${msg}</div>
+            `).join('')}
             ${canApprove ? `
             <div class="review-element-actions">
               <button class="btn-approve" onclick="event.stopPropagation(); setElementStatus(${index}, 'approved')" title="Approve">✓</button>
@@ -67700,7 +67738,37 @@
     }
 
     // Approve all elements
+    /*
+     * A customer cannot approve a design that cannot be built.
+     *
+     * The review panel showed a label, a size, a price and an approve button.
+     * Nothing about whether the cabinets fit each other, so a design carrying a
+     * 36" box in a 33" opening could be approved by the person paying for it —
+     * and that approval would be worth nothing, because the order would be
+     * refused or the cabinet would arrive and not go in.
+     *
+     * Warnings are the designer's judgement and stay advisory. Errors are the
+     * fit checker saying a part cannot exist where it is, and those block.
+     */
+    function buildabilityErrors() {
+      if (typeof validateFitAndAssembly !== 'function') return [];
+      try { return validateFitAndAssembly().filter(i => i.type === 'error'); }
+      catch (e) { return []; }
+    }
+
     async function approveAllElements() {
+      const blocking = buildabilityErrors();
+      if (blocking.length) {
+        const lines = blocking.slice(0, 6).map(i => '• ' + i.message).join('\n');
+        const more = blocking.length > 6 ? `\n…and ${blocking.length - 6} more.` : '';
+        if (typeof showToast === 'function') {
+          showToast(`${blocking.length} item${blocking.length === 1 ? '' : 's'} cannot be built — approval held`, 'error');
+        }
+        alert('This design cannot be approved yet.\n\n' + lines + more +
+              '\n\nThese are not preferences — the parts do not fit. ' +
+              'Ask your designer to resolve them and re-share.');
+        return;
+      }
       elements.forEach(el => el.status = 'approved');
       updateReviewElements();
       updateReviewStats();
