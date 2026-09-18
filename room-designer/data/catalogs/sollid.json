@@ -1056,7 +1056,12 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "epicVerified": false
+        "epicVerified": true,
+        "listPrice": 964.0,
+        "price": 429.94,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "orderedAs": "B27S on the order \u2014 S suffix appears on 27/30/33/36 bases in ePic"
       },
       {
         "sku": "B30",
@@ -1066,7 +1071,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "B30S"
       },
       {
         "sku": "B33",
@@ -1076,7 +1082,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "B33S"
       },
       {
         "sku": "B36",
@@ -1086,7 +1093,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "B36S"
       },
       {
         "sku": "B39",
@@ -1697,7 +1705,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SB27S"
       },
       {
         "sku": "SB27S",
@@ -1719,7 +1728,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SBI27S"
       },
       {
         "sku": "SBI27S",
@@ -1741,7 +1751,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SB30S"
       },
       {
         "sku": "SB30S",
@@ -1763,7 +1774,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SBI30S"
       },
       {
         "sku": "SBI30S",
@@ -1785,7 +1797,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SB33S"
       },
       {
         "sku": "SB33S",
@@ -1807,7 +1820,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SBI33S"
       },
       {
         "sku": "SBI33S",
@@ -1829,7 +1843,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SB36S"
       },
       {
         "sku": "SB36S",
@@ -1840,7 +1855,11 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": true
+        "epicVerified": true,
+        "listPrice": 863.0,
+        "price": 384.9,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "SBI36",
@@ -1851,7 +1870,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 2,
-        "epicVerified": false
+        "epicVerified": true,
+        "orderedAs": "SBI36S"
       },
       {
         "sku": "SBI36S",
@@ -4976,7 +4996,11 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "mount": "wall",
-        "epicVerified": true
+        "epicVerified": true,
+        "listPrice": 381.0,
+        "price": 169.93,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "WH3015",
@@ -5097,7 +5121,11 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "mount": "wall",
-        "epicVerified": true
+        "epicVerified": true,
+        "listPrice": 691.0,
+        "price": 308.19,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "WBF3030",
@@ -5377,7 +5405,11 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "mount": "wall",
-        "epicVerified": true
+        "epicVerified": true,
+        "listPrice": 751.0,
+        "price": 334.95,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "WH3321",
@@ -5668,7 +5700,11 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "mount": "wall",
-        "epicVerified": true
+        "epicVerified": true,
+        "listPrice": 379.0,
+        "price": 169.03,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "WH3612",
@@ -9324,7 +9360,12 @@
         "type": "filler",
         "cabinetHeight": 96,
         "panelThickness": 1.5,
-        "hand": "L"
+        "hand": "L",
+        "listPrice": 195.0,
+        "price": 86.97,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "orderedAs": "1.5REP2496 on the order; ePic did not carry a hand"
       },
       {
         "sku": "1.5REP2496R",
@@ -9335,7 +9376,12 @@
         "type": "filler",
         "cabinetHeight": 96,
         "panelThickness": 1.5,
-        "hand": "R"
+        "hand": "R",
+        "listPrice": 195.0,
+        "price": 86.97,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "orderedAs": "1.5REP2496 on the order; ePic did not carry a hand"
       },
       {
         "sku": "1.5REP2896L",
@@ -9473,7 +9519,12 @@
         "depth": 0.75,
         "type": "filler",
         "cabinetHeight": 34.5,
-        "accessory": "filler"
+        "accessory": "filler",
+        "listPrice": 56.0,
+        "price": 24.98,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "orderedAs": "F3345D on the order"
       },
       {
         "sku": "F336",
@@ -9493,7 +9544,11 @@
         "depth": 0.75,
         "type": "filler",
         "cabinetHeight": 42.0,
-        "accessory": "filler"
+        "accessory": "filler",
+        "listPrice": 56.0,
+        "price": 24.98,
+        "priceGroup": "C",
+        "priceVerified": true
       },
       {
         "sku": "F384",
@@ -10792,6 +10847,34 @@
         "accessory": "rollout",
         "material": "Plywood",
         "uShaped": true
+      },
+      {
+        "sku": "TB8-.25",
+        "name": "Toe kick 8 ft x 1/4\"",
+        "width": 8.0,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "filler",
+        "listPrice": 30.0,
+        "price": 13.38,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "epicVerified": true,
+        "note": "Read off order 474386. LCROWN8 is ordered through WOOD MOLDINGS (Custom series) in PAINT GRADE / DEW MATT, not THREE SERIES MOLDINGS."
+      },
+      {
+        "sku": "LCROWN8",
+        "name": "Large crown 3-1/2\", 8 ft",
+        "width": 8.0,
+        "height": 0.25,
+        "depth": 0.25,
+        "type": "crown-molding",
+        "listPrice": 218.5,
+        "price": 97.45,
+        "priceGroup": "C",
+        "priceVerified": true,
+        "epicVerified": true,
+        "note": "Read off order 474386. LCROWN8 is ordered through WOOD MOLDINGS (Custom series) in PAINT GRADE / DEW MATT, not THREE SERIES MOLDINGS."
       }
     ],
     "vanity": [
@@ -12338,5 +12421,7 @@
       "evidence": "standard cabinet modification - confirm code with SOLLiD",
       "codeKnown": false
     }
-  ]
+  ],
+  "dealerFactor": 0.446,
+  "priceNote": "listPrice is SOLLiD list for price GROUP C (Miami Dew), read off order 474386 in ePic on 17 Sep 2026. price is the dealer cost at list x 0.446, which is the number getElementPrice treats as cost before margin. Only SKUs actually seen on an order carry priceVerified; everything else falls back to the per-linear-foot estimate. Other finishes sit in other price groups (A-J) and these figures do not apply to them \u2014 the group chart is on page 25 of the SOLLiD spec book and is not in here yet."
 }
