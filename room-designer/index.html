@@ -8156,12 +8156,29 @@
           elements: elements.map(el => ({
             type: el.type,
             label: el.label,
+            sku: el.sku || undefined,
             width: el.width,
             height: el.height,
+            /*
+             * Vertical height and mount were never sent, so the model was
+             * designing in plan only — it could not tell a 12" box from a 42"
+             * one, or a wall cabinet from a base. Both are the difference
+             * between a run that works and one that collides.
+             */
+            cabinetHeight: el.cabinetHeight !== undefined ? el.cabinetHeight : undefined,
+            mountHeight: el.mountHeight !== undefined ? el.mountHeight : undefined,
             wall: el.aiWall || 'unknown',
             x: el.x / pixelsPerFoot,
             y: el.y / pixelsPerFoot
-          }))
+          })),
+          /*
+           * What is already wrong with this design, in the model's own input.
+           * It was being asked to add cabinets to a room it could not inspect,
+           * so it had no way to avoid repeating a mistake already on screen.
+           */
+          issues: (typeof validateFitAndAssembly === 'function'
+            ? validateFitAndAssembly().map(i => `${i.type}: ${i.message}`)
+            : [])
         };
 
         // Call AI endpoint. MUST be absolute — the static host (www) does NOT
@@ -8198,9 +8215,35 @@
           }
         }
 
+        /*
+         * Check the work, the way a person would before saying "done".
+         *
+         * The chat could place cabinets and never look at what it had placed,
+         * so it would happily drop a 36" box into a 33" opening and report
+         * success. Re-run the fit checker and report only what the actions
+         * THEMSELVES introduced — pre-existing problems are the user's to deal
+         * with and repeating them every turn would be noise.
+         */
+        let reply = data.response;
+        if (executedActions.length && typeof validateFitAndAssembly === 'function') {
+          const before = new Set(roomState.issues || []);
+          const after = validateFitAndAssembly().map(i => `${i.type}: ${i.message}`);
+          const introduced = after.filter(m => !before.has(m) && m.startsWith('error'));
+          if (introduced.length) {
+            reply += '\n\n**That does not fit.** What I just placed causes:\n' +
+                     introduced.map(m => '- ' + m.replace(/^error: /, '')).join('\n') +
+                     '\n\nTell me how you want it resolved and I will change it.';
+            // The model has to see its own failure or it will repeat it.
+            aiChatHistory.push({
+              role: 'system',
+              content: 'Fit check on the actions you just took: ' + introduced.join(' | ')
+            });
+          }
+        }
+
         // Add assistant response
-        aiChatSay('assistant', data.response, executedActions);
-        aiChatHistory.push({ role: 'assistant', content: data.response });
+        aiChatSay('assistant', reply, executedActions);
+        aiChatHistory.push({ role: 'assistant', content: reply });
 
         // Update canvas if actions were taken
         if (executedActions.length > 0) {
