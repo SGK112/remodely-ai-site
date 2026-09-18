@@ -37997,6 +37997,85 @@
           baseMetalness = 0.02;
         }
 
+        /*
+         * Paint has a surface. Ours did not.
+         *
+         * A painted door got a faint noise albedo and then a single roughness
+         * number for the whole face, so every square inch reflected light
+         * identically — which is what makes CG paint read as plastic. Real
+         * sprayed or rolled MDF has a fine orange peel and roughness that
+         * drifts across the panel, and that drift is most of what your eye
+         * uses to decide a surface is real.
+         *
+         * Generated once and shared by every door in the scene: a texture this
+         * fine is identical whatever colour sits under it, and building one per
+         * cabinet would cost a megabyte a door for no visible gain.
+         */
+        function paintSurfaceMaps() {
+          if (window.__paintMaps) return window.__paintMaps;
+          const S = 512;
+          const mk = () => {
+            const c = document.createElement('canvas');
+            c.width = c.height = S;
+            return [c, c.getContext('2d')];
+          };
+
+          // Roughness: mid-grey drifting either way. Low-frequency blobs for the
+          // drift, a fine speckle on top for the spray texture.
+          const [rc, rx] = mk();
+          rx.fillStyle = '#9a9a9a';
+          rx.fillRect(0, 0, S, S);
+          for (let i = 0; i < 90; i++) {
+            const g = rx.createRadialGradient(
+              Math.random() * S, Math.random() * S, 0,
+              Math.random() * S, Math.random() * S, 40 + Math.random() * 110);
+            const v = Math.random() < 0.5 ? 255 : 0;
+            g.addColorStop(0, `rgba(${v},${v},${v},0.045)`);
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+            rx.fillStyle = g;
+            rx.fillRect(0, 0, S, S);
+          }
+          const rimg = rx.getImageData(0, 0, S, S);
+          for (let i = 0; i < rimg.data.length; i += 4) {
+            const n = (Math.random() - 0.5) * 14;
+            rimg.data[i] = rimg.data[i + 1] = rimg.data[i + 2] =
+              Math.max(0, Math.min(255, rimg.data[i] + n));
+          }
+          rx.putImageData(rimg, 0, 0);
+
+          // Normal: neutral blue with the same speckle nudged into X and Y, so
+          // the bumps line up with the rough patches instead of fighting them.
+          const [nc, nx] = mk();
+          const nimg = nx.createImageData(S, S);
+          for (let y = 0; y < S; y++) {
+            for (let x = 0; x < S; x++) {
+              const i = (y * S + x) * 4;
+              const j = (y * S + x) * 4;
+              const d = (rimg.data[j] - 154) / 255;      // 154 ~ the 0x9a base
+              nimg.data[i]     = 128 + d * 26;
+              nimg.data[i + 1] = 128 - d * 26;
+              nimg.data[i + 2] = 255;
+              nimg.data[i + 3] = 255;
+            }
+          }
+          nx.putImageData(nimg, 0, 0);
+
+          const dress = (canvas) => {
+            const t = new THREE.CanvasTexture(canvas);
+            t.wrapS = t.wrapT = THREE.RepeatWrapping;
+            t.repeat.set(2, 2);
+            if (renderer) t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            return t;
+          };
+          window.__paintMaps = { roughnessMap: dress(rc), normalMap: dress(nc) };
+          return window.__paintMaps;
+        }
+
+        // Only a painted finish wants this. Wood already carries its own grain,
+        // and laying orange peel over oak would read as dirt.
+        const paintMaps = (cabinetFinish === 'painted' || cabinetFinish === 'matte' ||
+                           cabinetFinish === 'gloss') ? paintSurfaceMaps() : null;
+
         // Face frame for framed cabinets
         if (isFramed) {
           const frameMat = new THREE.MeshStandardMaterial({
@@ -38004,7 +38083,10 @@
             map: woodTexture,
             roughness: baseRoughness + 0.05,
             metalness: baseMetalness,
-            bumpScale: woodTexture ? 0.002 : 0
+            bumpScale: woodTexture ? 0.002 : 0,
+            ...(paintMaps ? { roughnessMap: paintMaps.roughnessMap,
+                              normalMap: paintMaps.normalMap,
+                              normalScale: new THREE.Vector2(0.09, 0.09) } : {})
           });
           const frameW = 0.06; // 1.5" face frame
 
@@ -38056,7 +38138,10 @@
           map: woodTexture,
           roughness: baseRoughness,
           metalness: baseMetalness,
-          bumpScale: woodTexture ? 0.002 : 0
+          bumpScale: woodTexture ? 0.002 : 0,
+          ...(paintMaps ? { roughnessMap: paintMaps.roughnessMap,
+                            normalMap: paintMaps.normalMap,
+                            normalScale: new THREE.Vector2(0.09, 0.09) } : {})
         });
 
         // Door(s) - each door is a Group with pivot at hinge edge for proper animation
@@ -38154,7 +38239,10 @@
           color: faceTint,
           map: woodTexture,
           roughness: baseRoughness - 0.02,
-          metalness: baseMetalness
+          metalness: baseMetalness,
+          ...(paintMaps ? { roughnessMap: paintMaps.roughnessMap,
+                            normalMap: paintMaps.normalMap,
+                            normalScale: new THREE.Vector2(0.09, 0.09) } : {})
         });
 
         for (let i = 0; i < numDoors; i++) {
