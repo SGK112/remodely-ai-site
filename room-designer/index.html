@@ -11815,6 +11815,306 @@
       return issues;
     }
 
+    /*
+     * Fit and assembly — the carpentry, not the ergonomics.
+     *
+     * Everything above this point is NKBA and NEC: how far apart things should
+     * be for a person to use them. None of it asks whether the parts physically
+     * go together, and that is a different family of mistake. Two real orders
+     * this week carried four of them:
+     *
+     *   - a 36" wall cabinet specified into a 33" opening. It cannot go in.
+     *   - a 12"-high box over a 70" refrigerator in a 96" bay: 14" of nothing.
+     *   - a 12"-deep box between two 24"-deep panels, face set a foot back.
+     *   - one 96" length of toe kick for a 92" run plus two panels.
+     *
+     * Every one of those closed on arithmetic, passed every clearance rule, and
+     * would have shipped. They are caught by measuring parts against each other
+     * rather than against a person.
+     */
+    function validateFitAndAssembly() {
+      const issues = [];
+      const ppf = pixelsPerFoot;
+      const IN = (ft) => ft * 12;
+
+      // Things that occupy space in a run. Trim and countertops are measured
+      // against runs rather than being part of one.
+      const TRIM = ['crown-molding', 'baseboard', 'chair-rail', 'countertop',
+                    'countertop-l', 'countertop-u', 'countertop-corner'];
+      /*
+       * A sink sits in its base, a microwave hangs under the cabinet above it,
+       * a cooktop drops into the counter. They occupy the same plan footprint
+       * as their host by design, so measuring them as run members reports the
+       * host and the appliance as overlapping — which is how it is meant to be.
+       */
+      const HOSTED = ['sink', 'sink-double', 'sink-farmhouse', 'microwave',
+                      'cooktop', 'oven', 'wall-oven-double', 'range-hood',
+                      'warming-drawer', 'trash-compactor'];
+      const boxes = elements.filter(el =>
+        el && !el.hidden && !TRIM.includes(el.type) && !HOSTED.includes(el.type) &&
+        isFinite(el.x) && isFinite(el.width) && el.width > 0
+      );
+
+      const label = (el) => el.label || el.sku || el.type || 'element';
+      const near = (a, b, tol) => Math.abs(a - b) <= tol;
+
+      /*
+       * Group into runs along a wall: same rotation, same distance from the
+       * wall, touching or nearly touching along the run axis.
+       */
+      const runAxis = (el) => {
+        const rot = (((el.rotation || 0) % 360) + 360) % 360;
+        return (rot === 90 || rot === 270) ? 'z' : 'x';
+      };
+      const start = (el) => runAxis(el) === 'x' ? el.x / ppf : el.y / ppf;
+      const span  = (el) => runAxis(el) === 'x' ? el.width : (el.height || el.width);
+      const depth = (el) => runAxis(el) === 'x' ? (el.height || 0) : (el.width || 0);
+      const band  = (el) => {
+        const h = get3DHeight(el);
+        const y = get3DYPosition(el, h);
+        return { lo: y - h / 2, hi: y + h / 2 };
+      };
+
+      // ---- 1. Nothing wider than the gap it has to live in -----------------
+      /*
+       * The one that would have caught the W3612. For each box, look at what
+       * bounds it on the run axis within its own height band — a neighbour or
+       * the room — and compare the opening to the part.
+       */
+      boxes.forEach(el => {
+        const ax = runAxis(el);
+        const a0 = start(el), a1 = a0 + span(el);
+        const ab = band(el);
+        let leftEdge = 0;
+        let rightEdge = ax === 'x' ? roomWidth : roomDepth;
+        let leftBy = 'the wall', rightBy = 'the wall';
+
+        boxes.forEach(other => {
+          if (other === el || runAxis(other) !== ax) return;
+          const ob = band(other);
+          // Only parts that share vertical space can bound it.
+          if (ob.hi <= ab.lo + 0.02 || ob.lo >= ab.hi - 0.02) return;
+          const o0 = start(other), o1 = o0 + span(other);
+          if (o1 <= a0 + 0.01 && o1 > leftEdge)  { leftEdge = o1;  leftBy = label(other); }
+          if (o0 >= a1 - 0.01 && o0 < rightEdge) { rightEdge = o0; rightBy = label(other); }
+        });
+
+        /*
+         * A refrigerator bay is framed by panels that run floor to ceiling. A
+         * box set above the appliance may share no height band with them at
+         * all, so the loop above sees open wall and calls the fit fine — which
+         * is exactly how a 36" cabinet got specified into a 33" opening. Tall
+         * parts bound anything stacked between them, band or no band.
+         */
+        boxes.forEach(other => {
+          if (other === el || runAxis(other) !== ax) return;
+          const ob = band(other);
+          if (ob.hi - ob.lo < 4) return;               // not a full-height part
+          if (ab.lo < ob.lo - 0.02) return;            // el is not inside its span
+          const o0 = start(other), o1 = o0 + span(other);
+          if (o1 <= a0 + 0.01 && o1 > leftEdge)  { leftEdge = o1;  leftBy = label(other); }
+          if (o0 >= a1 - 0.01 && o0 < rightEdge) { rightEdge = o0; rightBy = label(other); }
+        });
+
+        const opening = rightEdge - leftEdge;
+        const overhang = span(el) - opening;
+        if (overhang > 1 / 12) {   // more than 1"
+          issues.push({
+            type: 'error',
+            message: `${label(el)} is ${formatDimension(span(el))} wide in a ` +
+                     `${formatDimension(opening)} opening between ${leftBy} and ${rightBy} — ` +
+                     `${formatDimension(overhang)} too wide to fit`,
+            elements: [el]
+          });
+        }
+      });
+
+      // ---- 1b. Two parts trying to occupy the same space --------------------
+      /*
+       * The one that matters most, and the one the tier-grouped gap check in
+       * rule 2 cannot see: a collision between parts in different tiers.
+       *
+       * Order 474386 had a 36" wall cabinet spanning 92"-128" and two 96"-tall
+       * refrigerator panels at 92"-93.5" and 126.5"-128". Both are "correct"
+       * on their own row of the schedule. In space they pass through each
+       * other, and no clearance rule in the file was ever going to notice,
+       * because the parts are not near each other — they are inside each other.
+       */
+      for (let i = 0; i < boxes.length; i++) {
+        for (let j = i + 1; j < boxes.length; j++) {
+          const a = boxes[i], b = boxes[j];
+          if (runAxis(a) !== runAxis(b)) continue;
+          const tol = 0.125 / 12;                       // 1/8"
+          const a0 = start(a), a1 = a0 + span(a);
+          const b0 = start(b), b1 = b0 + span(b);
+          const alongOverlap = Math.min(a1, b1) - Math.max(a0, b0);
+          if (alongOverlap <= tol) continue;
+          const ab = band(a), bb = band(b);
+          const heightOverlap = Math.min(ab.hi, bb.hi) - Math.max(ab.lo, bb.lo);
+          if (heightOverlap <= tol) continue;
+          const ax = runAxis(a);
+          const aOff = ax === 'x' ? a.y / ppf : a.x / ppf;
+          const bOff = ax === 'x' ? b.y / ppf : b.x / ppf;
+          const depthOverlap = Math.min(aOff + depth(a), bOff + depth(b)) - Math.max(aOff, bOff);
+          if (depthOverlap <= tol) continue;
+          issues.push({
+            type: 'error',
+            message: `${label(a)} and ${label(b)} occupy the same space — ` +
+                     `${formatDimension(alongOverlap)} along the wall by ` +
+                     `${formatDimension(heightOverlap)} high. One of them cannot be built.`,
+            elements: [a, b]
+          });
+        }
+      }
+
+      // ---- 2. Runs close, without gaps or overlaps --------------------------
+      const runs = new Map();
+      boxes.forEach(el => {
+        const ax = runAxis(el);
+        const off = Math.round((ax === 'x' ? el.y / ppf : el.x / ppf) * 12) / 12;
+        const b = band(el);
+        const tier = b.lo < 2.5 ? 'base' : (b.lo < 6.5 ? 'wall' : 'upper');
+        const key = ax + '@' + off.toFixed(2) + ':' + tier;
+        if (!runs.has(key)) runs.set(key, []);
+        runs.get(key).push(el);
+      });
+
+      runs.forEach(group => {
+        if (group.length < 2) return;
+        const sorted = group.slice().sort((a, b) => start(a) - start(b));
+        for (let i = 1; i < sorted.length; i++) {
+          const prev = sorted[i - 1], cur = sorted[i];
+          const prevEnd = start(prev) + span(prev);
+          const gap = start(cur) - prevEnd;
+          /*
+           * A floor-to-ceiling panel fills the gap on every tier it passes
+           * through, but it only belongs to one tier's run, so the tier above
+           * sees open air where the panel actually is.
+           */
+          const spanned = boxes.some(t => {
+            if (t === prev || t === cur || runAxis(t) !== runAxis(cur)) return false;
+            const tb = band(t);
+            if (tb.hi - tb.lo < 4) return false;
+            const t0 = start(t), t1 = t0 + span(t);
+            return t0 <= prevEnd + 0.01 && t1 >= start(cur) - 0.01;
+          });
+          if (spanned) continue;
+
+          if (gap > 0.125 / 12 && gap < 1) {          // 1/8" to 12"
+            issues.push({
+              type: 'warning',
+              message: `${formatDimension(gap)} gap between ${label(prev)} and ${label(cur)} — ` +
+                       `needs a filler, or the run does not close`,
+              elements: [prev, cur]
+            });
+          } else if (gap < -0.125 / 12) {
+            issues.push({
+              type: 'error',
+              message: `${label(prev)} and ${label(cur)} overlap by ${formatDimension(-gap)}`,
+              elements: [prev, cur]
+            });
+          }
+        }
+      });
+
+      // ---- 3. No open void stacked inside a bay -----------------------------
+      /*
+       * The 14" over the refrigerator. Within one column of the plan, walk the
+       * height bands bottom to top and flag air between two parts that both sit
+       * in the same footprint.
+       */
+      boxes.forEach(lower => {
+        const ax = runAxis(lower);
+        const l0 = start(lower), l1 = l0 + span(lower);
+        const lb = band(lower);
+        /*
+         * Only inside a column. The air between a base cabinet and the wall
+         * cabinet over it is the backsplash — 18" of it, on purpose — so this
+         * rule applies from the top of something tall upward, never across
+         * the counter.
+         */
+        if (lb.hi < 4) return;
+        let nearestAbove = null, nearestLo = Infinity;
+
+        boxes.forEach(upper => {
+          if (upper === lower || runAxis(upper) !== ax) return;
+          const u0 = start(upper), u1 = u0 + span(upper);
+          // Must share most of the footprint to be "stacked".
+          const overlap = Math.min(l1, u1) - Math.max(l0, u0);
+          if (overlap < Math.min(span(lower), span(upper)) * 0.6) return;
+          const ub = band(upper);
+          if (ub.lo >= lb.hi - 0.02 && ub.lo < nearestLo) { nearestLo = ub.lo; nearestAbove = upper; }
+        });
+
+        if (nearestAbove) {
+          const void_ = nearestLo - lb.hi;
+          if (void_ > 3 / 12) {
+            issues.push({
+              type: 'warning',
+              message: `${formatDimension(void_)} of open space between the top of ${label(lower)} ` +
+                       `and ${label(nearestAbove)} — nothing fills it`,
+              elements: [lower, nearestAbove]
+            });
+          }
+        }
+      });
+
+      // ---- 4. Depth steps inside a bay --------------------------------------
+      /*
+       * A 12"-deep box between 24"-deep panels leaves a foot of their edge on
+       * show. Flag a part noticeably shallower than BOTH of its neighbours.
+       */
+      runs.forEach(group => {
+        if (group.length < 3) return;
+        const sorted = group.slice().sort((a, b) => start(a) - start(b));
+        for (let i = 1; i < sorted.length - 1; i++) {
+          const d = depth(sorted[i]), dl = depth(sorted[i - 1]), dr = depth(sorted[i + 1]);
+          if (d > 0 && dl - d > 0.4 && dr - d > 0.4) {   // ~5" shallower than both
+            issues.push({
+              type: 'warning',
+              message: `${label(sorted[i])} is ${formatDimension(d)} deep between two parts at ` +
+                       `${formatDimension(dl)} and ${formatDimension(dr)} — its face sits ` +
+                       `${formatDimension(Math.min(dl, dr) - d)} behind theirs`,
+              elements: [sorted[i]]
+            });
+          }
+        }
+      });
+
+      // ---- 5. Linear trim against the run it has to cover --------------------
+      ['crown-molding', 'baseboard'].forEach(type => {
+        const pieces = elements.filter(el => el.type === type && !el.hidden);
+        if (!pieces.length) return;
+        const covered = pieces.reduce((n, p) => n + Math.max(p.width || 0, p.height || 0), 0);
+        /*
+         * Measure once per wall line, not once per tier. A base run and the
+         * wall run above it share a wall; counting both doubled every number.
+         */
+        const perWall = new Map();
+        runs.forEach((group, key) => {
+          const tierOk = type === 'baseboard'
+            ? group.some(el => band(el).lo < 0.5)
+            : group.some(el => band(el).hi > 4.5 && band(el).lo > 2.5);
+          if (!tierOk) return;
+          const wall = key.split(':')[0];
+          const lo = Math.min(...group.map(start));
+          const hi = Math.max(...group.map(el => start(el) + span(el)));
+          perWall.set(wall, Math.max(perWall.get(wall) || 0, hi - lo));
+        });
+        const needed = Array.from(perWall.values()).reduce((n, v) => n + v, 0);
+        if (needed > 0 && covered < needed - 0.25) {
+          issues.push({
+            type: 'info',
+            message: `${formatDimension(covered)} of ${type.replace('-', ' ')} drawn against ` +
+                     `${formatDimension(needed)} of run — short by ${formatDimension(needed - covered)}`,
+            elements: pieces
+          });
+        }
+      });
+
+      return issues;
+    }
+
     // Validate electrical requirements per NEC (National Electrical Code)
     function validateElectrical() {
       const issues = [];
@@ -11979,6 +12279,13 @@
       validationIssues.push(...electricalIssues.map(i => ({
         ...i,
         category: 'Electrical (NEC)'
+      })));
+
+      // Does it physically go together
+      const fitIssues = validateFitAndAssembly();
+      validationIssues.push(...fitIssues.map(i => ({
+        ...i,
+        category: 'Fit & Assembly'
       })));
 
       updateValidationPanel();
