@@ -12127,6 +12127,119 @@
         }
       });
 
+      // ---- 6. Standing on the floor, or hanging off the wall, or neither ----
+      /*
+       * Two different reports, same cause: nothing checks an element's height
+       * against what it is. A base cabinet whose mount height came from a
+       * catalog row meant for a wall cabinet floats; a tall pantry in a room
+       * whose ceiling was later dropped to 8ft pushes through it.
+       */
+      const FLOOR_STANDING = [
+        'base-cabinet', 'sink-base', 'sink-base-apron', 'drawer-base', 'tall-cabinet',
+        'island', 'pantry',
+        'linen-closet', 'linen-tower', 'fridge-cabinet', 'single-oven-cabinet',
+        'tall-oven', 'double-oven-cabinet', 'refrigerator', 'range', 'stove',
+        'slide-in-range', 'dishwasher', 'washer', 'dryer',
+        'toilet', 'bathtub', 'bathtub-freestanding', 'bathtub-corner',
+        'washer-dryer-stack', 'wine-cooler', 'beverage-center'
+      ];
+      /*
+       * Deliberately absent: filler, scribe, corner-cabinet, lazy-susan and
+       * blind-corner. Every one of those ships in a base height AND a wall
+       * height under the same type — F3345D and F342 are both 'filler', BBC39
+       * is a floor blind corner and WBC3030 hangs. The type alone cannot say
+       * which, so a float rule on them reports a correctly hung wall filler as
+       * floating 4'-6" off the floor. Better silent than wrong.
+       */
+      const ceiling = (typeof roomHeight === 'number' && roomHeight > 0) ? roomHeight : 8;
+
+      boxes.forEach(el => {
+        const b = band(el);
+        const type = (typeof normalizeCabinetType === 'function')
+          ? normalizeCabinetType(el.type) : el.type;
+        const standsOnFloor = FLOOR_STANDING.includes(type) || FLOOR_STANDING.includes(el.type);
+        /*
+         * Only an explicit mount:'wall' excuses a floor-standing type from the
+         * floor — that is a wall-hung vanity, which is a real thing. A stated
+         * mountHeight does NOT excuse it: a base cabinet 18" up is precisely
+         * the bug this rule is for, usually a mount height copied off a wall
+         * cabinet's catalog row.
+         */
+        const hangs = el.mount === 'wall';
+
+        if (standsOnFloor && !hangs) {
+          if (b.lo > 1 / 12) {
+            issues.push({
+              type: 'error',
+              message: `${label(el)} floats ${formatDimension(b.lo)} off the floor — ` +
+                       `it is meant to stand on it`,
+              elements: [el]
+            });
+          } else if (b.lo < -1 / 12) {
+            issues.push({
+              type: 'error',
+              message: `${label(el)} sits ${formatDimension(-b.lo)} into the floor`,
+              elements: [el]
+            });
+          }
+        }
+
+        if (b.hi > ceiling + 1 / 12) {
+          issues.push({
+            type: 'error',
+            message: `${label(el)} reaches ${formatDimension(b.hi)} in a ` +
+                     `${formatDimension(ceiling)} room — ${formatDimension(b.hi - ceiling)} ` +
+                     `through the ceiling`,
+            elements: [el]
+          });
+        }
+      });
+
+      // ---- 7. Facing the room ------------------------------------------------
+      /*
+       * A cabinet against a wall opens away from it. The renderer auto-rotates
+       * anything that carries no rotation, so this only catches an element that
+       * states one — which is exactly the case the auto-rotate cannot save, and
+       * the one that produces a run of doors opening into plaster.
+       */
+      const FACES_ROOM = ['base-cabinet', 'sink-base', 'drawer-base', 'wall-cabinet',
+        'tall-cabinet', 'pantry', 'fridge-cabinet', 'refrigerator', 'range', 'stove',
+        'dishwasher', 'single-oven-cabinet', 'double-oven-cabinet', 'microwave-cabinet',
+        'washer', 'dryer', 'linen-closet'];
+
+      boxes.forEach(el => {
+        if (el.rotation === undefined || el.rotation === null) return;   // auto-rotated
+        const type = (typeof normalizeCabinetType === 'function')
+          ? normalizeCabinetType(el.type) : el.type;
+        if (!FACES_ROOM.includes(type) && !FACES_ROOM.includes(el.type)) return;
+
+        const rot = (((el.rotation % 360) + 360) % 360);
+        const x0 = el.x / ppf, y0 = el.y / ppf;
+        const x1 = x0 + el.width, y1 = y0 + (el.height || 0);
+        const tol = 0.5;
+
+        // Which wall is it actually touching?
+        const touching = [];
+        if (y0 <= tol) touching.push({ wall: 'back',  want: 0 });
+        if (roomDepth - y1 <= tol) touching.push({ wall: 'front', want: 180 });
+        if (x0 <= tol) touching.push({ wall: 'left',  want: 270 });
+        if (roomWidth - x1 <= tol) touching.push({ wall: 'right', want: 90 });
+        if (touching.length !== 1) return;      // a corner, or free-standing
+
+        const { wall, want } = touching[0];
+        if (rot !== want) {
+          const facing = { 0: 'into the room', 180: 'into the room',
+                           90: 'across the room', 270: 'across the room' }[rot];
+          issues.push({
+            type: 'warning',
+            message: `${label(el)} is against the ${wall} wall but set to ${rot}° — ` +
+                     `its doors open ${rot === (want + 180) % 360 ? 'into the wall' : 'sideways'}. ` +
+                     `${want}° faces the room.`,
+            elements: [el]
+          });
+        }
+      });
+
       return issues;
     }
 
