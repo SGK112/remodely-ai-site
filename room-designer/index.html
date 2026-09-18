@@ -8178,7 +8178,38 @@
            */
           issues: (typeof validateFitAndAssembly === 'function'
             ? validateFitAndAssembly().map(i => `${i.type}: ${i.message}`)
-            : [])
+            : []),
+          /*
+           * The cabinets this catalog actually builds, so the model has a
+           * vocabulary instead of an imagination.
+           *
+           * Without it the chat could only ask for "a 36 inch wall cabinet"
+           * and the app guessed the rest, or it would name a SKU it had
+           * invented — which is exactly how W3312 reached an estimate. Only
+           * confirmed entries go in: an unverified SKU is not something to
+           * put in front of a model as an option.
+           */
+          catalog: (function () {
+            if (typeof CABINET_CATALOGS !== 'object') return null;
+            const id = typeof currentCatalog !== 'undefined' ? currentCatalog : null;
+            const cat = id && CABINET_CATALOGS[id];
+            if (!cat || !cat.cabinets) return null;
+            const skus = [];
+            Object.values(cat.cabinets).forEach(list => {
+              if (!Array.isArray(list)) return;
+              list.forEach(c => {
+                if (!c || !c.sku) return;
+                const flag = c.epicVerified !== undefined ? c.epicVerified
+                           : c.portalVerified !== undefined ? c.portalVerified : null;
+                if (flag === false) return;          // never offer an unconfirmed part
+                skus.push(`${c.sku} ${c.type || 'cabinet'} ` +
+                          `${Math.round((c.width || 0) * 12)}w` +
+                          (c.cabinetHeight ? ` ${c.cabinetHeight}h` : '') +
+                          ` ${Math.round((c.height || 0) * 12)}d`);
+              });
+            });
+            return { id, name: cat.name || id, skus };
+          })()
         };
 
         // Call AI endpoint. MUST be absolute — the static host (www) does NOT
@@ -8479,12 +8510,59 @@
     }
 
     // Helper: Add cabinet from AI
-    function addAICabinet(params) {
-      const { type = 'base-cabinet', wall = 'top', width = 36, position = null, label = null } = params;
+    /*
+     * Look a SKU up in whichever catalog is loaded, and say plainly when it is
+     * not real.
+     *
+     * The chat could only ask for "a 36 inch wall cabinet", so the app guessed
+     * a depth from the type name and a height from nothing at all. Every
+     * cabinet it placed was an approximation of a cabinet. Given a SKU it can
+     * use the factory's own numbers — and refuse the ones the factory does not
+     * build, which is the failure that started all of this.
+     */
+    function lookupCatalogSku(sku, catalogId) {
+      if (!sku || typeof CABINET_CATALOGS !== 'object') return null;
+      const ids = catalogId ? [catalogId] : Object.keys(CABINET_CATALOGS);
+      for (const id of ids) {
+        const cat = CABINET_CATALOGS[id];
+        if (!cat || !cat.cabinets) continue;
+        for (const list of Object.values(cat.cabinets)) {
+          if (!Array.isArray(list)) continue;
+          const hit = list.find(c => c && c.sku === sku);
+          if (hit) {
+            const flag = hit.epicVerified !== undefined ? hit.epicVerified
+                       : hit.portalVerified !== undefined ? hit.portalVerified : null;
+            return { cab: hit, catalogId: id, catalogName: cat.name || id, verified: flag };
+          }
+        }
+      }
+      return null;
+    }
 
-      const faceFt = width / 12;
-      const depthFt = type.includes('wall') ? 1 : 2;
-      const heightFt = type.includes('wall') ? 2.5 : depthFt;
+    function addAICabinet(params) {
+      const { type = 'base-cabinet', wall = 'top', width = 36, position = null, label = null,
+              sku = null, catalog = null } = params;
+
+      let found = null;
+      if (sku) {
+        found = lookupCatalogSku(sku, catalog || (typeof currentCatalog !== 'undefined' ? currentCatalog : null))
+             || lookupCatalogSku(sku, null);
+        if (!found) {
+          return `${sku} is not in any loaded catalog — nothing placed. ` +
+                 `Pick a SKU that exists or ask for a size instead.`;
+        }
+        if (found.verified === false) {
+          return `${sku} is listed in ${found.catalogName} but has never been confirmed ` +
+                 `against the factory — nothing placed. Verify it can be ordered first.`;
+        }
+      }
+      const cab = found && found.cab;
+
+      const faceFt = cab ? cab.width : width / 12;
+      const depthFt = cab ? (cab.height || 2)
+                          : (type.includes('wall') ? 1 : 2);
+      const heightFt = cab ? (cab.height || 2)
+                          : (type.includes('wall') ? 2.5 : depthFt);
       const isVerticalWall = (wall === 'left' || wall === 'right');
 
       let x, y, rotation = 0;
@@ -8534,7 +8612,8 @@
         height: isVerticalWall ? faceFt : depthFt,
         rotation,
         color: type.includes('wall') ? '#B8860B' : '#8B4513',
-        label: label || `${type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} ${width}"`,
+        label: label || (cab ? `${cab.sku} — ${cab.name}`
+          : `${type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} ${width}"`),
         locked: false,
         roomId: currentRoom,
         floorLevel: cabinetSettings?.currentFloor || 1,
@@ -8544,9 +8623,24 @@
         aiGenerated: true
       };
 
+      // Carry the factory's own numbers rather than a guess from the type name.
+      if (cab) {
+        element.type = cab.type || element.type;
+        element.sku = cab.sku;
+        element.catalog = found.catalogId;
+        if (cab.cabinetHeight) element.cabinetHeight = cab.cabinetHeight / 12;
+        if (cab.mount === 'wall') {
+          element.mount = 'wall';
+          if (element.mountHeight === undefined) element.mountHeight = 4.5;
+        }
+      }
+
       elements.push(element);
       elementListDirty = true;
-      return `Added ${width}" ${type.replace('-', ' ')} on ${wall} wall`;
+      return cab
+        ? `Added ${cab.sku} (${Math.round(cab.width * 12)}" wide` +
+          (cab.cabinetHeight ? ` × ${cab.cabinetHeight}" high` : '') + `) on the ${wall} wall`
+        : `Added ${width}" ${type.replace('-', ' ')} on ${wall} wall`;
     }
 
     // Helper: Add appliance from AI
