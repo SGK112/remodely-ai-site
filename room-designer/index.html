@@ -12939,8 +12939,72 @@
     ];
 
     // Helper function to resolve asset URLs for both file:// and http:// protocols
+    /*
+     * Slab photography cached same-origin.
+     *
+     * MSI's CDN serves these images with no Access-Control-Allow-Origin
+     * header. The <img> loads and the picker looks fine, but WebGL cannot
+     * sample a cross-origin texture without CORS, and the Sobel normal-map
+     * generator below reads the pixels back off a canvas — which throws a
+     * SecurityError on a tainted canvas before it produces a normal at all.
+     *
+     * So every countertop fell back to a flat hex colour with no albedo, no
+     * normal and no roughness map, through a renderer that already had ACES
+     * tone mapping, a PMREM environment, soft shadows and a floor mirror
+     * behind it. That mismatch is most of why the room read as CG: the
+     * lighting was doing real work on materials that had no surface.
+     *
+     * These are the same images at 1024px, served from our own origin.
+     */
+    const STONE_TEXTURES = new Set([
+      'alabaster-white-quartz.jpg',
+      'arctic-white-quartz.jpg',
+      'aruca-white-quartz.jpg',
+      'azurmatt-quartz.jpg',
+      'babylon-gray-quartz.jpg',
+      'bayshore-sand-quartz.jpg',
+      'calacatta-alto-quartz.jpg',
+      'calacatta-botanica-quartz.jpg',
+      'calacatta-clara-quartz.jpg',
+      'calacatta-classique-quartz.jpg',
+      'calacatta-goa-quartz.jpg',
+      'calacatta-laza-quartz.jpg',
+      'calacatta-luccia-quartz.jpg',
+      'calacatta-miraggio-gold-quartz.jpg',
+      'calacatta-miraggio-quartz.jpg',
+      'calacatta-monaco-quartz.jpg',
+      'calacatta-trevi-quartz.jpg',
+      'calacatta-versailles-quartz.jpg',
+      'calacatta-vicenza-quartz.jpg',
+      'calacatta-viraldi-quartz.jpg',
+      'carrara-marmi-quartz.jpg',
+      'carrara-mist-quartz.jpg',
+      'fairy-white-quartz.jpg',
+      'frost-white-quartz.jpg',
+      'glacier-white-quartz.jpg',
+      'iced-white-quartz.jpg',
+      'lumataj-quartz.jpg',
+      'midnight-majesty-quartz.jpg',
+      'perla-white-quartz.jpg',
+      'shell-white-quartz.jpg',
+      'snow-white-quartz.jpg',
+      'soapstone-mist-quartz.jpg',
+      'sparkling-white-quartz.jpg',
+      'statuary-classique-quartz.jpg',
+      'stellar-gray-quartz.jpg',
+      'stellar-white-quartz.jpg'
+    ]);
+
     function resolveAssetUrl(url) {
       if (!url) return null;
+      const msiSlab = url.match(/^https?:\/\/cdn\.msisurfaces\.com\/.*\/([^\/?#]+\.jpg)(?:[?#]|$)/i);
+      if (msiSlab && STONE_TEXTURES.has(msiSlab[1].toLowerCase())) {
+        // Root-relative: the 3D loader prefixes location.origin for paths that
+        // start with '/', and a bare relative path would lose /room-designer/.
+        return window.location.protocol === 'file:'
+          ? 'assets/textures/stone/' + msiSlab[1]
+          : '/room-designer/assets/textures/stone/' + msiSlab[1];
+      }
       if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('blob:')) {
         return url;
       }
@@ -35871,8 +35935,10 @@
     function preload3DTextures() {
       const textureUrls = new Set();
       elements.forEach(el => {
-        if (el.texture) textureUrls.add(el.texture);
-        if (el.storeProduct?.image) textureUrls.add(el.storeProduct.image);
+        // Same resolution as create3DElement, so the preloader warms the cache
+        // under the key the material builder will look it up by.
+        if (el.texture) textureUrls.add(resolveAssetUrl(el.texture) || el.texture);
+        if (el.storeProduct?.image) textureUrls.add(resolveAssetUrl(el.storeProduct.image) || el.storeProduct.image);
       });
 
       let pending = 0, arrived = 0;
@@ -36413,6 +36479,15 @@
       } else if (elementTextures && elementTextures[el.type]) {
         textureUrl = elementTextures[el.type];
       }
+
+      /*
+       * Everything above stores whatever URL the catalog shipped, which for the
+       * MSI stones is their CDN — and that CDN sends no CORS header, so the
+       * texture silently never applies. resolveAssetUrl swaps those for the
+       * same-origin copies. This is the one place an element turns into a URL,
+       * so resolving here covers every downstream path.
+       */
+      if (textureUrl) textureUrl = resolveAssetUrl(textureUrl) || textureUrl;
 
       // Log texture status for debugging
       if (textureUrl) {
