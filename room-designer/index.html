@@ -1243,13 +1243,21 @@
           </div>
         </div>
 
-        <!-- Floor Plans -->
+        <!-- Room Shape — walls only. Not to be confused with Room Templates,
+             which place a whole furnished kitchen. Both used to say "L-Shape"
+             and mean different things: here it is the ROOM that is L-shaped;
+             there it is the cabinet RUN, in a rectangular room. -->
         <div class="sidebar-section">
-          <div class="sidebar-header" onclick="toggleSection(this)" title="Choose a room layout">
-            <span class="sidebar-title">Floor Plans</span>
+          <div class="sidebar-header" onclick="toggleSection(this)"
+               title="The outline of the room — walls only. For a whole kitchen, use Room Templates.">
+            <span class="sidebar-title">Room Shape</span>
             <span class="sidebar-toggle">▶</span>
           </div>
           <div class="sidebar-content collapsed">
+            <p style="margin:0 0 8px;font-size:11px;line-height:1.45;color:var(--text-dim,#8a8f98)">
+              Draws the walls only — nothing goes in the room.
+              For a room that arrives furnished, use <strong>Room Templates</strong>.
+            </p>
             <div class="floorplan-grid" id="floorplanGrid">
               <!-- Floor plans will be rendered here -->
             </div>
@@ -1832,6 +1840,10 @@
             <span class="toggle-icon">▼</span>
           </div>
           <div class="panel-content">
+          <p style="margin:0 0 8px;font-size:11px;line-height:1.45;color:var(--text-dim,#8a8f98)">
+            A whole room, furnished — walls, cabinets and appliances, ready to edit.
+            For the outline of the room only, use <strong>Room Shape</strong>.
+          </p>
           <div class="room-templates-grid">
             <button class="template-btn" onclick="loadRoomTemplate('kitchen-10x10')" title="NKBA industry standard 10x10 L-kitchen" style="border:1px solid var(--gold)">
               <span class="template-icon">⭐</span>
@@ -13557,24 +13569,24 @@
     };
 
     const FLOOR_PLANS = [
-      { id: 'empty', name: 'Empty', walls: [] },
-      { id: 'square', name: 'Square', walls: [
+      { id: 'empty', name: 'No walls', walls: [] },
+      { id: 'square', name: 'Rectangular room', walls: [
         { x: 0, y: 0, w: 1, h: 1, type: 'full' }
       ]},
-      { id: 'l-shape', name: 'L-Shape', walls: [
+      { id: 'l-shape', name: 'L-shaped room', walls: [
         { x: 0, y: 0, w: 0.6, h: 1, type: 'rect' },
         { x: 0, y: 0, w: 1, h: 0.5, type: 'rect' }
       ]},
-      { id: 'u-shape', name: 'U-Shape', walls: [
+      { id: 'u-shape', name: 'U-shaped room', walls: [
         { x: 0, y: 0, w: 0.3, h: 1, type: 'rect' },
         { x: 0.7, y: 0, w: 0.3, h: 1, type: 'rect' },
         { x: 0, y: 0.7, w: 1, h: 0.3, type: 'rect' }
       ]},
-      { id: 'galley', name: 'Galley', walls: [
+      { id: 'galley', name: 'Two facing walls', walls: [
         { x: 0, y: 0, w: 0.2, h: 1, type: 'rect' },
         { x: 0.8, y: 0, w: 0.2, h: 1, type: 'rect' }
       ]},
-      { id: 'open', name: 'Open Plan', walls: [
+      { id: 'open', name: 'One wall / open plan', walls: [
         { x: 0, y: 0.7, w: 0.4, h: 0.3, type: 'rect' }
       ]}
     ];
