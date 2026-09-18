@@ -1,7 +1,7 @@
 {
   "name": "SOLLiD Cabinetry \u2014 Custom Series",
   "source": "20-20 catalog SCUST_A (Custom Series) + Envii brochure V.7.26 pp.22-23 for colour",
-  "note": "Colours are sampled from brochure artwork. SOLLiD states printed colour may vary and recommends ordering sample doors. Price levels are the 20-20 tier number (6-11 = brochure letters E-J); they are not dollar prices. Cabinet SKUs are SOLLiD product codes from the 20-20 pack; widths and heights are decoded from the code, depth is the standard per family, and prices are omitted - SOLLiD prices by door level, species and finish upcharge. Cabinet SKUs are SOLLiD product codes from the 20-20 pack; widths and heights are decoded from the code, depth is the standard per family, and prices are omitted because SOLLiD prices by door level, species and finish upcharge. Door and finish images are cropped from the brochure pages at full resolution; each texture is a seam-free tile mirrored out of the flat centre panel of that finish\u2019s door. Door rail and stile widths are SOLLiD\u2019s own, from the 20-20 pack; drawer counts come from the SKU code (2DB24 = two drawers). REP refrigerator end panels finish the sides of a fridge opening; width is the panel thickness and height its depth from the wall. handRequired marks SKUs SOLLiD builds left- and right-handed; an order needs the hand appended (SB24 -> SB24L or SB24R). restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. modifications are the types SOLLiD\u2019s own pack names; their order codes and prices live in the binary kit files and are not included.",
+  "note": "Colours are sampled from brochure artwork. SOLLiD states printed colour may vary and recommends ordering sample doors. Price levels are the 20-20 tier number (6-11 = brochure letters E-J); they are not dollar prices. Cabinet SKUs are SOLLiD product codes from the 20-20 pack; widths and heights are decoded from the code, depth is the standard per family, and prices are omitted - SOLLiD prices by door level, species and finish upcharge. Cabinet SKUs are SOLLiD product codes from the 20-20 pack; widths and heights are decoded from the code, depth is the standard per family, and prices are omitted because SOLLiD prices by door level, species and finish upcharge. Door and finish images are cropped from the brochure pages at full resolution; each texture is a seam-free tile mirrored out of the flat centre panel of that finish\u2019s door. Door rail and stile widths are SOLLiD\u2019s own, from the 20-20 pack; drawer counts come from the SKU code (2DB24 = two drawers). REP refrigerator end panels finish the sides of a fridge opening; width is the panel thickness and height its depth from the wall. handRequired marks SKUs SOLLiD builds left- and right-handed; an order needs the hand appended (SB24 -> SB24L or SB24R). restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. restrictions carries SOLLiD's own not-valid combinations from the 20-20 pack, so the designer can refuse a selection the factory will not build. modifications are the types SOLLiD\u2019s own pack names; their order codes and prices live in the binary kit files and are not included. | epicVerified marks a SKU present in the ePic Cabinet Size list read off a live order on 17 Sep 2026. Unmarked families (accessories, vanity) were not captured. An unverified SKU may still exist \u2014 it means nobody has confirmed it against the factory, and it should not be quoted without checking.",
   "series": {
     "beachwood": {
       "name": "Beachwood",
@@ -1001,7 +1001,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "B15",
@@ -1011,7 +1012,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "B18",
@@ -1021,7 +1023,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "B21",
@@ -1031,7 +1034,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "B24",
@@ -1041,7 +1045,8 @@
         "depth": 2.0,
         "type": "base-cabinet",
         "cabinetHeight": 34.5,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "B27",
@@ -1050,7 +1055,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": false
       },
       {
         "sku": "B30",
@@ -1059,7 +1065,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": false
       },
       {
         "sku": "B33",
@@ -1068,7 +1075,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": false
       },
       {
         "sku": "B36",
@@ -1077,7 +1085,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": false
       },
       {
         "sku": "B39",
@@ -1086,7 +1095,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": true
       },
       {
         "sku": "B42",
@@ -1095,7 +1105,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": true
       },
       {
         "sku": "B45",
@@ -1104,7 +1115,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": true
       },
       {
         "sku": "B48",
@@ -1113,7 +1125,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "base-cabinet",
-        "cabinetHeight": 34.5
+        "cabinetHeight": 34.5,
+        "epicVerified": true
       },
       {
         "sku": "BBC39",
@@ -1124,7 +1137,8 @@
         "type": "blind-corner",
         "cabinetHeight": 34.5,
         "handRequired": true,
-        "mount": "floor"
+        "mount": "floor",
+        "epicVerified": true
       },
       {
         "sku": "BBC42",
@@ -1135,7 +1149,8 @@
         "type": "blind-corner",
         "cabinetHeight": 34.5,
         "handRequired": true,
-        "mount": "floor"
+        "mount": "floor",
+        "epicVerified": true
       },
       {
         "sku": "BBC45",
@@ -1146,7 +1161,8 @@
         "type": "blind-corner",
         "cabinetHeight": 34.5,
         "handRequired": true,
-        "mount": "floor"
+        "mount": "floor",
+        "epicVerified": false
       },
       {
         "sku": "BBC48",
@@ -1157,7 +1173,8 @@
         "type": "blind-corner",
         "cabinetHeight": 34.5,
         "handRequired": true,
-        "mount": "floor"
+        "mount": "floor",
+        "epicVerified": false
       },
       {
         "sku": "1DB12",
@@ -1167,7 +1184,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB12",
@@ -1177,7 +1195,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB12",
@@ -1187,7 +1206,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB12",
@@ -1197,7 +1217,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB15",
@@ -1207,7 +1228,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB15",
@@ -1217,7 +1239,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB15",
@@ -1227,7 +1250,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB15",
@@ -1237,7 +1261,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB18",
@@ -1247,7 +1272,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB18",
@@ -1257,7 +1283,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB18",
@@ -1267,7 +1294,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB18",
@@ -1277,7 +1305,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB21",
@@ -1287,7 +1316,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB21",
@@ -1297,7 +1327,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB21",
@@ -1307,7 +1338,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB21",
@@ -1317,7 +1349,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB24",
@@ -1327,7 +1360,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB24",
@@ -1337,7 +1371,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB24",
@@ -1347,7 +1382,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB24",
@@ -1357,7 +1393,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB27",
@@ -1367,7 +1404,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB27",
@@ -1377,7 +1415,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB27",
@@ -1387,7 +1426,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB27",
@@ -1397,7 +1437,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB30",
@@ -1407,7 +1448,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB30",
@@ -1417,7 +1459,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB30",
@@ -1427,7 +1470,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB30",
@@ -1437,7 +1481,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB33",
@@ -1447,7 +1492,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB33",
@@ -1457,7 +1503,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB33",
@@ -1467,7 +1514,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB33",
@@ -1477,7 +1525,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "1DB36",
@@ -1487,7 +1536,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 1
+        "drawers": 1,
+        "epicVerified": true
       },
       {
         "sku": "2DB36",
@@ -1497,7 +1547,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 2
+        "drawers": 2,
+        "epicVerified": false
       },
       {
         "sku": "3DB36",
@@ -1507,7 +1558,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 3
+        "drawers": 3,
+        "epicVerified": true
       },
       {
         "sku": "4DB36",
@@ -1517,7 +1569,8 @@
         "depth": 2.0,
         "type": "drawer-base",
         "cabinetHeight": 34.5,
-        "drawers": 4
+        "drawers": 4,
+        "epicVerified": false
       },
       {
         "sku": "SB18",
@@ -1528,7 +1581,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SBI18",
@@ -1539,7 +1593,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SB21",
@@ -1550,7 +1605,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SBI21",
@@ -1561,7 +1617,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SB24",
@@ -1572,7 +1629,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SB24DD",
@@ -1582,7 +1640,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB24SDD",
@@ -1592,7 +1651,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI24",
@@ -1603,7 +1663,8 @@
         "type": "sink-base",
         "cabinetHeight": 34.5,
         "doors": 1,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "SBI24DD",
@@ -1613,7 +1674,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI24SDD",
@@ -1623,7 +1685,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB27",
@@ -1633,7 +1696,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB27S",
@@ -1643,7 +1707,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI27",
@@ -1653,7 +1718,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI27S",
@@ -1663,7 +1729,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB30",
@@ -1673,7 +1740,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB30S",
@@ -1683,7 +1751,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI30",
@@ -1693,7 +1762,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI30S",
@@ -1703,7 +1773,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB33",
@@ -1713,7 +1784,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB33S",
@@ -1723,7 +1795,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI33",
@@ -1733,7 +1806,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI33S",
@@ -1743,7 +1817,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB36",
@@ -1753,7 +1828,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SB36S",
@@ -1763,7 +1839,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI36",
@@ -1773,7 +1850,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBI36S",
@@ -1783,7 +1861,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB39",
@@ -1793,7 +1872,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI39",
@@ -1803,7 +1883,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB42",
@@ -1813,7 +1894,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI42",
@@ -1823,7 +1905,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB45",
@@ -1833,7 +1916,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI45",
@@ -1843,7 +1927,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SB48",
@@ -1853,7 +1938,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBI48",
@@ -1863,7 +1949,8 @@
         "depth": 2.0,
         "type": "sink-base",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBF30",
@@ -1873,7 +1960,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBF33",
@@ -1883,7 +1971,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBF36",
@@ -1893,7 +1982,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": true
       },
       {
         "sku": "SBF39",
@@ -1903,7 +1993,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBF42",
@@ -1913,7 +2004,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBF45",
@@ -1923,7 +2015,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       },
       {
         "sku": "SBF48",
@@ -1933,7 +2026,8 @@
         "depth": 2.0,
         "type": "sink-base-apron",
         "cabinetHeight": 34.5,
-        "doors": 2
+        "doors": 2,
+        "epicVerified": false
       }
     ],
     "wall": [
@@ -1946,7 +2040,8 @@
         "type": "blind-corner",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBC3033",
@@ -1957,7 +2052,8 @@
         "type": "blind-corner",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3036",
@@ -1968,7 +2064,8 @@
         "type": "blind-corner",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBC3039",
@@ -1979,7 +2076,8 @@
         "type": "blind-corner",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3042",
@@ -1990,7 +2088,8 @@
         "type": "blind-corner",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBC3330",
@@ -2001,7 +2100,8 @@
         "type": "blind-corner",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3333",
@@ -2012,7 +2112,8 @@
         "type": "blind-corner",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3336",
@@ -2023,7 +2124,8 @@
         "type": "blind-corner",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3339",
@@ -2034,7 +2136,8 @@
         "type": "blind-corner",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3342",
@@ -2045,7 +2148,8 @@
         "type": "blind-corner",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3630",
@@ -2056,7 +2160,8 @@
         "type": "blind-corner",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBC3633",
@@ -2067,7 +2172,8 @@
         "type": "blind-corner",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3636",
@@ -2078,7 +2184,8 @@
         "type": "blind-corner",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBC3639",
@@ -2089,7 +2196,8 @@
         "type": "blind-corner",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBC3642",
@@ -2100,7 +2208,8 @@
         "type": "blind-corner",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1230",
@@ -2111,7 +2220,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1233",
@@ -2122,7 +2232,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1236",
@@ -2133,7 +2244,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1239",
@@ -2143,7 +2255,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1242",
@@ -2154,7 +2267,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1530",
@@ -2165,7 +2279,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1533",
@@ -2176,7 +2291,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1536",
@@ -2187,7 +2303,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1539",
@@ -2197,7 +2314,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1542",
@@ -2208,7 +2326,8 @@
         "type": "microwave-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1830",
@@ -2218,7 +2337,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1833",
@@ -2228,7 +2348,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1836",
@@ -2238,7 +2359,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC1839",
@@ -2248,7 +2370,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC1842",
@@ -2258,7 +2381,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2130",
@@ -2268,7 +2392,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2133",
@@ -2278,7 +2403,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC2136",
@@ -2288,7 +2414,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2139",
@@ -2298,7 +2425,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC2142",
@@ -2308,7 +2436,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2430",
@@ -2318,7 +2447,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2433",
@@ -2328,7 +2458,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC2436",
@@ -2338,7 +2469,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WMC2439",
@@ -2348,7 +2480,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WMC2442",
@@ -2358,7 +2491,8 @@
         "depth": 1.0,
         "type": "microwave-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W0927",
@@ -2369,7 +2503,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0930",
@@ -2380,7 +2515,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W0933",
@@ -2391,7 +2527,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0936",
@@ -2402,7 +2539,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W0939",
@@ -2413,7 +2551,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0942",
@@ -2424,7 +2563,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W0945",
@@ -2435,7 +2575,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0948",
@@ -2446,7 +2587,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST0948",
@@ -2458,7 +2600,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0951",
@@ -2469,7 +2612,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST0951",
@@ -2481,7 +2625,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W0954",
@@ -2492,7 +2637,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST0954",
@@ -2504,7 +2650,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST0957",
@@ -2516,7 +2663,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST0960",
@@ -2528,7 +2676,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1212",
@@ -2539,7 +2688,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1215",
@@ -2550,7 +2700,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1218",
@@ -2561,7 +2712,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1221",
@@ -2572,7 +2724,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1224",
@@ -2583,7 +2736,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1227",
@@ -2594,7 +2748,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1230",
@@ -2605,7 +2760,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1233",
@@ -2616,7 +2772,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1236",
@@ -2627,7 +2784,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1239",
@@ -2638,7 +2796,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1242",
@@ -2649,7 +2808,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1245",
@@ -2660,7 +2820,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1248",
@@ -2671,7 +2832,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1248",
@@ -2683,7 +2845,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1251",
@@ -2694,7 +2857,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1251",
@@ -2706,7 +2870,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1254",
@@ -2717,7 +2882,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1254",
@@ -2729,7 +2895,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1257",
@@ -2741,7 +2908,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1260",
@@ -2753,7 +2921,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1512",
@@ -2764,7 +2933,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1515",
@@ -2775,7 +2945,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1518",
@@ -2786,7 +2957,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1521",
@@ -2797,7 +2969,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1524",
@@ -2808,7 +2981,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1527",
@@ -2819,7 +2993,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1530",
@@ -2830,7 +3005,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1533",
@@ -2841,7 +3017,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1536",
@@ -2852,7 +3029,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1539",
@@ -2863,7 +3041,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1542",
@@ -2874,7 +3053,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1545",
@@ -2885,7 +3065,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1548",
@@ -2896,7 +3077,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1548",
@@ -2908,7 +3090,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1551",
@@ -2919,7 +3102,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1551",
@@ -2931,7 +3115,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1554",
@@ -2942,7 +3127,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1554",
@@ -2954,7 +3140,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1557",
@@ -2966,7 +3153,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1560",
@@ -2978,7 +3166,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1812",
@@ -2989,7 +3178,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1815",
@@ -3000,7 +3190,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1818",
@@ -3011,7 +3202,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1821",
@@ -3022,7 +3214,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1824",
@@ -3033,7 +3226,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1827",
@@ -3044,7 +3238,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1830",
@@ -3055,7 +3250,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1833",
@@ -3066,7 +3262,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1836",
@@ -3077,7 +3274,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1839",
@@ -3088,7 +3286,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1842",
@@ -3099,7 +3298,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W1845",
@@ -3110,7 +3310,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1848",
@@ -3121,7 +3322,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1848",
@@ -3133,7 +3335,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1851",
@@ -3144,7 +3347,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1851",
@@ -3156,7 +3360,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W1854",
@@ -3167,7 +3372,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1854",
@@ -3179,7 +3385,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1857",
@@ -3191,7 +3398,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST1860",
@@ -3203,7 +3411,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2112",
@@ -3214,7 +3423,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2115",
@@ -3225,7 +3435,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2118",
@@ -3236,7 +3447,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2121",
@@ -3247,7 +3459,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2124",
@@ -3258,7 +3471,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2127",
@@ -3269,7 +3483,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2130",
@@ -3280,7 +3495,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2130",
@@ -3291,7 +3507,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2133",
@@ -3302,7 +3519,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2133",
@@ -3313,7 +3531,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2136",
@@ -3324,7 +3543,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2136",
@@ -3335,7 +3555,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2139",
@@ -3346,7 +3567,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2139",
@@ -3357,7 +3579,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2142",
@@ -3368,7 +3591,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2142",
@@ -3379,7 +3603,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2145",
@@ -3390,7 +3615,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2145",
@@ -3401,7 +3627,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2148",
@@ -3412,7 +3639,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2148",
@@ -3424,7 +3652,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2151",
@@ -3435,7 +3664,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2151",
@@ -3447,7 +3677,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2154",
@@ -3458,7 +3689,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2154",
@@ -3470,7 +3702,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2157",
@@ -3482,7 +3715,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2160",
@@ -3494,7 +3728,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2412",
@@ -3505,7 +3740,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2412",
@@ -3516,7 +3752,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2412",
@@ -3526,7 +3763,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2415",
@@ -3537,7 +3775,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2415",
@@ -3548,7 +3787,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2415",
@@ -3558,7 +3798,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2418",
@@ -3569,7 +3810,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2418",
@@ -3580,7 +3822,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2418",
@@ -3590,7 +3833,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2421",
@@ -3601,7 +3845,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2421",
@@ -3612,7 +3857,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2421",
@@ -3622,7 +3868,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2424",
@@ -3633,7 +3880,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2424",
@@ -3644,7 +3892,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2424",
@@ -3654,7 +3903,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2424",
@@ -3664,7 +3914,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2427",
@@ -3675,7 +3926,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2427",
@@ -3686,7 +3938,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2427",
@@ -3696,7 +3949,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2430",
@@ -3707,7 +3961,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2430",
@@ -3718,7 +3973,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2430",
@@ -3729,7 +3985,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF2430",
@@ -3739,7 +3996,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2433",
@@ -3750,7 +4008,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2433",
@@ -3761,7 +4020,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2433",
@@ -3772,7 +4032,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2433",
@@ -3782,7 +4043,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2436",
@@ -3793,7 +4055,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2436",
@@ -3804,7 +4067,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2436",
@@ -3815,7 +4079,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2436",
@@ -3825,7 +4090,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2439",
@@ -3836,7 +4102,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2439",
@@ -3847,7 +4114,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2439",
@@ -3858,7 +4126,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2439",
@@ -3868,7 +4137,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2442",
@@ -3879,7 +4149,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2442",
@@ -3890,7 +4161,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2442",
@@ -3901,7 +4173,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2442",
@@ -3911,7 +4184,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2445",
@@ -3922,7 +4196,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2445",
@@ -3933,7 +4208,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2445",
@@ -3944,7 +4220,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2448",
@@ -3955,7 +4232,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2448",
@@ -3967,7 +4245,8 @@
         "cabinetHeight": 48,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2448",
@@ -3978,7 +4257,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2451",
@@ -3989,7 +4269,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2451",
@@ -4001,7 +4282,8 @@
         "cabinetHeight": 51,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2451",
@@ -4012,7 +4294,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2454",
@@ -4023,7 +4306,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2454",
@@ -4035,7 +4319,8 @@
         "cabinetHeight": 54,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2457",
@@ -4047,7 +4332,8 @@
         "cabinetHeight": 57,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2460",
@@ -4059,7 +4345,8 @@
         "cabinetHeight": 60,
         "stacked": true,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2712",
@@ -4069,7 +4356,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2712",
@@ -4080,7 +4368,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 12,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2712",
@@ -4090,7 +4379,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2715",
@@ -4100,7 +4390,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2715",
@@ -4111,7 +4402,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 15,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2715",
@@ -4121,7 +4413,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2718",
@@ -4131,7 +4424,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2718",
@@ -4142,7 +4436,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 18,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2718",
@@ -4152,7 +4447,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2721",
@@ -4162,7 +4458,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2721",
@@ -4173,7 +4470,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 21,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2721",
@@ -4183,7 +4481,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2724",
@@ -4193,7 +4492,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2724",
@@ -4204,7 +4504,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 24,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH2724",
@@ -4214,7 +4515,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2724",
@@ -4224,7 +4526,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2727",
@@ -4234,7 +4537,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2727",
@@ -4245,7 +4549,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 27,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2727",
@@ -4255,7 +4560,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2730",
@@ -4265,7 +4571,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2730",
@@ -4276,7 +4583,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2730",
@@ -4287,7 +4595,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 30,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2730",
@@ -4297,7 +4606,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2733",
@@ -4307,7 +4617,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2733",
@@ -4318,7 +4629,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2733",
@@ -4329,7 +4641,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 33,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2733",
@@ -4339,7 +4652,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2736",
@@ -4349,7 +4663,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2736",
@@ -4360,7 +4675,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2736",
@@ -4371,7 +4687,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 36,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2736",
@@ -4381,7 +4698,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2739",
@@ -4391,7 +4709,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2739",
@@ -4402,7 +4721,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2739",
@@ -4413,7 +4733,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 39,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2739",
@@ -4423,7 +4744,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2742",
@@ -4433,7 +4755,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WCD2742",
@@ -4444,7 +4767,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WER2742",
@@ -4455,7 +4779,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 42,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF2742",
@@ -4465,7 +4790,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2745",
@@ -4475,7 +4801,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2745",
@@ -4486,7 +4813,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WER2745",
@@ -4497,7 +4825,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 45,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2748",
@@ -4507,7 +4836,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2748",
@@ -4518,7 +4848,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2748",
@@ -4529,7 +4860,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2751",
@@ -4539,7 +4871,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2751",
@@ -4550,7 +4883,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WCD2751",
@@ -4561,7 +4895,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "handRequired": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W2754",
@@ -4571,7 +4906,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2754",
@@ -4582,7 +4918,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2757",
@@ -4593,7 +4930,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 57,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST2760",
@@ -4604,7 +4942,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 60,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3012",
@@ -4614,7 +4953,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3012",
@@ -4624,7 +4964,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3015",
@@ -4634,7 +4975,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3015",
@@ -4644,7 +4986,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3018",
@@ -4654,7 +4997,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3018",
@@ -4664,7 +5008,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3021",
@@ -4674,7 +5019,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3021",
@@ -4684,7 +5030,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3024",
@@ -4694,7 +5041,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3024",
@@ -4704,7 +5052,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3024",
@@ -4714,7 +5063,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3027",
@@ -4724,7 +5074,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3027",
@@ -4734,7 +5085,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3030",
@@ -4744,7 +5096,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3030",
@@ -4754,7 +5107,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3033",
@@ -4764,7 +5118,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3033",
@@ -4774,7 +5129,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3036",
@@ -4784,7 +5140,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3036",
@@ -4794,7 +5151,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3039",
@@ -4804,7 +5162,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3039",
@@ -4814,7 +5173,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3042",
@@ -4824,7 +5184,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3042",
@@ -4834,7 +5195,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3045",
@@ -4844,7 +5206,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3048",
@@ -4854,7 +5217,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3048",
@@ -4865,7 +5229,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3051",
@@ -4875,7 +5240,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3051",
@@ -4886,7 +5252,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3054",
@@ -4896,7 +5263,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3054",
@@ -4907,7 +5275,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3057",
@@ -4918,7 +5287,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 57,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3060",
@@ -4929,7 +5299,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 60,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3312",
@@ -4939,7 +5310,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH3312",
@@ -4949,7 +5321,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3315",
@@ -4959,7 +5332,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3315",
@@ -4969,7 +5343,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3318",
@@ -4979,7 +5354,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3318",
@@ -4989,7 +5365,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3321",
@@ -4999,7 +5376,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3321",
@@ -5009,7 +5387,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3324",
@@ -5019,7 +5398,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH3324",
@@ -5029,7 +5409,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3324",
@@ -5039,7 +5420,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3327",
@@ -5049,7 +5431,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3327",
@@ -5059,7 +5442,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3330",
@@ -5069,7 +5453,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3330",
@@ -5079,7 +5464,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3333",
@@ -5089,7 +5475,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3333",
@@ -5099,7 +5486,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3336",
@@ -5109,7 +5497,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3336",
@@ -5119,7 +5508,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3339",
@@ -5129,7 +5519,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3339",
@@ -5139,7 +5530,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3342",
@@ -5149,7 +5541,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3342",
@@ -5159,7 +5552,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3345",
@@ -5169,7 +5563,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3348",
@@ -5179,7 +5574,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3348",
@@ -5190,7 +5586,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3351",
@@ -5200,7 +5597,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3351",
@@ -5211,7 +5609,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3354",
@@ -5221,7 +5620,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3354",
@@ -5232,7 +5632,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3357",
@@ -5243,7 +5644,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 57,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3360",
@@ -5254,7 +5656,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 60,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3612",
@@ -5264,7 +5667,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3612",
@@ -5274,7 +5678,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3615",
@@ -5284,7 +5689,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3615",
@@ -5294,7 +5700,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3618",
@@ -5304,7 +5711,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3618",
@@ -5314,7 +5722,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3621",
@@ -5324,7 +5733,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3621",
@@ -5334,7 +5744,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3624",
@@ -5344,7 +5755,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3624",
@@ -5354,7 +5766,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3624",
@@ -5364,7 +5777,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3627",
@@ -5374,7 +5788,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3627",
@@ -5384,7 +5799,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3630",
@@ -5394,7 +5810,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3630",
@@ -5404,7 +5821,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3633",
@@ -5414,7 +5832,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3633",
@@ -5424,7 +5843,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3636",
@@ -5434,7 +5854,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3636",
@@ -5444,7 +5865,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3639",
@@ -5454,7 +5876,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WBF3639",
@@ -5464,7 +5887,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3642",
@@ -5474,7 +5898,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WBF3642",
@@ -5484,7 +5909,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3645",
@@ -5494,7 +5920,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3648",
@@ -5504,7 +5931,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3648",
@@ -5515,7 +5943,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 48,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3651",
@@ -5525,7 +5954,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3651",
@@ -5536,7 +5966,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 51,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3654",
@@ -5546,7 +5977,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3654",
@@ -5557,7 +5989,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 54,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3657",
@@ -5568,7 +6001,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 57,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WST3660",
@@ -5579,7 +6013,8 @@
         "type": "wall-cabinet",
         "cabinetHeight": 60,
         "stacked": true,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3912",
@@ -5589,7 +6024,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3912",
@@ -5599,7 +6035,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3915",
@@ -5609,7 +6046,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH3915",
@@ -5619,7 +6057,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3918",
@@ -5629,7 +6068,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3918",
@@ -5639,7 +6079,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3921",
@@ -5649,7 +6090,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH3921",
@@ -5659,7 +6101,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3924",
@@ -5669,7 +6112,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH3924",
@@ -5679,7 +6123,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3927",
@@ -5689,7 +6134,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3930",
@@ -5699,7 +6145,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3933",
@@ -5709,7 +6156,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3936",
@@ -5719,7 +6167,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3939",
@@ -5729,7 +6178,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3942",
@@ -5739,7 +6189,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W3945",
@@ -5749,7 +6200,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3948",
@@ -5759,7 +6211,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3951",
@@ -5769,7 +6222,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W3954",
@@ -5779,7 +6233,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4212",
@@ -5789,7 +6244,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH4212",
@@ -5799,7 +6255,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4215",
@@ -5809,7 +6266,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4215",
@@ -5819,7 +6277,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4218",
@@ -5829,7 +6288,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4218",
@@ -5839,7 +6299,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4221",
@@ -5849,7 +6310,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4221",
@@ -5859,7 +6321,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4224",
@@ -5869,7 +6332,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4224",
@@ -5879,7 +6343,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4227",
@@ -5889,7 +6354,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4230",
@@ -5899,7 +6365,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4233",
@@ -5909,7 +6376,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4236",
@@ -5919,7 +6387,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4239",
@@ -5929,7 +6398,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4242",
@@ -5939,7 +6409,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4245",
@@ -5949,7 +6420,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4248",
@@ -5959,7 +6431,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4251",
@@ -5969,7 +6442,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4254",
@@ -5979,7 +6453,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4512",
@@ -5989,7 +6464,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4512",
@@ -5999,7 +6475,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4515",
@@ -6009,7 +6486,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4515",
@@ -6019,7 +6497,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4518",
@@ -6029,7 +6508,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4518",
@@ -6039,7 +6519,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4521",
@@ -6049,7 +6530,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4521",
@@ -6059,7 +6541,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4524",
@@ -6069,7 +6552,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4524",
@@ -6079,7 +6563,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4527",
@@ -6089,7 +6574,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4530",
@@ -6099,7 +6585,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4533",
@@ -6109,7 +6596,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4536",
@@ -6119,7 +6607,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4539",
@@ -6129,7 +6618,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4542",
@@ -6139,7 +6629,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4545",
@@ -6149,7 +6640,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4548",
@@ -6159,7 +6651,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4551",
@@ -6169,7 +6662,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4554",
@@ -6179,7 +6673,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4812",
@@ -6189,7 +6684,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "WH4812",
@@ -6199,7 +6695,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 12,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4815",
@@ -6209,7 +6706,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4815",
@@ -6219,7 +6717,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 15,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4818",
@@ -6229,7 +6728,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4818",
@@ -6239,7 +6739,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 18,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4821",
@@ -6249,7 +6750,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4821",
@@ -6259,7 +6761,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 21,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4824",
@@ -6269,7 +6772,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "WH4824",
@@ -6279,7 +6783,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 24,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4827",
@@ -6289,7 +6794,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 27,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4830",
@@ -6299,7 +6805,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 30,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4833",
@@ -6309,7 +6816,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 33,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4836",
@@ -6319,7 +6827,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 36,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4839",
@@ -6329,7 +6838,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 39,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4842",
@@ -6339,7 +6849,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 42,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": true
       },
       {
         "sku": "W4845",
@@ -6349,7 +6860,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 45,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4848",
@@ -6359,7 +6871,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 48,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4851",
@@ -6369,7 +6882,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 51,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       },
       {
         "sku": "W4854",
@@ -6379,7 +6893,8 @@
         "depth": 1.0,
         "type": "wall-cabinet",
         "cabinetHeight": 54,
-        "mount": "wall"
+        "mount": "wall",
+        "epicVerified": false
       }
     ],
     "tall": [
@@ -6391,7 +6906,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1284",
@@ -6401,7 +6917,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1284",
@@ -6411,7 +6928,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1284",
@@ -6421,7 +6939,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1284",
@@ -6431,7 +6950,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1287",
@@ -6441,7 +6961,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1287",
@@ -6451,7 +6972,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1287",
@@ -6461,7 +6983,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1287",
@@ -6471,7 +6994,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1287",
@@ -6481,7 +7005,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1290",
@@ -6491,7 +7016,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1290",
@@ -6501,7 +7027,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1290",
@@ -6511,7 +7038,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1290",
@@ -6521,7 +7049,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1290",
@@ -6531,7 +7060,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1293",
@@ -6541,7 +7071,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1293",
@@ -6551,7 +7082,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1293",
@@ -6561,7 +7093,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1293",
@@ -6571,7 +7104,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1293",
@@ -6581,7 +7115,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1296",
@@ -6591,7 +7126,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1296",
@@ -6601,7 +7137,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1296",
@@ -6611,7 +7148,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1296",
@@ -6621,7 +7159,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1296",
@@ -6631,7 +7170,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1584",
@@ -6641,7 +7181,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1584",
@@ -6651,7 +7192,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1584",
@@ -6661,7 +7203,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1584",
@@ -6671,7 +7214,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1584",
@@ -6681,7 +7225,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1587",
@@ -6691,7 +7236,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1587",
@@ -6701,7 +7247,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1587",
@@ -6711,7 +7258,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1587",
@@ -6721,7 +7269,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1587",
@@ -6731,7 +7280,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1590",
@@ -6741,7 +7291,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1590",
@@ -6751,7 +7302,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1590",
@@ -6761,7 +7313,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1590",
@@ -6771,7 +7324,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1590",
@@ -6781,7 +7335,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1593",
@@ -6791,7 +7346,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1593",
@@ -6801,7 +7357,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1593",
@@ -6811,7 +7368,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1593",
@@ -6821,7 +7379,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1593",
@@ -6831,7 +7390,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1596",
@@ -6841,7 +7401,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1596",
@@ -6851,7 +7412,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1596",
@@ -6861,7 +7423,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1596",
@@ -6871,7 +7434,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1596",
@@ -6881,7 +7445,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1884",
@@ -6891,7 +7456,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB1884",
@@ -6901,7 +7467,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1884",
@@ -6911,7 +7478,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1884",
@@ -6921,7 +7489,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1884",
@@ -6931,7 +7500,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1887",
@@ -6941,7 +7511,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1887",
@@ -6951,7 +7522,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1887",
@@ -6961,7 +7533,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1887",
@@ -6971,7 +7544,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1887",
@@ -6981,7 +7555,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1890",
@@ -6991,7 +7566,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB1890",
@@ -7001,7 +7577,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1890",
@@ -7011,7 +7588,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1890",
@@ -7021,7 +7599,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1890",
@@ -7031,7 +7610,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1893",
@@ -7041,7 +7621,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB1893",
@@ -7051,7 +7632,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1893",
@@ -7061,7 +7643,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1893",
@@ -7071,7 +7654,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1893",
@@ -7081,7 +7665,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU1896",
@@ -7091,7 +7676,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB1896",
@@ -7101,7 +7687,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI1896",
@@ -7111,7 +7698,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH1896",
@@ -7121,7 +7709,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP1896",
@@ -7131,7 +7720,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2184",
@@ -7141,7 +7731,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2184",
@@ -7151,7 +7742,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2184",
@@ -7161,7 +7753,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2184",
@@ -7171,7 +7764,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2184",
@@ -7181,7 +7775,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2187",
@@ -7191,7 +7786,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2187",
@@ -7201,7 +7797,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2187",
@@ -7211,7 +7808,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2187",
@@ -7221,7 +7819,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2187",
@@ -7231,7 +7830,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2190",
@@ -7241,7 +7841,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2190",
@@ -7251,7 +7852,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2190",
@@ -7261,7 +7863,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2190",
@@ -7271,7 +7874,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2190",
@@ -7281,7 +7885,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2193",
@@ -7291,7 +7896,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2193",
@@ -7301,7 +7907,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2193",
@@ -7311,7 +7918,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2193",
@@ -7321,7 +7929,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2193",
@@ -7331,7 +7940,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2196",
@@ -7341,7 +7951,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2196",
@@ -7351,7 +7962,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2196",
@@ -7361,7 +7973,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2196",
@@ -7371,7 +7984,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2196",
@@ -7381,7 +7995,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2484",
@@ -7391,7 +8006,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB2484",
@@ -7401,7 +8017,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2484",
@@ -7411,7 +8028,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2484",
@@ -7421,7 +8039,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2484",
@@ -7431,7 +8050,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 84,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2487",
@@ -7441,7 +8061,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2487",
@@ -7451,7 +8072,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2487",
@@ -7461,7 +8083,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2487",
@@ -7471,7 +8094,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2487",
@@ -7481,7 +8105,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 87,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2490",
@@ -7491,7 +8116,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB2490",
@@ -7501,7 +8127,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2490",
@@ -7511,7 +8138,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2490",
@@ -7521,7 +8149,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2490",
@@ -7531,7 +8160,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 90,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2493",
@@ -7541,7 +8171,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TB2493",
@@ -7551,7 +8182,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2493",
@@ -7561,7 +8193,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2493",
@@ -7571,7 +8204,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2493",
@@ -7581,7 +8215,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 93,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2496",
@@ -7591,7 +8226,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": true
       },
       {
         "sku": "TB2496",
@@ -7601,7 +8237,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TI2496",
@@ -7611,7 +8248,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2496",
@@ -7621,7 +8259,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2496",
@@ -7631,7 +8270,8 @@
         "depth": 2.0,
         "type": "tall-cabinet",
         "cabinetHeight": 96,
-        "handRequired": true
+        "handRequired": true,
+        "epicVerified": false
       },
       {
         "sku": "TU2784",
@@ -7640,7 +8280,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TB2784",
@@ -7649,7 +8290,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TI2784",
@@ -7658,7 +8300,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2784",
@@ -7667,7 +8310,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2784",
@@ -7676,7 +8320,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TU2787",
@@ -7685,7 +8330,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TB2787",
@@ -7694,7 +8340,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TI2787",
@@ -7703,7 +8350,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2787",
@@ -7712,7 +8360,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2787",
@@ -7721,7 +8370,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TU2790",
@@ -7730,7 +8380,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TB2790",
@@ -7739,7 +8390,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TI2790",
@@ -7748,7 +8400,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2790",
@@ -7757,7 +8410,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2790",
@@ -7766,7 +8420,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TU2793",
@@ -7775,7 +8430,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TB2793",
@@ -7784,7 +8440,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TI2793",
@@ -7793,7 +8450,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2793",
@@ -7802,7 +8460,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2793",
@@ -7811,7 +8470,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TU2796",
@@ -7820,7 +8480,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TB2796",
@@ -7829,7 +8490,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TI2796",
@@ -7838,7 +8500,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUFH2796",
@@ -7847,7 +8510,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUSP2796",
@@ -7856,7 +8520,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TU3084",
@@ -7865,7 +8530,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": true
       },
       {
         "sku": "TB3084",
@@ -7874,7 +8540,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TI3084",
@@ -7883,7 +8550,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3084",
@@ -7892,7 +8560,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3084",
@@ -7901,7 +8570,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TU3087",
@@ -7910,7 +8580,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TB3087",
@@ -7919,7 +8590,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TI3087",
@@ -7928,7 +8600,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3087",
@@ -7937,7 +8610,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3087",
@@ -7946,7 +8620,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TU3090",
@@ -7955,7 +8630,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": true
       },
       {
         "sku": "TB3090",
@@ -7964,7 +8640,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TI3090",
@@ -7973,7 +8650,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3090",
@@ -7982,7 +8660,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3090",
@@ -7991,7 +8670,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TU3093",
@@ -8000,7 +8680,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TB3093",
@@ -8009,7 +8690,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TI3093",
@@ -8018,7 +8700,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3093",
@@ -8027,7 +8710,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3093",
@@ -8036,7 +8720,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TU3096",
@@ -8045,7 +8730,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": true
       },
       {
         "sku": "TB3096",
@@ -8054,7 +8740,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TI3096",
@@ -8063,7 +8750,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3096",
@@ -8072,7 +8760,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3096",
@@ -8081,7 +8770,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TU3384",
@@ -8090,7 +8780,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TB3384",
@@ -8099,7 +8790,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TI3384",
@@ -8108,7 +8800,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3384",
@@ -8117,7 +8810,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3384",
@@ -8126,7 +8820,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TU3387",
@@ -8135,7 +8830,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TB3387",
@@ -8144,7 +8840,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TI3387",
@@ -8153,7 +8850,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3387",
@@ -8162,7 +8860,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3387",
@@ -8171,7 +8870,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TU3390",
@@ -8180,7 +8880,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TB3390",
@@ -8189,7 +8890,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TI3390",
@@ -8198,7 +8900,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3390",
@@ -8207,7 +8910,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3390",
@@ -8216,7 +8920,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TU3393",
@@ -8225,7 +8930,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TB3393",
@@ -8234,7 +8940,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TI3393",
@@ -8243,7 +8950,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3393",
@@ -8252,7 +8960,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3393",
@@ -8261,7 +8970,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TU3396",
@@ -8270,7 +8980,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TB3396",
@@ -8279,7 +8990,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TI3396",
@@ -8288,7 +9000,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3396",
@@ -8297,7 +9010,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3396",
@@ -8306,7 +9020,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TU3684",
@@ -8315,7 +9030,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": true
       },
       {
         "sku": "TB3684",
@@ -8324,7 +9040,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TI3684",
@@ -8333,7 +9050,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3684",
@@ -8342,7 +9060,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3684",
@@ -8351,7 +9070,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 84
+        "cabinetHeight": 84,
+        "epicVerified": false
       },
       {
         "sku": "TU3687",
@@ -8360,7 +9080,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TB3687",
@@ -8369,7 +9090,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TI3687",
@@ -8378,7 +9100,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3687",
@@ -8387,7 +9110,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3687",
@@ -8396,7 +9120,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 87
+        "cabinetHeight": 87,
+        "epicVerified": false
       },
       {
         "sku": "TU3690",
@@ -8405,7 +9130,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": true
       },
       {
         "sku": "TB3690",
@@ -8414,7 +9140,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TI3690",
@@ -8423,7 +9150,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3690",
@@ -8432,7 +9160,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3690",
@@ -8441,7 +9170,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 90
+        "cabinetHeight": 90,
+        "epicVerified": false
       },
       {
         "sku": "TU3693",
@@ -8450,7 +9180,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TB3693",
@@ -8459,7 +9190,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TI3693",
@@ -8468,7 +9200,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3693",
@@ -8477,7 +9210,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3693",
@@ -8486,7 +9220,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 93
+        "cabinetHeight": 93,
+        "epicVerified": false
       },
       {
         "sku": "TU3696",
@@ -8495,7 +9230,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": true
       },
       {
         "sku": "TB3696",
@@ -8504,7 +9240,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TI3696",
@@ -8513,7 +9250,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUFH3696",
@@ -8522,7 +9260,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       },
       {
         "sku": "TUSP3696",
@@ -8531,7 +9270,8 @@
         "height": 2.0,
         "depth": 2.0,
         "type": "tall-cabinet",
-        "cabinetHeight": 96
+        "cabinetHeight": 96,
+        "epicVerified": false
       }
     ],
     "accessories": [

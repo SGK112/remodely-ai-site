@@ -12150,6 +12150,39 @@
         }
       });
 
+      // ---- 5b. A SKU nobody has confirmed the factory builds ----------------
+      /*
+       * The one that would have stopped order 474386 at the estimate.
+       *
+       * sollid.json listed 421 wall cabinets. Ninety-nine of them are real;
+       * the other 322 were enumerated from the naming pattern, because 33"
+       * wide by 12" high reads like a sensible cabinet and W3312 reads like a
+       * sensible SKU. The factory does not make it. So a W3312 went onto an
+       * estimate, ePic refused it, and it came back as a W3612 — 36" wide into
+       * a 33" opening — which is the collision rule 1b now catches at the far
+       * end of the same mistake.
+       *
+       * Catching it here is better: a part that cannot be ordered is cheaper
+       * to find in the design than in the order.
+       */
+      elements.forEach(el => {
+        if (!el || el.hidden || !el.sku || !el.catalog) return;
+        const catalog = (typeof CABINET_CATALOGS === 'object') && CABINET_CATALOGS[el.catalog];
+        if (!catalog || !catalog.cabinets) return;
+        let entry = null;
+        Object.values(catalog.cabinets).forEach(list => {
+          if (Array.isArray(list) && !entry) entry = list.find(c => c && c.sku === el.sku) || null;
+        });
+        if (!entry || entry.epicVerified !== false) return;   // absent or confirmed
+        issues.push({
+          type: 'warning',
+          message: `${el.sku} has not been confirmed against ${catalog.name || el.catalog} — ` +
+                   `it is in the catalog by naming pattern, not because anyone checked the ` +
+                   `factory builds it. Verify before quoting.`,
+          elements: [el]
+        });
+      });
+
       // ---- 6. Standing on the floor, or hanging off the wall, or neither ----
       /*
        * Two different reports, same cause: nothing checks an element's height
@@ -15208,6 +15241,269 @@
 
     // Cabinet Catalogs from Manufacturers
     const CABINET_CATALOGS = {
+      /*
+       * SOLLiD THREE series, read off the Cabinet Size list in ePic on a live
+       * order rather than typed from a price book.
+       *
+       * This is the catalog that would have stopped order 474386 going out
+       * wrong. A 36" cabinet was specified into a 33" opening, and nothing in
+       * the app could object because nothing in the app knew which sizes are
+       * real. THREE makes 33" wall cabinets at 15, 18, 21, 27, 30, 36 and 42
+       * inches high — there is no W3312 and no W3324, however sensible either
+       * sounds. A catalog that lists only what the factory builds turns an
+       * unbuildable SKU into a blank in the picker.
+       *
+       * Widths and heights come from the SKU itself, which is how the line is
+       * named: W3321 is 33 wide by 21 high. `height` is the plan depth;
+       * `cabinetHeight` is in inches and is what get3DHeight reads.
+       *
+       * Finishes are the fourteen ePic offers under Door/Drawer Style. Miami
+       * Dew is the only grey in the series and it is the one finish that is
+       * not quick-ship — it goes through the Custom paint line at 12-17
+       * business days.
+       */
+      sollid: {
+        name: 'SOLLiD Cabinetry — THREE Series',
+        series: {
+          'miami-dew':      { name: 'Miami Dew',      color: '#C4C8C4', finish: 'painted', grainType: 'flat' },
+          'miami-white':    { name: 'Miami White',    color: '#F3F1EC', finish: 'painted', grainType: 'flat' },
+          'miami-pearl':    { name: 'Miami Pearl',    color: '#E4DFD6', finish: 'painted', grainType: 'flat' },
+          'miami-canvas':   { name: 'Miami Canvas',   color: '#D8CDBA', finish: 'painted', grainType: 'flat' },
+          'miami-sand':     { name: 'Miami Sand',     color: '#C3B29A', finish: 'painted', grainType: 'flat' },
+          'miami-toast':    { name: 'Miami Toast',    color: '#8A6F55', finish: 'painted', grainType: 'flat' },
+          'miami-phantom':  { name: 'Miami Phantom',  color: '#24262A', finish: 'painted', grainType: 'flat' },
+          'shaker-white':   { name: 'Shaker White',   color: '#F5F5F2', finish: 'painted', grainType: 'flat' },
+          'brighton-pearl': { name: 'Brighton Pearl', color: '#E8DFD1', finish: 'wood-grain', grainType: 'oak' },
+          'brighton-ash':   { name: 'Brighton Ash',   color: '#B9A98F', finish: 'wood-grain', grainType: 'oak' },
+          'cambria-linen':  { name: 'Cambria Linen',  color: '#E0D9CB', finish: 'wood-grain', grainType: 'maple' },
+          'cambria-saddle': { name: 'Cambria Saddle', color: '#9A7550', finish: 'wood-grain', grainType: 'maple' },
+          'tahoe-white':    { name: 'Tahoe White',    color: '#F0EEE9', finish: 'painted', grainType: 'flat' },
+          'tahoe-ash':      { name: 'Tahoe Ash',      color: '#AFA48F', finish: 'wood-grain', grainType: 'oak' }
+        },
+        cabinets: {
+          all: [
+        { sku: 'B09SR', name: 'Base 9"', width: 0.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B09TD', name: 'Base 9"', width: 0.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B09UT', name: 'Base 9"', width: 0.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B12', name: 'Base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B12KB', name: 'Base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B12SR', name: 'Base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B12TD', name: 'Base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B12UT', name: 'Base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B15', name: 'Base 15"', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B18', name: 'Base 18"', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B21', name: 'Base 21"', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B24', name: 'Base 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B27S', name: 'Base 27"', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B30S', name: 'Base 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B33S', name: 'Base 33"', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B36S', name: 'Base 36"', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B39', name: 'Base 39"', width: 3.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B42', name: 'Base 42"', width: 3.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B45', name: 'Base 45"', width: 3.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'B48', name: 'Base 48"', width: 4.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: '1DB12', name: '1-drawer base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB15', name: '1-drawer base 15"', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB18', name: '1-drawer base 18"', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB21', name: '1-drawer base 21"', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB24', name: '1-drawer base 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB27', name: '1-drawer base 27"', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB30', name: '1-drawer base 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB33', name: '1-drawer base 33"', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '1DB36', name: '1-drawer base 36"', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB12', name: '3-drawer base 12"', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB15', name: '3-drawer base 15"', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB18', name: '3-drawer base 18"', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB21', name: '3-drawer base 21"', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB24', name: '3-drawer base 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB27', name: '3-drawer base 27"', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB30', name: '3-drawer base 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB33', name: '3-drawer base 33"', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: '3DB36', name: '3-drawer base 36"', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: 'SB18', name: 'Sink base 18"', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI18', name: 'Sink base 18" integrated', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB21', name: 'Sink base 21"', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI21', name: 'Sink base 21" integrated', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB24', name: 'Sink base 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI24', name: 'Sink base 24" integrated', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB27S', name: 'Sink base 27"', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI27S', name: 'Sink base 27" integrated', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB30S', name: 'Sink base 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI30S', name: 'Sink base 30" integrated', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB33S', name: 'Sink base 33"', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI33S', name: 'Sink base 33" integrated', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB36S', name: 'Sink base 36"', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI36S', name: 'Sink base 36" integrated', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB39', name: 'Sink base 39"', width: 3.25, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI39', name: 'Sink base 39" integrated', width: 3.25, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB42', name: 'Sink base 42"', width: 3.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI42', name: 'Sink base 42" integrated', width: 3.5, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB45', name: 'Sink base 45"', width: 3.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI45', name: 'Sink base 45" integrated', width: 3.75, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SB48', name: 'Sink base 48"', width: 4.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBI48', name: 'Sink base 48" integrated', width: 4.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBD36', name: 'Sink base 36" drawers', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base' },
+        { sku: 'SBF36', name: 'Sink base 36" farmhouse', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'sink-base-apron' },
+        { sku: 'BFH09', name: 'Base 9" full height door', width: 0.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH12', name: 'Base 12" full height door', width: 1.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH15', name: 'Base 15" full height door', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH18', name: 'Base 18" full height door', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH21', name: 'Base 21" full height door', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH24', name: 'Base 24" full height door', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH27', name: 'Base 27" full height door', width: 2.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH30', name: 'Base 30" full height door', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH33', name: 'Base 33" full height door', width: 2.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH36', name: 'Base 36" full height door', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH39', name: 'Base 39" full height door', width: 3.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH42', name: 'Base 42" full height door', width: 3.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH45', name: 'Base 45" full height door', width: 3.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BFH48', name: 'Base 48" full height door', width: 4.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWB15', name: 'Base 15" waste basket', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWB18', name: 'Base 18" waste basket', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWB21', name: 'Base 21" waste basket', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWB24', name: 'Base 24" waste basket', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWBFH15', name: 'Base 15" waste basket, full height', width: 1.25, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWBFH18', name: 'Base 18" waste basket, full height', width: 1.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BWBFH21', name: 'Base 21" waste basket, full height', width: 1.75, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BBC39', name: 'Base blind corner 39"', width: 3.25, height: 2.0, cabinetHeight: 34.5, type: 'blind-corner' },
+        { sku: 'BBC42', name: 'Base blind corner 42"', width: 3.5, height: 2.0, cabinetHeight: 34.5, type: 'blind-corner' },
+        { sku: 'BLS33', name: 'Base lazy susan 33"', width: 2.75, height: 2.75, cabinetHeight: 34.5, type: 'lazy-susan' },
+        { sku: 'BLS36', name: 'Base lazy susan 36"', width: 3.0, height: 3.0, cabinetHeight: 34.5, type: 'lazy-susan' },
+        { sku: 'BDLS36', name: 'Base diagonal lazy susan 36"', width: 3.0, height: 3.0, cabinetHeight: 34.5, type: 'lazy-susan' },
+        { sku: 'BMW24-7', name: 'Base microwave 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BMW24-11', name: 'Base microwave 24"', width: 2.0, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BMW30-7', name: 'Base microwave 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'BMW30-11', name: 'Base microwave 30"', width: 2.5, height: 2.0, cabinetHeight: 34.5, type: 'base-cabinet' },
+        { sku: 'KD36-4', name: 'Knee drawer 36"', width: 3.0, height: 2.0, cabinetHeight: 34.5, type: 'drawer-base' },
+        { sku: 'W0930', name: 'Wall 9"W x 30"H', width: 0.75, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W0930SR', name: 'Wall 9"W x 30"H, single door right', width: 0.75, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W0936', name: 'Wall 9"W x 36"H', width: 0.75, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W0936SR', name: 'Wall 9"W x 36"H, single door right', width: 0.75, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W0942', name: 'Wall 9"W x 42"H', width: 0.75, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W0942SR', name: 'Wall 9"W x 42"H, single door right', width: 0.75, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W1230', name: 'Wall 12"W x 30"H', width: 1.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W1230SR', name: 'Wall 12"W x 30"H, single door right', width: 1.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W1236', name: 'Wall 12"W x 36"H', width: 1.0, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W1236SR', name: 'Wall 12"W x 36"H, single door right', width: 1.0, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W1242', name: 'Wall 12"W x 42"H', width: 1.0, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W1242SR', name: 'Wall 12"W x 42"H, single door right', width: 1.0, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W1530', name: 'Wall 15"W x 30"H', width: 1.25, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W1536', name: 'Wall 15"W x 36"H', width: 1.25, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W1542', name: 'Wall 15"W x 42"H', width: 1.25, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W1830', name: 'Wall 18"W x 30"H', width: 1.5, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W1836', name: 'Wall 18"W x 36"H', width: 1.5, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W1842', name: 'Wall 18"W x 42"H', width: 1.5, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W2130', name: 'Wall 21"W x 30"H', width: 1.75, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W2136', name: 'Wall 21"W x 36"H', width: 1.75, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W2142', name: 'Wall 21"W x 42"H', width: 1.75, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W2430', name: 'Wall 24"W x 30"H', width: 2.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W2436', name: 'Wall 24"W x 36"H', width: 2.0, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W2442', name: 'Wall 24"W x 42"H', width: 2.0, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W2730', name: 'Wall 27"W x 30"H', width: 2.25, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W2736', name: 'Wall 27"W x 36"H', width: 2.25, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W2742', name: 'Wall 27"W x 42"H', width: 2.25, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W3012', name: 'Wall 30"W x 12"H', width: 2.5, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'W3015', name: 'Wall 30"W x 15"H', width: 2.5, height: 1.0, cabinetHeight: 15, type: 'wall-cabinet' },
+        { sku: 'W3018', name: 'Wall 30"W x 18"H', width: 2.5, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'W3021', name: 'Wall 30"W x 21"H', width: 2.5, height: 1.0, cabinetHeight: 21, type: 'wall-cabinet' },
+        { sku: 'W3024', name: 'Wall 30"W x 24"H', width: 2.5, height: 1.0, cabinetHeight: 24, type: 'wall-cabinet' },
+        { sku: 'W3030', name: 'Wall 30"W x 30"H', width: 2.5, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W3036', name: 'Wall 30"W x 36"H', width: 2.5, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W3042', name: 'Wall 30"W x 42"H', width: 2.5, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W3315', name: 'Wall 33"W x 15"H', width: 2.75, height: 1.0, cabinetHeight: 15, type: 'wall-cabinet' },
+        { sku: 'W3318', name: 'Wall 33"W x 18"H', width: 2.75, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'W3321', name: 'Wall 33"W x 21"H', width: 2.75, height: 1.0, cabinetHeight: 21, type: 'wall-cabinet' },
+        { sku: 'W3327', name: 'Wall 33"W x 27"H', width: 2.75, height: 1.0, cabinetHeight: 27, type: 'wall-cabinet' },
+        { sku: 'W3330', name: 'Wall 33"W x 30"H', width: 2.75, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W3336', name: 'Wall 33"W x 36"H', width: 2.75, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W3342', name: 'Wall 33"W x 42"H', width: 2.75, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W3612', name: 'Wall 36"W x 12"H', width: 3.0, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'W3615', name: 'Wall 36"W x 15"H', width: 3.0, height: 1.0, cabinetHeight: 15, type: 'wall-cabinet' },
+        { sku: 'W3618', name: 'Wall 36"W x 18"H', width: 3.0, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'W3621', name: 'Wall 36"W x 21"H', width: 3.0, height: 1.0, cabinetHeight: 21, type: 'wall-cabinet' },
+        { sku: 'W3624', name: 'Wall 36"W x 24"H', width: 3.0, height: 1.0, cabinetHeight: 24, type: 'wall-cabinet' },
+        { sku: 'W3630', name: 'Wall 36"W x 30"H', width: 3.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W3636', name: 'Wall 36"W x 36"H', width: 3.0, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W3642', name: 'Wall 36"W x 42"H', width: 3.0, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W3912', name: 'Wall 39"W x 12"H', width: 3.25, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'W3918', name: 'Wall 39"W x 18"H', width: 3.25, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'W3924', name: 'Wall 39"W x 24"H', width: 3.25, height: 1.0, cabinetHeight: 24, type: 'wall-cabinet' },
+        { sku: 'W3930', name: 'Wall 39"W x 30"H', width: 3.25, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W3936', name: 'Wall 39"W x 36"H', width: 3.25, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W3942', name: 'Wall 39"W x 42"H', width: 3.25, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W4212', name: 'Wall 42"W x 12"H', width: 3.5, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'W4230', name: 'Wall 42"W x 30"H', width: 3.5, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W4236', name: 'Wall 42"W x 36"H', width: 3.5, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W4242', name: 'Wall 42"W x 42"H', width: 3.5, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W4530', name: 'Wall 45"W x 30"H', width: 3.75, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W4536', name: 'Wall 45"W x 36"H', width: 3.75, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W4542', name: 'Wall 45"W x 42"H', width: 3.75, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'W4812', name: 'Wall 48"W x 12"H', width: 4.0, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'W4830', name: 'Wall 48"W x 30"H', width: 4.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'W4836', name: 'Wall 48"W x 36"H', width: 4.0, height: 1.0, cabinetHeight: 36, type: 'wall-cabinet' },
+        { sku: 'W4842', name: 'Wall 48"W x 42"H', width: 4.0, height: 1.0, cabinetHeight: 42, type: 'wall-cabinet' },
+        { sku: 'WH3012', name: 'Wall 30"W x 12"H, horizontal lift', width: 2.5, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'WH3015', name: 'Wall 30"W x 15"H, horizontal lift', width: 2.5, height: 1.0, cabinetHeight: 15, type: 'wall-cabinet' },
+        { sku: 'WH3018', name: 'Wall 30"W x 18"H, horizontal lift', width: 2.5, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'WH3021', name: 'Wall 30"W x 21"H, horizontal lift', width: 2.5, height: 1.0, cabinetHeight: 21, type: 'wall-cabinet' },
+        { sku: 'WH3024', name: 'Wall 30"W x 24"H, horizontal lift', width: 2.5, height: 1.0, cabinetHeight: 24, type: 'wall-cabinet' },
+        { sku: 'WH3612', name: 'Wall 36"W x 12"H, horizontal lift', width: 3.0, height: 1.0, cabinetHeight: 12, type: 'wall-cabinet' },
+        { sku: 'WH3615', name: 'Wall 36"W x 15"H, horizontal lift', width: 3.0, height: 1.0, cabinetHeight: 15, type: 'wall-cabinet' },
+        { sku: 'WH3618', name: 'Wall 36"W x 18"H, horizontal lift', width: 3.0, height: 1.0, cabinetHeight: 18, type: 'wall-cabinet' },
+        { sku: 'WH3621', name: 'Wall 36"W x 21"H, horizontal lift', width: 3.0, height: 1.0, cabinetHeight: 21, type: 'wall-cabinet' },
+        { sku: 'WH3624', name: 'Wall 36"W x 24"H, horizontal lift', width: 3.0, height: 1.0, cabinetHeight: 24, type: 'wall-cabinet' },
+        { sku: 'WMC1230', name: 'Wall microwave 12"W x 30"H', width: 1.0, height: 1.0, cabinetHeight: 30, type: 'microwave-cabinet' },
+        { sku: 'WMC1236', name: 'Wall microwave 12"W x 36"H', width: 1.0, height: 1.0, cabinetHeight: 36, type: 'microwave-cabinet' },
+        { sku: 'WMC1242', name: 'Wall microwave 12"W x 42"H', width: 1.0, height: 1.0, cabinetHeight: 42, type: 'microwave-cabinet' },
+        { sku: 'WMC1530', name: 'Wall microwave 15"W x 30"H', width: 1.25, height: 1.0, cabinetHeight: 30, type: 'microwave-cabinet' },
+        { sku: 'WMC1536', name: 'Wall microwave 15"W x 36"H', width: 1.25, height: 1.0, cabinetHeight: 36, type: 'microwave-cabinet' },
+        { sku: 'WMC1542', name: 'Wall microwave 15"W x 42"H', width: 1.25, height: 1.0, cabinetHeight: 42, type: 'microwave-cabinet' },
+        { sku: 'WMC1830', name: 'Wall microwave 18"W x 30"H', width: 1.5, height: 1.0, cabinetHeight: 30, type: 'microwave-cabinet' },
+        { sku: 'WMC1836', name: 'Wall microwave 18"W x 36"H', width: 1.5, height: 1.0, cabinetHeight: 36, type: 'microwave-cabinet' },
+        { sku: 'WMC1842', name: 'Wall microwave 18"W x 42"H', width: 1.5, height: 1.0, cabinetHeight: 42, type: 'microwave-cabinet' },
+        { sku: 'WMC2130', name: 'Wall microwave 21"W x 30"H', width: 1.75, height: 1.0, cabinetHeight: 30, type: 'microwave-cabinet' },
+        { sku: 'WMC2136', name: 'Wall microwave 21"W x 36"H', width: 1.75, height: 1.0, cabinetHeight: 36, type: 'microwave-cabinet' },
+        { sku: 'WMC2142', name: 'Wall microwave 21"W x 42"H', width: 1.75, height: 1.0, cabinetHeight: 42, type: 'microwave-cabinet' },
+        { sku: 'WMC2430', name: 'Wall microwave 24"W x 30"H', width: 2.0, height: 1.0, cabinetHeight: 30, type: 'microwave-cabinet' },
+        { sku: 'WMC2436', name: 'Wall microwave 24"W x 36"H', width: 2.0, height: 1.0, cabinetHeight: 36, type: 'microwave-cabinet' },
+        { sku: 'WMC2442', name: 'Wall microwave 24"W x 42"H', width: 2.0, height: 1.0, cabinetHeight: 42, type: 'microwave-cabinet' },
+        { sku: 'WBC3030', name: 'Wall blind corner 30"W x 30"H', width: 2.5, height: 1.0, cabinetHeight: 30, type: 'blind-corner' },
+        { sku: 'WBC3036', name: 'Wall blind corner 30"W x 36"H', width: 2.5, height: 1.0, cabinetHeight: 36, type: 'blind-corner' },
+        { sku: 'WBC3042', name: 'Wall blind corner 30"W x 42"H', width: 2.5, height: 1.0, cabinetHeight: 42, type: 'blind-corner' },
+        { sku: 'WBC3630', name: 'Wall blind corner 36"W x 30"H', width: 3.0, height: 1.0, cabinetHeight: 30, type: 'blind-corner' },
+        { sku: 'WBC3636', name: 'Wall blind corner 36"W x 36"H', width: 3.0, height: 1.0, cabinetHeight: 36, type: 'blind-corner' },
+        { sku: 'WBC3642', name: 'Wall blind corner 36"W x 42"H', width: 3.0, height: 1.0, cabinetHeight: 42, type: 'blind-corner' },
+        { sku: 'WCD2430', name: 'Wall diagonal corner 24"W x 30"H', width: 2.0, height: 1.0, cabinetHeight: 30, type: 'corner-cabinet' },
+        { sku: 'WCD2436', name: 'Wall diagonal corner 24"W x 36"H', width: 2.0, height: 1.0, cabinetHeight: 36, type: 'corner-cabinet' },
+        { sku: 'WCD2442', name: 'Wall diagonal corner 24"W x 42"H', width: 2.0, height: 1.0, cabinetHeight: 42, type: 'corner-cabinet' },
+        { sku: 'WCD2730', name: 'Wall diagonal corner 27"W x 30"H', width: 2.25, height: 1.0, cabinetHeight: 30, type: 'corner-cabinet' },
+        { sku: 'WCD2736', name: 'Wall diagonal corner 27"W x 36"H', width: 2.25, height: 1.0, cabinetHeight: 36, type: 'corner-cabinet' },
+        { sku: 'WCD2742', name: 'Wall diagonal corner 27"W x 42"H', width: 2.25, height: 1.0, cabinetHeight: 42, type: 'corner-cabinet' },
+        { sku: 'WER2430', name: 'Wall end shelf 24"W x 30"H', width: 2.0, height: 1.0, cabinetHeight: 30, type: 'wall-cabinet' },
+        { sku: 'TU1884', name: 'Tall utility 18"W x 84"H', width: 1.5, height: 2.0, cabinetHeight: 84, type: 'tall-cabinet' },
+        { sku: 'TU1890', name: 'Tall utility 18"W x 90"H', width: 1.5, height: 2.0, cabinetHeight: 90, type: 'tall-cabinet' },
+        { sku: 'TU1896', name: 'Tall utility 18"W x 96"H', width: 1.5, height: 2.0, cabinetHeight: 96, type: 'tall-cabinet' },
+        { sku: 'TU2484', name: 'Tall utility 24"W x 84"H', width: 2.0, height: 2.0, cabinetHeight: 84, type: 'tall-cabinet' },
+        { sku: 'TU2490', name: 'Tall utility 24"W x 90"H', width: 2.0, height: 2.0, cabinetHeight: 90, type: 'tall-cabinet' },
+        { sku: 'TU2496', name: 'Tall utility 24"W x 96"H', width: 2.0, height: 2.0, cabinetHeight: 96, type: 'tall-cabinet' },
+        { sku: 'TU3084', name: 'Tall utility 30"W x 84"H', width: 2.5, height: 2.0, cabinetHeight: 84, type: 'tall-cabinet' },
+        { sku: 'TU3090', name: 'Tall utility 30"W x 90"H', width: 2.5, height: 2.0, cabinetHeight: 90, type: 'tall-cabinet' },
+        { sku: 'TU3096', name: 'Tall utility 30"W x 96"H', width: 2.5, height: 2.0, cabinetHeight: 96, type: 'tall-cabinet' },
+        { sku: 'TU3684', name: 'Tall utility 36"W x 84"H', width: 3.0, height: 2.0, cabinetHeight: 84, type: 'tall-cabinet' },
+        { sku: 'TU3690', name: 'Tall utility 36"W x 90"H', width: 3.0, height: 2.0, cabinetHeight: 90, type: 'tall-cabinet' },
+        { sku: 'TU3696', name: 'Tall utility 36"W x 96"H', width: 3.0, height: 2.0, cabinetHeight: 96, type: 'tall-cabinet' },
+        { sku: 'OC1D3384', name: 'Oven cabinet 33"W x 84"H', width: 2.75, height: 2.0, cabinetHeight: 84, type: 'single-oven-cabinet' },
+        { sku: 'OC1D3390', name: 'Oven cabinet 33"W x 90"H', width: 2.75, height: 2.0, cabinetHeight: 90, type: 'single-oven-cabinet' },
+        { sku: 'OC1D3396', name: 'Oven cabinet 33"W x 96"H', width: 2.75, height: 2.0, cabinetHeight: 96, type: 'single-oven-cabinet' },
+        { sku: 'OC2D3384', name: 'Oven cabinet 33"W x 84"H', width: 2.75, height: 2.0, cabinetHeight: 84, type: 'double-oven-cabinet' },
+        { sku: 'OC2D3390', name: 'Oven cabinet 33"W x 90"H', width: 2.75, height: 2.0, cabinetHeight: 90, type: 'double-oven-cabinet' },
+        { sku: 'OC2D3396', name: 'Oven cabinet 33"W x 96"H', width: 2.75, height: 2.0, cabinetHeight: 96, type: 'double-oven-cabinet' },
+        { sku: 'OC3D3384', name: 'Oven cabinet 33"W x 84"H', width: 2.75, height: 2.0, cabinetHeight: 84, type: 'double-oven-cabinet' },
+        { sku: 'OC3D3390', name: 'Oven cabinet 33"W x 90"H', width: 2.75, height: 2.0, cabinetHeight: 90, type: 'double-oven-cabinet' },
+        { sku: 'OC3D3396', name: 'Oven cabinet 33"W x 96"H', width: 2.75, height: 2.0, cabinetHeight: 96, type: 'double-oven-cabinet' }
+          ]
+        }
+      },
       procraft: {
         name: 'ProCraft Cabinetry',
         logo: 'https://www.surprisegranite.com/migrated/6456ce4476abb25581fbad0c/6456ce4476abb265e5fbb1f1_62708265be16bc2ec3e69111_procraft-cabinetry-p-500.png',
