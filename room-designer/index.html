@@ -30532,7 +30532,7 @@
                 if (mat && (mat.price || mat.pricePerSqFt)) { unitPrice = mat.price || mat.pricePerSqFt; break; }
               }
             }
-            else if (typeof CONFIG !== 'undefined') unitPrice = CONFIG.PRICING?.[el.type] || 0;
+            else if (typeof defaultElementPrice === 'function') unitPrice = defaultElementPrice(el);
           }
 
           detailLine = `<span class="item-sqft">${area} sqft</span>`;
@@ -30753,8 +30753,8 @@
         priceInfo = { price: PRICING_STATE.customPrices[el.materialId], source: 'pricelist' };
       }
       // 8) Fall back to default type pricing
-      else if (typeof CONFIG !== 'undefined' && CONFIG.PRICING?.[el.type]) {
-        priceInfo = { price: CONFIG.PRICING[el.type], source: 'default' };
+      else if (typeof defaultElementPrice === 'function' && defaultElementPrice(el)) {
+        priceInfo = { price: defaultElementPrice(el), source: 'default' };
       }
 
       let baseCost = priceInfo.price;
@@ -60362,6 +60362,61 @@
     // Invalidate quote cache (call when elements or prices change)
 
     // Get effective price for an element (priority: override -> catalog -> material -> custom -> default)
+    /*
+     * A default price for anything the catalogs do not cover.
+     *
+     * CONFIG.PRICING is a flat lookup on the raw type string, which misses in
+     * two ways. It has no entry for sink-base, drawer-base, filler, scribe,
+     * lazy-susan, blind-corner, the oven and microwave cabinets or any of the
+     * sized variants — so those elements priced at 0 and the item list showed
+     * a dash next to real cabinetry. And where it does hit, a 12" base and a
+     * 48" base both came back $150, because width never entered into it.
+     *
+     * Cabinets price close enough to linearly on width for a placeholder, so
+     * these are dollars per linear foot and the element's own width does the
+     * rest. Appliances stay flat. Anything with a SKU never reaches here.
+     */
+    const DEFAULT_RATE_PER_FT = {
+      'base-cabinet': 150, 'sink-base': 165, 'drawer-base': 195, 'island': 200,
+      'corner-cabinet': 190, 'lazy-susan': 240, 'blind-corner': 170,
+      'wall-cabinet': 110, 'glass-cabinet': 150,
+      'microwave-cabinet': 170, 'above-microwave-cabinet': 150,
+      'tall-cabinet': 300, 'pantry': 320, 'linen-closet': 280, 'fridge-cabinet': 300,
+      'single-oven-cabinet': 420, 'tall-oven': 420, 'double-oven-cabinet': 480,
+      'filler': 55, 'scribe': 35,
+      'countertop': 65, 'backsplash': 25, 'flooring': 8, 'tile': 15,
+      'crown-molding': 26, 'baseboard': 9, 'chair-rail': 11
+    };
+    const DEFAULT_FLAT = {
+      'sink': 350, 'sink-double': 420, 'sink-farmhouse': 650,
+      'stove': 800, 'range': 800, 'cooktop': 700, 'refrigerator': 1200,
+      'dishwasher': 600, 'microwave': 250, 'range-hood': 450, 'oven': 1500,
+      'wall-oven-double': 2600, 'wine-cooler': 900, 'beverage-center': 850,
+      'washer': 700, 'dryer': 700, 'door': 200, 'window': 300, 'wall': 0
+    };
+
+    function defaultElementPrice(element) {
+      if (!element || !element.type) return 0;
+      const type = (typeof normalizeCabinetType === 'function')
+        ? normalizeCabinetType(element.type)
+        : element.type;
+      if (DEFAULT_FLAT[type] !== undefined) return DEFAULT_FLAT[type];
+      if (DEFAULT_FLAT[element.type] !== undefined) return DEFAULT_FLAT[element.type];
+
+      const rate = DEFAULT_RATE_PER_FT[type] !== undefined
+        ? DEFAULT_RATE_PER_FT[type]
+        : DEFAULT_RATE_PER_FT[element.type];
+      if (rate === undefined) return CONFIG.PRICING?.[element.type] || 0;
+
+      // Linear parts are sold by the run; boxes by their width.
+      const linear = ['countertop', 'backsplash', 'flooring', 'tile',
+                      'crown-molding', 'baseboard', 'chair-rail'].includes(type);
+      const feet = linear
+        ? Math.max(element.width || 0, element.height || 0)
+        : (element.width || 0);
+      return Math.round(rate * Math.max(feet, 0.25) * 100) / 100;
+    }
+
     function getElementPrice(element) {
       // 1) Manual override takes highest priority
       if (element.priceOverride !== null && element.priceOverride !== undefined) {
@@ -60402,7 +60457,7 @@
       }
 
       // 5) Fall back to default type pricing
-      return { price: CONFIG.PRICING[element.type] || 0, source: 'default' };
+      return { price: defaultElementPrice(element), source: 'default' };
     }
 
     // Get element category for margin lookup (pricing-specific categories)
