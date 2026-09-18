@@ -11825,46 +11825,59 @@
       );
 
       // Helper: Check if there's counter space adjacent to an appliance
+      /*
+       * Landing space is the counter BESIDE an appliance, not a counter that
+       * happens to end at it.
+       *
+       * This looked for a countertop whose edge butts the appliance edge —
+       * cRight within half a foot of appLeft, or cLeft within half a foot of
+       * appRight. Real kitchens are not built that way. One continuous top
+       * runs over the range and on down the wall, so its left edge is feet to
+       * the left and its right edge feet to the right, and neither test fired.
+       * The result was "no landing space" on nine of the ten shipped kitchen
+       * templates, including ones with three feet of counter either side of
+       * the hob.
+       *
+       * It also returned the whole counter's width as the answer, which is not
+       * the space next to the appliance, it is the length of the worktop.
+       *
+       * Measure the counter's reach past each end of the appliance instead,
+       * along whichever axis the run travels.
+       */
       function getAdjacentCounterSpace(appliance, side) {
-        const appLeft = appliance.x / pixelsPerFoot;
-        const appRight = appLeft + appliance.width;
-        const appTop = appliance.y / pixelsPerFoot;
-        const appBottom = appTop + appliance.height;
-
-        let maxSpace = 0;
+        const ax = appliance.x / pixelsPerFoot, aw = appliance.width || 0;
+        const ay = appliance.y / pixelsPerFoot, ad = appliance.height || 0;
+        let best = 0;
 
         countertops.forEach(counter => {
-          const cLeft = counter.x / pixelsPerFoot;
-          const cRight = cLeft + counter.width;
-          const cTop = counter.y / pixelsPerFoot;
-          const cBottom = cTop + counter.height;
+          const cx = counter.x / pixelsPerFoot, cw = counter.width || 0;
+          const cy = counter.y / pixelsPerFoot, cd = counter.height || 0;
 
-          // Check vertical alignment (countertops should be adjacent in Y)
-          const verticalOverlap = Math.max(0, Math.min(appBottom, cBottom) - Math.max(appTop, cTop));
-          if (verticalOverlap < 0.5) return; // Not aligned vertically
+          // Which way does this top run? The longer side is the run.
+          const runsX = cw >= cd;
 
-          if (side === 'left') {
-            // Counter to the left of appliance
-            if (cRight >= appLeft - 0.1 && cRight <= appLeft + 0.5) {
-              maxSpace = Math.max(maxSpace, counter.width);
-            }
-          } else if (side === 'right') {
-            // Counter to the right of appliance
-            if (cLeft <= appRight + 0.1 && cLeft >= appRight - 0.5) {
-              maxSpace = Math.max(maxSpace, counter.width);
-            }
-          } else if (side === 'any') {
-            // Counter on either side
-            if (cRight >= appLeft - 0.1 && cRight <= appLeft + 0.5) {
-              maxSpace = Math.max(maxSpace, counter.width);
-            }
-            if (cLeft <= appRight + 0.1 && cLeft >= appRight - 0.5) {
-              maxSpace = Math.max(maxSpace, counter.width);
-            }
-          }
+          // It has to be the same worktop the appliance sits in, so the two
+          // must overlap across the run as well as along it.
+          const acrossOverlap = runsX
+            ? Math.min(ay + ad, cy + cd) - Math.max(ay, cy)
+            : Math.min(ax + aw, cx + cw) - Math.max(ax, cx);
+          if (acrossOverlap < 0.5) return;
+
+          const a0 = runsX ? ax : ay, a1 = a0 + (runsX ? aw : ad);
+          const c0 = runsX ? cx : cy, c1 = c0 + (runsX ? cw : cd);
+
+          // Must actually reach the appliance to count as its landing.
+          if (c1 < a0 - 0.1 || c0 > a1 + 0.1) return;
+
+          const before = Math.max(0, a0 - c0);   // counter to one side
+          const after  = Math.max(0, c1 - a1);   // counter to the other
+
+          if (side === 'left')       best = Math.max(best, before);
+          else if (side === 'right') best = Math.max(best, after);
+          else                       best = Math.max(best, before, after);
         });
 
-        return maxSpace;
+        return best;
       }
 
       // Check cooktops and ranges
